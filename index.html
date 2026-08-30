@@ -1,0 +1,3005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2E1016">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Umbral">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<title>Umbral — Seguimiento de atletas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  :root{ --navh:64px; }
+  body.theme-dark{
+    --bg:#121210; --panel:#1C1B17; --panel2:#232019; --panel3:#2A2116; --border:#2A2822;
+    --ink:#F2EEE4; --muted:#8C8578; --accent:#C98A3E; --accent-dim:#3A2A14; --on-accent:#14100A;
+    --warn:#E0A050; --danger:#E2685C;
+  }
+  body.theme-light{
+    --bg:#EDE4D3; --panel:#FAF6EE; --panel2:#F3E9DA; --panel3:#F3E4E1; --border:#DED0BC;
+    --ink:#3A2A22; --muted:#8C8073; --accent:#6E1F2A; --accent-dim:#F3E4E1; --on-accent:#FAF6EE;
+    --warn:#A6741F; --danger:#A83A2E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;min-height:100vh;transition:background .25s,color .25s;}
+  .app{max-width:720px;margin:0 auto;padding:18px 16px calc(var(--navh) + 34px);}
+  header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
+  .brand{display:flex;align-items:baseline;gap:9px;}
+  .brand h1{font-family:'Fraunces',serif;font-weight:700;font-size:21px;letter-spacing:-0.01em;}
+  .brand span{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;}
+  .role-switch{display:flex;background:var(--panel);border:1px solid var(--border);border-radius:100px;padding:3px;}
+  .role-switch button{border:none;background:transparent;color:var(--muted);font-weight:700;font-size:12.5px;padding:7px 15px;border-radius:100px;cursor:pointer;font-family:'Manrope',sans-serif;}
+  .role-switch button.active{background:var(--accent);color:var(--on-accent);}
+  .theme-toggle{background:var(--panel);border:1px solid var(--border);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:8px 14px;border-radius:100px;cursor:pointer;}
+  .theme-toggle:hover{color:var(--accent);border-color:var(--accent);}
+  .notice{background:var(--panel2);border:1px solid var(--border);border-left:3px solid var(--warn);border-radius:4px;padding:10px 14px;font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.5;}
+  .notice b{color:var(--ink);}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px;}
+  .card h2{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin-bottom:14px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  select, input[type=text], input[type=date], input[type=number], textarea{
+    background:var(--panel2); border:1px solid var(--border); color:var(--ink);
+    border-radius:6px; padding:9px 11px; font-family:'Manrope',sans-serif; font-size:14px;
+  }
+  select:focus, input:focus, textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  textarea{width:100%; resize:vertical; line-height:1.55;}
+  label.field-label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;}
+  button.btn{background:var(--accent); color:var(--on-accent); border:none; font-weight:700; font-size:14px; padding:10px 18px; border-radius:7px; cursor:pointer; font-family:'Manrope',sans-serif; transition:filter .12s, transform .08s;}
+  button.btn:hover{filter:brightness(1.08);}
+  button.btn:active{transform:scale(0.97);}
+  button.btn.ghost{background:transparent; border:1px solid var(--border); color:var(--ink); font-weight:600;}
+  button.btn.danger{background:var(--danger);color:#FAF6EE;}
+  button.btn.small{padding:6px 12px;font-size:12.5px;}
+  button.btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+  #tabContent, #main > .card:first-child{animation:fadeSlide .28s ease both;}
+  @keyframes fadeSlide{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+
+  .bottomnav{position:fixed;left:0;right:0;bottom:0;height:var(--navh);background:var(--panel);border-top:1px solid var(--border);display:flex;z-index:40;}
+  .bottomnav button{flex:1;background:transparent;border:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;font-family:'Manrope',sans-serif;font-size:10.5px;font-weight:600;}
+  .bottomnav button .ic{width:20px;height:20px;}
+  .bottomnav button.active{color:var(--accent);}
+  .bottomnav button.active svg{stroke:var(--accent);}
+  .bottomnav button svg{stroke:var(--muted);}
+
+  .acc{border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden;}
+  .acc-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--panel2);cursor:pointer;}
+  .acc-head b{font-family:'Fraunces',serif;text-transform:capitalize;font-size:15px;font-weight:600;}
+  .acc-head .chev-arrow{display:inline-block;color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11.5px;transition:transform .25s ease;}
+  .acc-head .chev-count{color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11.5px;margin-left:6px;}
+  .acc.open .acc-head .chev-arrow{transform:rotate(180deg);}
+  .acc-body{max-height:0;overflow:hidden;padding:0 16px;transition:max-height .32s ease, padding .32s ease;}
+  .acc.open .acc-body{max-height:3000px;padding:16px;}
+  .block-title{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin:14px 0 8px;padding-top:10px;border-top:1px dashed var(--border);}
+  .block-title:first-child{border-top:none;padding-top:0;margin-top:0;}
+
+  .ex-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;position:relative;}
+  .ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+  .ex-grid .full{grid-column:1/-1;}
+  .ex-grid > div{min-width:0;}
+  .ex-grid input, .ex-grid select, .ex-grid textarea{width:100%;min-width:0;}
+  .timer-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0;}
+  .timer-fields > div{display:flex;flex-direction:column;gap:5px;min-width:0;}
+  .timer-fields input{width:100%;min-width:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:16px;padding:10px 4px;}
+  .timer-fields .field-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  @media (max-width:400px){
+    .ex-grid{grid-template-columns:1fr;}
+    .timer-fields{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  .ex-view-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;}
+  .ex-view-card h4{font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;margin-bottom:4px;}
+  .ex-view-card p.desc{font-size:12.5px;color:var(--muted);margin-bottom:8px;}
+  .ex-meta{display:flex;gap:14px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);}
+  .ex-meta b{color:var(--ink);}
+  .save-flag{position:absolute;top:10px;right:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);opacity:0;transition:opacity .3s;}
+  .save-flag.show{opacity:1;}
+
+  .ai-import{background:var(--panel3);border:1px dashed var(--border);border-radius:8px;padding:12px;margin-bottom:12px;}
+  .ai-import textarea{min-height:70px;margin-bottom:8px;}
+
+  .entry{border-bottom:1px dashed var(--border);padding:12px 0;}
+  .entry:last-child{border-bottom:none;}
+  .entry-top{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+  .pill{display:inline-block;min-width:26px;text-align:center;border-radius:100px;padding:2px 8px;font-weight:700;font-size:12px;font-family:'IBM Plex Mono',monospace;}
+  .empty{color:var(--muted);font-size:13px;font-style:italic;padding:14px 0;}
+
+  .scale{display:flex;gap:7px;flex-wrap:wrap;}
+  .scale button{min-width:38px;height:38px;padding:0 8px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-weight:600;cursor:pointer;}
+  .scale button.sel{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
+  .scale-labels{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:4px;}
+  .q-item{margin-bottom:26px;}
+  .q-item p{font-size:14px;margin-bottom:9px;}
+  .q-note{margin-top:8px;}
+  .q-note textarea{min-height:36px;font-size:12.5px;}
+
+  .session-overlay{position:fixed;inset:0;background:var(--bg);z-index:100;overflow-y:auto;padding:16px 16px calc(env(safe-area-inset-bottom) + 24px);}
+  .session-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .session-topbar h2{font-family:'Fraunces',serif;font-size:19px;}
+  .stopwatch{font-family:'IBM Plex Mono',monospace;font-size:52px;font-weight:600;text-align:center;color:var(--accent);letter-spacing:0.02em;margin:6px 0 16px;}
+  .set-box{display:inline-flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+  .set-chip{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--panel);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11.5px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .set-chip.done{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
+  .ex-view-card.done h4{text-decoration:line-through;color:var(--muted);}
+  .rpe-applied{display:flex;align-items:center;gap:8px;margin-top:8px;}
+  .rpe-applied input{width:60px;}
+
+  .modal-back{position:fixed;inset:0;background:rgba(3,8,6,0.7);z-index:120;display:flex;align-items:flex-end;justify-content:center;}
+  .modal{background:var(--panel);border-top-left-radius:14px;border-top-right-radius:14px;width:100%;max-width:720px;padding:20px;max-height:85vh;overflow-y:auto;}
+  .mode-tabs{display:flex;gap:6px;margin-bottom:14px;}
+  .mode-tabs button{flex:1;background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px;border-radius:6px;font-weight:700;font-size:12.5px;cursor:pointer;}
+  .mode-tabs button.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+  .preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+  .preset-grid button{background:var(--panel2);border:1px solid var(--border);color:var(--ink);padding:9px 4px;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer;}
+  .interval-display{font-family:'IBM Plex Mono',monospace;font-size:36px;text-align:center;margin:14px 0;padding:20px;border-radius:10px;letter-spacing:0.01em;}
+  .interval-display .phase{display:block;font-size:14px;font-weight:700;letter-spacing:0.08em;margin-bottom:6px;}
+  .interval-display .round{display:block;font-size:12px;font-family:'Manrope',sans-serif;font-weight:600;margin-top:6px;color:var(--muted);}
+  .interval-display.work{background:var(--accent-dim);color:var(--accent);}
+  .interval-display.rest{background:#3A2A12;color:var(--warn);}
+  .interval-display.idle{background:var(--panel2);color:var(--muted);}
+  .amrap-count{font-family:'IBM Plex Mono',monospace;font-size:40px;text-align:center;color:var(--accent);margin:10px 0;}
+
+  .cal-banner{background:var(--accent);color:var(--on-accent);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13.5px;}
+  .cal-banner.muted{background:var(--panel2);color:var(--muted);}
+  .cal-banner b{color:inherit;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .cal-grid .dow{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-align:center;padding:4px 0;}
+  .cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:12.5px;background:var(--panel2);color:var(--muted);}
+  .cal-day.today{border:1px solid var(--accent);color:var(--ink);}
+  .cal-day.call{background:var(--accent);color:var(--on-accent);font-weight:700;}
+  .cal-day.empty{background:transparent;}
+  .pending-task{background:var(--panel3);border:1px dashed var(--accent);border-radius:8px;padding:14px;margin-bottom:14px;}
+  .pending-task .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:6px;}
+
+  .tut-back{position:fixed;inset:0;background:rgba(8,10,9,0.78);z-index:150;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeSlide .22s ease both;}
+  .tut-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:26px 22px 20px;max-width:420px;width:100%;max-height:88vh;overflow-y:auto;text-align:center;}
+  .tut-ic{width:52px;height:52px;border-radius:13px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+  .tut-ic svg{width:26px;height:26px;stroke:var(--accent);}
+  .tut-card h2{font-family:'Fraunces',serif;font-size:20px;font-weight:600;margin-bottom:10px;}
+  .tut-card p{font-size:14px;color:var(--muted);line-height:1.6;text-align:left;margin-bottom:18px;}
+  .tut-dots{display:flex;justify-content:center;gap:6px;margin-bottom:18px;}
+  .tut-dots i{width:6px;height:6px;border-radius:50%;background:var(--border);transition:background .2s,width .2s;}
+  .tut-dots i.on{background:var(--accent);width:18px;border-radius:3px;}
+  .tut-actions{display:flex;gap:10px;justify-content:center;}
+  .tut-actions .btn{flex:1;}
+  .tut-skip-link{display:block;margin:12px auto 0;background:none;border:none;color:var(--muted);font-family:'Manrope',sans-serif;font-size:12.5px;cursor:pointer;text-decoration:underline;}
+  .week-head{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:13px 15px;margin-bottom:14px;}
+  .week-main b{display:block;font-family:'Fraunces',serif;font-size:14.5px;font-weight:600;}
+  .week-main span{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px;}
+  .week-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .wpill{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--accent-dim);color:var(--accent);border-radius:6px;padding:5px 10px;}
+  .wpill i{display:block;font-style:normal;font-size:9px;opacity:0.75;text-transform:uppercase;letter-spacing:0.06em;}
+  .week-note{font-size:12.5px;color:var(--muted);margin-top:9px;font-style:italic;}
+  .week-comp{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--danger);margin-top:8px;}
+  .kv-list > div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px dashed var(--border);}
+  .kv-list > div:last-child{border-bottom:none;}
+  .kv-list span{font-size:13px;color:var(--muted);}
+  .kv-list b{font-size:14px;text-align:right;}
+  .task-banner{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--accent);border-radius:10px;padding:15px;cursor:pointer;font-family:'Manrope',sans-serif;color:var(--ink);}
+  .task-banner.done{border-color:var(--border);}
+  .task-ic{flex-shrink:0;width:34px;height:34px;border-radius:8px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;}
+  .task-ic svg{width:18px;height:18px;stroke:var(--accent);}
+  .task-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+  .task-txt b{font-family:'Fraunces',serif;font-size:15px;font-weight:600;}
+  .task-txt span{font-size:12px;color:var(--muted);}
+  .task-arrow{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:16px;}
+  .chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  /* ---------- PANTALLA DE ENTRADA ---------- */
+  .splash{position:fixed;inset:0;z-index:400;background:#2E1016;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:0;transition:opacity .45s ease, visibility .45s;}
+  .splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .splash-mark{width:min(42vw,180px);height:auto;overflow:visible;}
+  .sp-outline{stroke:#5F343C;stroke-width:2.5;fill:none;}
+  .sp-ring{fill:none;stroke:#C08A5A;stroke-width:2;opacity:0;transform-origin:50px 52px;
+    animation:spRipple 1.1s ease 1.35s forwards;}
+  .sp-floor{opacity:0;transform-origin:50px 90px;animation:spFloor .5s cubic-bezier(.2,.8,.3,1) .1s forwards;}
+  .sp-fill{transform:translateY(96px);animation:spFill 1.05s cubic-bezier(.32,.72,.24,1) .5s forwards;}
+  .splash-word{margin-top:26px;font-family:'Fraunces',serif;font-size:25px;font-weight:600;
+    color:#EDE4D3;letter-spacing:0.2em;opacity:0;animation:spWord .55s ease 1.55s forwards;}
+  .splash-sub{margin-top:9px;font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+    font-size:14.5px;color:#C08A5A;letter-spacing:0.02em;opacity:0;animation:spWord .55s ease 1.85s forwards;}
+  @keyframes spFill{to{transform:translateY(0);}}
+  @keyframes spFloor{from{opacity:0;transform:scaleX(0);}to{opacity:1;transform:scaleX(1);}}
+  @keyframes spRipple{0%{opacity:.55;transform:scale(.55);}100%{opacity:0;transform:scale(2.2);}}
+  @keyframes spWord{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){
+    .sp-fill,.sp-floor,.sp-ring,.splash-word,.splash-sub{animation:none !important;opacity:1 !important;transform:none !important;}
+  }
+
+  .identity-chip{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:6px 13px;white-space:nowrap;}
+  .gate-wrap{max-width:460px;margin:6vh auto 0;}
+  .gate-intro{text-align:center;margin-bottom:22px;}
+  .gate-intro h2{font-family:'Fraunces',serif;font-size:23px;font-weight:600;margin-bottom:6px;}
+  .gate-intro p{color:var(--muted);font-size:13.5px;}
+  .gate-option{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;cursor:pointer;transition:border-color .15s, transform .08s;font-family:'Manrope',sans-serif;color:var(--ink);}
+  .gate-option:hover{border-color:var(--accent);}
+  .gate-option:active{transform:scale(0.99);}
+  .gate-ic{flex-shrink:0;width:40px;height:40px;border-radius:10px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;}
+  .gate-ic svg{width:21px;height:21px;stroke:var(--accent);}
+  .gate-txt{display:flex;flex-direction:column;gap:3px;}
+  .gate-txt b{font-family:'Fraunces',serif;font-size:16px;font-weight:600;}
+  .gate-txt span{font-size:12.5px;color:var(--muted);line-height:1.4;}
+  .gate-card{max-width:460px;margin:6vh auto 0;}
+  .legend-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink);}
+  .legend-row i{display:inline-block;margin-right:6px;vertical-align:middle;}
+  .legend-row .sw-line{width:16px;height:3px;background:var(--accent);border-radius:2px;}
+  .legend-row .sw-bar{width:10px;height:12px;background:var(--accent);opacity:0.22;border-radius:2px;}
+  .legend-row .sw-comp{width:3px;height:13px;background:var(--danger);border-radius:2px;}
+  .micro-row{border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;background:var(--panel2);}
+  .micro-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+  .micro-head b{font-family:'Fraunces',serif;font-size:14px;font-weight:600;}
+  .micro-head span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+  .section-tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:3px 11px;margin:10px 0 6px;letter-spacing:0.04em;}
+  .timer-badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-top:8px;}
+  .timer-config{border-top:1px dashed var(--border);margin-top:10px;padding-top:10px;}
+  .q-cat{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;margin:12px 0 5px;}
+  .q-config-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13.5px;}
+  .athlete-list{display:flex;flex-direction:column;gap:8px;}
+  .athlete-row{text-align:left;background:var(--panel2);border:1px solid var(--border);color:var(--ink);padding:12px 14px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .athlete-row .name{font-family:'Fraunces',serif;font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+  .athlete-row > span:last-child{flex-shrink:0;}
+  .ex-view-card h4{overflow-wrap:anywhere;}
+  .week-main b{overflow-wrap:anywhere;}
+  .athlete-row .status{font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:3px 9px;border-radius:100px;}
+  .status.activo{background:var(--accent-dim);color:var(--accent);}
+  .status.pausado{background:#3A2A12;color:var(--warn);}
+  .status.baja{background:#3A1512;color:var(--danger);}
+  .sub-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;}
+  .sub-tabs button{white-space:nowrap;background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:6px;font-weight:700;font-size:12.5px;cursor:pointer;}
+  .sub-tabs button.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+  .draft-banner{background:var(--panel3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+  .kpi-row{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:16px;}
+  .kpi{font-family:'IBM Plex Mono',monospace;}
+  .kpi b{display:block;font-size:22px;color:var(--accent);}
+  .kpi span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;}
+</style>
+</head>
+<body class="theme-light">
+<div id="splash" class="splash">
+  <svg class="splash-mark" viewBox="0 0 100 100" aria-hidden="true">
+    <defs><clipPath id="splashU">
+      <path d="M26 18 L26 62 L50 82 L50 64 L40 56 L40 18 Z"/>
+      <path d="M74 18 L74 62 L50 82 L50 64 L60 56 L60 18 Z"/>
+    </clipPath></defs>
+    <circle class="sp-ring" cx="50" cy="52" r="27"/>
+    <path class="sp-outline" d="M26 18 L26 62 L50 82 L50 64 L40 56 L40 18 Z"/>
+    <path class="sp-outline" d="M74 18 L74 62 L50 82 L50 64 L60 56 L60 18 Z"/>
+    <g clip-path="url(#splashU)"><g class="sp-fill">
+      <rect x="18" y="8" width="32" height="92" fill="#EDE4D3"/>
+      <rect x="50" y="8" width="32" height="92" fill="#C08A5A"/>
+    </g></g>
+    <rect class="sp-floor" x="20" y="88" width="60" height="3.5" rx="1.75" fill="#C08A5A"/>
+  </svg>
+  <div class="splash-word">UMBRAL</div>
+  <div class="splash-sub">Nadie lo hará por ti</div>
+</div>
+<div class="app" id="app">
+  <header>
+    <div class="brand"><h1>Umbral</h1><span id="brandTag">seguimiento</span></div>
+    <div class="row" style="gap:8px;">
+      <span id="identityChip" class="identity-chip" style="display:none;"></span>
+      <button class="btn ghost small" id="logoutBtn" style="display:none;">Salir</button>
+      <button class="theme-toggle" id="themeToggle">☾ Oscuro</button>
+    </div>
+  </header>
+  <div id="noticeSlot"></div>
+  <div id="main"></div>
+</div>
+<div class="bottomnav" id="bottomNav"></div>
+<datalist id="sectionSuggestions">
+  <option value="Fuerza"></option>
+  <option value="Fuerza submáxima"></option>
+  <option value="Hipertrofia"></option>
+  <option value="Potencia"></option>
+  <option value="Pliometría"></option>
+  <option value="Movilidad"></option>
+  <option value="Activación"></option>
+  <option value="Core"></option>
+  <option value="Resistencia"></option>
+  <option value="Técnica"></option>
+</datalist>
+
+<script>
+// ---------- ALMACENAMIENTO EN SUPABASE ----------
+// Los datos compartidos (atletas, rutinas, diarios…) viven en tu base de datos,
+// así que cualquier dispositivo que abra la app ve lo mismo. Lo personal de cada
+// móvil (la sesión iniciada) se queda en el propio navegador.
+const SUPA_URL  = 'https://ubkqtagzorfcrwjhojlt.supabase.co';
+const SUPA_KEY  = 'sb_publishable_3W7Jj-pYpzm6LhuXlmDouA_hk0QLypd';
+const WORKSPACE = 'mario';
+const SUPA_HEAD = {
+  'apikey': SUPA_KEY,
+  'Authorization': 'Bearer ' + SUPA_KEY,
+  'Content-Type': 'application/json'
+};
+const SUPA_TABLE = SUPA_URL + '/rest/v1/umbral_kv';
+
+let storageBroken = false;
+let lastStorageError = '';
+let storageMode = 'probando';   // 'nube' | 'local' | 'memoria'
+const memStore = new Map();
+
+function lsKey(key, shared){ return 'umbral::' + (shared?'s':'p') + '::' + key; }
+function lsAvailable(){
+  try{
+    if(typeof localStorage === 'undefined') return false;
+    localStorage.setItem('__umbral_probe__','1');
+    localStorage.removeItem('__umbral_probe__');
+    return true;
+  }catch(e){ return false; }
+}
+function cacheLocal(key, shared, value){
+  try{ if(lsAvailable()) localStorage.setItem(lsKey(key,shared), value); }catch(e){}
+  memStore.set(lsKey(key,shared), value);
+}
+function readLocal(key, shared){
+  const mk = lsKey(key, shared);
+  try{ if(lsAvailable()){ const v = localStorage.getItem(mk); if(v !== null) return v; } }catch(e){}
+  return memStore.has(mk) ? memStore.get(mk) : null;
+}
+
+async function supaGet(key){
+  const url = SUPA_TABLE + '?select=value&workspace=eq.' + encodeURIComponent(WORKSPACE)
+            + '&key=eq.' + encodeURIComponent(key);
+  const r = await fetch(url, { headers: SUPA_HEAD });
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+  const rows = await r.json();
+  return (Array.isArray(rows) && rows.length) ? rows[0].value : null;
+}
+async function supaSet(key, value){
+  const url = SUPA_TABLE + '?on_conflict=workspace,key';
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { ...SUPA_HEAD, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify({ workspace: WORKSPACE, key, value, updated_at: new Date().toISOString() })
+  });
+  if(!r.ok){
+    let detalle = 'HTTP ' + r.status;
+    try{ const j = await r.json(); if(j && j.message) detalle = j.message; }catch(e){}
+    throw new Error(detalle);
+  }
+  return true;
+}
+async function supaList(){
+  const url = SUPA_TABLE + '?select=key&workspace=eq.' + encodeURIComponent(WORKSPACE);
+  const r = await fetch(url, { headers: SUPA_HEAD });
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+  const rows = await r.json();
+  return Array.isArray(rows) ? rows.map(x=>x.key) : [];
+}
+
+async function safeGet(key, shared){
+  // Lo no compartido es de este dispositivo: nunca sale a la nube.
+  if(!shared) return readLocal(key, false);
+  try{
+    const v = await supaGet(key);
+    storageMode = 'nube'; storageBroken = false;
+    if(v !== null && v !== undefined){ cacheLocal(key, true, v); return v; }
+    return null;
+  }catch(e){
+    // Sin conexión o error: tiramos de la última copia guardada en el móvil.
+    lastStorageError = (e && e.message) ? e.message : String(e);
+    if(storageMode === 'nube') storageMode = 'local';
+    return readLocal(key, true);
+  }
+}
+
+async function safeSet(key, value, shared){
+  if(!shared){ cacheLocal(key, false, value); return true; }
+  cacheLocal(key, true, value);   // guardamos siempre en local primero
+  try{
+    await supaSet(key, value);
+    storageMode = 'nube'; storageBroken = false;
+    return true;
+  }catch(e){
+    lastStorageError = (e && e.message) ? e.message : String(e);
+    storageBroken = true;
+    storageMode = lsAvailable() ? 'local' : 'memoria';
+    return true; // no se ha perdido: está en el móvil
+  }
+}
+
+async function storageSelfTest(){
+  const key = '__umbral_test__';
+  const val = 'ok-' + Date.now();
+  try{
+    await supaSet(key, val);
+    const back = await supaGet(key);
+    if(back === val){
+      storageMode = 'nube'; storageBroken = false;
+      return { ok:true, mode:'nube', detail:'sincronizado entre dispositivos' };
+    }
+    lastStorageError = 'la escritura no se pudo releer';
+  }catch(e){ lastStorageError = (e && e.message) ? e.message : String(e); }
+  storageBroken = true;
+  storageMode = lsAvailable() ? 'local' : 'memoria';
+  return { ok:false, mode:storageMode, detail:lastStorageError };
+}
+const DAYS = ['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
+const DAY_INDEX = { 1:'lunes',2:'martes',3:'miércoles',4:'jueves',5:'viernes',6:'sábado',0:'domingo' };
+const BLOCKS = [ {key:'calentamiento', label:'Calentamiento'}, {key:'principal', label:'Parte principal'}, {key:'vueltaCalma', label:'Vuelta a la calma'} ];
+
+const QUESTION_BANK = [
+  {id:'sleep_quality', cat:'Sueño y descanso', text:'Calidad del sueño esta semana', type:'scale', labels:['Muy mala','Excelente']},
+  {id:'sleep_hours', cat:'Sueño y descanso', text:'Horas medias de sueño por noche', type:'scale', labels:['Muy pocas','Suficientes']},
+  {id:'sleep_onset', cat:'Sueño y descanso', text:'Facilidad para conciliar el sueño', type:'scale', labels:['Muy difícil','Muy fácil']},
+  {id:'fatigue_accum', cat:'Recuperación y fatiga', text:'Fatiga general acumulada', type:'scale', labels:['Muy alta','Ninguna']},
+  {id:'doms', cat:'Recuperación y fatiga', text:'Dolor muscular (agujetas) esta semana', type:'scale', labels:['Mucho','Ninguno']},
+  {id:'recovery_between', cat:'Recuperación y fatiga', text:'Sensación de recuperación entre sesiones', type:'scale', labels:['Nula','Completa']},
+  {id:'nutrition_adherence', cat:'Nutrición e hidratación', text:'Adherencia a la alimentación planificada', type:'scale', labels:['Muy baja','Total']},
+  {id:'hydration_week', cat:'Nutrición e hidratación', text:'Hidratación general de la semana', type:'scale', labels:['Muy baja','Óptima']},
+  {id:'appetite', cat:'Nutrición e hidratación', text:'Apetito / relación con la comida', type:'scale', labels:['Muy alterado','Normal']},
+  {id:'motivation', cat:'Mente y motivación', text:'Motivación para entrenar', type:'scale', labels:['Muy baja','Muy alta']},
+  {id:'external_stress', cat:'Mente y motivación', text:'Estrés fuera del entrenamiento (trabajo/vida)', type:'scale', labels:['Muy alto','Ninguno']},
+  {id:'mood', cat:'Mente y motivación', text:'Estado de ánimo general', type:'scale', labels:['Muy bajo','Muy bueno']},
+  {id:'pain_unusual', cat:'Dolor y salud', text:'Molestias o dolor esta semana', type:'text'},
+  {id:'pain_area', cat:'Dolor y salud', text:'Zona corporal con molestias (si aplica)', type:'text'},
+  {id:'progress_feel', cat:'Rendimiento percibido', text:'Sensación de progreso esta semana', type:'scale', labels:['Ningún progreso','Mucho progreso']},
+  {id:'session_ease', cat:'Rendimiento percibido', text:'Facilidad de las sesiones vs. semanas anteriores', type:'scale', labels:['Mucho más difícil','Mucho más fácil']},
+  {id:'technique_conf', cat:'Rendimiento percibido', text:'Confianza en tu técnica/ejecución', type:'scale', labels:['Ninguna','Total']},
+  {id:'adherence_pct', cat:'Adherencia', text:'Sesiones completadas según lo planificado', type:'scale_dynamic'},
+  {id:'sessions_modified', cat:'Adherencia', text:'¿Modificaste o acortaste alguna sesión?', type:'scale', labels:['Todas','Ninguna']},
+  {id:'training_env', cat:'Contexto externo', text:'Calidad del entorno de entrenamiento', type:'scale', labels:['Muy deficiente','Excelente']},
+  {id:'active_rest', cat:'Contexto externo', text:'Descanso activo fuera de lo planificado', type:'scale', labels:['Ninguno','Mucho']},
+  {id:'running_feel', cat:'Específico Hyrox', text:'Sensaciones en la parte de carrera', type:'scale', labels:['Muy malas','Muy buenas']},
+  {id:'strength_feel', cat:'Específico Hyrox', text:'Sensaciones en fuerza/estaciones funcionales', type:'scale', labels:['Muy malas','Muy buenas']},
+  {id:'availability_next', cat:'Planificación', text:'Disponibilidad para la próxima semana (días y franjas)', type:'text'},
+  {id:'free_comment', cat:'Libre', text:'Algo más para la próxima llamada', type:'text'}
+];
+const DEFAULT_ACTIVE = ['sleep_quality','fatigue_accum','motivation','pain_unusual','adherence_pct','availability_next','free_comment'];
+
+const INTAKE_FIELDS = [
+  {id:'edad', label:'Edad', type:'number', group:'Datos iniciales'},
+  {id:'genero', label:'Género', type:'select', options:['Hombre','Mujer','Otro / prefiero no decirlo'], group:'Datos iniciales'},
+  {id:'peso', label:'Peso (kg)', type:'number', group:'Datos iniciales'},
+  {id:'altura', label:'Altura (cm)', type:'number', group:'Datos iniciales'},
+  {id:'contacto', label:'Contacto (teléfono o email)', type:'text', group:'Datos iniciales'},
+  {id:'aniosExperiencia', label:'Años de experiencia entrenando', type:'number', group:'Experiencia y objetivos'},
+  {id:'historial', label:'Historial deportivo previo', type:'textarea', group:'Experiencia y objetivos'},
+  {id:'objetivos', label:'Objetivos principales y/o competiciones objetivo', type:'textarea', group:'Experiencia y objetivos'},
+  {id:'disponibilidad', label:'Disponibilidad general (días por semana)', type:'select', options:['1','2','3','4','5','6+'], group:'Experiencia y objetivos'},
+  {id:'franjas', label:'Franjas horarias habituales', type:'text', group:'Experiencia y objetivos'},
+  {id:'lesiones', label:'Lesiones o dolores recurrentes', type:'textarea', group:'Lesiones y salud'},
+  {id:'comoLlego', label:'¿Cómo llegaste a mí?', type:'select', options:['Recomendación','Redes sociales','Otro'], group:'Cómo llegaste'},
+  {id:'material', label:'¿Tienes acceso a material de entrenamiento fuera de las sesiones?', type:'text', group:'Cómo llegaste'}
+];
+
+const TABATA_PRESETS = [
+  {label:'20"/10"', work:20, rest:10}, {label:'25"/5"', work:25, rest:5},
+  {label:'30"/30"', work:30, rest:30}, {label:'40"/20"', work:40, rest:20},
+  {label:'45"/15"', work:45, rest:15}, {label:'50"/10"', work:50, rest:10}
+];
+
+// ---------- ICONS ----------
+function icCalendar(){
+  const day = new Date().getDate();
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="7.5" y1="2.5" x2="7.5" y2="6.5"/><line x1="16.5" y1="2.5" x2="16.5" y2="6.5"/><text x="12" y="17" text-anchor="middle" font-size="8.5" font-family="IBM Plex Mono, monospace" stroke="none" fill="currentColor">${day}</text></svg>`;
+}
+function icDumbbell(){
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="9" width="3.5" height="6" rx="1"/><rect x="19" y="9" width="3.5" height="6" rx="1"/><rect x="5.5" y="7" width="2.5" height="10" rx="1"/><rect x="16" y="7" width="2.5" height="10" rx="1"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`;
+}
+function icChartUp(){
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="19" x2="5" y2="14"/><line x1="10" y1="19" x2="10" y2="10"/><line x1="15" y1="19" x2="15" y2="6"/><line x1="20" y1="19" x2="20" y2="3"/></svg>`;
+}
+function icClipboard(){
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2.3" width="6" height="3.4" rx="1"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="14" y2="15"/></svg>`;
+}
+function icPeople(){
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c2.3.3 4 2.3 4 4.8"/></svg>`;
+}
+function icGrid(){
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.3"/></svg>`;
+}
+function icPerson(){
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-4.1 3.4-7.5 7.5-7.5s7.5 3.4 7.5 7.5"/></svg>`;
+}
+function icTasks(){
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5l1.6 1.6L8 5.5"/><line x1="11" y1="6.5" x2="20" y2="6.5"/><path d="M4 13l1.6 1.6L8 12"/><line x1="11" y1="13" x2="20" y2="13"/><path d="M4 19.5l1.6 1.6L8 18.5"/><line x1="11" y1="19.5" x2="20" y2="19.5"/></svg>`;
+}
+
+// Código de acceso al panel de entrenador. Es una barrera de interfaz, no
+// seguridad real: quien inspeccione el código de la página puede encontrarlo.
+const DEFAULT_COACH_CODE = 'UMB-7K42';
+async function getCoachCode(){
+  const c = await safeGet('coach-code', true);
+  return (c && c.trim()) ? c.trim() : DEFAULT_COACH_CODE;
+}
+
+let state = { role:'coach', authRole:null, gateMode:null, athletes:[], selectedId:null, athleteAsId:null, tab:'atletas', athleteSubTab:'planificacion', loading:true, openDays:{}, aiImportOpen:{}, aiImportBusy:{}, quickFillFor:null, calShowQuest:false };
+let session = null;
+
+// ---------- SONIDO Y VIBRACIÓN ----------
+// Sin avisos audibles un temporizador de intervalos es inservible: obliga a
+// mirar la pantalla justo cuando no puedes.
+let audioCtx = null;
+function ensureAudio(){
+  try{
+    if(!audioCtx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return null;
+      audioCtx = new AC();
+    }
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }catch(e){ return null; }
+}
+function beep(freq, ms, vol){
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  try{
+    const osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.type = 'sine'; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol || 0.25, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + ms/1000);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + ms/1000);
+  }catch(e){}
+}
+function buzz(pattern){ try{ if(navigator.vibrate) navigator.vibrate(pattern); }catch(e){} }
+const CUE = {
+  tick:   ()=>{ beep(660, 90, 0.18); },                                  // 3-2-1
+  work:   ()=>{ beep(980,180,0.3); buzz(120); },                         // empieza trabajo
+  rest:   ()=>{ beep(520,220,0.26); buzz([70,60,70]); },                 // empieza descanso
+  setEnd: ()=>{ beep(760,160,0.3); setTimeout(()=>beep(1040,240,0.3),170); buzz([90,70,90]); },
+  done:   ()=>{ [0,190,380].forEach((d,i)=>setTimeout(()=>beep(720+i*230,300,0.3), d)); buzz([120,90,120,90,200]); }
+};
+// Cuenta atrás de los últimos 3 segundos de cualquier fase
+function cueCountdown(rem){ if(rem===3||rem===2||rem===1) CUE.tick(); }
+
+// ---------- PANTALLA ENCENDIDA ----------
+let wakeLock = null;
+async function keepAwake(on){
+  try{
+    if(on){
+      if('wakeLock' in navigator && !wakeLock){
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', ()=>{ wakeLock = null; });
+      }
+    } else if(wakeLock){ await wakeLock.release(); wakeLock = null; }
+  }catch(e){ /* no soportado: no es crítico */ }
+}
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState==='visible' && session && session.fullscreen) keepAwake(true);
+});
+
+// ---------- SESIÓN EN CURSO, A PRUEBA DE CIERRES ----------
+// La sesión vivía sólo en memoria: cerrar la app a mitad de entreno perdía
+// todo el registro. Ahora se guarda continuamente y se puede retomar.
+let sessionSaveTimer = null;
+function sessionKey(athleteId){ return 'session-activa-'+athleteId; }
+async function persistSession(){
+  const id = state.athleteAsId || state.selectedId;
+  if(!id || !session) return;
+  const snapshot = {
+    day: session.day, startedAt: session.startedAt || Date.now(),
+    elapsedSec: session.elapsedSec, exercises: session.exercises,
+    showSurvey: session.showSurvey, avgExerciseRPE: session.avgExerciseRPE,
+    fatigueScore: session.fatigueScore, savedAt: Date.now()
+  };
+  await safeSet(sessionKey(id), JSON.stringify(snapshot), true);
+}
+function queueSessionSave(){
+  clearTimeout(sessionSaveTimer);
+  sessionSaveTimer = setTimeout(persistSession, 800);
+}
+async function clearPersistedSession(){
+  const id = state.athleteAsId || state.selectedId;
+  if(id) await safeSet(sessionKey(id), '', true);
+}
+async function findPausedSession(athleteId){
+  const raw = await safeGet(sessionKey(athleteId), true);
+  if(!raw) return null;
+  try{
+    const s = JSON.parse(raw);
+    if(!s || !s.exercises) return null;
+    // Descartamos restos de más de 12 horas
+    if(Date.now() - (s.savedAt||0) > 12*3600*1000) return null;
+    return s;
+  }catch(e){ return null; }
+}
+
+// Terminar una sesión sin dejar cronómetros vivos: si el intervalo seguía
+// corriendo tras poner session=null, reventaba al leer session.elapsedSec.
+function stopSession(){
+  clearInterval(stopwatchInterval); stopwatchInterval = null;
+  clearInterval(engineInterval); engineInterval = null;
+  clearTimeout(sessionSaveTimer);
+  session = null;
+  keepAwake(false);
+  const ov = document.getElementById('sessionOverlay'); if(ov) ov.remove();
+  const tb = document.getElementById('timerModalBack'); if(tb) tb.remove();
+  timerModal = null;
+}
+let timerModal = null;
+let stopwatchInterval = null, engineInterval = null;
+
+function uid(){ return Math.random().toString(36).slice(2,9); }
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function weekOfISO(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.getDate()-day+1); return d.toISOString().slice(0,10); }
+function saturdayOfWeek(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.getDate()-day+6); return d.toISOString().slice(0,10); }
+function fmtTime(sec){ const m=Math.floor(sec/60), s=Math.abs(sec%60); return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+function rpeColor(rpe){ if(rpe<=3) return '#5FD99A'; if(rpe<=6) return '#E8A548'; return '#E86A5C'; }
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c)); }
+
+async function loadAthletes(){ const raw=await safeGet('athletes-list', true); state.athletes = raw?JSON.parse(raw):[]; }
+
+async function seedDemoAthlete(){
+  const seeded = await safeGet('seed-done-v1', true);
+  if(seeded) return;
+  await loadAthletes();
+  let demo = state.athletes.find(a=>a.name==='Atleta Demo');
+  if(!demo){
+    demo = { id: uid(), name:'Atleta Demo', pin:'1234' };
+    state.athletes.push(demo);
+    await safeSet('athletes-list', JSON.stringify(state.athletes), true);
+  }
+  await safeSet('intake-'+demo.id, JSON.stringify({ edad:'27', contacto:'demo@ejemplo.com', experiencia:'Intermedio', historial:'3 años de crossfit recreativo', objetivos:'Hyrox por parejas en 6 meses', disponibilidad:'4', franjas:'Tardes entre semana', lesiones:'Molestia ocasional en rodilla derecha', comoLlego:'Recomendación', material:'Acceso a gimnasio y material básico en casa' }), true);
+  await safeSet('profile-'+demo.id, JSON.stringify({ estado:'Activo', tarifa:90, pagado:'Sí', notas:'Cliente de la primera convocatoria.' }), true);
+  const routine = { updatedAt:new Date().toISOString(), days:{} };
+  DAYS.forEach(d=>{ routine.days[d]={calentamiento:[],principal:[],vueltaCalma:[]}; });
+  routine.days['lunes'].calentamiento = [{id:uid(),name:'Bici suave',desc:'Ritmo cómodo',series:1,reps:'8 min',rest:'',rir:'',rpeTarget:'3'}];
+  routine.days['lunes'].principal = [
+    {id:uid(),name:'Sentadilla trasera',desc:'Técnica controlada',series:4,reps:'8',rest:'90s',rir:'2',rpeTarget:'7'},
+    {id:uid(),name:'Carrera 1km',desc:'Ritmo umbral',series:3,reps:'1km',rest:'2 min',rir:'',rpeTarget:'8'}
+  ];
+  routine.days['lunes'].vueltaCalma = [{id:uid(),name:'Estiramiento general',desc:'',series:1,reps:'5 min',rest:'',rir:'',rpeTarget:'2'}];
+  await safeSet('routine-'+demo.id, JSON.stringify(routine), true);
+  await safeSet('routine-draft-'+demo.id, JSON.stringify(routine), true);
+  const now = new Date();
+  const journal = [0,1,2,3].map(i=>{
+    const d = new Date(now); d.setDate(d.getDate() - (21 - i*7));
+    const overallRPE = 6+i; const fatiga = 3+(i%2); const calidad = 3+((i+1)%3); const hidratacion=4; const satisfaccion=3+(i%2);
+    return { date:d.toISOString().slice(0,10), day:'lunes', durationSeconds:2700+i*180,
+      exercises:[{name:'Sentadilla trasera',rpeApplied:6+i,done:true},{name:'Carrera 1km',rpeApplied:7+Math.min(i,2),done:true}],
+      avgExerciseRPE: 6.5+i*0.5, fatigueScore: +((6.5+i*0.5)*((2700+i*180)/60)).toFixed(1),
+      overallRPE, fatiga, calidad, hidratacion, satisfaccion, notes: i===3?'Buenas sensaciones, semana de mejor forma.':'' };
+  });
+  await safeSet('journal-'+demo.id, JSON.stringify(journal), true);
+  await safeSet('call-'+demo.id, JSON.stringify({ nextDate: new Date(now.getFullYear(), now.getMonth(), now.getDate()+9).toISOString().slice(0,10), duration:'20 min', notes:'Meet: link pendiente' }), true);
+  await safeSet('seed-done-v1', 'true', true);
+}
+
+async function init(){
+  await seedDemoAthlete();
+  await loadAthletes();
+  if(state.athletes.length && !state.selectedId) state.selectedId = state.athletes[0].id;
+  const savedLogin = await safeGet('umbral-session', false);
+  if(savedLogin){
+    try{
+      const l = JSON.parse(savedLogin);
+      if(l.role === 'coach'){ state.authRole='coach'; state.role='coach'; state.tab='atletas'; }
+      else if(l.role === 'atleta' && l.athleteAsId && state.athletes.find(a=>a.id===l.athleteAsId)){
+        state.authRole='atleta'; state.role='atleta'; state.athleteAsId=l.athleteAsId; state.tab='rutina';
+        // Si dejó una sesión a medias, le llevamos directo a ella.
+        const pend = await findPausedSession(l.athleteAsId);
+        if(pend) state.tab = 'diario';
+      }
+    }catch(e){}
+  }
+  state.loading = false;
+  render();
+  const lg = document.getElementById('logoutBtn');
+  if(lg) lg.addEventListener('click', async ()=>{
+    state.authRole=null; state.role='coach'; state.athleteAsId=null; state.gateMode=null; state.tab='atletas';
+    stopSession();
+    await safeSet('umbral-session', JSON.stringify({}), false);
+    render();
+  });
+}
+
+// ---------- PANTALLA DE ACCESO ----------
+function renderGate(){
+  if(state.gateMode === 'coach'){
+    return `<div class="card gate-card">
+      <h2>Acceso de entrenador</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Introduce tu código de acceso.</p>
+      <div class="row" style="flex-direction:column;align-items:stretch;gap:10px;">
+        <input type="password" id="coachCodeInput" placeholder="Código" autocomplete="off" style="width:100%;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">
+        <div class="row"><button class="btn" id="coachEnterBtn">Entrar</button>
+        <button class="btn ghost" id="gateBackBtn">Volver</button></div>
+      </div>
+    </div>`;
+  }
+  if(state.gateMode === 'atleta'){
+    if(!state.athletes.length){
+      return `<div class="card gate-card"><h2>Acceso de atleta</h2>
+        <div class="empty">Tu entrenador aún no te ha dado de alta.</div>
+        <button class="btn ghost" id="gateBackBtn" style="margin-top:10px;">Volver</button></div>`;
+    }
+    return `<div class="card gate-card">
+      <h2>Acceso de atleta</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Elige tu nombre e introduce el PIN que te ha dado tu entrenador.</p>
+      <div class="row" style="flex-direction:column;align-items:stretch;gap:10px;">
+        <select id="athleteSelect" style="width:100%;">
+          ${state.athletes.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}
+        </select>
+        <input type="password" id="pinInput" placeholder="PIN de 4 dígitos" maxlength="4" inputmode="numeric" autocomplete="off" style="width:100%;font-family:'IBM Plex Mono',monospace;letter-spacing:0.3em;">
+        <div class="row"><button class="btn" id="loginBtn">Entrar</button>
+        <button class="btn ghost" id="gateBackBtn">Volver</button></div>
+      </div>
+    </div>`;
+  }
+  return `<div class="gate-wrap">
+    <div class="gate-intro">
+      <h2>¿Cómo quieres entrar?</h2>
+      <p>Elige tu perfil para continuar.</p>
+    </div>
+    <button class="gate-option" data-gate="atleta">
+      <span class="gate-ic">${icPerson()}</span>
+      <span class="gate-txt"><b>Soy atleta</b><span>Ver mi rutina, registrar sesiones y responder al cuestionario</span></span>
+    </button>
+    <button class="gate-option" data-gate="coach">
+      <span class="gate-ic">${icPeople()}</span>
+      <span class="gate-txt"><b>Soy entrenador</b><span>Requiere código de acceso</span></span>
+    </button>
+  </div>`;
+}
+
+document.getElementById('themeToggle').addEventListener('click', ()=>{
+  const isDark = document.body.classList.contains('theme-dark');
+  document.body.classList.toggle('theme-dark', !isDark);
+  document.body.classList.toggle('theme-light', isDark);
+  document.getElementById('themeToggle').textContent = isDark ? '☀ Claro' : '☾ Oscuro';
+  render();
+});
+
+function getScrollPos(){ return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0; }
+function setScrollPos(y){
+  window.scrollTo(0,y);
+  document.documentElement.scrollTop = y;
+  document.body.scrollTop = y;
+}
+function render(){
+  const y = getScrollPos();
+  const main = document.getElementById('main');
+  const chip = document.getElementById('identityChip');
+  const logout = document.getElementById('logoutBtn');
+  const noticeSlot = document.getElementById('noticeSlot');
+  if(state.loading){ main.innerHTML='<div class="empty">Cargando…</div>'; return; }
+
+  if(!state.authRole){
+    main.innerHTML = renderGate();
+    document.getElementById('bottomNav').innerHTML = '';
+    if(chip) chip.style.display = 'none';
+    if(logout) logout.style.display = 'none';
+    if(noticeSlot) noticeSlot.innerHTML = '';
+    const bt = document.getElementById('brandTag'); if(bt) bt.style.display = 'none';
+    bindGateEvents();
+    setScrollPos(0);
+    return;
+  }
+  const bt = document.getElementById('brandTag'); if(bt) bt.style.display = '';
+
+  if(chip){
+    chip.style.display = '';
+    if(state.authRole === 'coach') chip.textContent = state.previewing ? 'Vista de atleta' : 'Entrenador';
+    else {
+      const me = state.athletes.find(a=>a.id===state.athleteAsId);
+      chip.textContent = me ? me.name : 'Atleta';
+    }
+  }
+  if(logout) logout.style.display = '';
+  if(noticeSlot && state.authRole==='coach' && !noticeSlot.innerHTML){
+    noticeSlot.innerHTML = '<div class="notice"><b>Panel de entrenador.</b> Los atletas sólo ven su propio perfil al entrar con su PIN.</div>';
+  }
+  if(noticeSlot && state.authRole==='atleta') noticeSlot.innerHTML = '';
+  if(noticeSlot && state.previewing){
+    const me = state.athletes.find(a=>a.id===state.athleteAsId);
+    noticeSlot.innerHTML = `<div class="notice" style="border-left-color:var(--accent);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span>Viendo la app como <b>${escapeHtml(me?me.name:'atleta')}</b>. Los cambios que hagas aquí se guardan de verdad.</span>
+      <button class="btn small" id="exitPreviewBtn">Volver al panel</button></div>`;
+    const ep = document.getElementById('exitPreviewBtn');
+    if(ep) ep.addEventListener('click', ()=>{
+      state.previewing = false; state.role='coach'; state.athleteAsId=null; state.tab='atletas';
+      stopSession(); renderScrollTop();
+    });
+  }
+
+  main.innerHTML = state.role==='coach' ? renderCoachShell() : renderAtletaShell();
+  renderNav();
+  bindShellEvents();
+  maybeShowTutorial();
+  setScrollPos(y);
+  requestAnimationFrame(()=>setScrollPos(y));
+  setTimeout(()=>setScrollPos(y), 30);
+}
+
+// ---------- TUTORIAL DEL ATLETA ----------
+const TUTORIAL_STEPS = [
+  { ic:()=>icPerson(), title:'Bienvenido a Umbral',
+    body:'Aquí verás tu plan de entrenamiento, registrarás cada sesión y podrás seguir tu progreso. Son 5 pantallas: te las enseño en un minuto.' },
+  { ic:()=>icClipboard(), title:'Rutina',
+    body:'Tu plan de la semana, día a día. Arriba verás en qué semana del bloque estás, con la intensidad y el volumen que tu entrenador ha programado. Toca un día para desplegar sus ejercicios: calentamiento, parte principal y vuelta a la calma, con series, repeticiones, carga y RPE objetivo.' },
+  { ic:()=>icDumbbell(), title:'Sesión',
+    body:'Cuando vayas a entrenar, elige el día y pulsa Iniciar sesión: se abre a pantalla completa con un cronómetro. Ve marcando cada serie según la completes, tacha los ejercicios terminados y anota el RPE que has aplicado. Si un ejercicio lleva temporizador (Tabata, EMOM, AMRAP o descanso por series), te aparecerá un botón para lanzarlo ya configurado.' },
+  { ic:()=>icDumbbell(), title:'Al terminar la sesión',
+    body:'Pulsa «Sesión completada» y rellena el diario: esfuerzo percibido, fatiga, calidad, hidratación y satisfacción, más las notas que quieras. Con eso se calcula tu carga de entrenamiento, que es lo que permite ajustar el plan sin que te pases ni te quedes corto. Es la parte más importante: sin diario, tu entrenador va a ciegas.' },
+  { ic:()=>icCalendar(), title:'Calendario',
+    body:'Ahí tienes tu próxima videollamada de revisión, con opción de añadirla al calendario de tu móvil. También el cuestionario semanal: son unas pocas preguntas sobre cómo ha ido la semana, y se responde los sábados. Sirve para orientar la llamada y ajustar la carga.' },
+  { ic:()=>icChartUp(), title:'Progreso',
+    body:'La carga de cada sesión, tu media de esfuerzo y la tendencia de bienestar. También el ACWR, que compara lo que has entrenado esta semana con tu media del último mes: si sube demasiado rápido, hay más riesgo de lesión.' },
+  { ic:()=>icPerson(), title:'Perfil',
+    body:'Tus datos, que puedes mantener al día tú mismo, y el estado de tu suscripción. Desde ahí puedes volver a ver esta guía cuando quieras.' }
+];
+
+function renderTutorial(){
+  let ov = document.getElementById('tutorialOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id='tutorialOverlay'; ov.className='tut-back'; document.body.appendChild(ov); }
+  const i = state.tutorialStep || 0;
+  const s = TUTORIAL_STEPS[i];
+  const last = i === TUTORIAL_STEPS.length - 1;
+  ov.innerHTML = `<div class="tut-card">
+    <div class="tut-ic">${s.ic()}</div>
+    <h2>${s.title}</h2>
+    <p>${s.body}</p>
+    <div class="tut-dots">${TUTORIAL_STEPS.map((_,n)=>`<i class="${n===i?'on':''}"></i>`).join('')}</div>
+    <div class="tut-actions">
+      ${i>0?'<button class="btn ghost" id="tutPrev">Atrás</button>':'<button class="btn ghost" id="tutSkip">Saltar</button>'}
+      <button class="btn" id="tutNext">${last?'Empezar':'Siguiente'}</button>
+    </div>
+    ${!last && i>0 ? '<button class="tut-skip-link" id="tutSkip2">Saltar guía</button>' : ''}
+  </div>`;
+  const close = async ()=>{
+    const id = state.athleteAsId;
+    if(id) await safeSet('tutorial-'+id, 'done', true);
+    state.showTutorial = false; state.tutorialStep = 0;
+    const el = document.getElementById('tutorialOverlay'); if(el) el.remove();
+  };
+  const nx = document.getElementById('tutNext');
+  if(nx) nx.addEventListener('click', ()=>{
+    if(last) close();
+    else { state.tutorialStep = i+1; renderTutorial(); }
+  });
+  const pv = document.getElementById('tutPrev');
+  if(pv) pv.addEventListener('click', ()=>{ state.tutorialStep = i-1; renderTutorial(); });
+  ['tutSkip','tutSkip2'].forEach(id=>{ const b=document.getElementById(id); if(b) b.addEventListener('click', close); });
+}
+
+async function maybeShowTutorial(){
+  if(state.role !== 'atleta' || !state.athleteAsId) return;
+  if(state.tab === 'intake') return;          // primero que rellene su ficha
+  if(document.getElementById('tutorialOverlay')) return;
+  if(state.showTutorial){ renderTutorial(); return; }
+  const done = await safeGet('tutorial-'+state.athleteAsId, true);
+  if(!done){ state.showTutorial = true; state.tutorialStep = 0; renderTutorial(); }
+}
+
+async function bindGateEvents(){
+  document.querySelectorAll('[data-gate]').forEach(b=>b.addEventListener('click', ()=>{
+    state.gateMode = b.dataset.gate; render();
+  }));
+  const backBtn = document.getElementById('gateBackBtn');
+  if(backBtn) backBtn.addEventListener('click', ()=>{ state.gateMode = null; render(); });
+
+  const coachEnter = document.getElementById('coachEnterBtn');
+  const coachInput = document.getElementById('coachCodeInput');
+  const tryCoach = async ()=>{
+    const code = (coachInput.value||'').trim();
+    if(!code){ toast('Introduce el código', true); return; }
+    const real = await getCoachCode();
+    if(code.toUpperCase() !== real.toUpperCase()){ toast('Código incorrecto', true); return; }
+    state.authRole = 'coach'; state.role = 'coach'; state.tab = 'atletas'; state.gateMode = null;
+    await safeSet('umbral-session', JSON.stringify({role:'coach'}), false);
+    render();
+  };
+  if(coachEnter) coachEnter.addEventListener('click', tryCoach);
+  if(coachInput) coachInput.addEventListener('keydown', e=>{ if(e.key==='Enter') tryCoach(); });
+
+  const loginBtn = document.getElementById('loginBtn');
+  const pinInput = document.getElementById('pinInput');
+  const tryAthlete = async ()=>{
+    try{
+      const id = document.getElementById('athleteSelect').value;
+      const pin = (pinInput.value||'').trim();
+      const a = state.athletes.find(x=>x.id===id);
+      if(!pin){ toast('Introduce el PIN', true); return; }
+      if(a && a.pin === pin){
+        state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = id; state.gateMode = null;
+        await safeSet('umbral-session', JSON.stringify({role:'atleta', athleteAsId:id}), false);
+        const intakeRaw = await safeGet('intake-'+id, true);
+        state.tab = intakeRaw ? 'rutina' : 'intake';
+        render();
+      } else toast('PIN incorrecto', true);
+    }catch(e){ toast('Error al entrar: '+e.message, true); }
+  };
+  if(loginBtn) loginBtn.addEventListener('click', tryAthlete);
+  if(pinInput) pinInput.addEventListener('keydown', e=>{ if(e.key==='Enter') tryAthlete(); });
+}
+function renderKeepScroll(){ render(); }
+function renderScrollTop(){ render(); requestAnimationFrame(()=>setScrollPos(0)); setTimeout(()=>setScrollPos(0), 30); }
+function toast(msg, isError){
+  let t = document.getElementById('umbralToast');
+  if(!t){ t=document.createElement('div'); t.id='umbralToast'; t.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;padding:10px 18px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,0.25);'; document.body.appendChild(t); }
+  t.style.background = isError ? '#A83A2E' : 'var(--accent)';
+  t.style.color = isError ? '#FAF6EE' : 'var(--on-accent)';
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>{ t.style.transition='opacity .4s'; t.style.opacity='0'; }, 1800);
+}
+
+function renderNav(){
+  const nav = document.getElementById('bottomNav');
+  if(state.role==='atleta'){
+    if(!state.athleteAsId){ nav.innerHTML=''; return; }
+    const items = [
+      {key:'rutina', ic:icClipboard(), label:'Rutina'},
+      {key:'diario', ic:icDumbbell(), label:'Sesión'},
+      {key:'calendario', ic:icCalendar(), label:'Calendario'},
+      {key:'progreso', ic:icChartUp(), label:'Progreso'},
+      {key:'perfil', ic:icPerson(), label:'Perfil'}
+    ];
+    nav.innerHTML = items.map(it=>`<button data-navtab="${it.key}" class="${state.tab===it.key?'active':''}">${it.ic}${it.label}</button>`).join('');
+  } else {
+    const items = [
+      {key:'atletas', ic:icPeople(), label:'Atletas'},
+      {key:'calendario', ic:icCalendar(), label:'Calendario'},
+      {key:'tareas', ic:icTasks(), label:'Tareas'},
+      {key:'resumen', ic:icGrid(), label:'Resumen'}
+    ];
+    nav.innerHTML = items.map(it=>`<button data-navtab="${it.key}" class="${state.tab===it.key?'active':''}">${it.ic}${it.label}</button>`).join('');
+  }
+  nav.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ state.tab=b.dataset.navtab; stopSession(); renderScrollTop(); }));
+}
+
+// ================= COACH SHELL =================
+function renderCoachShell(){
+  if(state.tab==='atletas') return renderCoachAtletas();
+  if(state.tab==='resumen') return `<div id="tabContent" data-mode="resumen"></div>`;
+  if(state.tab==='calendario') return `<div id="tabContent" data-mode="calendario-coach"></div>`;
+  if(state.tab==='tareas') return `<div id="tabContent" data-mode="tareas"></div>`;
+  return '';
+}
+
+function renderCoachAtletas(){
+  if(state.selectedId && state.tab==='atletas' && state._inAthleteDetail){
+    return `<div id="tabContent" data-mode="athlete-detail" data-athlete="${state.selectedId}"></div>`;
+  }
+  let html = `<div class="card"><h2>Tus atletas</h2><div class="athlete-list" id="athleteList">`;
+  if(!state.athletes.length) html += '<div class="empty">Aún no has añadido ningún atleta.</div>';
+  else state.athletes.forEach(a=>{
+    html += `<button class="athlete-row" data-openathlete="${a.id}"><span class="name">${escapeHtml(a.name)}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">PIN ${a.pin}</span></button>`;
+  });
+  html += `</div><div class="row" style="margin-top:12px;">
+    <input type="text" id="newAthleteName" placeholder="Nombre del nuevo atleta">
+    <button class="btn ghost" id="addAthleteBtn">+ Añadir atleta</button>
+  </div>
+  ${state.athletes.length?`<div class="row" style="margin-top:10px;">
+    <select id="previewAthleteSel" style="flex:1;min-width:140px;">
+      ${state.athletes.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}
+    </select>
+    <button class="btn ghost" id="previewAsAthleteBtn">Ver como atleta</button>
+  </div>
+  <p style="font-size:11.5px;color:var(--muted);margin-top:8px;">Comprueba lo que ve tu atleta sin tener que salir y volver a entrar con su PIN.</p>`:''}
+  </div><div id="backupSlot"></div>`;
+  return html;
+}
+
+// ================= ATLETA SHELL =================
+function renderAtletaShell(){
+  if(!state.athleteAsId) return '<div class="card"><div class="empty">Sesión no válida. Pulsa «Salir» y vuelve a entrar.</div></div>';
+  let html = '';
+  if(state.tab==='intake') html += `<div id="tabContent" data-mode="intake" data-athlete="${state.athleteAsId}"></div>`;
+  else html += `<div id="tabContent" data-athlete="${state.athleteAsId}"></div>`;
+  return html;
+}
+
+async function bindShellEvents(){
+  const backupSlot = document.getElementById('backupSlot');
+  if(backupSlot){
+    backupSlot.innerHTML = await tplBackup();
+    paintStorageHealth();
+    const saveCode = document.getElementById('saveCoachCodeBtn');
+    if(saveCode) saveCode.addEventListener('click', async ()=>{
+      const v = (document.getElementById('newCoachCode').value||'').trim();
+      if(v.length < 4){ toast('Usa al menos 4 caracteres', true); return; }
+      const ok = await safeSet('coach-code', v, true);
+      toast(ok ? 'Código actualizado — apúntalo' : 'No se pudo guardar', !ok);
+      if(ok) document.getElementById('newCoachCode').value = '';
+    });
+    const testBtn = document.getElementById('testStorageBtn');
+    if(testBtn) testBtn.addEventListener('click', async ()=>{
+      const r = await storageSelfTest();
+      toast(r.ok ? 'Almacenamiento OK: ' + r.detail : 'Fallo: ' + r.detail, !r.ok);
+      paintStorageHealth();
+    });
+    const box = document.getElementById('backupBox');
+    const exportBtn = document.getElementById('exportBtn');
+    if(exportBtn) exportBtn.addEventListener('click', async ()=>{
+      exportBtn.textContent = 'Exportando…'; exportBtn.disabled = true;
+      try{
+        box.value = await exportAll();
+        toast('Copia generada — cópiala y guárdala');
+      }catch(e){ toast('No se pudo exportar: '+e.message, true); }
+      exportBtn.textContent = 'Exportar datos'; exportBtn.disabled = false;
+    });
+    const copyBtn = document.getElementById('copyBackupBtn');
+    if(copyBtn) copyBtn.addEventListener('click', async ()=>{
+      if(!box.value.trim()){ toast('Genera la copia primero', true); return; }
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(box.value);
+        else { box.select(); document.execCommand('copy'); }
+        toast('Copiado al portapapeles');
+      }catch(e){ box.select(); toast('Selecciona y copia manualmente', true); }
+    });
+    const importBtn = document.getElementById('importBtn');
+    if(importBtn) importBtn.addEventListener('click', async ()=>{
+      if(!box.value.trim()){ toast('Pega primero una copia', true); return; }
+      importBtn.textContent = 'Restaurando…'; importBtn.disabled = true;
+      try{
+        const n = await importAll(box.value);
+        await loadAthletes();
+        state.selectedId = state.athletes.length ? state.athletes[0].id : null;
+        toast(`Restaurado: ${n} registros, ${state.athletes.length} atletas`);
+        render();
+      }catch(e){ toast('No se pudo restaurar: '+e.message, true); }
+      importBtn.textContent = 'Restaurar desde la copia pegada'; importBtn.disabled = false;
+    });
+  }
+  const addBtn = document.getElementById('addAthleteBtn');
+  if(addBtn) addBtn.addEventListener('click', async ()=>{
+    const nameInput = document.getElementById('newAthleteName');
+    const name = nameInput.value.trim(); if(!name) return;
+    const newAthlete = { id: uid(), name, pin: String(Math.floor(1000+Math.random()*9000)) };
+    state.athletes.push(newAthlete);
+    await safeSet('athletes-list', JSON.stringify(state.athletes), true);
+    render();
+  });
+  const previewBtn = document.getElementById('previewAsAthleteBtn');
+  if(previewBtn) previewBtn.addEventListener('click', ()=>{
+    const id = document.getElementById('previewAthleteSel').value;
+    state.previewing = true;             // seguimos siendo entrenador por debajo
+    state.role = 'atleta'; state.athleteAsId = id; state.tab = 'rutina';
+    stopSession();
+    renderScrollTop();
+  });
+
+  document.querySelectorAll('[data-openathlete]').forEach(b=>b.addEventListener('click', ()=>{
+    state.selectedId = b.dataset.openathlete; state._inAthleteDetail = true; state.athleteSubTab='planificacion'; renderScrollTop();
+  }));
+  await renderTabContent();
+}
+
+async function renderTabContent(){
+  const el = document.getElementById('tabContent'); if(!el) return;
+  const mode = el.dataset.mode;
+  el.innerHTML = '<div class="empty">Cargando…</div>';
+  if(mode==='resumen') el.innerHTML = await tplResumen();
+  else if(mode==='calendario-coach') el.innerHTML = await tplCalendarioCoach();
+  else if(mode==='tareas') el.innerHTML = await tplTareas();
+  else if(mode==='athlete-detail') el.innerHTML = await tplAthleteDetail(el.dataset.athlete);
+  else if(mode==='intake') el.innerHTML = await tplIntake(el.dataset.athlete);
+  else {
+    const athleteId = el.dataset.athlete;
+    if(state.tab==='rutina') el.innerHTML = await tplRutinaAtleta(athleteId);
+    else if(state.tab==='diario') el.innerHTML = await tplSesionEntry(athleteId);
+    else if(state.tab==='calendario') el.innerHTML = await tplCalendarioAtleta(athleteId);
+    else if(state.tab==='progreso') el.innerHTML = await tplProgreso(athleteId);
+    else if(state.tab==='perfil') el.innerHTML = await tplPerfilAtleta(athleteId);
+  }
+  bindDynamicEvents();
+  renderNav();
+  if(session && session.fullscreen) mountSessionOverlay(state.athleteAsId || state.selectedId);
+}
+
+// ---------- INTAKE ----------
+async function tplIntake(athleteId){
+  let html = `<div class="card"><h2>Antes de empezar — cuéntame sobre ti</h2>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">Esto ayuda a tu entrenador a diseñar tu plan desde el primer día.</p>`;
+  let lastGroup = '';
+  INTAKE_FIELDS.forEach(f=>{
+    if(f.group !== lastGroup){ html += `<div class="q-cat">${f.group}</div>`; lastGroup = f.group; }
+    html += `<div class="q-item" style="margin-bottom:16px;"><label class="field-label">${f.label}</label>`;
+    if(f.type==='select') html += `<select data-intake="${f.id}" style="width:100%;"><option value="">Selecciona…</option>${f.options.map(o=>`<option value="${o}">${o}</option>`).join('')}</select>`;
+    else if(f.type==='textarea') html += `<textarea data-intake="${f.id}" style="min-height:56px;"></textarea>`;
+    else html += `<input type="${f.type}" data-intake="${f.id}" style="width:100%;">`;
+    html += `</div>`;
+  });
+  html += `<button class="btn" id="submitIntake">Guardar y continuar</button></div>`;
+  return html;
+}
+
+// ---------- ROUTINE HELPERS ----------
+async function getRoutine(athleteId, draft){
+  const key = draft ? 'routine-draft-'+athleteId : 'routine-'+athleteId;
+  const raw = await safeGet(key, true);
+  const r = raw ? JSON.parse(raw) : {};
+  if(!r.days) r.days = {};
+  DAYS.forEach(d=>{ if(!r.days[d]) r.days[d]={}; BLOCKS.forEach(b=>{ if(!r.days[d][b.key]) r.days[d][b.key]=[]; }); });
+  return r;
+}
+function blankExercise(){ return {id:uid(), name:'', desc:'', section:'', load:'', series:3, reps:'', rest:'', rir:'', rpeTarget:'', timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}}; }
+function exTimer(ex){
+  const t = (ex && ex.timer) ? ex.timer : {};
+  return { type:t.type||'none', work:+t.work||30, rest:+t.rest||15, rounds:+t.rounds||8,
+    sets:+t.sets||1, setRest:+t.setRest||60,
+    emomLen:+t.emomLen||60, emomRounds:+t.emomRounds||10, amrapMin:+t.amrapMin||12,
+    seriesRestSec:+t.seriesRestSec||180, seriesCount:+t.seriesCount||5 };
+}
+const TIMER_TYPE_LABELS = { none:'Sin temporizador', intervalos:'Intervalos / Tabata', emom:'EMOM', amrap:'AMRAP', series:'Descanso por series' };
+
+// ---------- PERIODIZACIÓN ----------
+// Intensidad 1-4 por microciclo (semana). El nombre de cada nivel sigue la
+// terminología habitual de planificación para que el gráfico se lea solo.
+const INTENSITY_LABELS = { 1:'Descarga', 2:'Acumulación', 3:'Intensificación', 4:'Pico' };
+const VOLUME_LABELS = { 1:'Bajo', 2:'Medio', 3:'Alto', 4:'Muy alto' };
+const MICRO_TYPES = ['Acumulación','Intensificación','Realización','Descarga','Competición','Transición'];
+
+async function getPlan(athleteId){
+  const raw = await safeGet('plan-'+athleteId, true);
+  const p = raw ? JSON.parse(raw) : null;
+  if(p && Array.isArray(p.macros)) return p;
+  return { macros: [] };
+}
+async function savePlan(athleteId, plan){
+  return safeSet('plan-'+athleteId, JSON.stringify(plan), true);
+}
+function blankMacro(){
+  return { id:uid(), name:'Nuevo macrociclo', startDate: todayISO(), competitions:[],
+    micros: Array.from({length:8}, (_,i)=>({ id:uid(), intensity:2, volume:3, type:'Acumulación', note:'' })) };
+}
+function microDate(macro, index){
+  const d = new Date(macro.startDate + 'T00:00:00');
+  if(isNaN(d)) return null;
+  d.setDate(d.getDate() + index*7);
+  return d;
+}
+function fmtShortDate(d){
+  if(!d) return '';
+  return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
+}
+
+// Localiza en qué microciclo del plan cae una fecha dada.
+async function currentMicro(athleteId, refDate){
+  const plan = await getPlan(athleteId);
+  const ref = refDate ? new Date(refDate+'T00:00:00') : new Date();
+  let upcoming = null;
+  for(const macro of plan.macros){
+    if(!macro.startDate) continue;
+    const start = new Date(macro.startDate+'T00:00:00');
+    const diffWeeks = Math.floor((ref - start)/(7*86400000));
+    if(diffWeeks >= 0 && diffWeeks < macro.micros.length){
+      const m = macro.micros[diffWeeks];
+      const wStart = new Date(start); wStart.setDate(wStart.getDate()+diffWeeks*7);
+      const wEnd = new Date(wStart); wEnd.setDate(wEnd.getDate()+6);
+      let comp = null, dias = null;
+      (macro.competitions||[]).forEach(c=>{
+        if(!c.date) return;
+        const d = Math.ceil((new Date(c.date+'T00:00:00') - ref)/86400000);
+        if(d >= 0 && (dias===null || d < dias)){ dias = d; comp = c; }
+      });
+      return { macro, micro:m, index:diffWeeks, total:macro.micros.length, wStart, wEnd, comp, dias };
+    }
+    if(start > ref){
+      const d = Math.ceil((start - ref)/86400000);
+      if(!upcoming || d < upcoming.dias) upcoming = { macro, start, dias:d };
+    }
+  }
+  return upcoming ? { upcoming } : null;
+}
+function weekHeaderHtml(info){
+  const d = new Date(); const day = d.getDay()||7;
+  const mon = new Date(d); mon.setDate(d.getDate()-day+1);
+  const sun = new Date(mon); sun.setDate(mon.getDate()+6);
+  if(!info || info.upcoming){
+    const extra = (info && info.upcoming)
+      ? `<span style="color:var(--accent);">Empieza ${escapeHtml(info.upcoming.macro.name)} en ${info.upcoming.dias} día${info.upcoming.dias===1?'':'s'} (${info.upcoming.macro.startDate})</span>`
+      : `<span>Sin macrociclo abierto</span>`;
+    return `<div class="week-head"><div class="week-main"><b>Semana del ${fmtShortDate(mon)} al ${fmtShortDate(sun)}</b>${extra}</div></div>`;
+  }
+  const { macro, micro, index, total, wStart, wEnd, comp, dias } = info;
+  return `<div class="week-head">
+    <div class="week-main">
+      <b>Semana ${index+1} de ${total} · ${escapeHtml(macro.name)}</b>
+      <span>${fmtShortDate(wStart)} – ${fmtShortDate(wEnd)}${micro.type?' · '+escapeHtml(micro.type):''}</span>
+    </div>
+    <div class="week-pills">
+      <span class="wpill"><i>Intensidad</i>${micro.intensity} · ${INTENSITY_LABELS[micro.intensity]||''}</span>
+      <span class="wpill"><i>Volumen</i>${micro.volume} · ${VOLUME_LABELS[micro.volume]||''}</span>
+    </div>
+    ${micro.note?`<div class="week-note">${escapeHtml(micro.note)}</div>`:''}
+    ${comp?`<div class="week-comp">${escapeHtml(comp.name||'Competición')} · faltan ${dias} día${dias===1?'':'s'}</div>`:''}
+  </div>`;
+}
+
+async function tplRutinaAtleta(athleteId){
+  await autoArchiveWeek(athleteId);
+  const routine = await getRoutine(athleteId, false);
+  const info = await currentMicro(athleteId);
+  let html = `<div class="card"><h2>Rutina semanal</h2>${weekHeaderHtml(info)}`;
+  DAYS.forEach(d=>{
+    const open = state.openDays[d] ? 'open':'';
+    const totalEx = BLOCKS.reduce((a,b)=>a+routine.days[d][b.key].length,0);
+    html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${totalEx} ejerc.</span></div><div class="acc-body">`;
+    BLOCKS.forEach(b=>{
+      html += `<div class="block-title">${b.label}</div>`;
+      if(!routine.days[d][b.key].length) html += `<div class="empty">Sin ejercicios en este bloque.</div>`;
+      let lastSection = null;
+      routine.days[d][b.key].forEach(ex=>{
+        if((ex.section||'') !== lastSection){
+          lastSection = ex.section||'';
+          if(lastSection) html += `<div class="section-tag">${escapeHtml(lastSection)}</div>`;
+        }
+        const t = exTimer(ex);
+        html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+          <div class="ex-meta"><span>Series x reps: <b>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</b></span>${ex.load?`<span>Carga: <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso: <b>${escapeHtml(ex.rest||'—')}</b></span><span>RIR: <b>${escapeHtml(ex.rir||'—')}</b></span><span>RPE objetivo: <b>${escapeHtml(ex.rpeTarget||'—')}</b></span></div>
+          ${t.type!=='none'?`<div class="timer-badge">${TIMER_TYPE_LABELS[t.type]}</div>`:''}
+        </div>`;
+      });
+    });
+    html += `</div></div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+// ---------- SESIÓN (athlete) ----------
+async function tplSesionEntry(athleteId){
+  const routine = await getRoutine(athleteId, false);
+  const histRaw = await safeGet('routine-history-'+athleteId, true);
+  const hist = histRaw ? JSON.parse(histRaw) : [];
+  const info = await currentMicro(athleteId);
+  const todayDay = DAY_INDEX[new Date().getDay()];
+  const selWeek = state.sessionWeek || 'actual';
+  const selDay = state.sessionDay || todayDay;
+
+  const source = selWeek === 'actual'
+    ? routine
+    : (()=>{ const h = hist.find(w=>String(w.weekNumber)===String(selWeek)); return h ? {days:h.days} : routine; })();
+
+  const paused = await findPausedSession(athleteId);
+  let html = '';
+  if(paused){
+    const hechos = paused.exercises.filter(e=>e.done).length;
+    const hace = Math.round((Date.now()-(paused.savedAt||Date.now()))/60000);
+    html += `<div class="card" style="border-color:var(--accent);">
+      <h2>Tienes una sesión sin terminar</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">${paused.day.charAt(0).toUpperCase()+paused.day.slice(1)} · ${fmtTime(paused.elapsedSec)} registrados · ${hechos} de ${paused.exercises.length} ejercicios hechos${hace>0?` · guardada hace ${hace} min`:''}</p>
+      <div class="row"><button class="btn" id="resumeSessionBtn">Retomar</button>
+      <button class="btn ghost" id="discardSessionBtn">Descartar</button></div>
+    </div>`;
+  }
+  html += `<div class="card"><h2>Sesión</h2>${weekHeaderHtml(info)}
+    <div class="ex-grid" style="margin-top:12px;">
+      <div><label class="field-label">Semana</label>
+        <select id="sessionWeek">
+          <option value="actual" ${selWeek==='actual'?'selected':''}>Semana actual</option>
+          ${hist.slice().reverse().map(w=>`<option value="${w.weekNumber}" ${String(selWeek)===String(w.weekNumber)?'selected':''}>Semana ${w.weekNumber} · ${w.weekOf}</option>`).join('')}
+        </select></div>
+      <div><label class="field-label">Día</label>
+        <select id="sessionDay">
+          ${DAYS.map(d=>`<option value="${d}" ${d===selDay?'selected':''}>${d.charAt(0).toUpperCase()+d.slice(1)}${d===todayDay?' (hoy)':''}</option>`).join('')}
+        </select></div>
+    </div>
+    <div id="sessionPreview" style="margin-top:14px;">${sessionPreviewHtml(source, selDay)}</div>
+    <div class="row" style="margin-top:14px;"><button class="btn" id="startSession">Iniciar sesión — pantalla completa</button></div>
+  </div>`;
+  return html;
+}
+function sessionPreviewHtml(routine, day){
+  let html = '';
+  let any = false;
+  BLOCKS.forEach(b=>{
+    const list = routine.days[day][b.key];
+    if(!list.length) return;
+    any = true;
+    html += `<div class="block-title">${b.label}</div>`;
+    list.forEach(ex=>{
+      html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+        <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span><span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div></div>`;
+    });
+  });
+  if(!any) html = `<div class="empty">Sin ejercicios programados para ese día.</div>`;
+  return html;
+}
+function flattenExercises(routine, day){
+  const list = [];
+  BLOCKS.forEach(b=>{ routine.days[day][b.key].forEach(ex=>{ list.push({ ...ex, block:b.key, blockLabel:b.label, setsDone: Array(parseInt(ex.series)||1).fill(false), done:false, rpeApplied:null }); }); });
+  return list;
+}
+async function mountSessionOverlay(athleteId){
+  let overlay = document.getElementById('sessionOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id='sessionOverlay'; overlay.className='session-overlay'; document.body.appendChild(overlay); }
+  renderSessionOverlay();
+}
+function renderSessionOverlay(){
+  const overlay = document.getElementById('sessionOverlay');
+  if(!overlay || !session) return;
+  let html = `<div class="session-topbar"><h2>${session.day.charAt(0).toUpperCase()+session.day.slice(1)}</h2><button class="btn ghost small" id="exitFullscreen">Cerrar</button></div>
+    <div class="stopwatch" id="stopwatchDisplay">${fmtTime(session.elapsedSec)}</div>
+    <div class="row" style="justify-content:center;margin-bottom:16px;"><button class="btn ghost" id="openTimerModal">Abrir timer (Tabata / EMOM / AMRAP)</button></div>`;
+  let lastBlock = '';
+  let lastSection = null;
+  session.exercises.forEach((ex,i)=>{
+    if(ex.blockLabel !== lastBlock){ html += `<div class="block-title">${ex.blockLabel}</div>`; lastBlock = ex.blockLabel; lastSection = null; }
+    if((ex.section||'') !== lastSection){
+      lastSection = ex.section||'';
+      if(lastSection) html += `<div class="section-tag">${escapeHtml(lastSection)}</div>`;
+    }
+    const t = exTimer(ex);
+    html += `<div class="ex-view-card ${ex.done?'done':''}" data-exi="${i}">
+      <h4 data-strike="${i}" style="cursor:pointer;">${escapeHtml(ex.name)}</h4>
+      ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+      <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div>
+      <div class="set-box">${ex.setsDone.map((done,si)=>`<div class="set-chip ${done?'done':''}" data-exi="${i}" data-si="${si}">S${si+1}</div>`).join('')}</div>
+      ${t.type!=='none'?`<button class="btn ghost small" data-extimer="${i}" style="margin-top:8px;">▶ ${TIMER_TYPE_LABELS[t.type]}</button>`:''}
+      <div class="ex-grid" style="margin-top:8px;">
+        <div><label class="field-label">RPE aplicado</label><input type="number" min="1" max="10" class="rpe-applied-input" data-exi="${i}" value="${ex.rpeApplied ?? ''}"></div>
+        <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
+      </div>
+    </div>`;
+  });
+  html += `<div class="row" style="margin-top:18px;"><button class="btn" id="completeSessionBtn">Sesión completada</button><button class="btn ghost danger" id="cancelSessionBtn">Cancelar sesión</button></div>`;
+  if(session.showSurvey) html += tplPostSurvey();
+  overlay.innerHTML = html;
+  bindSessionOverlayEvents();
+}
+function bindSessionOverlayEvents(){
+  const exitBtn = document.getElementById('exitFullscreen');
+  if(exitBtn) exitBtn.addEventListener('click', ()=>{ session.fullscreen=false; persistSession(); const ov=document.getElementById('sessionOverlay'); if(ov) ov.remove(); });
+  document.querySelectorAll('[data-strike]').forEach(h=>h.addEventListener('click', ()=>{ const i=parseInt(h.dataset.strike,10); session.exercises[i].done=!session.exercises[i].done; queueSessionSave(); renderSessionOverlay(); }));
+  document.querySelectorAll('.set-chip').forEach(c=>c.addEventListener('click', ()=>{
+    const i=parseInt(c.dataset.exi,10), si=parseInt(c.dataset.si,10);
+    session.exercises[i].setsDone[si]=!session.exercises[i].setsDone[si];
+    if(session.exercises[i].setsDone.every(Boolean)) session.exercises[i].done=true;
+    buzz(35); queueSessionSave();
+    renderSessionOverlay();
+  }));
+  document.querySelectorAll('.rpe-applied-input').forEach(inp=>inp.addEventListener('change', ()=>{ const i=parseInt(inp.dataset.exi,10); const v=parseInt(inp.value,10); session.exercises[i].rpeApplied=(v>=1&&v<=10)?v:null; queueSessionSave(); }));
+  document.querySelectorAll('.load-applied-input').forEach(inp=>inp.addEventListener('change', ()=>{ const i=parseInt(inp.dataset.exi,10); session.exercises[i].loadApplied=inp.value.trim(); queueSessionSave(); }));
+  const openTimerModal = document.getElementById('openTimerModal');
+  if(openTimerModal) openTimerModal.addEventListener('click', ()=>openTimer());
+  document.querySelectorAll('[data-extimer]').forEach(b=>b.addEventListener('click', ()=>{
+    const i = parseInt(b.dataset.extimer,10);
+    openTimer(exTimer(session.exercises[i]));
+  }));
+  const cancelSessionBtn = document.getElementById('cancelSessionBtn');
+  if(cancelSessionBtn) cancelSessionBtn.addEventListener('click', async ()=>{
+    const algoHecho = session.exercises.some(e=>e.done || (e.setsDone||[]).some(Boolean) || e.rpeApplied);
+    if(algoHecho && !confirm('Vas a descartar esta sesión y todo lo que has marcado. ¿Seguro?')) return;
+    await clearPersistedSession();
+    stopSession();
+    state.tab='diario'; render();
+  });
+  const completeSessionBtn = document.getElementById('completeSessionBtn');
+  if(completeSessionBtn) completeSessionBtn.addEventListener('click', ()=>{
+    clearInterval(stopwatchInterval); clearInterval(engineInterval);
+    const rpes = session.exercises.map(e=>e.rpeApplied).filter(r=>r!==null && r!==undefined);
+    session.avgExerciseRPE = rpes.length ? +(rpes.reduce((a,b)=>a+b,0)/rpes.length).toFixed(1) : 0;
+    session.fatigueScore = +(session.avgExerciseRPE * (session.elapsedSec/60)).toFixed(1);
+    session.showSurvey = true;
+    renderSessionOverlay();
+  });
+  bindSurveyEvents();
+}
+function tplPostSurvey(){
+  return `<div class="card" id="surveyCard" style="margin-top:18px;">
+    <h2>Diario de la sesión</h2>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Duración ${fmtTime(session.elapsedSec)}${(session.avgExerciseRPE>0)
+      ? ` · RPE medio por ejercicio ${session.avgExerciseRPE} · carga estimada (sRPE) <b style="color:var(--accent);">${session.fatigueScore}</b>`
+      : ` · no anotaste RPE por ejercicio, así que la carga se calculará con el RPE general que marques abajo`}</div>
+    <div class="q-item"><p>RPE general percibido de la sesión (1-10, esfuerzo)</p>
+      <div class="scale" data-survey="overallRPE">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div></div>
+    ${surveyScale5('fatiga','Nivel de fatiga tras la sesión')}
+    ${surveyScale5('calidad','Calidad del entreno')}
+    ${surveyScale5('hidratacion','Control de la hidratación')}
+    ${surveyScale5('satisfaccion','Satisfacción con el entrenamiento')}
+    <div class="q-item"><p>Notas adicionales</p><textarea id="surveyNotes" style="min-height:56px;"></textarea></div>
+    <button class="btn" id="saveSurvey">Guardar sesión en el diario</button>
+  </div>`;
+}
+function surveyScale5(key,label){
+  return `<div class="q-item"><p>${label}</p><div class="scale" data-survey="${key}">${[1,2,3,4,5].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div>
+    <div class="scale-labels"><span>1 · deficiente</span><span>5 · excelente</span></div></div>`;
+}
+function bindSurveyEvents(){
+  document.querySelectorAll('#surveyCard .scale').forEach(scale=>{
+    scale.querySelectorAll('button').forEach(btn=>btn.addEventListener('click', ()=>{ scale.querySelectorAll('button').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }));
+  });
+  const saveSurvey = document.getElementById('saveSurvey');
+  if(saveSurvey) saveSurvey.addEventListener('click', async ()=>{
+    const athleteId = state.athleteAsId || state.selectedId;
+    const getVal = (key)=>{ const sc=document.querySelector(`#surveyCard [data-survey="${key}"]`); const sel=sc&&sc.querySelector('button.sel'); return sel?parseInt(sel.dataset.val,10):null; };
+    const overallRPE=getVal('overallRPE'), fatiga=getVal('fatiga'), calidad=getVal('calidad'), hidratacion=getVal('hidratacion'), satisfaccion=getVal('satisfaccion');
+    if([overallRPE,fatiga,calidad,hidratacion,satisfaccion].some(v=>v===null)){ alert('Completa todas las escalas antes de guardar.'); return; }
+    const notes = document.getElementById('surveyNotes').value.trim();
+    // Sin RPE por ejercicio la carga salía 0 pese a haber entrenado. El RPE
+    // general sí es obligatorio, así que sirve de base cuando falta el otro.
+    const rpeBase = (session.avgExerciseRPE && session.avgExerciseRPE > 0) ? session.avgExerciseRPE : overallRPE;
+    const cargaFinal = +(rpeBase * (session.elapsedSec/60)).toFixed(1);
+    const record = { date: todayISO(), day: session.day, durationSeconds: session.elapsedSec,
+      exercises: session.exercises.map(e=>({name:e.name, section:e.section||'', rpeApplied:e.rpeApplied, loadPlanned:e.load||'', loadApplied:e.loadApplied||'', done:e.done})),
+      avgExerciseRPE: session.avgExerciseRPE, fatigueScore: cargaFinal,
+      cargaDesdeRPEGeneral: !(session.avgExerciseRPE > 0),
+      overallRPE, fatiga, calidad, hidratacion, satisfaccion, notes };
+    const raw = await safeGet('journal-'+athleteId, true);
+    const entries = raw ? JSON.parse(raw) : [];
+    entries.push(record);
+    await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
+    await safeSet(sessionKey(athleteId), '', true);
+    toast('Sesión guardada en el diario');
+    stopSession();
+    state.tab='progreso'; render();
+  });
+}
+
+// ---------- TIMER MODAL ----------
+function openTimer(preset){
+  timerModal = { mode:null, work:30, rest:15, rounds:8, sets:1, setRest:60,
+    phase:'idle', remaining:30, round:1, setNum:1, running:false,
+    emomRounds:10, emomLen:60, amrapMin:12, amrapRemaining:12*60, amrapLaps:0, running2:false,
+    seriesRestSec:180, seriesCount:5, seriesRound:1, seriesRemaining:180, seriesRunning:false };
+  if(preset && preset.type && preset.type!=='none'){
+    timerModal.mode = preset.type;
+    timerModal.work = preset.work; timerModal.rest = preset.rest; timerModal.rounds = preset.rounds;
+    timerModal.sets = preset.sets; timerModal.setRest = preset.setRest;
+    timerModal.remaining = preset.type==='emom' ? preset.emomLen : preset.work;
+    timerModal.emomLen = preset.emomLen; timerModal.emomRounds = preset.emomRounds;
+    timerModal.amrapMin = preset.amrapMin; timerModal.amrapRemaining = preset.amrapMin*60;
+    timerModal.seriesRestSec = preset.seriesRestSec; timerModal.seriesCount = preset.seriesCount;
+    timerModal.seriesRemaining = preset.seriesRestSec;
+  }
+  renderTimerModal();
+}
+function closeTimer(){ clearInterval(engineInterval); timerModal=null; const b=document.getElementById('timerModalBack'); if(b) b.remove(); }
+const TIMER_INFO = {
+  intervalos: { title:'Intervalos / Tabata', desc:'Alterna trabajo y descanso en rondas fijas. Elige un Tabata predefinido o ajusta tus propios tiempos — ideal para series cortas de alta intensidad.' },
+  emom: { title:'EMOM', desc:'"Every Minute On the Minute": empiezas una tarea concreta al inicio de cada minuto (o duración que fijes) y descansas lo que sobre. Bueno para trabajo cíclico con recuperación variable.' },
+  amrap: { title:'AMRAP', desc:'"As Many Rounds As Possible": cuenta atrás una duración total mientras acumulas vueltas completas a tu ritmo — tú marcas cada vuelta con el botón.' },
+  series: { title:'Descanso por series', desc:'Cuenta atrás de descanso que se repite tras cada serie (por ejemplo 3 minutos, 5 veces). Pensado para trabajo de fuerza con pausas largas y constantes.' }
+};
+function renderTimerModal(){
+  let back = document.getElementById('timerModalBack');
+  if(!back){ back=document.createElement('div'); back.id='timerModalBack'; back.className='modal-back'; document.body.appendChild(back); }
+  const t = timerModal;
+  if(!t.mode){
+    let html = `<div class="modal"><div class="row" style="justify-content:space-between;"><h2 style="font-family:'Fraunces',serif;">Timer</h2><button class="btn ghost small" id="closeTimerBtn">Cerrar</button></div>`;
+    Object.keys(TIMER_INFO).forEach(key=>{
+      html += `<div class="pending-task" style="cursor:pointer;" data-picktimer="${key}"><span class="tag">${TIMER_INFO[key].title}</span><p style="font-size:13px;color:var(--muted);">${TIMER_INFO[key].desc}</p></div>`;
+    });
+    html += `</div>`;
+    back.innerHTML = html;
+    document.getElementById('closeTimerBtn').addEventListener('click', closeTimer);
+    document.querySelectorAll('[data-picktimer]').forEach(c=>c.addEventListener('click', ()=>{ timerModal.mode=c.dataset.picktimer; renderTimerModal(); }));
+    return;
+  }
+  let html = `<div class="modal"><div class="row" style="justify-content:space-between;">
+    <button class="btn ghost small" id="backTimerBtn">← Timers</button><button class="btn ghost small" id="closeTimerBtn">Cerrar</button></div>
+    <h2 style="font-family:'Fraunces',serif;margin:10px 0 4px;">${TIMER_INFO[t.mode].title}</h2>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">${TIMER_INFO[t.mode].desc}</p>`;
+  if(t.mode==='intervalos'){
+    const phaseLabel = !t.running ? 'LISTO' : (t.phase==='work' ? 'TRABAJO' : (t.phase==='setrest' ? 'DESCANSO ENTRE SETS' : 'DESCANSO'));
+    const dispClass = t.running ? (t.phase==='work' ? 'work' : 'rest') : 'idle';
+    html += `<div class="preset-grid">${TABATA_PRESETS.map(p=>`<button data-preset="${p.work}|${p.rest}">${p.label}</button>`).join('')}</div>
+      <div class="timer-fields">
+        <div><label class="field-label">Trabajo (s)</label><input type="number" id="ivWork" value="${t.work}"></div>
+        <div><label class="field-label">Descanso (s)</label><input type="number" id="ivRest" value="${t.rest}"></div>
+        <div><label class="field-label">Ciclos/set</label><input type="number" id="ivRounds" value="${t.rounds}"></div>
+        <div><label class="field-label">Nº sets</label><input type="number" id="ivSets" value="${t.sets}"></div>
+        <div style="grid-column:span 2;"><label class="field-label">Descanso entre sets (s)</label><input type="number" id="ivSetRest" value="${t.setRest}"></div>
+      </div>
+      <div class="interval-display ${dispClass}" id="ivDisplay"><span class="phase">${phaseLabel}</span>${fmtTime(t.remaining)}<span class="round">Set ${t.setNum} de ${t.sets} · ciclo ${t.round} de ${t.rounds}</span></div>
+      <div class="row" style="justify-content:center;"><button class="btn" id="ivStartBtn">${t.running?'Pausar':'Iniciar'}</button><button class="btn ghost" id="ivResetBtn">Reiniciar</button></div>`;
+  } else if(t.mode==='emom'){
+    html += `<div class="timer-fields" style="grid-template-columns:1fr 1fr;">
+        <div><label class="field-label">Duración ronda (s)</label><input type="number" id="emomLen" value="${t.emomLen}"></div>
+        <div><label class="field-label">Rondas</label><input type="number" id="emomRounds" value="${t.emomRounds}"></div>
+      </div>
+      <div class="interval-display ${t.running?'work':'idle'}" id="emomDisplay"><span class="phase">${t.running?'EN CURSO':'LISTO'}</span>${fmtTime(t.remaining)}<span class="round">Ronda ${t.round} de ${t.emomRounds}</span></div>
+      <div class="row" style="justify-content:center;"><button class="btn" id="emomStartBtn">${t.running?'Pausar':'Iniciar'}</button><button class="btn ghost" id="emomResetBtn">Reiniciar</button></div>`;
+  } else if(t.mode==='amrap'){
+    html += `<div class="timer-fields" style="grid-template-columns:1fr;"><div><label class="field-label">Duración total (min)</label><input type="number" id="amrapMin" value="${t.amrapMin}"></div></div>
+      <div class="interval-display ${t.running2?'work':'idle'}"><span class="phase">${t.running2?'EN CURSO':'LISTO'}</span>${fmtTime(t.amrapRemaining)}</div>
+      <div class="amrap-count">${t.amrapLaps} vueltas</div>
+      <div class="row" style="justify-content:center;"><button class="btn" id="amrapStartBtn">${t.running2?'Pausar':'Iniciar'}</button><button class="btn ghost" id="amrapLapBtn">+1 vuelta</button><button class="btn ghost" id="amrapResetBtn">Reiniciar</button></div>`;
+  } else {
+    html += `<div class="timer-fields" style="grid-template-columns:1fr 1fr;">
+        <div><label class="field-label">Descanso (s)</label><input type="number" id="serRest" value="${t.seriesRestSec}"></div>
+        <div><label class="field-label">Nº de series</label><input type="number" id="serCount" value="${t.seriesCount}"></div>
+      </div>
+      <div class="interval-display ${t.seriesRunning?'rest':'idle'}" id="serDisplay"><span class="phase">${t.seriesRunning?'DESCANSO':'LISTO'}</span>${fmtTime(t.seriesRemaining)}<span class="round">Serie ${t.seriesRound} de ${t.seriesCount}</span></div>
+      <div class="row" style="justify-content:center;"><button class="btn" id="serStartBtn">${t.seriesRunning?'Pausar':'Iniciar descanso'}</button><button class="btn ghost" id="serNextBtn">Serie completada</button><button class="btn ghost" id="serResetBtn">Reiniciar</button></div>`;
+  }
+  html += `</div>`;
+  back.innerHTML = html;
+  bindTimerModalEvents();
+}
+function bindTimerModalEvents(){
+  document.getElementById('closeTimerBtn').addEventListener('click', closeTimer);
+  const backBtn = document.getElementById('backTimerBtn');
+  if(backBtn) backBtn.addEventListener('click', ()=>{ clearInterval(engineInterval); timerModal.running=false; timerModal.running2=false; timerModal.mode=null; renderTimerModal(); });
+  if(timerModal.mode==='intervalos'){
+    document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click', ()=>{
+      const [w,r]=b.dataset.preset.split('|').map(Number);
+      timerModal.work=w; timerModal.rest=r; timerModal.phase='work'; timerModal.remaining=w; timerModal.round=1; timerModal.setNum=1; timerModal.running=false;
+      clearInterval(engineInterval); renderTimerModal();
+    }));
+    document.getElementById('ivStartBtn').addEventListener('click', ()=>{
+      const T = timerModal;
+      T.work=Math.max(1, parseInt(document.getElementById('ivWork').value,10)||30);
+      T.rest=Math.max(0, parseInt(document.getElementById('ivRest').value,10)||15);
+      T.rounds=Math.max(1, parseInt(document.getElementById('ivRounds').value,10)||8);
+      T.sets=Math.max(1, parseInt(document.getElementById('ivSets').value,10)||1);
+      T.setRest=Math.max(0, parseInt(document.getElementById('ivSetRest').value,10)||60);
+      if(!T.running){
+        T.running=true;
+        if(T.phase==='idle'){ T.phase='work'; T.remaining=T.work; T.round=1; T.setNum=1; }
+        ensureAudio(); CUE.work();
+        clearInterval(engineInterval);
+        engineInterval=setInterval(()=>{
+          T.remaining--;
+          cueCountdown(T.remaining);
+          if(T.remaining<=0){
+            if(T.phase==='work'){
+              // ¿queda algún ciclo más en este set?
+              if(T.round < T.rounds){ T.phase='rest'; T.remaining=T.rest; CUE.rest(); }
+              else if(T.setNum < T.sets){ T.phase='setrest'; T.remaining=T.setRest; CUE.setEnd(); }
+              else { clearInterval(engineInterval); T.running=false; T.phase='idle'; T.remaining=0; CUE.done(); }
+            } else if(T.phase==='rest'){
+              T.round++; T.phase='work'; T.remaining=T.work; CUE.work();
+            } else { // setrest
+              T.setNum++; T.round=1; T.phase='work'; T.remaining=T.work; CUE.work();
+            }
+          }
+          const disp=document.getElementById('ivDisplay');
+          if(disp){
+            const lbl = !T.running ? 'COMPLETADO' : (T.phase==='work'?'TRABAJO':(T.phase==='setrest'?'DESCANSO ENTRE SETS':'DESCANSO'));
+            disp.className='interval-display '+(T.running ? (T.phase==='work'?'work':'rest') : 'idle');
+            disp.innerHTML=`<span class="phase">${lbl}</span>${fmtTime(Math.max(0,T.remaining))}<span class="round">Set ${T.setNum} de ${T.sets} · ciclo ${T.round} de ${T.rounds}</span>`;
+          }
+        },1000);
+      } else { T.running=false; clearInterval(engineInterval); }
+      renderTimerModal();
+    });
+    document.getElementById('ivResetBtn').addEventListener('click', ()=>{
+      clearInterval(engineInterval);
+      timerModal.phase='idle'; timerModal.round=1; timerModal.setNum=1; timerModal.running=false;
+      timerModal.remaining=parseInt(document.getElementById('ivWork').value,10)||30;
+      renderTimerModal();
+    });
+  } else if(timerModal.mode==='emom'){
+    document.getElementById('emomStartBtn').addEventListener('click', ()=>{
+      timerModal.emomLen=Math.max(1, parseInt(document.getElementById('emomLen').value,10)||60);
+      timerModal.emomRounds=Math.max(1, parseInt(document.getElementById('emomRounds').value,10)||10);
+      if(!timerModal.running){
+        timerModal.running=true; if(!timerModal.remaining||timerModal.remaining<=0) timerModal.remaining=timerModal.emomLen;
+        clearInterval(engineInterval);
+        engineInterval=setInterval(()=>{
+          timerModal.remaining--;
+          cueCountdown(timerModal.remaining);
+          if(timerModal.remaining<=0){ timerModal.round++; if(timerModal.round>timerModal.emomRounds){ clearInterval(engineInterval); timerModal.running=false; timerModal.round=timerModal.emomRounds; CUE.done(); } else { timerModal.remaining=timerModal.emomLen; CUE.work(); } }
+          const disp=document.getElementById('emomDisplay');
+          if(disp) disp.innerHTML=`<span class="phase">${timerModal.running?'EN CURSO':'LISTO'}</span>${fmtTime(Math.max(0,timerModal.remaining))}<span class="round">Ronda ${timerModal.round} de ${timerModal.emomRounds}</span>`;
+        },1000);
+      } else { timerModal.running=false; clearInterval(engineInterval); }
+      renderTimerModal();
+    });
+    document.getElementById('emomResetBtn').addEventListener('click', ()=>{
+      clearInterval(engineInterval); timerModal.round=1; timerModal.running=false;
+      timerModal.remaining=parseInt(document.getElementById('emomLen').value,10)||60; renderTimerModal();
+    });
+  } else if(timerModal.mode==='amrap'){
+    document.getElementById('amrapStartBtn').addEventListener('click', ()=>{
+      timerModal.amrapMin=Math.max(1, parseInt(document.getElementById('amrapMin').value,10)||12);
+      if(!timerModal.running2){
+        timerModal.running2=true; if(!timerModal.amrapRemaining||timerModal.amrapRemaining<=0) timerModal.amrapRemaining=timerModal.amrapMin*60;
+        clearInterval(engineInterval);
+        engineInterval=setInterval(()=>{
+          timerModal.amrapRemaining--;
+          cueCountdown(timerModal.amrapRemaining);
+          if(timerModal.amrapRemaining<=0){ clearInterval(engineInterval); timerModal.running2=false; CUE.done(); }
+          const disp=document.querySelector('.interval-display');
+          if(disp) disp.innerHTML=`<span class="phase">${timerModal.running2?'EN CURSO':'LISTO'}</span>${fmtTime(Math.max(0,timerModal.amrapRemaining))}`;
+        },1000);
+      } else { timerModal.running2=false; clearInterval(engineInterval); }
+      renderTimerModal();
+    });
+    document.getElementById('amrapLapBtn').addEventListener('click', ()=>{ timerModal.amrapLaps++; beep(880,110,0.25); buzz(45); renderTimerModal(); });
+    document.getElementById('amrapResetBtn').addEventListener('click', ()=>{
+      clearInterval(engineInterval); timerModal.running2=false; timerModal.amrapLaps=0;
+      timerModal.amrapRemaining=(parseInt(document.getElementById('amrapMin').value,10)||12)*60; renderTimerModal();
+    });
+  } else {
+    document.getElementById('serStartBtn').addEventListener('click', ()=>{
+      timerModal.seriesRestSec=Math.max(1, parseInt(document.getElementById('serRest').value,10)||180);
+      timerModal.seriesCount=Math.max(1, parseInt(document.getElementById('serCount').value,10)||5);
+      if(!timerModal.seriesRunning){
+        timerModal.seriesRunning=true; ensureAudio();
+        if(!timerModal.seriesRemaining||timerModal.seriesRemaining<=0) timerModal.seriesRemaining=timerModal.seriesRestSec;
+        clearInterval(engineInterval);
+        engineInterval=setInterval(()=>{
+          timerModal.seriesRemaining--;
+          cueCountdown(timerModal.seriesRemaining);
+          if(timerModal.seriesRemaining<=0){
+            clearInterval(engineInterval); timerModal.seriesRunning=false;
+            timerModal.seriesRemaining=0;
+            CUE.work();               // descanso terminado: toca la siguiente serie
+            renderTimerModal();
+            return;
+          }
+          const disp=document.getElementById('serDisplay');
+          if(disp) disp.innerHTML=`<span class="phase">DESCANSO</span>${fmtTime(Math.max(0,timerModal.seriesRemaining))}<span class="round">Serie ${timerModal.seriesRound} de ${timerModal.seriesCount}</span>`;
+        },1000);
+      } else { timerModal.seriesRunning=false; clearInterval(engineInterval); }
+      renderTimerModal();
+    });
+    document.getElementById('serNextBtn').addEventListener('click', ()=>{
+      clearInterval(engineInterval); timerModal.seriesRunning=false;
+      if(timerModal.seriesRound < timerModal.seriesCount) timerModal.seriesRound++;
+      timerModal.seriesRemaining = timerModal.seriesRestSec;
+      renderTimerModal();
+    });
+    document.getElementById('serResetBtn').addEventListener('click', ()=>{
+      clearInterval(engineInterval); timerModal.seriesRunning=false; timerModal.seriesRound=1;
+      timerModal.seriesRemaining=parseInt(document.getElementById('serRest').value,10)||180; renderTimerModal();
+    });
+  }
+}
+
+// ---------- CALENDARIO (atleta) ----------
+function monthGridHtml(callDateStr){
+  const now = new Date(); const year=now.getFullYear(), month=now.getMonth();
+  const first = new Date(year, month, 1);
+  const startOffset = (first.getDay()+6)%7;
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const callDate = callDateStr ? new Date(callDateStr+'T00:00:00') : null;
+  let html = `<div class="cal-grid">`;
+  ['Lu','Ma','Mi','Ju','Vi','Sa','Do'].forEach(d=>html+=`<div class="dow">${d}</div>`);
+  for(let i=0;i<startOffset;i++) html += `<div class="cal-day empty"></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const isToday = d===now.getDate();
+    const isCall = callDate && callDate.getDate()===d && callDate.getMonth()===month && callDate.getFullYear()===year;
+    html += `<div class="cal-day ${isToday?'today':''} ${isCall?'call':''}">${d}</div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+function icsFor(call, athleteName){
+  if(!call || !call.nextDate) return null;
+  const start = new Date(call.nextDate + 'T18:00:00');
+  const mins = (()=>{ const m = String(call.duration||'').match(/(\d+)/); return m ? parseInt(m[1],10) : 20; })();
+  const end = new Date(start.getTime() + mins*60000);
+  const fmt = d => d.toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+  const esc = s => String(s||'').replace(/([,;\\])/g,'\\$1').replace(/\n/g,'\\n');
+  const lines = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Umbral//ES','CALSCALE:GREGORIAN','BEGIN:VEVENT',
+    'UID:umbral-'+Date.now()+'@umbral',
+    'DTSTAMP:'+fmt(new Date()),
+    'DTSTART:'+fmt(start),
+    'DTEND:'+fmt(end),
+    'SUMMARY:'+esc('Revisión de entrenamiento · Umbral'),
+    'DESCRIPTION:'+esc((call.notes||'') + (athleteName?('\nAtleta: '+athleteName):'')),
+    'BEGIN:VALARM','TRIGGER:-PT30M','ACTION:DISPLAY','DESCRIPTION:'+esc('Revisión en 30 minutos'),'END:VALARM',
+    'END:VEVENT','END:VCALENDAR'
+  ];
+  return lines.join('\r\n');
+}
+
+async function tplCalendarioAtleta(athleteId){
+  const raw = await safeGet('call-'+athleteId, true);
+  const call = raw ? JSON.parse(raw) : {};
+  const qraw = await safeGet('quest-'+athleteId, true);
+  const responses = qraw ? JSON.parse(qraw) : [];
+  const wk = weekOfISO();
+  const existing = responses.find(r=>r.weekOf===wk);
+
+  // Subpestaña del cuestionario
+  if(state.calShowQuest){
+    const weeks = [];
+    for(let i=0;i<6;i++){
+      const d = new Date(wk+'T00:00:00'); d.setDate(d.getDate()-i*7);
+      const key = d.toISOString().slice(0,10);
+      const sat = new Date(d); sat.setDate(sat.getDate()+5);
+      weeks.push({ key, label: (i===0?'Esta semana':'Hace '+i+' sem.') + ' · sábado ' + fmtShortDate(sat), done: !!responses.find(r=>r.weekOf===key) });
+    }
+    const sel = state.questWeek || wk;
+    const selExisting = responses.find(r=>r.weekOf===sel);
+    let html = `<div class="card">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h2 style="margin:0;">Cuestionario semanal</h2>
+        <button class="btn ghost small" id="closeQuestBtn">← Calendario</button>
+      </div>
+      <label class="field-label">Semana a responder</label>
+      <select id="questWeekSelect" style="width:100%;margin-bottom:6px;">
+        ${weeks.map(w=>`<option value="${w.key}" ${w.key===sel?'selected':''}>${w.label}${w.done?' · respondido':''}</option>`).join('')}
+      </select>
+      ${selExisting?`<p style="font-size:12.5px;color:var(--muted);">Ya respondiste esta semana. Puedes actualizar tus respuestas.</p>`:''}
+      ${await tplQuestForm(athleteId, selExisting)}
+    </div>`;
+    return html;
+  }
+
+  let html = `<div class="card"><h2>Calendario</h2>${monthGridHtml(call.nextDate)}</div>`;
+
+  // Videollamada
+  html += `<div class="card"><h2>Videollamada de revisión</h2>`;
+  if(call.nextDate){
+    const dias = Math.ceil((new Date(call.nextDate+'T00:00:00') - new Date())/86400000);
+    const cuando = dias < 0 ? 'ya pasó' : (dias===0 ? 'es hoy' : (dias===1 ? 'es mañana' : 'en '+dias+' días'));
+    html += `<div class="cal-banner">Próxima revisión: <b>${call.nextDate}</b> · ${cuando}${call.duration?`<br><span style="opacity:0.85;font-size:12px;">Duración ${escapeHtml(call.duration)}</span>`:''}</div>`;
+    if(call.notes){
+      const url = String(call.notes).match(/https?:\/\/\S+/);
+      html += `<div style="font-size:13px;color:var(--muted);margin-bottom:12px;">${escapeHtml(call.notes)}</div>`;
+      if(url) html += `<a class="btn" href="${url[0]}" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;margin-right:8px;">Abrir videollamada</a>`;
+    }
+    html += `<button class="btn ghost" id="addToCalendarBtn">Añadir a mi calendario</button>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:10px;">Descarga un evento que puedes abrir con la app de calendario de tu móvil. Incluye aviso 30 minutos antes.</p>`;
+  } else {
+    html += `<div class="cal-banner muted">Tu entrenador aún no ha programado la próxima revisión.</div>`;
+  }
+  html += `</div>`;
+
+  // Banner del cuestionario
+  html += `<div class="card"><h2>Tareas de la semana</h2>
+    <button class="task-banner ${existing?'done':''}" id="openQuestBtn">
+      <span class="task-ic">${icClipboard()}</span>
+      <span class="task-txt">
+        <b>Cuestionario semanal</b>
+        <span>${existing ? 'Respondido el '+(existing.date||wk)+' · toca para revisarlo' : 'Pendiente · sábado '+saturdayOfWeek()}</span>
+      </span>
+      <span class="task-arrow">${existing?'✓':'›'}</span>
+    </button>
+  </div>`;
+
+  const histRaw = await safeGet('routine-history-'+athleteId, true);
+  const hist = histRaw ? JSON.parse(histRaw) : [];
+  if(hist.length){
+    html += `<div class="card"><h2>Semanas anteriores</h2>${weekHistoryHtml(hist, athleteId)}</div>`;
+  }
+  return html;
+}
+function weekHistoryHtml(hist, athleteId){
+  let out = '';
+  hist.slice().reverse().forEach(w=>{
+    const key = `hist-${athleteId}-${w.weekNumber}`;
+    const open = state.openDays[key] ? 'open':'';
+    out += `<div class="acc ${open}" data-day="${key}"><div class="acc-head" data-toggle="${key}"><b style="text-transform:none;">Semana ${w.weekNumber}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${w.weekOf}</span></div>
+      <div class="acc-body">${DAYS.map(d=>{
+        const dayHasContent = BLOCKS.some(b=>(w.days[d]&&w.days[d][b.key]||[]).length>0);
+        if(!dayHasContent) return '';
+        let inner = `<div class="block-title" style="border-top:none;margin-top:0;">${d}</div>`;
+        BLOCKS.forEach(b=>{ (w.days[d][b.key]||[]).forEach(ex=>{ inner += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4><div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span></div></div>`; }); });
+        return inner;
+      }).join('') || '<div class="empty">Sin ejercicios registrados.</div>'}</div></div>`;
+  });
+  return out;
+}
+async function tplCalendarioCoach(){
+  if(!state.athletes.length) return `<div class="card"><div class="empty">Añade atletas primero.</div></div>`;
+  let html = `<div class="card"><h2>Próximas videollamadas</h2>`;
+  const rows = [];
+  for(const a of state.athletes){
+    const raw = await safeGet('call-'+a.id, true);
+    const call = raw ? JSON.parse(raw) : {};
+    if(call.nextDate) rows.push({name:a.name, ...call});
+  }
+  rows.sort((x,y)=> x.nextDate.localeCompare(y.nextDate));
+  if(!rows.length) html += `<div class="empty">Sin videollamadas programadas todavía.</div>`;
+  else rows.forEach(r=>{
+    html += `<div class="entry"><div class="entry-top"><span>${escapeHtml(r.name)}</span><span>${r.nextDate}</span></div>${r.notes?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px;">${escapeHtml(r.notes)}</div>`:''}</div>`;
+  });
+  html += `</div>`;
+
+  const currentAthleteId = state.selectedId && state.athletes.find(a=>a.id===state.selectedId) ? state.selectedId : state.athletes[0].id;
+  html += `<div class="card"><h2>Programar o editar videollamada</h2><div class="row" style="margin-bottom:12px;">
+    <select id="callAthleteSelect">`;
+  state.athletes.forEach(a=>{ html += `<option value="${a.id}" ${a.id===currentAthleteId?'selected':''}>${escapeHtml(a.name)}</option>`; });
+  html += `</select></div>${await tplCallEditBody(currentAthleteId)}</div>`;
+  return html;
+}
+async function tplCallEditBody(athleteId){
+  const raw = await safeGet('call-'+athleteId, true);
+  const call = raw ? JSON.parse(raw) : {};
+  return `<div class="row" style="flex-direction:column;align-items:stretch;gap:10px;">
+    <div><label class="field-label">Fecha</label><input type="date" id="callDate" value="${call.nextDate||''}" style="width:100%;"></div>
+    <div><label class="field-label">Duración</label><input type="text" id="callDuration" value="${call.duration||'20 min'}" style="width:100%;"></div>
+    <div><label class="field-label">Enlace / notas</label><textarea id="callNotes" placeholder="Enlace de videollamada y/o notas">${call.notes||''}</textarea></div>
+    <button class="btn" id="saveCallBtn" data-athleteid="${athleteId}" style="align-self:flex-start;">Guardar</button>
+  </div>`;
+}
+
+// ---------- CUESTIONARIO ----------
+async function getQuestConfig(athleteId){
+  // Preferimos la configuración propia del atleta; si no tiene, la general.
+  if(athleteId){
+    const own = await safeGet('quest-config-'+athleteId, true);
+    if(own){ try{ const p=JSON.parse(own); if(Array.isArray(p)) return p; }catch(e){} }
+  }
+  const raw = await safeGet('quest-config', true);
+  return raw ? JSON.parse(raw) : DEFAULT_ACTIVE.slice();
+}
+async function countPlannedSessions(athleteId){
+  const routine = await getRoutine(athleteId, false);
+  const n = DAYS.filter(d => BLOCKS.some(b => routine.days[d][b.key].length > 0)).length;
+  return n > 0 ? n : 5;
+}
+async function tplQuestForm(athleteId, existing){
+  const active = await getQuestConfig(athleteId);
+  const planned = await countPlannedSessions(athleteId);
+  if(!active.length){
+    return `<div class="empty" style="padding:18px 0;">Tu entrenador no ha activado ninguna pregunta para este cuestionario todavía. Cuando lo haga, aparecerá aquí.</div>`;
+  }
+  let html = `<div style="margin-top:10px;">
+    <div class="q-item"><p>Fecha (sábado de esta semana)</p><input type="date" id="questDateInput" value="${existing && existing.date ? existing.date : saturdayOfWeek()}"></div>`;
+  active.forEach(qid=>{
+    const q = QUESTION_BANK.find(x=>x.id===qid); if(!q) return;
+    const val = existing && existing.answers ? existing.answers[qid] : null;
+    const note = existing && existing.notes ? existing.notes[qid] : '';
+    if(q.type==='text'){
+      html += `<div class="q-item"><p>${q.text}</p><textarea data-qtext="${q.id}" style="min-height:44px;">${val?escapeHtml(val):''}</textarea></div>`;
+    } else if(q.type==='scale_dynamic'){
+      html += `<div class="q-item"><p>${q.text}</p><div class="scale" data-qscale="${q.id}">`;
+      for(let n=1;n<=planned;n++) html += `<button data-val="${n}" class="${val===n?'sel':''}">${n}/${planned}</button>`;
+      html += `</div></div>`;
+    } else {
+      html += `<div class="q-item"><p>${q.text}</p><div class="scale" data-qscale="${q.id}">`;
+      for(let n=1;n<=5;n++) html += `<button data-val="${n}" class="${val===n?'sel':''}">${n}</button>`;
+      html += `</div><div class="scale-labels"><span>1 · ${q.labels[0]}</span><span>5 · ${q.labels[1]}</span></div>
+        <div class="q-note"><textarea data-qnote="${q.id}" placeholder="Notas adicionales (opcional)">${note?escapeHtml(note):''}</textarea></div></div>`;
+    }
+  });
+  html += `<button class="btn" id="submitQuest">Enviar cuestionario</button></div>`;
+  return html;
+}
+
+// ---------- PROGRESO ----------
+async function tplProgreso(athleteId){
+  const raw = await safeGet('journal-'+athleteId, true);
+  const entries = raw ? JSON.parse(raw) : [];
+  let html = `<div class="card"><h2>Progreso</h2>`;
+  if(entries.length < 2){ html += `<div class="empty">Necesitas al menos 2 sesiones registradas para ver tendencias.</div></div>`; return html; }
+  const now = new Date();
+  const sum7 = entries.filter(e=>(now-new Date(e.date))/86400000<=7).reduce((a,e)=>a+e.fatigueScore,0);
+  const sum28 = entries.filter(e=>(now-new Date(e.date))/86400000<=28).reduce((a,e)=>a+e.fatigueScore,0);
+  const chronicWeekly = sum28/4;
+
+  // El ACWR compara la semana actual con la media del último mes. Con menos de
+  // 3 semanas de historial el denominador es tan pequeño que da cifras
+  // disparatadas (2 sesiones bastan para un "4.00 · riesgo elevado" falso),
+  // así que no se muestra hasta tener base suficiente.
+  const oldest = entries.reduce((a,e)=>{ const d=new Date(e.date+'T00:00:00'); return (!a||d<a)?d:a; }, null);
+  const diasHistorial = oldest ? Math.floor((now-oldest)/86400000) : 0;
+  const semanasConDatos = new Set(entries
+    .filter(e=>(now-new Date(e.date))/86400000<=28)
+    .map(e=>{ const d=new Date(e.date+'T00:00:00'); const day=d.getDay()||7; d.setDate(d.getDate()-day+1); return d.toISOString().slice(0,10); })).size;
+  const acwrFiable = diasHistorial >= 21 && semanasConDatos >= 3 && chronicWeekly > 0;
+
+  let acwrVal = '—', flagText = 'sin datos suficientes', acwrNota = '';
+  if(acwrFiable){
+    const r = sum7/chronicWeekly;
+    acwrVal = r.toFixed(2);
+    // Cruzamos con la periodización: una descarga planificada no es un problema.
+    const info = await currentMicro(athleteId);
+    const intensidadPlan = (info && info.micro) ? info.micro.intensity : null;
+    if(r < 0.8){
+      if(intensidadPlan === 1){ flagText = 'descarga planificada'; acwrNota = 'Carga baja porque la semana es de descarga. Es lo previsto.'; }
+      else if(intensidadPlan === null){ flagText = 'carga baja'; acwrNota = 'Estás por debajo de tu media del último mes. No hay microciclo activo con el que contrastarlo: si es una descarga buscada, ignóralo.'; }
+      else { flagText = 'carga baja'; acwrNota = 'Estás entrenando por debajo de tu media del último mes.'; }
+    } else if(r > 1.3){
+      if(intensidadPlan === 4){ flagText = 'pico planificado'; acwrNota = 'Subida fuerte, coherente con una semana de pico. Vigila las sensaciones.'; }
+      else if(intensidadPlan === null){ flagText = 'subida brusca'; acwrNota = 'La carga ha subido más rápido que tu adaptación. Sin microciclo activo no puedo saber si estaba previsto.'; }
+      else { flagText = 'subida brusca'; acwrNota = 'La carga ha subido más rápido que tu adaptación. Asociado a más riesgo de lesión.'; }
+    } else { flagText = 'zona óptima'; }
+  } else {
+    acwrNota = `Necesita 3 semanas de registro para ser fiable (llevas ${semanasConDatos} de las últimas 4).`;
+  }
+
+  const avgOverallRPE = (entries.reduce((a,e)=>a+e.overallRPE,0)/entries.length).toFixed(1);
+  // Las entradas antiguas (o importadas) pueden no traer las cuatro escalas de
+  // bienestar. Promediamos sólo las que existan y descartamos las que no tengan
+  // ninguna, en vez de arrastrar un NaN por toda la pantalla.
+  const wellnessOf = e => {
+    const vals = [e.fatiga, e.calidad, e.hidratacion, e.satisfaccion]
+      .filter(v => typeof v === 'number' && !isNaN(v));
+    return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
+  };
+  const wellVals = entries.map(wellnessOf).filter(v => v !== null);
+  const avgWellness = wellVals.length ? (wellVals.reduce((a,b)=>a+b,0)/wellVals.length).toFixed(1) : '—';
+  html += `<div class="kpi-row">
+    <div class="kpi"><b>${sum7.toFixed(0)}</b><span>Carga 7 días</span></div>
+    <div class="kpi"><b>${acwrVal}</b><span>ACWR · ${flagText}</span></div>
+    <div class="kpi"><b>${avgOverallRPE}</b><span>RPE medio</span></div>
+    <div class="kpi"><b>${avgWellness}/5</b><span>Bienestar</span></div>
+  </div>
+  ${acwrNota?`<div style="font-size:12px;color:var(--muted);margin:-6px 0 14px;line-height:1.5;">${acwrNota}</div>`:''}`;
+  // Con muchas sesiones las barras quedarían de menos de 2px. Mostramos las
+  // últimas 30, que es lo que de verdad se lee en un móvil.
+  const MAX_BARRAS = 30;
+  const recientes = entries.slice(-MAX_BARRAS);
+  const loads = recientes.map(e=>e.fatigueScore); const maxLoad = Math.max(...loads,1);
+  html += `<div style="background:var(--panel2);border-radius:8px;padding:14px;margin-bottom:12px;"><div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Carga de entrenamiento por sesión (sRPE)${entries.length>MAX_BARRAS?` · últimas ${MAX_BARRAS} de ${entries.length}`:''}</div>
+    <div style="display:flex;align-items:flex-end;gap:3px;height:80px;">${loads.map(l=>`<div style="flex:1;min-width:3px;background:var(--accent);border-radius:2px 2px 0 0;height:${Math.max(4,(l/maxLoad)*80)}px;"></div>`).join('')}</div></div>`;
+  const wellPoints = entries.map(wellnessOf).map((v,i)=>({v,i})).filter(p=>p.v!==null);
+  const w=560,h=110,pad=16;
+  if(wellPoints.length >= 2){
+    const denom = entries.length > 1 ? entries.length-1 : 1;
+    const pts = wellPoints.map(p=>{
+      const x = pad + (p.i/denom)*(w-2*pad);
+      const y = h-pad - ((p.v-1)/4)*(h-2*pad);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+    html += `<div style="background:var(--panel2);border-radius:8px;padding:14px;"><div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Bienestar compuesto (tendencia)</div>
+      <svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;"><polyline points="${pts}" style="fill:none;stroke:var(--accent);stroke-width:2.5;"/></svg></div>`;
+  } else {
+    html += `<div style="background:var(--panel2);border-radius:8px;padding:14px;"><div style="font-size:11px;color:var(--muted);">Bienestar compuesto</div>
+      <div class="empty">Hacen falta al menos dos sesiones con el diario completo.</div></div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+// ---------- PERFIL (atleta, propio) ----------
+async function tplPerfilAtleta(athleteId){
+  const me = state.athletes.find(a=>a.id===athleteId);
+  const raw = await safeGet('intake-'+athleteId, true);
+  const data = raw ? JSON.parse(raw) : null;
+  const profRaw = await safeGet('profile-'+athleteId, true);
+  const p = profRaw ? JSON.parse(profRaw) : {};
+  const jRaw = await safeGet('journal-'+athleteId, true);
+  const journal = jRaw ? JSON.parse(jRaw) : [];
+  const callRaw = await safeGet('call-'+athleteId, true);
+  const call = callRaw ? JSON.parse(callRaw) : {};
+
+  // Resumen de entrenamiento
+  const totalMin = Math.round(journal.reduce((a,e)=>a+(e.durationSeconds||0),0)/60);
+  let firstDate = null;
+  journal.forEach(e=>{ const d=new Date(e.date+'T00:00:00'); if(!firstDate||d<firstDate) firstDate=d; });
+  const semanas = firstDate ? Math.max(1, Math.ceil((new Date() - firstDate)/(7*86400000))) : 0;
+
+  let html = `<div class="card"><h2>${escapeHtml(me?me.name:'Tu perfil')}</h2>
+    <div class="kpi-row">
+      <div class="kpi"><b>${journal.length}</b><span>Sesiones</span></div>
+      <div class="kpi"><b>${totalMin}</b><span>Minutos</span></div>
+      <div class="kpi"><b>${semanas}</b><span>Semanas</span></div>
+    </div>
+    ${call.nextDate?`<div style="font-size:13px;color:var(--muted);">Próxima revisión: <b style="color:var(--accent);">${call.nextDate}</b>${call.duration?' · '+escapeHtml(call.duration):''}</div>`:''}
+  </div>`;
+
+  // Suscripción
+  const pagadoColor = p.pagado==='Sí' ? 'var(--accent)' : (p.pagado==='No' ? 'var(--danger)' : 'var(--warn)');
+  let vencAviso = '';
+  if(p.vence){
+    const dias = Math.ceil((new Date(p.vence+'T00:00:00') - new Date())/86400000);
+    if(p.pagado !== 'Sí'){
+      if(dias < 0) vencAviso = `<div class="pending-task" style="margin-top:12px;"><span class="tag">Pago vencido</span>El plazo terminó hace ${Math.abs(dias)} día${Math.abs(dias)===1?'':'s'}.</div>`;
+      else if(dias <= 7) vencAviso = `<div class="pending-task" style="margin-top:12px;"><span class="tag">Pago próximo</span>Quedan ${dias} día${dias===1?'':'s'} para la fecha límite.</div>`;
+    }
+  }
+  html += `<div class="card"><h2>Tu suscripción</h2>
+    <div class="kv-list">
+      <div><span>Estado</span><b>${escapeHtml(p.estado||'—')}</b></div>
+      <div><span>Tarifa mensual</span><b>${p.tarifa?escapeHtml(String(p.tarifa))+' €':'—'}</b></div>
+      <div><span>Mes en curso</span><b style="color:${pagadoColor};">${escapeHtml(p.pagado||'—')}</b></div>
+      <div><span>Próximo pago</span><b>${p.vence?escapeHtml(p.vence):'—'}</b></div>
+      ${p.plaza?`<div><span>Plaza</span><b>${escapeHtml(p.plaza)}</b></div>`:''}
+      ${p.alta?`<div><span>Alta</span><b>${escapeHtml(p.alta)}</b></div>`:''}
+    </div>${vencAviso}
+  </div>`;
+
+  // Ficha personal editable
+  html += `<div class="card"><h2>Tus datos</h2>`;
+  if(!data){
+    html += `<div class="empty">Aún no has rellenado tu cuestionario inicial.</div></div>`;
+    html += `<div class="card"><h2>Ayuda</h2>
+      <button class="task-banner" id="replayTutorialBtn">
+        <span class="task-ic">${icClipboard()}</span>
+        <span class="task-txt"><b>Ver la guía de uso</b><span>Cómo funcionan la rutina, la sesión y el cuestionario</span></span>
+        <span class="task-arrow">›</span>
+      </button></div>`;
+    return html;
+  }
+  html += `<p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Mantén esto al día: tu entrenador lo usa para ajustar tu plan.</p>`;
+  INTAKE_FIELDS.forEach(f=>{
+    const v = data[f.id] || '';
+    html += `<div class="q-item" style="margin-bottom:14px;"><label class="field-label">${f.label}</label>`;
+    if(f.type==='select') html += `<select data-myintake="${f.id}" style="width:100%;"><option value="">Selecciona…</option>${f.options.map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('')}</select>`;
+    else if(f.type==='textarea') html += `<textarea data-myintake="${f.id}" style="min-height:52px;">${escapeHtml(v)}</textarea>`;
+    else html += `<input type="${f.type}" data-myintake="${f.id}" value="${escapeHtml(v)}" style="width:100%;">`;
+    html += `</div>`;
+  });
+  html += `<button class="btn" id="saveMyIntake">Guardar mis datos</button></div>`;
+
+  html += `<div class="card"><h2>Ayuda</h2>
+    <button class="task-banner" id="replayTutorialBtn">
+      <span class="task-ic">${icClipboard()}</span>
+      <span class="task-txt"><b>Ver la guía de uso</b><span>Cómo funcionan la rutina, la sesión y el cuestionario</span></span>
+      <span class="task-arrow">›</span>
+    </button>
+  </div>`;
+  return html;
+}
+
+// ---------- COACH: ATHLETE DETAIL ----------
+async function tplAthleteDetail(athleteId){
+  const a = state.athletes.find(x=>x.id===athleteId);
+  let html = `<div class="row" style="justify-content:space-between;margin-bottom:14px;">
+    <span style="font-family:'Fraunces',serif;font-size:19px;font-weight:600;">${escapeHtml(a?a.name:'')}</span>
+    <button class="btn ghost small" id="backToAthletes">← Atletas</button>
+  </div>
+  <div class="sub-tabs">
+    <button data-subtab="planificacion" class="${state.athleteSubTab==='planificacion'?'active':''}">Planificación</button>
+    <button data-subtab="periodizacion" class="${state.athleteSubTab==='periodizacion'?'active':''}">Periodización</button>
+    <button data-subtab="diario" class="${state.athleteSubTab==='diario'?'active':''}">Diario</button>
+    <button data-subtab="progreso" class="${state.athleteSubTab==='progreso'?'active':''}">Progreso</button>
+    <button data-subtab="cuestionarios" class="${state.athleteSubTab==='cuestionarios'?'active':''}">Cuestionarios</button>
+    <button data-subtab="perfil" class="${state.athleteSubTab==='perfil'?'active':''}">Perfil</button>
+  </div>`;
+  if(state.athleteSubTab==='planificacion') html += await tplPlanificacionCoach(athleteId);
+  else if(state.athleteSubTab==='periodizacion') html += await tplPeriodizacion(athleteId);
+  else if(state.athleteSubTab==='diario') html += await tplDiarioLectura(athleteId);
+  else if(state.athleteSubTab==='progreso') html += await tplProgreso(athleteId);
+  else if(state.athleteSubTab==='perfil') html += await tplPerfilCoachBody(athleteId);
+  else html += await tplQuestConfigAndRead(athleteId);
+  return html;
+}
+
+// ---------- PERIODIZACIÓN: VISTA ----------
+function periodChartSvg(macro){
+  const micros = macro.micros;
+  if(!micros.length) return '<div class="empty">Añade microciclos para ver la curva.</div>';
+  const w = Math.max(560, micros.length*54), h = 210;
+  const padL = 40, padR = 20, padT = 30, padB = 46;
+  const innerW = w - padL - padR, innerH = h - padT - padB;
+  const x = i => micros.length===1 ? padL+innerW/2 : padL + (i/(micros.length-1))*innerW;
+  const y = v => padT + innerH - ((v-1)/3)*innerH;
+  let g = '';
+  for(let lvl=1; lvl<=4; lvl++){
+    g += `<line x1="${padL}" y1="${y(lvl).toFixed(1)}" x2="${w-padR}" y2="${y(lvl).toFixed(1)}" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 4"/>`;
+    g += `<text x="${padL-8}" y="${(y(lvl)+3.5).toFixed(1)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">${lvl}</text>`;
+  }
+  micros.forEach((m,i)=>{
+    const bh = ((m.volume||1)/4)*innerH;
+    const bw = Math.min(26, innerW/Math.max(micros.length,1)*0.5);
+    g += `<rect x="${(x(i)-bw/2).toFixed(1)}" y="${(padT+innerH-bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="var(--accent)" opacity="0.13" rx="2"/>`;
+  });
+  (macro.competitions||[]).forEach(c=>{
+    if(!c.date) return;
+    const start = new Date(macro.startDate+'T00:00:00');
+    const cd = new Date(c.date+'T00:00:00');
+    if(isNaN(start)||isNaN(cd)) return;
+    const weeks = (cd - start)/(7*86400000);
+    // El rango válido llega hasta el FINAL de la última semana, no hasta su
+    // lunes: una carrera en domingo cae ~0.86 semanas después del último punto.
+    if(weeks < -0.5 || weeks > micros.length) return;
+    const denom = Math.max(1, micros.length-1);
+    let cx = padL + (weeks/denom)*innerW;
+    cx = Math.max(padL, Math.min(w-padR, cx));
+    g += `<line x1="${cx.toFixed(1)}" y1="${padT-6}" x2="${cx.toFixed(1)}" y2="${padT+innerH}" stroke="var(--danger)" stroke-width="1.6"/>`;
+    g += `<circle cx="${cx.toFixed(1)}" cy="${padT-10}" r="4" fill="var(--danger)"/>`;
+    const anchor = cx > w-padR-40 ? 'end' : (cx < padL+40 ? 'start' : 'middle');
+    g += `<text x="${cx.toFixed(1)}" y="${padT-18}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--danger)">${escapeHtml((c.name||'Comp.').slice(0,14))}</text>`;
+  });
+  const pts = micros.map((m,i)=>`${x(i).toFixed(1)},${y(m.intensity||1).toFixed(1)}`).join(' ');
+  g += `<polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`;
+  micros.forEach((m,i)=>{
+    g += `<circle cx="${x(i).toFixed(1)}" cy="${y(m.intensity||1).toFixed(1)}" r="4.5" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.2"/>`;
+    const d = microDate(macro, i);
+    g += `<text x="${x(i).toFixed(1)}" y="${h-24}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--muted)">S${i+1}</text>`;
+    if(d) g += `<text x="${x(i).toFixed(1)}" y="${h-11}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="var(--muted)" opacity="0.75">${fmtShortDate(d)}</text>`;
+  });
+  return `<div class="chart-scroll"><svg viewBox="0 0 ${w} ${h}" style="width:${micros.length>9?w+'px':'100%'};height:auto;">${g}</svg></div>`;
+}
+
+// ---------- COPIA DE SEGURIDAD ----------
+// Cada versión publicada del artefacto tiene su propio almacenamiento, así que
+// una actualización arranca vacía. Exportar/importar permite llevarse los datos.
+function derivedKeys(athletes){
+  const keys = ['athletes-list','quest-config','tasks-list'];
+  (athletes||[]).forEach(a=>{
+    ['intake','profile','routine','routine-draft','routine-history','journal','quest','quest-config','call','plan']
+      .forEach(p=>keys.push(p+'-'+a.id));
+  });
+  return keys;
+}
+async function exportAll(){
+  const data = {};
+  let keys = null;
+  try{
+    const listed = await supaList();
+    if(Array.isArray(listed) && listed.length) keys = listed;
+  }catch(e){ /* sin conexión: usamos las claves derivadas */ }
+  if(!keys) keys = derivedKeys(state.athletes);
+  for(const k of keys){
+    if(k === 'seed-done-v1' || k.indexOf('__umbral') === 0) continue;
+    const v = await safeGet(k, true);
+    if(v !== null && v !== undefined) data[k] = v;
+  }
+  return JSON.stringify({ _umbral:1, exportedAt:new Date().toISOString(), data }, null, 2);
+}
+async function importAll(json){
+  let payload;
+  try{ payload = JSON.parse(json); }
+  catch(e){ throw new Error('el texto no es una copia válida'); }
+  const data = payload && payload.data ? payload.data : payload;
+  if(!data || typeof data !== 'object') throw new Error('la copia no contiene datos');
+  if(!data['athletes-list']) throw new Error('la copia no incluye la lista de atletas');
+  let incomingAthletes;
+  try{ incomingAthletes = JSON.parse(data['athletes-list']); }
+  catch(e){ throw new Error('la lista de atletas de la copia está dañada'); }
+  if(!Array.isArray(incomingAthletes)) throw new Error('la lista de atletas de la copia está dañada');
+  if(!incomingAthletes.length) throw new Error('la copia no contiene ningún atleta');
+  let count = 0;
+  for(const k of Object.keys(data)){
+    if(k === 'athletes-list'){
+      // Fusionamos en vez de sobrescribir: así restaurar nunca borra atletas
+      // que ya existieran en esta versión.
+      const currentRaw = await safeGet('athletes-list', true);
+      let current = [];
+      try{ current = currentRaw ? JSON.parse(currentRaw) : []; }catch(e){ current = []; }
+      if(!Array.isArray(current)) current = [];
+      const merged = current.slice();
+      incomingAthletes.forEach(a=>{
+        if(!a || !a.id) return;
+        const i = merged.findIndex(x=>x.id===a.id);
+        if(i === -1) merged.push(a); else merged[i] = a;
+      });
+      const ok = await safeSet('athletes-list', JSON.stringify(merged), true);
+      if(ok) count++;
+      continue;
+    }
+    const ok = await safeSet(k, data[k], true);
+    if(ok) count++;
+  }
+  await safeSet('seed-done-v1','true', true);
+  return count;
+}
+async function tplBackup(){
+  return `<div class="card"><h2>Datos y copia de seguridad</h2>
+    <div id="storageHealth" class="notice" style="margin-bottom:12px;">Comprobando el almacenamiento…</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Cada versión publicada de la app guarda sus datos por separado. Antes de pasar a una versión nueva, exporta aquí y pega la copia en la nueva para no perder atletas ni planificaciones.</p>
+    <div class="row" style="margin-bottom:10px;">
+      <button class="btn" id="exportBtn">Exportar datos</button>
+      <button class="btn ghost" id="copyBackupBtn">Copiar</button>
+      <button class="btn ghost" id="testStorageBtn">Probar almacenamiento</button>
+    </div>
+    <textarea id="backupBox" placeholder="Pulsa «Exportar datos» para generar la copia, o pega aquí una copia anterior y pulsa «Restaurar»." style="min-height:130px;font-family:'IBM Plex Mono',monospace;font-size:11px;"></textarea>
+    <div class="row" style="margin-top:10px;">
+      <button class="btn ghost" id="importBtn">Restaurar desde la copia pegada</button>
+    </div>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:10px;">Restaurar añade o actualiza los atletas de la copia sin borrar los que ya tengas.</p>
+    <div class="block-title">Código de acceso de entrenador</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:8px;">Cámbialo si crees que alguien más lo conoce. Apúntalo: si lo olvidas, tendrás que restaurar el código por defecto desde el código fuente.</p>
+    <div class="row">
+      <input type="text" id="newCoachCode" placeholder="Nuevo código" style="font-family:'IBM Plex Mono',monospace;">
+      <button class="btn ghost" id="saveCoachCodeBtn">Cambiar código</button>
+    </div>
+  </div>`;
+}
+async function paintStorageHealth(){
+  const el = document.getElementById('storageHealth');
+  if(!el) return;
+  const r = await storageSelfTest();
+  if(r.ok){
+    el.style.borderLeftColor = 'var(--accent)';
+    el.innerHTML = '<b>Conectado a tu base de datos.</b> Los cambios se guardan en la nube y tus atletas los ven desde sus propios móviles.';
+    return;
+  }
+  el.style.borderLeftColor = 'var(--warn)';
+  el.innerHTML = '<b>Sin conexión con la base de datos.</b> Puedes seguir trabajando: todo queda guardado en este dispositivo. Vuelve a probar cuando tengas conexión. Motivo: ' + escapeHtml(r.detail) + '.';
+}
+
+async function tplPeriodizacion(athleteId){
+  const plan = await getPlan(athleteId);
+  let html = `<div class="card"><div class="row" style="justify-content:space-between;align-items:center;">
+    <h2 style="margin:0;">Periodización</h2>
+    <button class="btn small" id="addMacroBtn">+ Macrociclo</button>
+  </div>
+  <p style="font-size:12.5px;color:var(--muted);margin-top:8px;">La línea marca la intensidad de cada microciclo (1 descarga · 4 pico). Las barras de fondo son el volumen. Las marcas rojas son competiciones.</p></div>`;
+  if(!plan.macros.length){
+    html += `<div class="card"><div class="empty">Sin macrociclos todavía. Crea uno para empezar a planificar la temporada.</div></div>`;
+    return html;
+  }
+  plan.macros.forEach((macro)=>{
+    const open = state.openDays['macro-'+macro.id] ? 'open':'';
+    const peak = macro.micros.reduce((a,m)=>Math.max(a, m.intensity||0), 0);
+    html += `<div class="card">
+      <div class="row" style="justify-content:space-between;align-items:flex-start;gap:8px;">
+        <input type="text" class="macro-name" data-macro="${macro.id}" value="${escapeHtml(macro.name)}" style="flex:1;min-width:150px;font-family:'Fraunces',serif;font-size:16px;font-weight:600;">
+        <button class="btn ghost small" data-delmacro="${macro.id}">Eliminar</button>
+      </div>
+      <div class="row" style="margin-top:10px;">
+        <div><label class="field-label">Inicio (semana 1)</label><input type="date" class="macro-start" data-macro="${macro.id}" value="${macro.startDate||''}"></div>
+        <div><label class="field-label">Microciclos</label><input type="number" class="macro-weeks" data-macro="${macro.id}" min="1" max="52" value="${macro.micros.length}" style="width:80px;"></div>
+      </div>
+      <div style="margin-top:14px;" id="chart-${macro.id}">${periodChartSvg(macro)}</div>
+      <div class="legend-row">
+        <span><i class="sw-line"></i>Intensidad</span>
+        <span><i class="sw-bar"></i>Volumen</span>
+        <span><i class="sw-comp"></i>Competición</span>
+        <span style="color:var(--muted);">Pico ${peak||'—'}</span>
+      </div>
+      <div class="acc ${open}" data-day="macro-${macro.id}" style="margin-top:14px;">
+        <div class="acc-head" data-toggle="macro-${macro.id}"><b style="text-transform:none;">Editar semanas y competiciones</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${macro.micros.length} sem.</span></div>
+        <div class="acc-body">
+          <div class="block-title" style="border-top:none;padding-top:0;margin-top:0;">Competiciones objetivo</div>
+          ${(macro.competitions||[]).map(c=>`<div class="row" style="margin-bottom:8px;">
+            <input type="text" class="comp-name" data-macro="${macro.id}" data-comp="${c.id}" value="${escapeHtml(c.name||'')}" placeholder="Nombre" style="flex:1;min-width:110px;">
+            <input type="date" class="comp-date" data-macro="${macro.id}" data-comp="${c.id}" value="${c.date||''}">
+            <button class="btn ghost small" data-delcomp="${macro.id}|${c.id}">✕</button>
+          </div>`).join('')}
+          <button class="btn ghost small" data-addcomp="${macro.id}">+ Añadir competición</button>
+          <div class="block-title">Microciclos</div>
+          ${macro.micros.map((m,i)=>{
+            const d = microDate(macro, i);
+            return `<div class="micro-row">
+              <div class="micro-head"><b>Semana ${i+1}</b><span>${d?fmtShortDate(d):''}</span></div>
+              <div class="ex-grid" style="grid-template-columns:1fr 1fr;">
+                <div><label class="field-label">Intensidad</label>
+                  <select class="micro-int" data-macro="${macro.id}" data-micro="${m.id}">
+                    ${[1,2,3,4].map(v=>`<option value="${v}" ${m.intensity==v?'selected':''}>${v} · ${INTENSITY_LABELS[v]}</option>`).join('')}
+                  </select></div>
+                <div><label class="field-label">Volumen</label>
+                  <select class="micro-vol" data-macro="${macro.id}" data-micro="${m.id}">
+                    ${[1,2,3,4].map(v=>`<option value="${v}" ${m.volume==v?'selected':''}>${v} · ${VOLUME_LABELS[v]}</option>`).join('')}
+                  </select></div>
+                <div class="full"><label class="field-label">Tipo</label>
+                  <select class="micro-type" data-macro="${macro.id}" data-micro="${m.id}">
+                    ${MICRO_TYPES.map(t=>`<option ${m.type===t?'selected':''}>${t}</option>`).join('')}
+                  </select></div>
+                <div class="full"><label class="field-label">Nota</label>
+                  <input type="text" class="micro-note" data-macro="${macro.id}" data-micro="${m.id}" value="${escapeHtml(m.note||'')}" placeholder="Foco de la semana"></div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>`;
+  });
+  return html;
+}
+
+
+// Archiva la planificación publicada si pertenece a una semana ya cerrada.
+// Antes sólo se archivaba al pulsar "Compartir": si una semana no cambiabas el
+// plan, esa semana desaparecía del histórico del atleta.
+async function autoArchiveWeek(athleteId){
+  const published = await getRoutine(athleteId, false);
+  const hasContent = DAYS.some(d => BLOCKS.some(b => published.days[d][b.key].length > 0));
+  if(!hasContent) return;
+  const wk = weekOfISO();
+  const marcada = published.weekOf;
+  if(!marcada){
+    published.weekOf = wk;
+    await safeSet('routine-'+athleteId, JSON.stringify(published), true);
+    return;
+  }
+  if(marcada === wk) return;                       // seguimos en la misma semana
+  const histRaw = await safeGet('routine-history-'+athleteId, true);
+  const hist = histRaw ? JSON.parse(histRaw) : [];
+  if(hist.some(h=>h.weekOf === marcada)) { published.weekOf = wk; await safeSet('routine-'+athleteId, JSON.stringify(published), true); return; }
+  hist.push({ weekNumber: hist.length+1, weekOf: marcada, days: published.days });
+  await safeSet('routine-history-'+athleteId, JSON.stringify(hist), true);
+  published.weekOf = wk;
+  await safeSet('routine-'+athleteId, JSON.stringify(published), true);
+}
+
+async function tplPlanificacionCoach(athleteId){
+  await autoArchiveWeek(athleteId);
+  const draft = await getRoutine(athleteId, true);
+  const published = await getRoutine(athleteId, false);
+  const sameAsPublished = JSON.stringify(draft.days) === JSON.stringify(published.days);
+  let html = `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
+    <button class="btn small" id="shareRoutineBtn">Compartir planificación</button></div>`;
+  DAYS.forEach(d=>{
+    const open = state.openDays[d] ? 'open':'';
+    const totalEx = BLOCKS.reduce((acc,b)=>acc+draft.days[d][b.key].length,0);
+    html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${totalEx} ejerc.</span></div><div class="acc-body">
+      <div class="ai-import"><div class="row" style="justify-content:space-between;">
+        <span style="font-size:12.5px;color:var(--muted);">Pega el entreno en texto y que la IA lo organice</span>
+        <button class="btn ghost small" data-ai-toggle="${d}">${state.aiImportOpen[d]?'Cerrar':'Abrir'}</button>
+      </div>`;
+    if(state.aiImportOpen[d]){
+      html += `<textarea data-ai-text="${d}" placeholder="Ej: Calentamiento: 5 min bici suave. Principal: sentadilla 4x8 RIR2 RPE7 descanso 90s..."></textarea>
+        <button class="btn small" data-ai-run="${d}" ${state.aiImportBusy[d]?'disabled':''}>${state.aiImportBusy[d]?'Organizando…':'Organizar con IA'}</button>`;
+    }
+    html += `</div>`;
+    BLOCKS.forEach(b=>{
+      html += `<div class="block-title">${b.label}</div>`;
+      draft.days[d][b.key].forEach(ex=>{
+        const t = exTimer(ex);
+        html += `<div class="ex-card" data-exid="${ex.id}" data-block="${b.key}" data-day="${d}">
+          <span class="save-flag" data-flagfor="${ex.id}">Guardado ✓</span>
+          <input type="text" class="ex-section" value="${escapeHtml(ex.section||'')}" placeholder="Sección (Fuerza, Hipertrofia, Pliometría…)" list="sectionSuggestions" style="width:100%;font-size:12px;color:var(--accent);margin-bottom:6px;">
+          <input type="text" class="ex-name full" value="${escapeHtml(ex.name)}" placeholder="Nombre del ejercicio" style="width:100%;font-weight:700;">
+          <textarea class="ex-desc" placeholder="Descripción / técnica" style="min-height:36px;margin-top:6px;">${escapeHtml(ex.desc||'')}</textarea>
+          <div class="ex-grid">
+            <div><label class="field-label">Series</label><input type="number" class="ex-series" value="${ex.series||''}"></div>
+            <div><label class="field-label">Reps</label><input type="text" class="ex-reps" value="${escapeHtml(ex.reps||'')}"></div>
+            <div><label class="field-label">Peso / carga</label><input type="text" class="ex-load" value="${escapeHtml(ex.load||'')}" placeholder="80kg, 40>30kg, corporal"></div>
+            <div><label class="field-label">Descanso</label><input type="text" class="ex-rest" value="${escapeHtml(ex.rest||'')}"></div>
+            <div><label class="field-label">RIR objetivo</label><input type="text" class="ex-rir" value="${escapeHtml(ex.rir||'')}"></div>
+            <div><label class="field-label">RPE a aplicar</label><input type="text" class="ex-rpetarget" value="${escapeHtml(ex.rpeTarget||'')}"></div>
+          </div>
+          <div class="timer-config">
+            <label class="field-label">Temporizador para el atleta</label>
+            <select class="ex-timer-type" style="width:100%;">
+              ${Object.keys(TIMER_TYPE_LABELS).map(k=>`<option value="${k}" ${t.type===k?'selected':''}>${TIMER_TYPE_LABELS[k]}</option>`).join('')}
+            </select>
+            ${t.type==='intervalos' ? `<div class="ex-grid">
+              <div><label class="field-label">Trabajo (s)</label><input type="number" class="tm-work" value="${t.work}"></div>
+              <div><label class="field-label">Descanso (s)</label><input type="number" class="tm-rest" value="${t.rest}"></div>
+              <div><label class="field-label">Ciclos por set</label><input type="number" class="tm-rounds" value="${t.rounds}"></div>
+              <div><label class="field-label">Nº de sets</label><input type="number" class="tm-sets" value="${t.sets}"></div>
+              <div class="full"><label class="field-label">Descanso entre sets (s)</label><input type="number" class="tm-setrest" value="${t.setRest}"></div>
+            </div>` : ''}
+            ${t.type==='emom' ? `<div class="ex-grid">
+              <div><label class="field-label">Ronda (s)</label><input type="number" class="tm-emomlen" value="${t.emomLen}"></div>
+              <div><label class="field-label">Rondas</label><input type="number" class="tm-emomrounds" value="${t.emomRounds}"></div>
+            </div>` : ''}
+            ${t.type==='amrap' ? `<div class="ex-grid" style="grid-template-columns:1fr;">
+              <div><label class="field-label">Duración total (min)</label><input type="number" class="tm-amrapmin" value="${t.amrapMin}"></div>
+            </div>` : ''}
+            ${t.type==='series' ? `<div class="ex-grid">
+              <div><label class="field-label">Descanso (s)</label><input type="number" class="tm-seriesrest" value="${t.seriesRestSec}"></div>
+              <div><label class="field-label">Nº de series</label><input type="number" class="tm-seriescount" value="${t.seriesCount}"></div>
+            </div><div style="font-size:11.5px;color:var(--muted);margin-top:4px;">Cuenta atrás de ${Math.floor(t.seriesRestSec/60)}'${String(t.seriesRestSec%60).padStart(2,'0')} repetida ${t.seriesCount} veces.</div>` : ''}
+          </div>
+          <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-removeex="${ex.id}">Eliminar ejercicio</button></div>
+        </div>`;
+      });
+      html += `<button class="btn ghost small" data-addex="${d}|${b.key}">+ Añadir a ${b.label.toLowerCase()}</button>`;
+    });
+    html += `</div></div>`;
+  });
+  return html;
+}
+async function tplDiarioLectura(athleteId){
+  const raw = await safeGet('journal-'+athleteId, true);
+  const entries = raw ? JSON.parse(raw) : [];
+  let html = `<div class="card"><h2>Diario de entrenamiento</h2>`;
+  if(!entries.length) html += `<div class="empty">Sin sesiones registradas todavía.</div>`;
+  else entries.slice().reverse().forEach(e=>{
+    html += `<div class="entry"><div class="entry-top"><span>${e.date} · ${e.day}</span><span class="pill" style="background:${rpeColor(e.overallRPE)};color:#08130F;">RPE ${e.overallRPE}</span></div>
+      <div style="font-size:12.5px;color:var(--muted);margin-top:6px;">Duración ${fmtTime(e.durationSeconds)} · carga (sRPE) ${e.fatigueScore} · fatiga ${e.fatiga}/5 · calidad ${e.calidad}/5 · hidratación ${e.hidratacion}/5 · satisfacción ${e.satisfaccion}/5</div>
+      ${(e.exercises&&e.exercises.some(x=>x.loadApplied))?`<div style="font-size:12px;color:var(--muted);margin-top:6px;">${e.exercises.filter(x=>x.loadApplied).map(x=>escapeHtml(x.name)+': <b style="color:var(--ink);">'+escapeHtml(x.loadApplied)+'</b>'+(x.loadPlanned&&x.loadPlanned!==x.loadApplied?' <span style="opacity:.7;">(previsto '+escapeHtml(x.loadPlanned)+')</span>':'')).join(' · ')}</div>`:''}
+      ${e.notes?`<div style="font-size:12.5px;color:var(--muted);margin-top:6px;">"${escapeHtml(e.notes)}"</div>`:''}
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+async function tplQuestConfigAndRead(athleteId){
+  const active = await getQuestConfig(athleteId);
+  const raw = await safeGet('quest-'+athleteId, true);
+  const responses = raw ? JSON.parse(raw) : [];
+  const a = state.athletes.find(x=>x.id===athleteId);
+  let html = `<div class="card"><h2>Preguntas del cuestionario</h2><p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">Selección propia de ${escapeHtml(a?a.name:'este atleta')}. Un tenista y un cliente de Hyrox no necesitan las mismas preguntas.</p>`;
+  let lastCat = '';
+  QUESTION_BANK.forEach(q=>{
+    if(q.cat!==lastCat){ html += `<div class="q-cat">${q.cat}</div>`; lastCat=q.cat; }
+    html += `<label class="q-config-item"><input type="checkbox" data-qid="${q.id}" ${active.includes(q.id)?'checked':''}> ${q.text}</label>`;
+  });
+  html += `<label class="q-config-item" style="margin-top:12px;"><input type="checkbox" id="questApplyAll"> Aplicar también como plantilla para nuevos atletas</label>
+    <button class="btn" id="saveQuestConfig" style="margin-top:8px;">Guardar selección</button></div>`;
+  html += `<div class="card"><h2>Respuestas recibidas</h2>`;
+  if(!responses.length) html += `<div class="empty">Sin respuestas todavía.</div>`;
+  else responses.slice().reverse().forEach(r=>{
+    html += `<div class="entry"><div class="entry-top"><span>${r.date||r.weekOf}</span></div>`;
+    active.forEach(qid=>{
+      const q = QUESTION_BANK.find(x=>x.id===qid); if(!q) return;
+      const val = r.answers ? r.answers[qid] : undefined; if(val===undefined || val==='') return;
+      if(q.type==='text') html += `<div style="font-size:12.5px;color:var(--muted);margin-top:6px;">${q.text}: "${escapeHtml(val)}"</div>`;
+      else {
+        html += `<div style="font-size:13px;margin-top:6px;"><span style="color:var(--muted);">${q.text}</span> — <b style="color:var(--accent);">${val}/5</b></div>`;
+        const note = r.notes ? r.notes[qid] : '';
+        if(note) html += `<div style="font-size:12px;color:var(--muted);margin-left:8px;">"${escapeHtml(note)}"</div>`;
+      }
+    });
+    html += `</div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+// ---------- COACH: PERFIL (payment/status per athlete) ----------
+async function tplPerfilCoachPicker(){
+  if(!state.athletes.length) return `<div class="card"><div class="empty">Añade atletas primero.</div></div>`;
+  let html = `<div class="card"><h2>Perfil de atleta</h2><div class="row">`;
+  html += `<select id="perfilAthleteSelect">`;
+  state.athletes.forEach(a=>{ html += `<option value="${a.id}" ${a.id===state.selectedId?'selected':''}>${escapeHtml(a.name)}</option>`; });
+  html += `</select></div></div>`;
+  html += `<div id="perfilCoachBody"></div>`;
+  return html;
+}
+async function tplPerfilCoachBody(athleteId){
+  const a = state.athletes.find(x=>x.id===athleteId);
+  const raw = await safeGet('profile-'+athleteId, true);
+  const p = raw ? JSON.parse(raw) : { estado:'Activo', tarifa:'', pagado:'Pendiente', notas:'' };
+  const intakeRaw = await safeGet('intake-'+athleteId, true);
+  const intake = intakeRaw ? JSON.parse(intakeRaw) : null;
+  let html = `<div class="card"><h2>${escapeHtml(a?a.name:'')} — gestión (solo visible para ti)</h2>
+    <div class="row" style="flex-direction:column;align-items:stretch;gap:12px;">
+      <div><label class="field-label">Estado del cliente</label><select id="profEstado" style="width:100%;"><option ${p.estado==='Activo'?'selected':''}>Activo</option><option ${p.estado==='Pausado'?'selected':''}>Pausado</option><option ${p.estado==='Baja'?'selected':''}>Baja</option></select></div>
+      <div><label class="field-label">Tarifa (€/mes)</label><input type="number" id="profTarifa" value="${p.tarifa||''}" style="width:100%;"></div>
+      <div><label class="field-label">¿Pagado este mes?</label><select id="profPagado" style="width:100%;"><option ${p.pagado==='Sí'?'selected':''}>Sí</option><option ${p.pagado==='No'?'selected':''}>No</option><option ${p.pagado==='Pendiente'?'selected':''}>Pendiente</option></select></div>
+      <div><label class="field-label">Próximo pago (fecha límite)</label><input type="date" id="profVence" value="${p.vence||''}" style="width:100%;"></div>
+      <div><label class="field-label">Plaza / convocatoria</label><input type="text" id="profPlaza" value="${escapeHtml(p.plaza||'')}" placeholder="Ej. 1ª convocatoria" style="width:100%;"></div>
+      <div><label class="field-label">Alta del cliente</label><input type="date" id="profAlta" value="${p.alta||''}" style="width:100%;"></div>
+      <div><label class="field-label">Notas privadas</label><textarea id="profNotas" style="min-height:70px;">${escapeHtml(p.notas||'')}</textarea></div>
+      <button class="btn" id="saveProfileBtn" data-athleteid="${athleteId}" style="align-self:flex-start;">Guardar</button>
+    </div></div>`;
+  if(intake){
+    html += `<div class="card"><h2>Ficha del atleta</h2>`;
+    INTAKE_FIELDS.forEach(f=>{ if(intake[f.id]) html += `<div style="margin-bottom:10px;"><label class="field-label">${f.label}</label><div style="font-size:13.5px;">${escapeHtml(intake[f.id])}</div></div>`; });
+    html += `</div>`;
+  }
+  return html;
+}
+
+// ---------- COACH: TAREAS ----------
+async function getTasks(){ const raw = await safeGet('tasks-list', true); return raw ? JSON.parse(raw) : []; }
+async function tplTareas(){
+  const tasks = await getTasks();
+  tasks.sort((a,b)=> (a.done?1:0)-(b.done?1:0) || (a.dueDate||'').localeCompare(b.dueDate||''));
+  let html = `<div class="card"><h2>Nueva tarea</h2>
+    <div class="row" style="flex-direction:column;align-items:stretch;gap:10px;">
+      <div><label class="field-label">Nombre</label><input type="text" id="taskName" style="width:100%;"></div>
+      <div><label class="field-label">Descripción</label><textarea id="taskDesc" style="min-height:44px;"></textarea></div>
+      <div><label class="field-label">Fecha límite</label><input type="date" id="taskDue" style="width:100%;"></div>
+      <div><label class="field-label">Atleta destinado (opcional)</label><select id="taskAthlete" style="width:100%;"><option value="">General</option>${state.athletes.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}</select></div>
+      <button class="btn" id="addTaskBtn" style="align-self:flex-start;">Añadir tarea</button>
+    </div></div>`;
+  html += `<div class="card"><h2>Tareas pendientes</h2>`;
+  const pending = tasks.filter(t=>!t.done);
+  if(!pending.length) html += `<div class="empty">Sin tareas pendientes.</div>`;
+  else pending.forEach(t=>{
+    const athleteName = t.athleteId ? (state.athletes.find(a=>a.id===t.athleteId)||{}).name : '';
+    html += `<div class="entry"><div class="entry-top"><span>${escapeHtml(t.name)}</span><span>${t.dueDate||'—'}</span></div>
+      ${t.desc?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px;">${escapeHtml(t.desc)}</div>`:''}
+      ${athleteName?`<div style="font-size:12px;color:var(--accent);margin-top:4px;">${escapeHtml(athleteName)}</div>`:''}
+      <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-donetask="${t.id}">Completada</button><button class="btn ghost small" data-deltask="${t.id}">Eliminar</button></div>
+    </div>`;
+  });
+  const done = tasks.filter(t=>t.done);
+  if(done.length){
+    html += `<div class="block-title">Completadas</div>`;
+    done.forEach(t=>{ html += `<div class="entry"><div class="entry-top"><span style="text-decoration:line-through;color:var(--muted);">${escapeHtml(t.name)}</span><button class="btn ghost small" data-deltask="${t.id}">Eliminar</button></div></div>`; });
+  }
+  html += `</div>`;
+  return html;
+}
+async function tplResumen(){
+  const now = new Date();
+  const upcomingList = [], unpaidList = [], riskList = [];
+  for(const a of state.athletes){
+    const callRaw = await safeGet('call-'+a.id, true);
+    if(callRaw){ const c = JSON.parse(callRaw); if(c.nextDate){ const days=(new Date(c.nextDate)-now)/86400000; if(days>=0 && days<=14) upcomingList.push({id:a.id, name:a.name, date:c.nextDate}); } }
+    const profRaw = await safeGet('profile-'+a.id, true);
+    if(profRaw){ const p = JSON.parse(profRaw); if(p.pagado==='No' || p.pagado==='Pendiente') unpaidList.push({id:a.id, name:a.name, estado:p.pagado}); }
+    const jRaw = await safeGet('journal-'+a.id, true);
+    if(jRaw){
+      const entries = JSON.parse(jRaw);
+      if(entries.length>=2){
+        const sum7 = entries.filter(e=>(now-new Date(e.date))/86400000<=7).reduce((acc,e)=>acc+e.fatigueScore,0);
+        const sum28 = entries.filter(e=>(now-new Date(e.date))/86400000<=28).reduce((acc,e)=>acc+e.fatigueScore,0);
+        const chronicWeekly = sum28/4;
+        if(chronicWeekly>0 && (sum7/chronicWeekly)>1.3) riskList.push({id:a.id, name:a.name, acwr:(sum7/chronicWeekly).toFixed(2)});
+      }
+    }
+  }
+  upcomingList.sort((x,y)=>x.date.localeCompare(y.date));
+  const sections = [
+    { key:'calls', title:'Próximas videollamadas', count:upcomingList.length, rows: upcomingList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>${u.date}</span></div></div>`).join('') },
+    { key:'unpaid', title:'Pagos pendientes', count:unpaidList.length, rows: unpaidList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>${escapeHtml(u.estado)}</span></div></div>`).join('') },
+    { key:'risk', title:'Riesgo por ACWR', count:riskList.length, rows: riskList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>ACWR ${u.acwr}</span></div></div>`).join('') },
+    { key:'all', title:'Todos los atletas', count:state.athletes.length, rows: state.athletes.map(a=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(a.name)}</span></div></div>`).join('') }
+  ];
+  let html = `<div class="card"><h2>Resumen</h2>`;
+  sections.forEach(s=>{
+    const open = state.openDays['resumen-'+s.key] ? 'open':'';
+    html += `<div class="acc ${open}" data-day="resumen-${s.key}"><div class="acc-head" data-toggle="resumen-${s.key}"><b style="text-transform:none;">${s.title}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${s.count}</span></div>
+      <div class="acc-body">${s.rows || '<div class="empty">Nada que mostrar.</div>'}</div></div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+// ---------- BIND DYNAMIC EVENTS ----------
+async function bindDynamicEvents(){
+  // Quién es el atleta en contexto: el que ha iniciado sesión (modo atleta) o
+  // el seleccionado en el panel (modo entrenador).
+  const athleteId = state.role === 'atleta' ? state.athleteAsId : state.selectedId;
+  const backToAthletes = document.getElementById('backToAthletes');
+  if(backToAthletes) backToAthletes.addEventListener('click', ()=>{ state._inAthleteDetail=false; renderScrollTop(); });
+  document.querySelectorAll('[data-subtab]').forEach(b=>b.addEventListener('click', ()=>{ state.athleteSubTab=b.dataset.subtab; renderScrollTop(); }));
+
+  // ---------- PERIODIZACIÓN: eventos ----------
+  const periodSave = async (mutate)=>{
+    const athleteId = state.selectedId;
+    const plan = await getPlan(athleteId);
+    mutate(plan);
+    const ok = await savePlan(athleteId, plan);
+    if(!ok) toast('No se pudo guardar la periodización', true);
+    return ok;
+  };
+  const addMacroBtn = document.getElementById('addMacroBtn');
+  if(addMacroBtn) addMacroBtn.addEventListener('click', async ()=>{
+    await periodSave(p=>p.macros.push(blankMacro()));
+    toast('Macrociclo creado');
+    renderKeepScroll();
+  });
+  document.querySelectorAll('[data-delmacro]').forEach(b=>b.addEventListener('click', async ()=>{
+    await periodSave(p=>{ p.macros = p.macros.filter(m=>m.id!==b.dataset.delmacro); });
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('.macro-name').forEach(inp=>inp.addEventListener('change', async ()=>{
+    await periodSave(p=>{ const m=p.macros.find(x=>x.id===inp.dataset.macro); if(m) m.name=inp.value.trim()||'Macrociclo'; });
+    toast('Guardado');
+  }));
+  document.querySelectorAll('.macro-start').forEach(inp=>inp.addEventListener('change', async ()=>{
+    await periodSave(p=>{ const m=p.macros.find(x=>x.id===inp.dataset.macro); if(m) m.startDate=inp.value; });
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('.macro-weeks').forEach(inp=>inp.addEventListener('change', async ()=>{
+    const n = Math.max(1, Math.min(52, parseInt(inp.value,10)||1));
+    await periodSave(p=>{
+      const m=p.macros.find(x=>x.id===inp.dataset.macro); if(!m) return;
+      while(m.micros.length < n) m.micros.push({ id:uid(), intensity:2, volume:3, type:'Acumulación', note:'' });
+      while(m.micros.length > n) m.micros.pop();
+    });
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-addcomp]').forEach(b=>b.addEventListener('click', async ()=>{
+    await periodSave(p=>{
+      const m=p.macros.find(x=>x.id===b.dataset.addcomp); if(!m) return;
+      if(!Array.isArray(m.competitions)) m.competitions=[];
+      m.competitions.push({ id:uid(), name:'', date:'' });
+    });
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-delcomp]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [mid,cid] = b.dataset.delcomp.split('|');
+    await periodSave(p=>{ const m=p.macros.find(x=>x.id===mid); if(m) m.competitions=(m.competitions||[]).filter(c=>c.id!==cid); });
+    renderKeepScroll();
+  }));
+  // Redibuja SÓLO el gráfico afectado: reconstruir la pantalla entera hacía
+  // que la vista saltara al principio al tocar cualquier control.
+  const refreshChart = async (macroId)=>{
+    const box = document.getElementById('chart-'+macroId);
+    if(!box) return;
+    const plan = await getPlan(state.selectedId);
+    const macro = plan.macros.find(m=>m.id===macroId);
+    if(macro) box.innerHTML = periodChartSvg(macro);
+  };
+  const compField = (cls, key)=>{
+    document.querySelectorAll('.'+cls).forEach(inp=>inp.addEventListener('change', async ()=>{
+      await periodSave(p=>{
+        const m=p.macros.find(x=>x.id===inp.dataset.macro); if(!m) return;
+        const c=(m.competitions||[]).find(y=>y.id===inp.dataset.comp); if(c) c[key]=inp.value;
+      });
+      await refreshChart(inp.dataset.macro);
+      toast('Guardado');
+    }));
+  };
+  compField('comp-name','name');
+  compField('comp-date','date');
+  const microField = (cls, key, numeric)=>{
+    document.querySelectorAll('.'+cls).forEach(inp=>inp.addEventListener('change', async ()=>{
+      await periodSave(p=>{
+        const m=p.macros.find(x=>x.id===inp.dataset.macro); if(!m) return;
+        const mc=m.micros.find(y=>y.id===inp.dataset.micro); if(!mc) return;
+        mc[key] = numeric ? (parseInt(inp.value,10)||1) : inp.value;
+      });
+      await refreshChart(inp.dataset.macro);
+    }));
+  };
+  microField('micro-int','intensity', true);
+  microField('micro-vol','volume', true);
+  microField('micro-type','type', false);
+  microField('micro-note','note', false);
+
+  const addTaskBtn = document.getElementById('addTaskBtn');
+  if(addTaskBtn) addTaskBtn.addEventListener('click', async ()=>{
+    try{
+      const name = document.getElementById('taskName').value.trim();
+      if(!name){ toast('Ponle un nombre a la tarea', true); return; }
+      const tasks = await getTasks();
+      tasks.push({ id:uid(), name, desc:document.getElementById('taskDesc').value.trim(), dueDate:document.getElementById('taskDue').value, athleteId:document.getElementById('taskAthlete').value, done:false });
+      const ok = await safeSet('tasks-list', JSON.stringify(tasks), true);
+      toast(ok?'Tarea añadida':'No se pudo guardar', !ok);
+      renderKeepScroll();
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
+  });
+  document.querySelectorAll('[data-donetask]').forEach(b=>b.addEventListener('click', async ()=>{
+    const tasks = await getTasks();
+    const t = tasks.find(x=>x.id===b.dataset.donetask); if(t) t.done=true;
+    await safeSet('tasks-list', JSON.stringify(tasks), true);
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-deltask]').forEach(b=>b.addEventListener('click', async ()=>{
+    let tasks = await getTasks();
+    tasks = tasks.filter(x=>x.id!==b.dataset.deltask);
+    await safeSet('tasks-list', JSON.stringify(tasks), true);
+    renderKeepScroll();
+  }));
+
+  const callAthleteSelect = document.getElementById('callAthleteSelect');
+  if(callAthleteSelect) callAthleteSelect.addEventListener('change', ()=>{ state.selectedId = callAthleteSelect.value; renderKeepScroll(); });
+  const saveCallBtn = document.getElementById('saveCallBtn');
+  if(saveCallBtn) saveCallBtn.addEventListener('click', async ()=>{
+    const athleteId = saveCallBtn.dataset.athleteid;
+    const call = { nextDate: document.getElementById('callDate').value, duration: document.getElementById('callDuration').value, notes: document.getElementById('callNotes').value };
+    try{
+      const ok = await safeSet('call-'+athleteId, JSON.stringify(call), true);
+      toast(ok ? 'Videollamada guardada' : 'No se pudo guardar', !ok);
+      saveCallBtn.textContent = ok?'Guardado ✓':'Error'; setTimeout(()=>{ saveCallBtn.textContent='Guardar'; },1400);
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
+  });
+
+  const saveProfileBtn = document.getElementById('saveProfileBtn');
+  if(saveProfileBtn) saveProfileBtn.addEventListener('click', async ()=>{
+    const athleteId = saveProfileBtn.dataset.athleteid;
+    const p = { estado:document.getElementById('profEstado').value, tarifa:document.getElementById('profTarifa').value, pagado:document.getElementById('profPagado').value,
+      vence:document.getElementById('profVence').value, plaza:document.getElementById('profPlaza').value, alta:document.getElementById('profAlta').value,
+      notas:document.getElementById('profNotas').value };
+    try{
+      const ok = await safeSet('profile-'+athleteId, JSON.stringify(p), true);
+      toast(ok ? 'Perfil guardado' : 'No se pudo guardar — revisa la conexión', !ok);
+      saveProfileBtn.textContent = ok?'Guardado ✓':'Error'; setTimeout(()=>{ saveProfileBtn.textContent='Guardar'; },1400);
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
+  });
+
+  const submitIntake = document.getElementById('submitIntake');
+  if(submitIntake) submitIntake.addEventListener('click', async ()=>{
+    try{
+      const data = {}; INTAKE_FIELDS.forEach(f=>{ const el=document.querySelector(`[data-intake="${f.id}"]`); data[f.id]=el?el.value.trim():''; });
+      const ok = await safeSet('intake-'+state.athleteAsId, JSON.stringify(data), true);
+      if(!ok){ toast('No se pudo guardar — revisa la conexión e inténtalo de nuevo', true); return; }
+      toast('Datos guardados');
+      state.tab='rutina'; renderScrollTop();
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
+  });
+
+  document.querySelectorAll('[data-toggle]').forEach(h=>h.addEventListener('click', ()=>{
+    const d = h.dataset.toggle;
+    const acc = h.closest('.acc');
+    if(!acc) return;
+    const wasOpen = acc.classList.contains('open');
+    const container = acc.parentElement;
+    container.querySelectorAll(':scope > .acc.open').forEach(el=>{ if(el!==acc) el.classList.remove('open'); });
+    acc.classList.toggle('open', !wasOpen);
+    Object.keys(state.openDays).forEach(k=>{ state.openDays[k] = false; });
+    state.openDays[d] = !wasOpen;
+  }));
+
+  document.querySelectorAll('[data-ai-toggle]').forEach(b=>b.addEventListener('click', ()=>{ const d=b.dataset.aiToggle; state.aiImportOpen[d]=!state.aiImportOpen[d]; renderKeepScroll(); }));
+  document.querySelectorAll('[data-ai-run]').forEach(b=>b.addEventListener('click', async ()=>{
+    const d = b.dataset.aiRun;
+    const athleteId = state.selectedId;
+    const textEl = document.querySelector(`[data-ai-text="${d}"]`);
+    const text = textEl ? textEl.value.trim() : '';
+    if(!text){ alert('Pega el texto del entreno primero.'); return; }
+    state.aiImportBusy[d]=true; renderKeepScroll();
+    try{
+      const prompt = `Organiza esta sesión de entrenamiento en JSON estricto, sin texto adicional ni markdown. Estructura: {"calentamiento":[{"name":"","desc":"","section":"","load":"","series":n,"reps":"","rest":"","rir":"","rpeTarget":""}],"principal":[...],"vueltaCalma":[...]}.
+- "section": etiqueta del subbloque si el texto la indica (Fuerza, Hipertrofia, Potencia, Pliometría, Movilidad, Core…). Abrevia FZA como "Fuerza" y HT como "Hipertrofia". Vacío si no aplica.
+- "load": el peso o carga tal cual aparezca (ej. "80kg", "40>30kg", "corporal"). No lo metas en desc.
+- Descripciones muy breves (<12 palabras). Campos que no apliquen: cadena vacía.
+Responde SOLO con el JSON, sin frases antes ni después. Texto:\n\n${text}`;
+      const resp = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:2000, messages:[{role:'user', content:prompt}] }) });
+      const data = await resp.json();
+      if(!data || !Array.isArray(data.content)){
+        const apiMsg = (data && data.error && data.error.message) ? data.error.message : 'respuesta inesperada de la IA';
+        throw new Error(apiMsg);
+      }
+      let rawtxt = data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
+      // El modelo a veces añade una frase antes o después del JSON: nos quedamos
+      // solo con el objeto, desde la primera llave hasta la última.
+      const first = rawtxt.indexOf('{'), last = rawtxt.lastIndexOf('}');
+      if(first === -1 || last === -1 || last <= first) throw new Error('la IA no devolvió un JSON reconocible');
+      rawtxt = rawtxt.slice(first, last+1);
+      let parsed;
+      try{ parsed = JSON.parse(rawtxt); }
+      catch(pe){ throw new Error('el JSON llegó incompleto o mal formado'); }
+      const totalItems = BLOCKS.reduce((acc,bl)=>acc + (Array.isArray(parsed[bl.key]) ? parsed[bl.key].length : 0), 0);
+      if(totalItems === 0) throw new Error('no se reconoció ningún ejercicio en el texto');
+      const draft = await getRoutine(athleteId, true);
+      BLOCKS.forEach(bl=>{
+        const items = Array.isArray(parsed[bl.key]) ? parsed[bl.key] : [];
+        draft.days[d][bl.key] = items.filter(it=>it && it.name).map(it=>({
+          id:uid(), name:String(it.name||''), desc:String(it.desc||''),
+          section:String(it.section||''), load:String(it.load||''),
+          series:(it.series===0||it.series)?String(it.series):'', reps:String(it.reps||''),
+          rest:String(it.rest||''), rir:String(it.rir||''), rpeTarget:String(it.rpeTarget||''),
+          timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}
+        }));
+      });
+      draft.updatedAt = new Date().toISOString();
+      const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+      if(!ok) toast('No se pudo guardar el resultado de la IA', true);
+      else toast(`${totalItems} ejercicios importados`);
+      state.aiImportOpen[d]=false; state.openDays[d]=true;
+    }catch(e){ toast('No se pudo organizar: ' + (e.message||'error de red') + '. Añádelos manualmente.', true); }
+    state.aiImportBusy[d]=false; renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-addex]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [d, blockKey] = b.dataset.addex.split('|');
+    const athleteId = state.selectedId;
+    const draft = await getRoutine(athleteId, true);
+    draft.days[d][blockKey].push(blankExercise());
+    draft.updatedAt = new Date().toISOString();
+    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    if(!ok) alert('No se pudo guardar. Comprueba la conexión e inténtalo de nuevo.');
+    state.openDays[d]=true; renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-removeex]').forEach(b=>b.addEventListener('click', async ()=>{
+    const exId = b.dataset.removeex; const card=b.closest('.ex-card'); const blockKey=card.dataset.block; const d=card.dataset.day;
+    const athleteId = state.selectedId;
+    const draft = await getRoutine(athleteId, true);
+    draft.days[d][blockKey] = draft.days[d][blockKey].filter(x=>x.id!==exId);
+    draft.updatedAt = new Date().toISOString();
+    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    if(!ok) alert('No se pudo guardar. Comprueba la conexión e inténtalo de nuevo.');
+    state.openDays[d]=true; renderKeepScroll();
+  }));
+  // auto-save per exercise field on blur
+  document.querySelectorAll('.ex-card').forEach(card=>{
+    const fields = card.querySelectorAll('input, textarea, select');
+    const commit = async ()=>{
+      const athleteId = state.selectedId;
+      const d = card.dataset.day, blockKey = card.dataset.block, exId = card.dataset.exid;
+      const draft = await getRoutine(athleteId, true);
+      const ex = draft.days[d][blockKey].find(x=>x.id===exId);
+      if(ex){
+        ex.name = card.querySelector('.ex-name').value.trim();
+        ex.desc = card.querySelector('.ex-desc').value.trim();
+        ex.section = card.querySelector('.ex-section').value.trim();
+        ex.load = card.querySelector('.ex-load').value.trim();
+        ex.series = card.querySelector('.ex-series').value.trim();
+        ex.reps = card.querySelector('.ex-reps').value.trim();
+        ex.rest = card.querySelector('.ex-rest').value.trim();
+        ex.rir = card.querySelector('.ex-rir').value.trim();
+        ex.rpeTarget = card.querySelector('.ex-rpetarget').value.trim();
+        const prevType = exTimer(ex).type;
+        const t = exTimer(ex);
+        const typeEl = card.querySelector('.ex-timer-type');
+        if(typeEl) t.type = typeEl.value;
+        const num = (sel, fallback)=>{ const el=card.querySelector(sel); return el ? (parseInt(el.value,10)||fallback) : fallback; };
+        t.work = num('.tm-work', t.work);
+        t.rest = num('.tm-rest', t.rest);
+        t.rounds = num('.tm-rounds', t.rounds);
+        t.sets = num('.tm-sets', t.sets);
+        t.setRest = num('.tm-setrest', t.setRest);
+        t.emomLen = num('.tm-emomlen', t.emomLen);
+        t.emomRounds = num('.tm-emomrounds', t.emomRounds);
+        t.amrapMin = num('.tm-amrapmin', t.amrapMin);
+        t.seriesRestSec = num('.tm-seriesrest', t.seriesRestSec);
+        t.seriesCount = num('.tm-seriescount', t.seriesCount);
+        ex.timer = t;
+        draft.updatedAt = new Date().toISOString();
+        await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+        const flag = card.querySelector('.save-flag'); if(flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
+        if(t.type !== prevType){ state.openDays[d]=true; renderKeepScroll(); }
+      }
+    };
+    let debounce = null;
+    fields.forEach(f=>{
+      // `change` sólo salta al perder el foco, lo que en móvil es frágil: si el
+      // usuario escribe y navega sin tocar fuera del campo, la edición se perdía.
+      // Guardamos también mientras escribe, con una pequeña espera.
+      f.addEventListener('input', ()=>{ clearTimeout(debounce); debounce = setTimeout(commit, 600); });
+      f.addEventListener('change', ()=>{ clearTimeout(debounce); commit(); });
+    });
+  });
+  const shareRoutineBtn = document.getElementById('shareRoutineBtn');
+  if(shareRoutineBtn) shareRoutineBtn.addEventListener('click', async ()=>{
+    const athleteId = state.selectedId;
+    const previousPublished = await getRoutine(athleteId, false);
+    const hasContent = DAYS.some(d => BLOCKS.some(b => previousPublished.days[d][b.key].length > 0));
+    if(hasContent){
+      const histRaw = await safeGet('routine-history-'+athleteId, true);
+      const hist = histRaw ? JSON.parse(histRaw) : [];
+      const currentWeekOf = weekOfISO();
+      const alreadyArchivedThisWeek = hist.length && hist[hist.length-1].weekOf === currentWeekOf;
+      if(!alreadyArchivedThisWeek){
+        hist.push({ weekNumber: hist.length+1, weekOf: currentWeekOf, days: previousPublished.days });
+        await safeSet('routine-history-'+athleteId, JSON.stringify(hist), true);
+      }
+    }
+    const draft = await getRoutine(athleteId, true);
+    draft.updatedAt = new Date().toISOString();
+    draft.weekOf = weekOfISO();
+    const ok = await safeSet('routine-'+athleteId, JSON.stringify(draft), true);
+    toast(ok ? 'Planificación compartida' : 'No se pudo compartir', !ok);
+    shareRoutineBtn.textContent = ok?'Compartido ✓':'Error';
+    setTimeout(()=>{ shareRoutineBtn.textContent='Compartir planificación'; render(); },1300);
+  });
+
+  const replayTut = document.getElementById('replayTutorialBtn');
+  if(replayTut) replayTut.addEventListener('click', ()=>{
+    state.showTutorial = true; state.tutorialStep = 0; renderTutorial();
+  });
+
+  // --- Perfil del atleta: guardar sus propios datos ---
+  const saveMyIntake = document.getElementById('saveMyIntake');
+  if(saveMyIntake) saveMyIntake.addEventListener('click', async ()=>{
+    try{
+      const prevRaw = await safeGet('intake-'+athleteId, true);
+      const data = prevRaw ? JSON.parse(prevRaw) : {};
+      INTAKE_FIELDS.forEach(f=>{ const el=document.querySelector(`[data-myintake="${f.id}"]`); if(el) data[f.id]=el.value.trim(); });
+      const ok = await safeSet('intake-'+athleteId, JSON.stringify(data), true);
+      toast(ok?'Datos actualizados':'No se pudo guardar', !ok);
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
+  });
+
+  // --- Exportar la videollamada al calendario del móvil ---
+  const addCal = document.getElementById('addToCalendarBtn');
+  if(addCal) addCal.addEventListener('click', async ()=>{
+    try{
+      const raw = await safeGet('call-'+athleteId, true);
+      const call = raw ? JSON.parse(raw) : {};
+      const me = state.athletes.find(a=>a.id===athleteId);
+      const ics = icsFor(call, me?me.name:'');
+      if(!ics){ toast('No hay videollamada programada', true); return; }
+      const blob = new Blob([ics], {type:'text/calendar;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'revision-umbral.ics';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url), 1500);
+      toast('Evento descargado — ábrelo con tu calendario');
+    }catch(e){ toast('No se pudo generar el evento', true); }
+  });
+
+  // --- Cuestionario como subpestaña ---
+  const openQuest = document.getElementById('openQuestBtn');
+  if(openQuest) openQuest.addEventListener('click', ()=>{ state.calShowQuest=true; state.questWeek=null; renderScrollTop(); });
+  const closeQuest = document.getElementById('closeQuestBtn');
+  if(closeQuest) closeQuest.addEventListener('click', ()=>{ state.calShowQuest=false; state.questWeek=null; renderScrollTop(); });
+  const questWeekSelect = document.getElementById('questWeekSelect');
+  if(questWeekSelect) questWeekSelect.addEventListener('change', ()=>{ state.questWeek = questWeekSelect.value; renderKeepScroll(); });
+
+  // --- Selectores de semana y día en Sesión ---
+  const sessionWeekSel = document.getElementById('sessionWeek');
+  const sessionDaySelect = document.getElementById('sessionDay');
+  const refreshPreview = async ()=>{
+    const week = sessionWeekSel ? sessionWeekSel.value : 'actual';
+    const day = sessionDaySelect ? sessionDaySelect.value : DAY_INDEX[new Date().getDay()];
+    state.sessionWeek = week; state.sessionDay = day;
+    let source = await getRoutine(athleteId, false);
+    if(week !== 'actual'){
+      const histRaw = await safeGet('routine-history-'+athleteId, true);
+      const hist = histRaw ? JSON.parse(histRaw) : [];
+      const h = hist.find(w=>String(w.weekNumber)===String(week));
+      if(h) source = { days:h.days };
+    }
+    const box = document.getElementById('sessionPreview');
+    if(box) box.innerHTML = sessionPreviewHtml(source, day);
+  };
+  if(sessionWeekSel) sessionWeekSel.addEventListener('change', refreshPreview);
+  if(sessionDaySelect) sessionDaySelect.addEventListener('change', refreshPreview);
+
+  const resumeBtn = document.getElementById('resumeSessionBtn');
+  if(resumeBtn) resumeBtn.addEventListener('click', async ()=>{
+    const paused = await findPausedSession(athleteId);
+    if(!paused){ toast('Ya no está disponible', true); render(); return; }
+    session = { day: paused.day, elapsedSec: paused.elapsedSec||0, exercises: paused.exercises,
+      fullscreen:true, showSurvey: !!paused.showSurvey, startedAt: paused.startedAt,
+      avgExerciseRPE: paused.avgExerciseRPE, fatigueScore: paused.fatigueScore };
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = setInterval(()=>{
+      if(!session){ clearInterval(stopwatchInterval); stopwatchInterval=null; return; }
+      session.elapsedSec++;
+      const disp=document.getElementById('stopwatchDisplay');
+      if(disp) disp.textContent=fmtTime(session.elapsedSec);
+      if(session.elapsedSec % 15 === 0) queueSessionSave();
+    },1000);
+    keepAwake(true);
+    mountSessionOverlay(athleteId);
+  });
+  const discardBtn = document.getElementById('discardSessionBtn');
+  if(discardBtn) discardBtn.addEventListener('click', async ()=>{
+    if(!confirm('Se perderá lo registrado en esa sesión. ¿Descartarla?')) return;
+    await safeSet(sessionKey(athleteId), '', true);
+    toast('Sesión descartada');
+    render();
+  });
+
+  const startSession = document.getElementById('startSession');
+  if(startSession) startSession.addEventListener('click', async ()=>{
+    const day = document.getElementById('sessionDay').value;
+    const week = document.getElementById('sessionWeek') ? document.getElementById('sessionWeek').value : 'actual';
+    let routine = await getRoutine(state.athleteAsId, false);
+    if(week !== 'actual'){
+      const histRaw = await safeGet('routine-history-'+state.athleteAsId, true);
+      const hist = histRaw ? JSON.parse(histRaw) : [];
+      const h = hist.find(w=>String(w.weekNumber)===String(week));
+      if(h) routine = { days:h.days };
+    }
+    const list = flattenExercises(routine, day);
+    if(!list.length){ toast('No hay ejercicios programados para ese día', true); return; }
+    session = { day, elapsedSec:0, exercises:list, fullscreen:true, showSurvey:false, avgExerciseRPE:null, fatigueScore:null, startedAt:Date.now() };
+    ensureAudio();
+    keepAwake(true);
+    persistSession();
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = setInterval(()=>{
+      if(!session){ clearInterval(stopwatchInterval); stopwatchInterval=null; return; }
+      session.elapsedSec++;
+      const disp=document.getElementById('stopwatchDisplay');
+      if(disp) disp.textContent=fmtTime(session.elapsedSec);
+      if(session.elapsedSec % 15 === 0) queueSessionSave();
+    },1000);
+    mountSessionOverlay(state.athleteAsId);
+  });
+
+  const saveQuestConfig = document.getElementById('saveQuestConfig');
+  if(saveQuestConfig) saveQuestConfig.addEventListener('click', async ()=>{
+    try{
+      const active=[]; document.querySelectorAll('[data-qid]').forEach(cb=>{ if(cb.checked) active.push(cb.dataset.qid); });
+      const target = state.selectedId;
+      const ok = await safeSet('quest-config-'+target, JSON.stringify(active), true);
+      const aplicarTodos = document.getElementById('questApplyAll');
+      if(aplicarTodos && aplicarTodos.checked) await safeSet('quest-config', JSON.stringify(active), true);
+      toast(ok ? 'Selección guardada' : 'No se pudo guardar', !ok);
+      saveQuestConfig.textContent = ok?'Guardado ✓':'Error'; setTimeout(()=>{ saveQuestConfig.textContent='Guardar selección'; },1400);
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
+  });
+  document.querySelectorAll('[data-qscale]').forEach(scale=>{
+    scale.querySelectorAll('button').forEach(btn=>btn.addEventListener('click', ()=>{ scale.querySelectorAll('button').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }));
+  });
+  const editQuestBtn = document.getElementById('editQuestBtn');
+  if(editQuestBtn) editQuestBtn.addEventListener('click', ()=>{ state.calShowQuest=true; renderKeepScroll(); });
+  const submitQuest = document.getElementById('submitQuest');
+  if(submitQuest) submitQuest.addEventListener('click', async ()=>{
+    try{
+      const athleteId = state.athleteAsId;
+      const active = await getQuestConfig(athleteId);
+      const answers = {}, notes = {}; let ok2 = true;
+      active.forEach(qid=>{
+        const q = QUESTION_BANK.find(x=>x.id===qid); if(!q) return;
+        if(q.type==='text'){ const ta=document.querySelector(`[data-qtext="${qid}"]`); answers[qid]=ta?ta.value.trim():''; }
+        else {
+          const sc=document.querySelector(`[data-qscale="${qid}"]`); const sel=sc&&sc.querySelector('button.sel');
+          if(!sel){ ok2=false; return; }
+          answers[qid]=parseInt(sel.dataset.val,10);
+          const nt=document.querySelector(`[data-qnote="${qid}"]`); if(nt && nt.value.trim()) notes[qid]=nt.value.trim();
+        }
+      });
+      if(!ok2){ toast('Responde todas las preguntas de escala antes de enviar', true); return; }
+      const date = document.getElementById('questDateInput').value || saturdayOfWeek();
+      const wk = weekOfISO();
+      const raw = await safeGet('quest-'+athleteId, true);
+      let responses = raw ? JSON.parse(raw) : [];
+      responses = responses.filter(r=>r.weekOf!==wk);
+      responses.push({ weekOf: wk, date, answers, notes });
+      const ok = await safeSet('quest-'+athleteId, JSON.stringify(responses), true);
+      toast(ok ? 'Cuestionario enviado' : 'No se pudo guardar', !ok);
+      state.calShowQuest=false;
+      renderKeepScroll();
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
+  });
+}
+
+// ---------- PANTALLA DE ENTRADA ----------
+// Sólo en arranque en frío: al cambiar de pestaña no se vuelve a mostrar,
+// porque una intro de dos segundos veinte veces al día acaba estorbando.
+(function initSplash(){
+  const sp = document.getElementById('splash');
+  if(!sp) return;
+  let cerrado = false;
+  const cerrar = ()=>{
+    if(cerrado) return;
+    cerrado = true;
+    sp.classList.add('hide');
+    setTimeout(()=>{ if(sp && sp.parentNode) sp.parentNode.removeChild(sp); }, 500);
+  };
+  // Se cierra sola al terminar la animación
+  const DURACION = 2500;
+  setTimeout(cerrar, DURACION);
+  // …o antes, si el usuario toca la pantalla
+  sp.addEventListener('click', cerrar);
+  sp.addEventListener('touchstart', cerrar, {passive:true});
+  // Red de seguridad: si algo fallara, nunca dejamos la app tapada
+  setTimeout(cerrar, 6000);
+})();
+
+init();
+</script>
+</body>
+</html>
