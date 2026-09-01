@@ -74,8 +74,12 @@
   .acc-head .chev-arrow{display:inline-block;color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11.5px;transition:transform .25s ease;}
   .acc-head .chev-count{color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11.5px;margin-left:6px;}
   .acc.open .acc-head .chev-arrow{transform:rotate(180deg);}
-  .acc-body{max-height:0;overflow:hidden;padding:0 16px;transition:max-height .32s ease, padding .32s ease;}
-  .acc.open .acc-body{max-height:3000px;padding:16px;}
+  /* Sin límite de altura al abrir: con 3000px el contenido se recortaba a
+     partir del sexto ejercicio y no se podía seguir bajando. La apertura se
+     acompaña con un fundido para que no resulte brusca. */
+  .acc-body{max-height:0;overflow:hidden;padding:0 16px;transition:padding .22s ease;}
+  .acc.open .acc-body{max-height:none;overflow:visible;padding:16px;animation:accOpen .26s ease both;}
+  @keyframes accOpen{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
   .block-title{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin:14px 0 8px;padding-top:10px;border-top:1px dashed var(--border);}
   .block-title:first-child{border-top:none;padding-top:0;margin-top:0;}
 
@@ -188,6 +192,34 @@
   .task-txt b{font-family:'Fraunces',serif;font-size:15px;font-weight:600;}
   .task-txt span{font-size:12px;color:var(--muted);}
   .task-arrow{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:16px;}
+  .habit-row{border:1px solid var(--border);border-radius:8px;padding:13px 15px;margin-bottom:10px;background:var(--panel2);}
+  .habit-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:9px;}
+  .habit-head b{font-family:'Fraunces',serif;font-size:14.5px;font-weight:600;}
+  .habit-tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:2px 8px;}
+  .habit-check{background:var(--panel);border:1px solid var(--border);color:var(--muted);font-family:'Manrope',sans-serif;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:7px;cursor:pointer;}
+  .habit-check.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
+  .hstat{margin-bottom:14px;}
+  .hstat-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13.5px;margin-bottom:5px;}
+  .hstat-top b{font-family:'IBM Plex Mono',monospace;color:var(--accent);}
+  .hstat-bar{height:6px;background:var(--panel2);border-radius:3px;overflow:hidden;}
+  .hstat-bar i{display:block;height:100%;background:var(--accent);border-radius:3px;}
+  .hstat-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+  .hstat-days{display:flex;gap:5px;margin-top:14px;}
+  .hstat-days span{flex:1;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:6px 0;border-radius:5px;background:var(--panel2);color:var(--muted);}
+  .hstat-days span.on{background:var(--accent-dim);color:var(--accent);font-weight:600;}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .cal-head b{font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;}
+  .cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border-radius:6px;font-size:12.5px;background:var(--panel2);color:var(--muted);overflow:hidden;}
+  .cal-day .cd-num{line-height:1;}
+  .cal-day .cd-tag{font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:0.02em;color:var(--accent);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px;}
+  .cal-day.trained{background:var(--accent-dim);color:var(--ink);}
+  .cal-summary{margin-top:16px;border-top:1px dashed var(--border);padding-top:14px;}
+  .cal-sum-kpis{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;}
+  .cal-sum-kpis b{display:block;font-family:'IBM Plex Mono',monospace;font-size:19px;color:var(--accent);}
+  .cal-sum-kpis span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;}
+  .cal-sum-types{display:flex;gap:7px;flex-wrap:wrap;}
+  .ctype{font-size:11.5px;background:var(--panel2);border:1px solid var(--border);border-radius:100px;padding:4px 11px;color:var(--ink);}
+  .ctype i{font-style:normal;font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;margin-right:5px;}
   .chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   /* ---------- PANTALLA DE ENTRADA ---------- */
   .splash{position:fixed;inset:0;z-index:400;background:#2E1016;display:flex;flex-direction:column;
@@ -291,6 +323,18 @@
   <div id="main"></div>
 </div>
 <div class="bottomnav" id="bottomNav"></div>
+<datalist id="habitSuggestions">
+  <option value="Creatina"></option>
+  <option value="Horas de sueño"></option>
+  <option value="Calidad del sueño"></option>
+  <option value="Pasos"></option>
+  <option value="Proteína objetivo"></option>
+  <option value="Hidratación"></option>
+  <option value="Magnesio"></option>
+  <option value="Estiramientos"></option>
+  <option value="Movilidad"></option>
+  <option value="Meditación"></option>
+</datalist>
 <datalist id="sectionSuggestions">
   <option value="Fuerza"></option>
   <option value="Fuerza submáxima"></option>
@@ -686,6 +730,11 @@ async function init(){
   const lg = document.getElementById('logoutBtn');
   if(lg) lg.addEventListener('click', async ()=>{
     state.authRole=null; state.role='coach'; state.athleteAsId=null; state.gateMode=null; state.tab='atletas';
+    // Limpiamos subvistas abiertas: si no, al volver a entrar se aterrizaba en
+    // el check de hábitos o el cuestionario de la sesión anterior.
+    state.calShowHabits=false; state.calShowQuest=false; state.questWeek=null;
+    state.editEntry=null; state.editTask=null; state._inAthleteDetail=false;
+    state.openDays={}; state.calOffset=0; state.sessionWeek=null; state.sessionDay=null;
     stopSession();
     await safeSet('umbral-session', JSON.stringify({}), false);
     render();
@@ -713,12 +762,9 @@ function renderGate(){
     }
     return `<div class="card gate-card">
       <h2>Acceso de atleta</h2>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Elige tu nombre e introduce el PIN que te ha dado tu entrenador.</p>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Introduce el PIN que te ha dado tu entrenador.</p>
       <div class="row" style="flex-direction:column;align-items:stretch;gap:10px;">
-        <select id="athleteSelect" style="width:100%;">
-          ${state.athletes.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}
-        </select>
-        <input type="password" id="pinInput" placeholder="PIN de 4 dígitos" maxlength="4" inputmode="numeric" autocomplete="off" style="width:100%;font-family:'IBM Plex Mono',monospace;letter-spacing:0.3em;">
+        <input type="password" id="pinInput" placeholder="PIN" maxlength="6" inputmode="numeric" autocomplete="off" style="width:100%;font-family:'IBM Plex Mono',monospace;letter-spacing:0.4em;text-align:center;font-size:20px;padding:14px;">
         <div class="row"><button class="btn" id="loginBtn">Entrar</button>
         <button class="btn ghost" id="gateBackBtn">Volver</button></div>
       </div>
@@ -894,14 +940,15 @@ async function bindGateEvents(){
   const pinInput = document.getElementById('pinInput');
   const tryAthlete = async ()=>{
     try{
-      const id = document.getElementById('athleteSelect').value;
       const pin = (pinInput.value||'').trim();
-      const a = state.athletes.find(x=>x.id===id);
       if(!pin){ toast('Introduce el PIN', true); return; }
-      if(a && a.pin === pin){
-        state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = id; state.gateMode = null;
-        await safeSet('umbral-session', JSON.stringify({role:'atleta', athleteAsId:id}), false);
-        const intakeRaw = await safeGet('intake-'+id, true);
+      // Buscamos a quién corresponde el PIN: así ningún atleta ve la lista
+      // de nombres de los demás.
+      const a = state.athletes.find(x=>String(x.pin) === pin);
+      if(a){
+        state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = a.id; state.gateMode = null;
+        await safeSet('umbral-session', JSON.stringify({role:'atleta', athleteAsId:a.id}), false);
+        const intakeRaw = await safeGet('intake-'+a.id, true);
         state.tab = intakeRaw ? 'rutina' : 'intake';
         render();
       } else toast('PIN incorrecto', true);
@@ -1045,9 +1092,19 @@ async function bindShellEvents(){
   if(addBtn) addBtn.addEventListener('click', async ()=>{
     const nameInput = document.getElementById('newAthleteName');
     const name = nameInput.value.trim(); if(!name) return;
-    const newAthlete = { id: uid(), name, pin: String(Math.floor(1000+Math.random()*9000)) };
+    // Con acceso sólo por PIN, dos PINs iguales dejarían a un atleta entrar en
+    // el perfil de otro. Generamos uno que no exista ya.
+    const usados = new Set(state.athletes.map(a=>String(a.pin)));
+    let pin = null;
+    for(let i=0;i<9000;i++){
+      const c = String(Math.floor(1000+Math.random()*9000));
+      if(!usados.has(c)){ pin = c; break; }
+    }
+    if(!pin){ toast('No quedan PINs libres de 4 dígitos', true); return; }
+    const newAthlete = { id: uid(), name, pin };
     state.athletes.push(newAthlete);
-    await safeSet('athletes-list', JSON.stringify(state.athletes), true);
+    const ok = await safeSet('athletes-list', JSON.stringify(state.athletes), true);
+    toast(ok ? `${name} añadido · PIN ${pin}` : 'No se pudo guardar', !ok);
     render();
   });
   const previewBtn = document.getElementById('previewAsAthleteBtn');
@@ -1423,8 +1480,24 @@ function bindSurveyEvents(){
     await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
     await safeSet(sessionKey(athleteId), '', true);
     toast('Sesión guardada en el diario');
-    stopSession();
-    state.tab='progreso'; render();
+    // Antes de salir, la orientación de recuperación de esta sesión.
+    clearInterval(stopwatchInterval); stopwatchInterval = null;
+    clearInterval(engineInterval); engineInterval = null;
+    releaseScreen();
+    const ov = document.getElementById('sessionOverlay');
+    if(ov){
+      ov.innerHTML = `<div class="session-topbar"><h2>Sesión guardada</h2></div>`
+        + tplRecuperacion(cargaFinal, overallRPE, Math.round(session.elapsedSec/60))
+        + `<div class="row" style="margin-top:16px;"><button class="btn" id="closeRecovery">Ver mi progreso</button></div>`;
+      const cerrar = document.getElementById('closeRecovery');
+      if(cerrar) cerrar.addEventListener('click', ()=>{
+        stopSession();
+        state.tab='progreso'; render();
+      });
+    } else {
+      stopSession();
+      state.tab='progreso'; render();
+    }
   });
 }
 
@@ -1642,21 +1715,80 @@ function bindTimerModalEvents(){
 }
 
 // ---------- CALENDARIO (atleta) ----------
-function monthGridHtml(callDateStr){
-  const now = new Date(); const year=now.getFullYear(), month=now.getMonth();
+// Etiqueta corta del tipo de sesión, sacada de las secciones de sus ejercicios.
+function tipoDeSesion(entry){
+  if(!entry) return '';
+  const secs = (entry.exercises||[]).map(x=>(x.section||'').trim()).filter(Boolean);
+  if(secs.length){
+    const cuenta = {};
+    secs.forEach(x=>{ cuenta[x] = (cuenta[x]||0)+1; });
+    const top = Object.keys(cuenta).sort((a,b)=>cuenta[b]-cuenta[a])[0];
+    return top;
+  }
+  return 'Sesión';
+}
+function abreviaTipo(t){
+  const map = {'Fuerza':'FZA','Fuerza submáxima':'FZA','Hipertrofia':'HT','Potencia':'POT',
+    'Pliometría':'PLIO','Resistencia':'RES','Movilidad':'MOV','Activación':'ACT','Core':'CORE',
+    'Técnica':'TEC','Recuperación':'REC','Específico Hyrox':'HYROX','Sesión':'✓'};
+  if(map[t]) return map[t];
+  return t.slice(0,4).toUpperCase();
+}
+function monthGridHtml(callDateStr, journal, offset){
+  const base = new Date();
+  base.setDate(1);
+  base.setMonth(base.getMonth() + (offset||0));
+  const year=base.getFullYear(), month=base.getMonth();
+  const hoy = new Date();
   const first = new Date(year, month, 1);
   const startOffset = (first.getDay()+6)%7;
   const daysInMonth = new Date(year, month+1, 0).getDate();
   const callDate = callDateStr ? new Date(callDateStr+'T00:00:00') : null;
-  let html = `<div class="cal-grid">`;
+  // Sesiones registradas de ese mes, indexadas por día
+  const porDia = {};
+  (journal||[]).forEach(e=>{
+    if(!e || !e.date) return;
+    const d = new Date(e.date+'T00:00:00');
+    if(d.getFullYear()===year && d.getMonth()===month) porDia[d.getDate()] = e;
+  });
+  const nombreMes = base.toLocaleDateString('es-ES',{month:'long', year:'numeric'});
+  let html = `<div class="cal-head">
+    <button class="btn ghost small" data-calmove="-1">←</button>
+    <b>${nombreMes.charAt(0).toUpperCase()+nombreMes.slice(1)}</b>
+    <button class="btn ghost small" data-calmove="1" ${(offset||0)>=0?'disabled':''}>→</button>
+  </div>`;
+  html += `<div class="cal-grid">`;
   ['Lu','Ma','Mi','Ju','Vi','Sa','Do'].forEach(d=>html+=`<div class="dow">${d}</div>`);
   for(let i=0;i<startOffset;i++) html += `<div class="cal-day empty"></div>`;
   for(let d=1; d<=daysInMonth; d++){
-    const isToday = d===now.getDate();
+    const isToday = d===hoy.getDate() && month===hoy.getMonth() && year===hoy.getFullYear();
     const isCall = callDate && callDate.getDate()===d && callDate.getMonth()===month && callDate.getFullYear()===year;
-    html += `<div class="cal-day ${isToday?'today':''} ${isCall?'call':''}">${d}</div>`;
+    const e = porDia[d];
+    const tipo = e ? abreviaTipo(tipoDeSesion(e)) : '';
+    html += `<div class="cal-day ${isToday?'today':''} ${isCall?'call':''} ${e?'trained':''}" ${e?`title="${escapeHtml(e.date)} · carga ${e.fatigueScore}"`:''}>
+      <span class="cd-num">${d}</span>${tipo?`<span class="cd-tag">${tipo}</span>`:''}
+    </div>`;
   }
   html += `</div>`;
+  // Resumen del mes por tipo (punto 2)
+  const sesiones = Object.values(porDia);
+  if(sesiones.length){
+    const cuenta = {};
+    sesiones.forEach(e=>{ const t = tipoDeSesion(e); cuenta[t] = (cuenta[t]||0)+1; });
+    const cargaTotal = sesiones.reduce((a,e)=>a+(e.fatigueScore||0),0);
+    const minutos = Math.round(sesiones.reduce((a,e)=>a+(e.durationSeconds||0),0)/60);
+    html += `<div class="cal-summary">
+      <div class="cal-sum-kpis">
+        <div><b>${sesiones.length}</b><span>Sesiones</span></div>
+        <div><b>${minutos}</b><span>Minutos</span></div>
+        <div><b>${cargaTotal.toFixed(0)}</b><span>Carga total</span></div>
+      </div>
+      <div class="cal-sum-types">${Object.keys(cuenta).sort((a,b)=>cuenta[b]-cuenta[a])
+        .map(t=>`<span class="ctype"><i>${cuenta[t]}</i>${escapeHtml(t)}</span>`).join('')}</div>
+    </div>`;
+  } else {
+    html += `<div class="empty" style="padding:10px 0;">Sin sesiones registradas este mes.</div>`;
+  }
   return html;
 }
 function icsFor(call, athleteName){
@@ -1714,7 +1846,14 @@ async function tplCalendarioAtleta(athleteId){
     return html;
   }
 
-  let html = `<div class="card"><h2>Calendario</h2>${monthGridHtml(call.nextDate)}</div>`;
+  // Subpestaña del check diario
+  if(state.calShowHabits){
+    return await tplHabitos(athleteId);
+  }
+
+  const jRaw = await safeGet('journal-'+athleteId, true);
+  const journal = jRaw ? JSON.parse(jRaw) : [];
+  let html = `<div class="card"><h2>Calendario</h2>${monthGridHtml(call.nextDate, journal, state.calOffset||0)}</div>`;
 
   // Videollamada
   html += `<div class="card"><h2>Videollamada de revisión</h2>`;
@@ -1734,6 +1873,12 @@ async function tplCalendarioAtleta(athleteId){
   }
   html += `</div>`;
 
+  // Estado del check diario para el banner
+  const habCfg = await getHabitDefs(athleteId);
+  const habLog = await getHabitLog(athleteId);
+  const totalHabitos = habCfg.coach.length + habCfg.athlete.length;
+  const hoyHecho = !!(habLog[todayISO()] && Object.keys(habLog[todayISO()]).length);
+
   // Banner del cuestionario
   html += `<div class="card"><h2>Tareas de la semana</h2>
     <button class="task-banner ${existing?'done':''}" id="openQuestBtn">
@@ -1743,6 +1888,14 @@ async function tplCalendarioAtleta(athleteId){
         <span>${existing ? 'Respondido el '+(existing.date||wk)+' · toca para revisarlo' : 'Pendiente · sábado '+saturdayOfWeek()}</span>
       </span>
       <span class="task-arrow">${existing?'✓':'›'}</span>
+    </button>
+    <button class="task-banner ${hoyHecho?'done':''}" id="openHabitsBtn" style="margin-top:10px;">
+      <span class="task-ic">${icPerson()}</span>
+      <span class="task-txt">
+        <b>Check diario</b>
+        <span>${totalHabitos ? (hoyHecho ? 'Registrado hoy · toca para revisarlo' : 'Pendiente hoy · '+totalHabitos+' hábito'+(totalHabitos===1?'':'s')) : 'Añade tus hábitos del día a día'}</span>
+      </span>
+      <span class="task-arrow">${hoyHecho?'✓':'›'}</span>
     </button>
   </div>`;
 
@@ -1909,6 +2062,31 @@ async function tplProgreso(athleteId){
   ${acwrNota?`<div style="font-size:12px;color:var(--muted);margin:-6px 0 14px;line-height:1.5;">${acwrNota}</div>`:''}`;
   // Con muchas sesiones las barras quedarían de menos de 2px. Mostramos las
   // últimas 30, que es lo que de verdad se lee en un móvil.
+  // Reparto por tipo de sesión en los últimos 28 días
+  const desde = new Date(); desde.setDate(desde.getDate()-28);
+  const ult28 = entries.filter(e=>new Date(e.date+'T00:00:00') >= desde);
+  if(ult28.length){
+    const cuenta = {}, cargaPorTipo = {};
+    ult28.forEach(e=>{
+      const t = tipoDeSesion(e);
+      cuenta[t] = (cuenta[t]||0)+1;
+      cargaPorTipo[t] = (cargaPorTipo[t]||0) + (e.fatigueScore||0);
+    });
+    const tipos = Object.keys(cuenta).sort((a,b)=>cuenta[b]-cuenta[a]);
+    const maxC = Math.max(...tipos.map(t=>cuenta[t]),1);
+    html += `<div style="background:var(--panel2);border-radius:8px;padding:14px;margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Reparto por tipo de sesión · últimos 28 días (${ult28.length} sesiones)</div>`;
+    tipos.forEach(t=>{
+      const pct = (cuenta[t]/maxC)*100;
+      html += `<div class="hstat" style="margin-bottom:10px;">
+        <div class="hstat-top"><span>${escapeHtml(t)}</span><b>${cuenta[t]} ${cuenta[t]===1?'sesión':'sesiones'}</b></div>
+        <div class="hstat-bar"><i style="width:${pct.toFixed(0)}%;"></i></div>
+        <div class="hstat-sub">carga acumulada ${cargaPorTipo[t].toFixed(0)}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
   const MAX_BARRAS = 30;
   const recientes = entries.slice(-MAX_BARRAS);
   const loads = recientes.map(e=>e.fatigueScore); const maxLoad = Math.max(...loads,1);
@@ -1934,6 +2112,209 @@ async function tplProgreso(athleteId){
 }
 
 // ---------- PERFIL (atleta, propio) ----------
+// Orientación de recuperación tras la sesión. Deliberadamente cualitativa: las
+// fórmulas que dan "X horas exactas" a partir del sRPE tienen respaldo débil y
+// varían mucho entre personas, así que damos pautas, no cifras falsas.
+function guiaRecuperacion(carga, rpe, minutos){
+  let nivel, titulo, pautas;
+  if(carga < 250 || rpe <= 4){
+    nivel='suave'; titulo='Carga ligera';
+    pautas = ['Puedes entrenar mañana con normalidad.','Suficiente con tu rutina habitual de sueño e hidratación.'];
+  } else if(carga < 500 || rpe <= 6){
+    nivel='moderada'; titulo='Carga moderada';
+    pautas = ['Mañana puedes volver a entrenar, mejor si es otro patrón o grupo muscular.','Come algo con proteína en las próximas 2 horas.','Duerme tus horas habituales.'];
+  } else if(carga < 800 || rpe <= 8){
+    nivel='alta'; titulo='Carga alta';
+    pautas = ['Deja al menos 24 h antes de repetir un estímulo similar.','Prioriza sueño: es donde de verdad se adapta el cuerpo.','Proteína e hidratación en las próximas horas.','Si mañana entrenas, que sea suave o de otro patrón.'];
+  } else {
+    nivel='muy alta'; titulo='Carga muy alta';
+    pautas = ['Deja 48 h antes de repetir un estímulo parecido.','El sueño de esta noche es lo más determinante para recuperarte.','Cuida la comida posterior: proteína e hidratos.','Mañana, descanso activo o movilidad.','Si aparece dolor articular o el sueño empeora, coméntaselo a tu entrenador.'];
+  }
+  return {nivel, titulo, pautas};
+}
+function tplRecuperacion(carga, rpe, minutos){
+  const g = guiaRecuperacion(carga, rpe, minutos);
+  const color = g.nivel==='suave'||g.nivel==='moderada' ? 'var(--accent)' : 'var(--warn)';
+  return `<div class="card" id="recoveryCard" style="margin-top:14px;border-left:3px solid ${color};">
+    <h2>Recuperación</h2>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);margin-bottom:10px;">
+      ${minutos} min · RPE ${rpe} · carga ${carga} — <b style="color:${color};">${g.titulo}</b>
+    </div>
+    <ul style="margin:0 0 0 18px;padding:0;font-size:13.5px;line-height:1.65;">
+      ${g.pautas.map(p=>`<li>${p}</li>`).join('')}
+    </ul>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px;">Orientación general a partir de tu carga y esfuerzo. No sustituye a cómo te encuentres: si sigues fatigado, díselo a tu entrenador.</p>
+  </div>`;
+}
+
+// ---------- CHECK DIARIO DE HÁBITOS ----------
+// Dos orígenes: los que fija el entrenador (el atleta no puede tocarlos) y los
+// que el atleta añade por su cuenta (sólo él los gestiona).
+const HABIT_TYPES = {
+  check:  'Sí / no',
+  scale:  'Valoración 1-5',
+  number: 'Cantidad'
+};
+const HABITS_SUGERIDOS = [
+  {name:'Creatina', type:'check'},
+  {name:'Horas de sueño', type:'number', unit:'h'},
+  {name:'Calidad del sueño', type:'scale'},
+  {name:'Pasos', type:'number', unit:'pasos'},
+  {name:'Proteína objetivo', type:'check'},
+  {name:'Hidratación', type:'scale'}
+];
+function habitId(){ return 'h'+uid(); }
+
+async function getHabitDefs(athleteId){
+  const raw = await safeGet('habits-config-'+athleteId, true);
+  let cfg = null;
+  try{ cfg = raw ? JSON.parse(raw) : null; }catch(e){ cfg = null; }
+  if(!cfg || !Array.isArray(cfg.coach) || !Array.isArray(cfg.athlete)) cfg = { coach:[], athlete:[] };
+  return cfg;
+}
+async function saveHabitDefs(athleteId, cfg){
+  return safeSet('habits-config-'+athleteId, JSON.stringify(cfg), true);
+}
+async function getHabitLog(athleteId){
+  const raw = await safeGet('habits-'+athleteId, true);
+  try{ const l = raw ? JSON.parse(raw) : {}; return (l && typeof l==='object') ? l : {}; }
+  catch(e){ return {}; }
+}
+async function saveHabitLog(athleteId, log){
+  return safeSet('habits-'+athleteId, JSON.stringify(log), true);
+}
+function ultimosDias(n){
+  const out = [];
+  for(let i=n-1;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    out.push(d.toISOString().slice(0,10));
+  }
+  return out;
+}
+// Estadística semanal por hábito: adherencia si es check, media si es escala o cantidad.
+function statsHabito(def, log, dias){
+  const vals = [];
+  dias.forEach(f=>{ const d = log[f]; if(d && d[def.id] !== undefined && d[def.id] !== '') vals.push(d[def.id]); });
+  if(!vals.length) return { texto:'sin datos', detalle:'0 de '+dias.length+' días', pct:0 };
+  if(def.type === 'check'){
+    const si = vals.filter(v=>v===true||v==='true').length;
+    return { texto: si+'/'+dias.length+' días', detalle: Math.round(si/dias.length*100)+'% de adherencia', pct: si/dias.length*100 };
+  }
+  const nums = vals.map(v=>parseFloat(v)).filter(v=>!isNaN(v));
+  if(!nums.length) return { texto:'sin datos', detalle:'', pct:0 };
+  const media = nums.reduce((a,b)=>a+b,0)/nums.length;
+  const max = def.type==='scale' ? 5 : Math.max(...nums,1);
+  return {
+    texto: (def.type==='scale' ? media.toFixed(1)+'/5' : (Number.isInteger(media)?media:media.toFixed(1))+(def.unit?' '+def.unit:'')),
+    detalle: 'media de '+nums.length+' día'+(nums.length===1?'':'s'),
+    pct: def.type==='scale' ? (media/max*100) : Math.min(100, media/max*100)
+  };
+}
+
+async function tplHabitos(athleteId){
+  const cfg = await getHabitDefs(athleteId);
+  const log = await getHabitLog(athleteId);
+  const hoy = todayISO();
+  const deHoy = log[hoy] || {};
+  const todos = [...cfg.coach.map(h=>({...h, fijo:true})), ...cfg.athlete.map(h=>({...h, fijo:false}))];
+
+  let html = `<div class="card">
+    <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:4px;">
+      <h2 style="margin:0;">Check diario</h2>
+      <button class="btn ghost small" id="closeHabitsBtn">← Calendario</button>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">${new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'})}</p>`;
+
+  if(!todos.length){
+    html += `<div class="empty">Aún no hay hábitos que seguir. Añade los tuyos abajo o espera a que tu entrenador te asigne alguno.</div>`;
+  }
+  todos.forEach(h=>{
+    const v = deHoy[h.id];
+    html += `<div class="habit-row">
+      <div class="habit-head">
+        <b>${escapeHtml(h.name)}</b>
+        ${h.fijo?'<span class="habit-tag">de tu entrenador</span>':''}
+      </div>`;
+    if(h.type === 'check'){
+      const on = (v===true||v==='true');
+      html += `<button class="habit-check ${on?'on':''}" data-habit="${h.id}" data-type="check">${on?'✓ Hecho':'Marcar'}</button>`;
+    } else if(h.type === 'scale'){
+      html += `<div class="scale" data-habitscale="${h.id}">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${String(v)===String(n)?'sel':''}">${n}</button>`).join('')}</div>`;
+    } else {
+      html += `<div class="row"><input type="number" class="habit-num" data-habit="${h.id}" value="${v!==undefined?v:''}" placeholder="0" style="width:110px;">${h.unit?`<span style="font-size:12.5px;color:var(--muted);">${escapeHtml(h.unit)}</span>`:''}</div>`;
+    }
+    if(!h.fijo) html += `<button class="btn ghost small" data-delhabit="${h.id}" style="margin-top:8px;">Quitar</button>`;
+    html += `</div>`;
+  });
+
+  html += `<div class="block-title">Añadir un hábito propio</div>
+    <div class="ex-grid">
+      <div class="full"><label class="field-label">Nombre</label><input type="text" id="newHabitName" placeholder="Ej. Estiramientos, Magnesio…" list="habitSuggestions" style="width:100%;"></div>
+      <div><label class="field-label">Tipo</label><select id="newHabitType" style="width:100%;">${Object.keys(HABIT_TYPES).map(k=>`<option value="${k}">${HABIT_TYPES[k]}</option>`).join('')}</select></div>
+      <div><label class="field-label">Unidad (opcional)</label><input type="text" id="newHabitUnit" placeholder="h, pasos, g" style="width:100%;"></div>
+    </div>
+    <button class="btn ghost" id="addHabitBtn" style="margin-top:10px;">+ Añadir</button>
+  </div>`;
+
+  // Estadística de los últimos 7 días
+  if(todos.length){
+    const dias = ultimosDias(7);
+    html += `<div class="card"><h2>Tu semana</h2>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Últimos 7 días.</p>`;
+    todos.forEach(h=>{
+      const s = statsHabito(h, log, dias);
+      html += `<div class="hstat">
+        <div class="hstat-top"><span>${escapeHtml(h.name)}</span><b>${s.texto}</b></div>
+        <div class="hstat-bar"><i style="width:${Math.max(2,Math.min(100,s.pct)).toFixed(0)}%;"></i></div>
+        <div class="hstat-sub">${s.detalle}</div>
+      </div>`;
+    });
+    html += `<div class="hstat-days">${dias.map(f=>{
+      const hay = log[f] && Object.keys(log[f]).length;
+      return `<span class="${hay?'on':''}" title="${f}">${f.slice(8)}</span>`;
+    }).join('')}</div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;">Días con algún registro.</p></div>`;
+  }
+  return html;
+}
+
+// Panel del entrenador: define los hábitos obligatorios del atleta
+async function tplHabitosCoach(athleteId){
+  const cfg = await getHabitDefs(athleteId);
+  const log = await getHabitLog(athleteId);
+  const dias = ultimosDias(7);
+  let html = `<div class="card"><h2>Hábitos que le asignas</h2>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Estos le aparecen fijos en su check diario y no puede quitarlos. Él puede añadir los suyos aparte.</p>`;
+  if(!cfg.coach.length) html += `<div class="empty">Todavía no le has asignado ninguno.</div>`;
+  cfg.coach.forEach(h=>{
+    const s = statsHabito(h, log, dias);
+    html += `<div class="entry"><div class="entry-top"><span>${escapeHtml(h.name)}</span><span>${HABIT_TYPES[h.type]||h.type}</span></div>
+      <div style="font-size:12.5px;color:var(--accent);margin-top:4px;">7 días: <b>${s.texto}</b> <span style="color:var(--muted);">${s.detalle}</span></div>
+      <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-delcoachhabit="${h.id}">Eliminar</button></div>
+    </div>`;
+  });
+  html += `<div class="block-title">Asignar uno nuevo</div>
+    <div class="ex-grid">
+      <div class="full"><label class="field-label">Nombre</label><input type="text" id="coachHabitName" list="habitSuggestions" placeholder="Ej. Creatina, Horas de sueño…" style="width:100%;"></div>
+      <div><label class="field-label">Tipo</label><select id="coachHabitType" style="width:100%;">${Object.keys(HABIT_TYPES).map(k=>`<option value="${k}">${HABIT_TYPES[k]}</option>`).join('')}</select></div>
+      <div><label class="field-label">Unidad (opcional)</label><input type="text" id="coachHabitUnit" placeholder="h, pasos" style="width:100%;"></div>
+    </div>
+    <button class="btn" id="addCoachHabitBtn" style="margin-top:10px;">Asignar hábito</button>
+  </div>`;
+
+  // Lo que el atleta ha añadido por su cuenta
+  html += `<div class="card"><h2>Los que ha añadido él</h2>`;
+  if(!cfg.athlete.length) html += `<div class="empty">Ninguno todavía.</div>`;
+  cfg.athlete.forEach(h=>{
+    const s = statsHabito(h, log, dias);
+    html += `<div class="entry"><div class="entry-top"><span>${escapeHtml(h.name)}</span><span>${HABIT_TYPES[h.type]||h.type}</span></div>
+      <div style="font-size:12.5px;color:var(--accent);margin-top:4px;">7 días: <b>${s.texto}</b> <span style="color:var(--muted);">${s.detalle}</span></div>
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
 async function tplPerfilAtleta(athleteId){
   const me = state.athletes.find(a=>a.id===athleteId);
   const raw = await safeGet('intake-'+athleteId, true);
@@ -2027,12 +2408,14 @@ async function tplAthleteDetail(athleteId){
     <button data-subtab="diario" class="${state.athleteSubTab==='diario'?'active':''}">Diario</button>
     <button data-subtab="progreso" class="${state.athleteSubTab==='progreso'?'active':''}">Progreso</button>
     <button data-subtab="cuestionarios" class="${state.athleteSubTab==='cuestionarios'?'active':''}">Cuestionarios</button>
+    <button data-subtab="habitos" class="${state.athleteSubTab==='habitos'?'active':''}">Hábitos</button>
     <button data-subtab="perfil" class="${state.athleteSubTab==='perfil'?'active':''}">Perfil</button>
   </div>`;
   if(state.athleteSubTab==='planificacion') html += await tplPlanificacionCoach(athleteId);
   else if(state.athleteSubTab==='periodizacion') html += await tplPeriodizacion(athleteId);
   else if(state.athleteSubTab==='diario') html += await tplDiarioLectura(athleteId);
   else if(state.athleteSubTab==='progreso') html += await tplProgreso(athleteId);
+  else if(state.athleteSubTab==='habitos') html += await tplHabitosCoach(athleteId);
   else if(state.athleteSubTab==='perfil') html += await tplPerfilCoachBody(athleteId);
   else html += await tplQuestConfigAndRead(athleteId);
   return html;
@@ -2278,31 +2661,11 @@ async function autoArchiveWeek(athleteId){
   await safeSet('routine-'+athleteId, JSON.stringify(published), true);
 }
 
-async function tplPlanificacionCoach(athleteId){
-  await autoArchiveWeek(athleteId);
-  const draft = await getRoutine(athleteId, true);
-  const published = await getRoutine(athleteId, false);
-  const sameAsPublished = JSON.stringify(draft.days) === JSON.stringify(published.days);
-  let html = `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
-    <button class="btn small" id="shareRoutineBtn">Compartir planificación</button></div>`;
-  DAYS.forEach(d=>{
-    const open = state.openDays[d] ? 'open':'';
-    const totalEx = BLOCKS.reduce((acc,b)=>acc+draft.days[d][b.key].length,0);
-    html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${totalEx} ejerc.</span></div><div class="acc-body">
-      <div class="ai-import"><div class="row" style="justify-content:space-between;">
-        <span style="font-size:12.5px;color:var(--muted);">Pega el entreno en texto y que la IA lo organice</span>
-        <button class="btn ghost small" data-ai-toggle="${d}">${state.aiImportOpen[d]?'Cerrar':'Abrir'}</button>
-      </div>`;
-    if(state.aiImportOpen[d]){
-      html += `<textarea data-ai-text="${d}" placeholder="Ej: Calentamiento: 5 min bici suave. Principal: sentadilla 4x8 RIR2 RPE7 descanso 90s..."></textarea>
-        <button class="btn small" data-ai-run="${d}" ${state.aiImportBusy[d]?'disabled':''}>${state.aiImportBusy[d]?'Organizando…':'Organizar con IA'}</button>`;
-    }
-    html += `</div>`;
-    BLOCKS.forEach(b=>{
-      html += `<div class="block-title">${b.label}</div>`;
-      draft.days[d][b.key].forEach(ex=>{
-        const t = exTimer(ex);
-        html += `<div class="ex-card" data-exid="${ex.id}" data-block="${b.key}" data-day="${d}">
+// Plantilla de una tarjeta de ejercicio. Extraída para poder insertar una nueva
+// sin reconstruir la pantalla entera, que hacía saltar el scroll al principio.
+function exCardHtml(ex, blockKey, d){
+  const t = exTimer(ex);
+  return `<div class="ex-card" data-exid="${ex.id}" data-block="${blockKey}" data-day="${d}">
           <span class="save-flag" data-flagfor="${ex.id}">Guardado ✓</span>
           <input type="text" class="ex-section" value="${escapeHtml(ex.section||'')}" placeholder="Sección (Fuerza, Hipertrofia, Pliometría…)" list="sectionSuggestions" style="width:100%;font-size:12px;color:var(--accent);margin-bottom:6px;">
           <input type="text" class="ex-name full" value="${escapeHtml(ex.name)}" placeholder="Nombre del ejercicio" style="width:100%;font-weight:700;">
@@ -2341,6 +2704,23 @@ async function tplPlanificacionCoach(athleteId){
           </div>
           <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-removeex="${ex.id}">Eliminar ejercicio</button></div>
         </div>`;
+}
+
+async function tplPlanificacionCoach(athleteId){
+  await autoArchiveWeek(athleteId);
+  const draft = await getRoutine(athleteId, true);
+  const published = await getRoutine(athleteId, false);
+  const sameAsPublished = JSON.stringify(draft.days) === JSON.stringify(published.days);
+  let html = `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
+    <button class="btn small" id="shareRoutineBtn">Compartir planificación</button></div>`;
+  DAYS.forEach(d=>{
+    const open = state.openDays[d] ? 'open':'';
+    const totalEx = BLOCKS.reduce((acc,b)=>acc+draft.days[d][b.key].length,0);
+    html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${totalEx} ejerc.</span></div><div class="acc-body">`;
+    BLOCKS.forEach(b=>{
+      html += `<div class="block-title">${b.label}</div>`;
+      draft.days[d][b.key].forEach(ex=>{
+        html += exCardHtml(ex, b.key, d);
       });
       html += `<button class="btn ghost small" data-addex="${d}|${b.key}">+ Añadir a ${b.label.toLowerCase()}</button>`;
     });
@@ -2353,12 +2733,36 @@ async function tplDiarioLectura(athleteId){
   const entries = raw ? JSON.parse(raw) : [];
   let html = `<div class="card"><h2>Diario de entrenamiento</h2>`;
   if(!entries.length) html += `<div class="empty">Sin sesiones registradas todavía.</div>`;
-  else entries.slice().reverse().forEach(e=>{
+  else entries.slice().reverse().forEach((e, revIdx)=>{
+    const idx = entries.length - 1 - revIdx;   // índice real en el array
+    const editando = state.editEntry === idx;
     html += `<div class="entry"><div class="entry-top"><span>${e.date} · ${e.day}</span><span class="pill" style="background:${rpeColor(e.overallRPE)};color:#08130F;">RPE ${e.overallRPE}</span></div>
       <div style="font-size:12.5px;color:var(--muted);margin-top:6px;">Duración ${fmtTime(e.durationSeconds)} · carga (sRPE) ${e.fatigueScore} · fatiga ${e.fatiga}/5 · calidad ${e.calidad}/5 · hidratación ${e.hidratacion}/5 · satisfacción ${e.satisfaccion}/5</div>
       ${(e.exercises&&e.exercises.some(x=>x.loadApplied))?`<div style="font-size:12px;color:var(--muted);margin-top:6px;">${e.exercises.filter(x=>x.loadApplied).map(x=>escapeHtml(x.name)+': <b style="color:var(--ink);">'+escapeHtml(x.loadApplied)+'</b>'+(x.loadPlanned&&x.loadPlanned!==x.loadApplied?' <span style="opacity:.7;">(previsto '+escapeHtml(x.loadPlanned)+')</span>':'')).join(' · ')}</div>`:''}
-      ${e.notes?`<div style="font-size:12.5px;color:var(--muted);margin-top:6px;">"${escapeHtml(e.notes)}"</div>`:''}
-    </div>`;
+      ${e.notes?`<div style="font-size:12.5px;color:var(--muted);margin-top:6px;">"${escapeHtml(e.notes)}"</div>`:''}`;
+    if(editando){
+      html += `<div class="ex-grid" style="margin-top:10px;">
+        <div><label class="field-label">Fecha</label><input type="date" class="ed-date" value="${e.date}"></div>
+        <div><label class="field-label">Duración (min)</label><input type="number" class="ed-min" value="${Math.round((e.durationSeconds||0)/60)}"></div>
+        <div><label class="field-label">RPE general</label><input type="number" class="ed-rpe" min="1" max="10" value="${e.overallRPE||''}"></div>
+        <div><label class="field-label">Fatiga (1-5)</label><input type="number" class="ed-fat" min="1" max="5" value="${e.fatiga||''}"></div>
+        <div><label class="field-label">Calidad (1-5)</label><input type="number" class="ed-cal" min="1" max="5" value="${e.calidad||''}"></div>
+        <div><label class="field-label">Hidratación (1-5)</label><input type="number" class="ed-hid" min="1" max="5" value="${e.hidratacion||''}"></div>
+        <div class="full"><label class="field-label">Satisfacción (1-5)</label><input type="number" class="ed-sat" min="1" max="5" value="${e.satisfaccion||''}"></div>
+        <div class="full"><label class="field-label">Notas</label><textarea class="ed-notes" style="min-height:44px;">${escapeHtml(e.notes||'')}</textarea></div>
+      </div>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:6px;">Al guardar se recalcula la carga (sRPE) con la duración y el RPE.</p>
+      <div class="row" style="margin-top:8px;">
+        <button class="btn small" data-saveentry="${idx}">Guardar cambios</button>
+        <button class="btn ghost small" data-cancelentry="1">Cancelar</button>
+      </div>`;
+    } else {
+      html += `<div class="row" style="margin-top:8px;">
+        <button class="btn ghost small" data-editentry="${idx}">Corregir</button>
+        <button class="btn ghost small" data-delentry="${idx}">Eliminar</button>
+      </div>`;
+    }
+    html += `</div>`;
   });
   html += `</div>`;
   return html;
@@ -2412,7 +2816,18 @@ async function tplPerfilCoachBody(athleteId){
   const p = raw ? JSON.parse(raw) : { estado:'Activo', tarifa:'', pagado:'Pendiente', notas:'' };
   const intakeRaw = await safeGet('intake-'+athleteId, true);
   const intake = intakeRaw ? JSON.parse(intakeRaw) : null;
-  let html = `<div class="card"><h2>${escapeHtml(a?a.name:'')} — gestión (solo visible para ti)</h2>
+  let html = `<div class="card"><h2>Datos de acceso</h2>
+    <div class="row" style="flex-direction:column;align-items:stretch;gap:12px;">
+      <div><label class="field-label">Nombre del atleta</label><input type="text" id="editAthName" value="${escapeHtml(a?a.name:'')}" style="width:100%;"></div>
+      <div><label class="field-label">PIN de acceso</label><input type="text" id="editAthPin" value="${a?a.pin:''}" maxlength="6" inputmode="numeric" style="width:100%;font-family:'IBM Plex Mono',monospace;letter-spacing:0.2em;"></div>
+      <div class="row">
+        <button class="btn" id="saveAthBasics" data-athleteid="${athleteId}">Guardar</button>
+        <button class="btn ghost danger" id="deleteAthBtn" data-athleteid="${athleteId}">Eliminar atleta</button>
+      </div>
+      <p style="font-size:11.5px;color:var(--muted);">El atleta entra sólo con su PIN, así que no ve los nombres del resto. Si lo cambias, avísale.</p>
+    </div>
+  </div>
+  <div class="card"><h2>${escapeHtml(a?a.name:'')} — gestión (solo visible para ti)</h2>
     <div class="row" style="flex-direction:column;align-items:stretch;gap:12px;">
       <div><label class="field-label">Estado del cliente</label><select id="profEstado" style="width:100%;"><option ${p.estado==='Activo'?'selected':''}>Activo</option><option ${p.estado==='Pausado'?'selected':''}>Pausado</option><option ${p.estado==='Baja'?'selected':''}>Baja</option></select></div>
       <div><label class="field-label">Tarifa (€/mes)</label><input type="number" id="profTarifa" value="${p.tarifa||''}" style="width:100%;"></div>
@@ -2449,11 +2864,23 @@ async function tplTareas(){
   if(!pending.length) html += `<div class="empty">Sin tareas pendientes.</div>`;
   else pending.forEach(t=>{
     const athleteName = t.athleteId ? (state.athletes.find(a=>a.id===t.athleteId)||{}).name : '';
-    html += `<div class="entry"><div class="entry-top"><span>${escapeHtml(t.name)}</span><span>${t.dueDate||'—'}</span></div>
-      ${t.desc?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px;">${escapeHtml(t.desc)}</div>`:''}
-      ${athleteName?`<div style="font-size:12px;color:var(--accent);margin-top:4px;">${escapeHtml(athleteName)}</div>`:''}
-      <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-donetask="${t.id}">Completada</button><button class="btn ghost small" data-deltask="${t.id}">Eliminar</button></div>
-    </div>`;
+    const editando = state.editTask === t.id;
+    if(editando){
+      html += `<div class="entry" data-taskcard="${t.id}">
+        <div class="row" style="flex-direction:column;align-items:stretch;gap:8px;">
+          <div><label class="field-label">Nombre</label><input type="text" class="tk-name" value="${escapeHtml(t.name)}" style="width:100%;"></div>
+          <div><label class="field-label">Descripción</label><textarea class="tk-desc" style="min-height:40px;">${escapeHtml(t.desc||'')}</textarea></div>
+          <div><label class="field-label">Fecha límite</label><input type="date" class="tk-due" value="${t.dueDate||''}" style="width:100%;"></div>
+          <div><label class="field-label">Atleta destinado</label><select class="tk-ath" style="width:100%;"><option value="">General</option>${state.athletes.map(a=>`<option value="${a.id}" ${a.id===t.athleteId?'selected':''}>${escapeHtml(a.name)}</option>`).join('')}</select></div>
+          <div class="row"><button class="btn small" data-savetask="${t.id}">Guardar</button><button class="btn ghost small" data-canceltask="1">Cancelar</button></div>
+        </div></div>`;
+    } else {
+      html += `<div class="entry"><div class="entry-top"><span>${escapeHtml(t.name)}</span><span>${t.dueDate||'—'}</span></div>
+        ${t.desc?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px;">${escapeHtml(t.desc)}</div>`:''}
+        ${athleteName?`<div style="font-size:12px;color:var(--accent);margin-top:4px;">${escapeHtml(athleteName)}</div>`:''}
+        <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-donetask="${t.id}">Completada</button><button class="btn ghost small" data-edittask="${t.id}">Editar</button><button class="btn ghost small" data-deltask="${t.id}">Eliminar</button></div>
+      </div>`;
+    }
   });
   const done = tasks.filter(t=>t.done);
   if(done.length){
@@ -2500,6 +2927,93 @@ async function tplResumen(){
 }
 
 // ---------- BIND DYNAMIC EVENTS ----------
+// Enlaza el autoguardado de UNA tarjeta. Separado para poder aplicarlo a una
+// tarjeta recién insertada sin volver a recorrer toda la pantalla.
+// Enlaza el botón de eliminar de UNA tarjeta, para que también funcione en las
+// insertadas sobre la marcha.
+function bindRemoveEx(btn, athleteId){
+  btn.addEventListener('click', async ()=>{
+    const exId = btn.dataset.removeex; const card = btn.closest('.ex-card');
+    if(!card) return;
+    const blockKey = card.dataset.block, d = card.dataset.day;
+    const draft = await getRoutine(athleteId, true);
+    draft.days[d][blockKey] = draft.days[d][blockKey].filter(x=>x.id!==exId);
+    draft.updatedAt = new Date().toISOString();
+    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    if(!ok){ toast('No se pudo guardar. Comprueba la conexión.', true); return; }
+    card.remove();
+    actualizaContadorDia(d);
+  });
+}
+
+function bindExerciseCard(card, athleteId){
+
+    const fields = card.querySelectorAll('input, textarea, select');
+    const commit = async ()=>{
+      const athleteId = state.selectedId;
+      const d = card.dataset.day, blockKey = card.dataset.block, exId = card.dataset.exid;
+      const draft = await getRoutine(athleteId, true);
+      const ex = draft.days[d][blockKey].find(x=>x.id===exId);
+      if(ex){
+        ex.name = card.querySelector('.ex-name').value.trim();
+        ex.desc = card.querySelector('.ex-desc').value.trim();
+        ex.section = card.querySelector('.ex-section').value.trim();
+        ex.load = card.querySelector('.ex-load').value.trim();
+        ex.series = card.querySelector('.ex-series').value.trim();
+        ex.reps = card.querySelector('.ex-reps').value.trim();
+        ex.rest = card.querySelector('.ex-rest').value.trim();
+        ex.rir = card.querySelector('.ex-rir').value.trim();
+        ex.rpeTarget = card.querySelector('.ex-rpetarget').value.trim();
+        const prevType = exTimer(ex).type;
+        const t = exTimer(ex);
+        const typeEl = card.querySelector('.ex-timer-type');
+        if(typeEl) t.type = typeEl.value;
+        const num = (sel, fallback)=>{ const el=card.querySelector(sel); return el ? (parseInt(el.value,10)||fallback) : fallback; };
+        t.work = num('.tm-work', t.work);
+        t.rest = num('.tm-rest', t.rest);
+        t.rounds = num('.tm-rounds', t.rounds);
+        t.sets = num('.tm-sets', t.sets);
+        t.setRest = num('.tm-setrest', t.setRest);
+        t.emomLen = num('.tm-emomlen', t.emomLen);
+        t.emomRounds = num('.tm-emomrounds', t.emomRounds);
+        t.amrapMin = num('.tm-amrapmin', t.amrapMin);
+        t.seriesRestSec = num('.tm-seriesrest', t.seriesRestSec);
+        t.seriesCount = num('.tm-seriescount', t.seriesCount);
+        ex.timer = t;
+        draft.updatedAt = new Date().toISOString();
+        await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+        const flag = card.querySelector('.save-flag'); if(flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
+        // Al cambiar el tipo de temporizador cambian sus campos: redibujamos
+        // sólo esta tarjeta, no la pantalla entera (eso hacía saltar el scroll).
+        if(t.type !== prevType){
+          const nuevaHtml = exCardHtml(ex, blockKey, d);
+          card.insertAdjacentHTML('afterend', nuevaHtml);
+          const reemplazo = card.nextElementSibling;
+          card.remove();
+          if(reemplazo) bindExerciseCard(reemplazo, athleteId);
+        }
+      }
+    };
+    let debounce = null;
+    const delBtn = card.querySelector('[data-removeex]');
+    if(delBtn && !delBtn.dataset.bound){ delBtn.dataset.bound='1'; bindRemoveEx(delBtn, athleteId); }
+    fields.forEach(f=>{
+      // `change` sólo salta al perder el foco, lo que en móvil es frágil: si el
+      // usuario escribe y navega sin tocar fuera del campo, la edición se perdía.
+      // Guardamos también mientras escribe, con una pequeña espera.
+      f.addEventListener('input', ()=>{ clearTimeout(debounce); debounce = setTimeout(commit, 600); });
+      f.addEventListener('change', ()=>{ clearTimeout(debounce); commit(); });
+    });
+}
+// Refresca el "N ejerc." de la cabecera del día sin re-renderizar.
+function actualizaContadorDia(d){
+  const acc = [...document.querySelectorAll('.acc')].find(a=>a.dataset.day===d);
+  if(!acc) return;
+  const n = acc.querySelectorAll('.ex-card').length;
+  const cnt = acc.querySelector('.chev-count');
+  if(cnt) cnt.textContent = n + ' ejerc.';
+}
+
 async function bindDynamicEvents(){
   // Quién es el atleta en contexto: el que ha iniciado sesión (modo atleta) o
   // el seleccionado en el panel (modo entrenador).
@@ -2605,6 +3119,30 @@ async function bindDynamicEvents(){
       renderKeepScroll();
     }catch(e){ toast('Error al guardar: '+e.message, true); }
   });
+  document.querySelectorAll('[data-edittask]').forEach(b=>b.addEventListener('click', ()=>{
+    state.editTask = b.dataset.edittask; renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-canceltask]').forEach(b=>b.addEventListener('click', ()=>{
+    state.editTask = null; renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-savetask]').forEach(b=>b.addEventListener('click', async ()=>{
+    const id = b.dataset.savetask;
+    const card = document.querySelector(`[data-taskcard="${id}"]`);
+    if(!card) return;
+    const nombre = card.querySelector('.tk-name').value.trim();
+    if(!nombre){ toast('La tarea necesita un nombre', true); return; }
+    const tasks = await getTasks();
+    const t = tasks.find(x=>x.id===id);
+    if(t){
+      t.name = nombre;
+      t.desc = card.querySelector('.tk-desc').value.trim();
+      t.dueDate = card.querySelector('.tk-due').value;
+      t.athleteId = card.querySelector('.tk-ath').value;
+      const ok = await safeSet('tasks-list', JSON.stringify(tasks), true);
+      toast(ok?'Tarea actualizada':'No se pudo guardar', !ok);
+    }
+    state.editTask = null; renderKeepScroll();
+  }));
   document.querySelectorAll('[data-donetask]').forEach(b=>b.addEventListener('click', async ()=>{
     const tasks = await getTasks();
     const t = tasks.find(x=>x.id===b.dataset.donetask); if(t) t.done=true;
@@ -2667,125 +3205,32 @@ async function bindDynamicEvents(){
     state.openDays[d] = !wasOpen;
   }));
 
-  document.querySelectorAll('[data-ai-toggle]').forEach(b=>b.addEventListener('click', ()=>{ const d=b.dataset.aiToggle; state.aiImportOpen[d]=!state.aiImportOpen[d]; renderKeepScroll(); }));
-  document.querySelectorAll('[data-ai-run]').forEach(b=>b.addEventListener('click', async ()=>{
-    const d = b.dataset.aiRun;
-    const athleteId = state.selectedId;
-    const textEl = document.querySelector(`[data-ai-text="${d}"]`);
-    const text = textEl ? textEl.value.trim() : '';
-    if(!text){ alert('Pega el texto del entreno primero.'); return; }
-    state.aiImportBusy[d]=true; renderKeepScroll();
-    try{
-      const prompt = `Organiza esta sesión de entrenamiento en JSON estricto, sin texto adicional ni markdown. Estructura: {"calentamiento":[{"name":"","desc":"","section":"","load":"","series":n,"reps":"","rest":"","rir":"","rpeTarget":""}],"principal":[...],"vueltaCalma":[...]}.
-- "section": etiqueta del subbloque si el texto la indica (Fuerza, Hipertrofia, Potencia, Pliometría, Movilidad, Core…). Abrevia FZA como "Fuerza" y HT como "Hipertrofia". Vacío si no aplica.
-- "load": el peso o carga tal cual aparezca (ej. "80kg", "40>30kg", "corporal"). No lo metas en desc.
-- Descripciones muy breves (<12 palabras). Campos que no apliquen: cadena vacía.
-Responde SOLO con el JSON, sin frases antes ni después. Texto:\n\n${text}`;
-      const resp = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:2000, messages:[{role:'user', content:prompt}] }) });
-      const data = await resp.json();
-      if(!data || !Array.isArray(data.content)){
-        const apiMsg = (data && data.error && data.error.message) ? data.error.message : 'respuesta inesperada de la IA';
-        throw new Error(apiMsg);
-      }
-      let rawtxt = data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
-      // El modelo a veces añade una frase antes o después del JSON: nos quedamos
-      // solo con el objeto, desde la primera llave hasta la última.
-      const first = rawtxt.indexOf('{'), last = rawtxt.lastIndexOf('}');
-      if(first === -1 || last === -1 || last <= first) throw new Error('la IA no devolvió un JSON reconocible');
-      rawtxt = rawtxt.slice(first, last+1);
-      let parsed;
-      try{ parsed = JSON.parse(rawtxt); }
-      catch(pe){ throw new Error('el JSON llegó incompleto o mal formado'); }
-      const totalItems = BLOCKS.reduce((acc,bl)=>acc + (Array.isArray(parsed[bl.key]) ? parsed[bl.key].length : 0), 0);
-      if(totalItems === 0) throw new Error('no se reconoció ningún ejercicio en el texto');
-      const draft = await getRoutine(athleteId, true);
-      BLOCKS.forEach(bl=>{
-        const items = Array.isArray(parsed[bl.key]) ? parsed[bl.key] : [];
-        draft.days[d][bl.key] = items.filter(it=>it && it.name).map(it=>({
-          id:uid(), name:String(it.name||''), desc:String(it.desc||''),
-          section:String(it.section||''), load:String(it.load||''),
-          series:(it.series===0||it.series)?String(it.series):'', reps:String(it.reps||''),
-          rest:String(it.rest||''), rir:String(it.rir||''), rpeTarget:String(it.rpeTarget||''),
-          timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}
-        }));
-      });
-      draft.updatedAt = new Date().toISOString();
-      const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
-      if(!ok) toast('No se pudo guardar el resultado de la IA', true);
-      else toast(`${totalItems} ejercicios importados`);
-      state.aiImportOpen[d]=false; state.openDays[d]=true;
-    }catch(e){ toast('No se pudo organizar: ' + (e.message||'error de red') + '. Añádelos manualmente.', true); }
-    state.aiImportBusy[d]=false; renderKeepScroll();
-  }));
+  // Añadir ejercicio: insertamos la tarjeta en el sitio y ya. Reconstruir la
+  // pantalla entera hacía que el scroll saltara al principio en cada añadido.
   document.querySelectorAll('[data-addex]').forEach(b=>b.addEventListener('click', async ()=>{
     const [d, blockKey] = b.dataset.addex.split('|');
     const athleteId = state.selectedId;
     const draft = await getRoutine(athleteId, true);
-    draft.days[d][blockKey].push(blankExercise());
+    const nuevo = blankExercise();
+    draft.days[d][blockKey].push(nuevo);
     draft.updatedAt = new Date().toISOString();
     const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
-    if(!ok) alert('No se pudo guardar. Comprueba la conexión e inténtalo de nuevo.');
-    state.openDays[d]=true; renderKeepScroll();
+    if(!ok){ toast('No se pudo guardar. Comprueba la conexión.', true); return; }
+    state.openDays[d] = true;
+    b.insertAdjacentHTML('beforebegin', exCardHtml(nuevo, blockKey, d));
+    const card = b.previousElementSibling;
+    if(card){
+      bindExerciseCard(card, athleteId);
+      const nombre = card.querySelector('.ex-name');
+      if(nombre) nombre.focus();
+      if(typeof card.scrollIntoView === 'function') card.scrollIntoView({block:'nearest', behavior:'smooth'});
+    }
+    actualizaContadorDia(d);
   }));
-  document.querySelectorAll('[data-removeex]').forEach(b=>b.addEventListener('click', async ()=>{
-    const exId = b.dataset.removeex; const card=b.closest('.ex-card'); const blockKey=card.dataset.block; const d=card.dataset.day;
-    const athleteId = state.selectedId;
-    const draft = await getRoutine(athleteId, true);
-    draft.days[d][blockKey] = draft.days[d][blockKey].filter(x=>x.id!==exId);
-    draft.updatedAt = new Date().toISOString();
-    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
-    if(!ok) alert('No se pudo guardar. Comprueba la conexión e inténtalo de nuevo.');
-    state.openDays[d]=true; renderKeepScroll();
-  }));
+
   // auto-save per exercise field on blur
-  document.querySelectorAll('.ex-card').forEach(card=>{
-    const fields = card.querySelectorAll('input, textarea, select');
-    const commit = async ()=>{
-      const athleteId = state.selectedId;
-      const d = card.dataset.day, blockKey = card.dataset.block, exId = card.dataset.exid;
-      const draft = await getRoutine(athleteId, true);
-      const ex = draft.days[d][blockKey].find(x=>x.id===exId);
-      if(ex){
-        ex.name = card.querySelector('.ex-name').value.trim();
-        ex.desc = card.querySelector('.ex-desc').value.trim();
-        ex.section = card.querySelector('.ex-section').value.trim();
-        ex.load = card.querySelector('.ex-load').value.trim();
-        ex.series = card.querySelector('.ex-series').value.trim();
-        ex.reps = card.querySelector('.ex-reps').value.trim();
-        ex.rest = card.querySelector('.ex-rest').value.trim();
-        ex.rir = card.querySelector('.ex-rir').value.trim();
-        ex.rpeTarget = card.querySelector('.ex-rpetarget').value.trim();
-        const prevType = exTimer(ex).type;
-        const t = exTimer(ex);
-        const typeEl = card.querySelector('.ex-timer-type');
-        if(typeEl) t.type = typeEl.value;
-        const num = (sel, fallback)=>{ const el=card.querySelector(sel); return el ? (parseInt(el.value,10)||fallback) : fallback; };
-        t.work = num('.tm-work', t.work);
-        t.rest = num('.tm-rest', t.rest);
-        t.rounds = num('.tm-rounds', t.rounds);
-        t.sets = num('.tm-sets', t.sets);
-        t.setRest = num('.tm-setrest', t.setRest);
-        t.emomLen = num('.tm-emomlen', t.emomLen);
-        t.emomRounds = num('.tm-emomrounds', t.emomRounds);
-        t.amrapMin = num('.tm-amrapmin', t.amrapMin);
-        t.seriesRestSec = num('.tm-seriesrest', t.seriesRestSec);
-        t.seriesCount = num('.tm-seriescount', t.seriesCount);
-        ex.timer = t;
-        draft.updatedAt = new Date().toISOString();
-        await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
-        const flag = card.querySelector('.save-flag'); if(flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
-        if(t.type !== prevType){ state.openDays[d]=true; renderKeepScroll(); }
-      }
-    };
-    let debounce = null;
-    fields.forEach(f=>{
-      // `change` sólo salta al perder el foco, lo que en móvil es frágil: si el
-      // usuario escribe y navega sin tocar fuera del campo, la edición se perdía.
-      // Guardamos también mientras escribe, con una pequeña espera.
-      f.addEventListener('input', ()=>{ clearTimeout(debounce); debounce = setTimeout(commit, 600); });
-      f.addEventListener('change', ()=>{ clearTimeout(debounce); commit(); });
-    });
-  });
+  document.querySelectorAll('.ex-card').forEach(card=>bindExerciseCard(card, athleteId));
+
   const shareRoutineBtn = document.getElementById('shareRoutineBtn');
   if(shareRoutineBtn) shareRoutineBtn.addEventListener('click', async ()=>{
     const athleteId = state.selectedId;
@@ -2813,6 +3258,181 @@ Responde SOLO con el JSON, sin frases antes ni después. Texto:\n\n${text}`;
   const replayTut = document.getElementById('replayTutorialBtn');
   if(replayTut) replayTut.addEventListener('click', ()=>{
     state.showTutorial = true; state.tutorialStep = 0; renderTutorial();
+  });
+
+  // --- Navegación de meses del calendario ---
+  document.querySelectorAll('[data-calmove]').forEach(b=>b.addEventListener('click', ()=>{
+    const paso = parseInt(b.dataset.calmove,10);
+    const nuevo = (state.calOffset||0) + paso;
+    if(nuevo > 0) return;              // no tiene sentido ir al futuro
+    state.calOffset = nuevo;
+    renderKeepScroll();
+  }));
+
+  // --- CHECK DIARIO DE HÁBITOS ---
+  const openHab = document.getElementById('openHabitsBtn');
+  if(openHab) openHab.addEventListener('click', ()=>{ state.calShowHabits = true; renderScrollTop(); });
+  const closeHab = document.getElementById('closeHabitsBtn');
+  if(closeHab) closeHab.addEventListener('click', ()=>{ state.calShowHabits = false; renderScrollTop(); });
+
+  const marcarHabito = async (hid, valor)=>{
+    const log = await getHabitLog(athleteId);
+    const hoy = todayISO();
+    if(!log[hoy]) log[hoy] = {};
+    if(valor === null || valor === '') delete log[hoy][hid];
+    else log[hoy][hid] = valor;
+    await saveHabitLog(athleteId, log);
+  };
+  document.querySelectorAll('[data-habit][data-type="check"]').forEach(b=>b.addEventListener('click', async ()=>{
+    const on = b.classList.contains('on');
+    await marcarHabito(b.dataset.habit, !on);
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-habitscale]').forEach(sc=>{
+    sc.querySelectorAll('button').forEach(btn=>btn.addEventListener('click', async ()=>{
+      await marcarHabito(sc.dataset.habitscale, parseInt(btn.dataset.val,10));
+      renderKeepScroll();
+    }));
+  });
+  document.querySelectorAll('.habit-num').forEach(inp=>{
+    let deb=null;
+    const guardar = async ()=>{
+      const v = inp.value.trim();
+      await marcarHabito(inp.dataset.habit, v===''?null:parseFloat(v));
+    };
+    inp.addEventListener('input', ()=>{ clearTimeout(deb); deb=setTimeout(guardar,700); });
+    inp.addEventListener('change', ()=>{ clearTimeout(deb); guardar(); });
+  });
+  const addHab = document.getElementById('addHabitBtn');
+  if(addHab) addHab.addEventListener('click', async ()=>{
+    const nombre = document.getElementById('newHabitName').value.trim();
+    if(!nombre){ toast('Ponle un nombre al hábito', true); return; }
+    const cfg = await getHabitDefs(athleteId);
+    cfg.athlete.push({ id:habitId(), name:nombre,
+      type:document.getElementById('newHabitType').value,
+      unit:document.getElementById('newHabitUnit').value.trim() });
+    const ok = await saveHabitDefs(athleteId, cfg);
+    toast(ok?'Hábito añadido':'No se pudo guardar', !ok);
+    renderKeepScroll();
+  });
+  document.querySelectorAll('[data-delhabit]').forEach(b=>b.addEventListener('click', async ()=>{
+    const cfg = await getHabitDefs(athleteId);
+    cfg.athlete = cfg.athlete.filter(h=>h.id !== b.dataset.delhabit);
+    await saveHabitDefs(athleteId, cfg);
+    renderKeepScroll();
+  }));
+  // Lado entrenador
+  const addCoachHab = document.getElementById('addCoachHabitBtn');
+  if(addCoachHab) addCoachHab.addEventListener('click', async ()=>{
+    const nombre = document.getElementById('coachHabitName').value.trim();
+    if(!nombre){ toast('Ponle un nombre al hábito', true); return; }
+    const cfg = await getHabitDefs(athleteId);
+    cfg.coach.push({ id:habitId(), name:nombre,
+      type:document.getElementById('coachHabitType').value,
+      unit:document.getElementById('coachHabitUnit').value.trim() });
+    const ok = await saveHabitDefs(athleteId, cfg);
+    toast(ok?'Hábito asignado':'No se pudo guardar', !ok);
+    renderKeepScroll();
+  });
+  document.querySelectorAll('[data-delcoachhabit]').forEach(b=>b.addEventListener('click', async ()=>{
+    const cfg = await getHabitDefs(athleteId);
+    cfg.coach = cfg.coach.filter(h=>h.id !== b.dataset.delcoachhabit);
+    await saveHabitDefs(athleteId, cfg);
+    renderKeepScroll();
+  }));
+
+  // --- Corregir y eliminar sesiones del diario ---
+  document.querySelectorAll('[data-editentry]').forEach(b=>b.addEventListener('click', ()=>{
+    state.editEntry = parseInt(b.dataset.editentry,10); renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-cancelentry]').forEach(b=>b.addEventListener('click', ()=>{
+    state.editEntry = null; renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-delentry]').forEach(b=>b.addEventListener('click', async ()=>{
+    const idx = parseInt(b.dataset.delentry,10);
+    const raw = await safeGet('journal-'+athleteId, true);
+    const entries = raw ? JSON.parse(raw) : [];
+    const e = entries[idx];
+    if(!e) return;
+    if(!confirm(`¿Eliminar la sesión del ${e.date}?\n\nDejará de contar para la carga y el ACWR. No se puede deshacer.`)) return;
+    entries.splice(idx,1);
+    const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
+    toast(ok?'Sesión eliminada':'No se pudo eliminar', !ok);
+    state.editEntry = null; renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-saveentry]').forEach(b=>b.addEventListener('click', async ()=>{
+    const idx = parseInt(b.dataset.saveentry,10);
+    const card = b.closest('.entry');
+    const raw = await safeGet('journal-'+athleteId, true);
+    const entries = raw ? JSON.parse(raw) : [];
+    const e = entries[idx];
+    if(!e || !card) return;
+    const num = (sel, min, max, fallback)=>{
+      const el = card.querySelector(sel); if(!el) return fallback;
+      const v = parseInt(el.value,10);
+      return (isNaN(v) || v<min || v>max) ? fallback : v;
+    };
+    const fecha = card.querySelector('.ed-date').value || e.date;
+    const mins  = Math.max(1, num('.ed-min', 1, 600, Math.round((e.durationSeconds||0)/60)));
+    const rpe   = num('.ed-rpe', 1, 10, e.overallRPE);
+    e.date = fecha;
+    e.durationSeconds = mins*60;
+    e.overallRPE = rpe;
+    e.fatiga = num('.ed-fat',1,5,e.fatiga);
+    e.calidad = num('.ed-cal',1,5,e.calidad);
+    e.hidratacion = num('.ed-hid',1,5,e.hidratacion);
+    e.satisfaccion = num('.ed-sat',1,5,e.satisfaccion);
+    e.notes = card.querySelector('.ed-notes').value.trim();
+    // La carga se recalcula: si no había RPE por ejercicio, manda el general.
+    const base = (e.avgExerciseRPE && e.avgExerciseRPE > 0) ? e.avgExerciseRPE : rpe;
+    e.fatigueScore = +(base * mins).toFixed(1);
+    entries.sort((x,y)=>String(x.date).localeCompare(String(y.date)));
+    const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
+    toast(ok?'Sesión corregida':'No se pudo guardar', !ok);
+    state.editEntry = null; renderKeepScroll();
+  }));
+
+  // --- Editar nombre y PIN del atleta ---
+  const saveAthBasics = document.getElementById('saveAthBasics');
+  if(saveAthBasics) saveAthBasics.addEventListener('click', async ()=>{
+    const id = saveAthBasics.dataset.athleteid;
+    const nuevoNombre = document.getElementById('editAthName').value.trim();
+    const nuevoPin = document.getElementById('editAthPin').value.trim();
+    if(!nuevoNombre){ toast('El nombre no puede quedar vacío', true); return; }
+    if(!/^\d{4,6}$/.test(nuevoPin)){ toast('El PIN debe tener entre 4 y 6 dígitos', true); return; }
+    if(state.athletes.some(x=>x.id!==id && String(x.pin)===nuevoPin)){
+      toast('Ese PIN ya lo usa otro atleta', true); return;
+    }
+    const at = state.athletes.find(x=>x.id===id);
+    if(!at) return;
+    at.name = nuevoNombre; at.pin = nuevoPin;
+    const ok = await safeSet('athletes-list', JSON.stringify(state.athletes), true);
+    toast(ok ? 'Datos actualizados' : 'No se pudo guardar', !ok);
+    if(ok) render();
+  });
+
+  // --- Eliminar atleta y todo su rastro ---
+  const delAth = document.getElementById('deleteAthBtn');
+  if(delAth) delAth.addEventListener('click', async ()=>{
+    const id = delAth.dataset.athleteid;
+    const at = state.athletes.find(x=>x.id===id);
+    if(!at) return;
+    const aviso = `¿Eliminar a ${at.name}?\n\nSe borrarán su ficha, rutinas, historial, diario, cuestionarios, periodización y tareas asociadas.\n\nEsta acción no se puede deshacer. Exporta una copia antes si quieres conservarlo.`;
+    if(!confirm(aviso)) return;
+    try{
+      for(const p of ['intake','profile','routine','routine-draft','routine-history','journal','quest','quest-config','call','plan','tutorial','session-activa','habits','habits-config']){
+        await safeSet(p+'-'+id, '', true);
+      }
+      const tareas = await getTasks();
+      const restantes = tareas.filter(t=>t.athleteId !== id);
+      if(restantes.length !== tareas.length) await safeSet('tasks-list', JSON.stringify(restantes), true);
+      state.athletes = state.athletes.filter(x=>x.id!==id);
+      await safeSet('athletes-list', JSON.stringify(state.athletes), true);
+      state._inAthleteDetail = false;
+      state.selectedId = state.athletes.length ? state.athletes[0].id : null;
+      toast(`${at.name} eliminado`);
+      renderScrollTop();
+    }catch(e){ toast('Error al eliminar: '+e.message, true); }
   });
 
   // --- Perfil del atleta: guardar sus propios datos ---
