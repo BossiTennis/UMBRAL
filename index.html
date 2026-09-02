@@ -220,6 +220,9 @@
   .cal-sum-types{display:flex;gap:7px;flex-wrap:wrap;}
   .ctype{font-size:11.5px;background:var(--panel2);border:1px solid var(--border);border-radius:100px;padding:4px 11px;color:var(--ink);}
   .ctype i{font-style:normal;font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;margin-right:5px;}
+  .day-tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:var(--panel3);border:1px dashed var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;}
+  .day-tools-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;}
+  .day-tools select{padding:6px 9px;font-size:13px;}
   .chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   /* ---------- PANTALLA DE ENTRADA ---------- */
   .splash{position:fixed;inset:0;z-index:400;background:#2E1016;display:flex;flex-direction:column;
@@ -1334,9 +1337,64 @@ async function tplSesionEntry(athleteId){
         </select></div>
     </div>
     <div id="sessionPreview" style="margin-top:14px;">${sessionPreviewHtml(source, selDay)}</div>
-    <div class="row" style="margin-top:14px;"><button class="btn" id="startSession">Iniciar sesión — pantalla completa</button></div>
+    <div class="row" style="margin-top:14px;"><button class="btn" id="startSession">Iniciar sesión — pantalla completa</button>
+    <button class="btn ghost" id="manualSessionBtn">Registrar una ya hecha</button></div>
+  </div>`;
+  if(state.manualSession) html += await tplRegistroManual(athleteId, source, selDay);
+  return html;
+}
+
+// Registro de una sesión ya entrenada: sin cronómetro, rellenando a mano.
+async function tplRegistroManual(athleteId, source, selDay){
+  const lista = flattenExercises(source, selDay);
+  const m = state.manual || {};
+  let html = `<div class="card" id="manualCard" style="border-color:var(--accent);">
+    <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <h2 style="margin:0;">Registrar sesión ya hecha</h2>
+      <button class="btn ghost small" id="cancelManualBtn">Cancelar</button>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Se toman los ejercicios del día seleccionado arriba. Rellena lo que recuerdes: lo que dejes vacío no se guarda.</p>
+    <div class="ex-grid">
+      <div><label class="field-label">Fecha</label><input type="date" id="mnDate" value="${m.date||todayISO()}" max="${todayISO()}"></div>
+      <div><label class="field-label">Duración (min)</label><input type="number" id="mnMin" min="1" max="600" value="${m.min||60}"></div>
+    </div>`;
+
+  if(!lista.length){
+    html += `<div class="empty">Ese día no tiene ejercicios planificados. Elige otro arriba o registra sólo la valoración general.</div>`;
+  } else {
+    html += `<div class="block-title">Ejercicios</div>`;
+    let ultimoBloque = '';
+    lista.forEach((ex,i)=>{
+      if(ex.blockLabel !== ultimoBloque){ html += `<div class="block-title">${ex.blockLabel}</div>`; ultimoBloque = ex.blockLabel; }
+      html += `<div class="ex-card" data-mnex="${i}">
+        <div style="font-family:'Fraunces',serif;font-weight:600;font-size:15px;margin-bottom:2px;">${escapeHtml(ex.name)}</div>
+        <div class="ex-meta" style="margin-bottom:8px;"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>previsto ${escapeHtml(ex.load)}</span>`:''}${ex.rpeTarget?`<span>RPE obj. ${escapeHtml(ex.rpeTarget)}</span>`:''}</div>
+        <div class="ex-grid">
+          <div><label class="field-label">Carga usada</label><input type="text" class="mn-load" value="${escapeHtml(ex.load||'')}" placeholder="80kg"></div>
+          <div><label class="field-label">Series hechas</label><input type="number" class="mn-series" min="0" max="20" value="${ex.series||''}"></div>
+          <div><label class="field-label">RPE</label><input type="number" class="mn-rpe" min="1" max="10" placeholder="1-10"></div>
+          <div><label class="field-label">RIR</label><input type="text" class="mn-rir" value="${escapeHtml(ex.rir||'')}" placeholder="2"></div>
+        </div>
+      </div>`;
+    });
+  }
+
+  html += `<div class="block-title">Valoración de la sesión</div>
+    <div class="q-item"><p>RPE general percibido (1-10)</p>
+      <div class="scale" data-mnscale="overallRPE">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div></div>
+    ${mnScale5('descanso','Calidad del descanso entre series')}
+    ${mnScale5('fatiga','Nivel de fatiga tras la sesión')}
+    ${mnScale5('calidad','Calidad del entreno')}
+    ${mnScale5('hidratacion','Control de la hidratación')}
+    ${mnScale5('satisfaccion','Satisfacción con el entrenamiento')}
+    <div class="q-item"><p>Notas del diario</p><textarea id="mnNotes" style="min-height:56px;" placeholder="Sensaciones, molestias, lo que quieras contarle a tu entrenador"></textarea></div>
+    <button class="btn" id="saveManualBtn">Guardar en el diario</button>
   </div>`;
   return html;
+}
+function mnScale5(key,label){
+  return `<div class="q-item"><p>${label}</p><div class="scale" data-mnscale="${key}">${[1,2,3,4,5].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div>
+    <div class="scale-labels"><span>1 · deficiente</span><span>5 · excelente</span></div></div>`;
 }
 function sessionPreviewHtml(routine, day){
   let html = '';
@@ -2713,10 +2771,46 @@ async function tplPlanificacionCoach(athleteId){
   const sameAsPublished = JSON.stringify(draft.days) === JSON.stringify(published.days);
   let html = `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
     <button class="btn small" id="shareRoutineBtn">Compartir planificación</button></div>`;
+  if(state.athletes.length > 1){
+    const otros = state.athletes.filter(a=>a.id !== athleteId);
+    html += `<div class="day-tools" style="margin-bottom:14px;">
+      <span class="day-tools-label">Copiar la semana entera a</span>
+      <select id="xferWeekAthlete">${otros.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}</select>
+      <button class="btn ghost small" id="xferWeekBtn">Copiar semana</button>
+    </div>`;
+  }
   DAYS.forEach(d=>{
     const open = state.openDays[d] ? 'open':'';
     const totalEx = BLOCKS.reduce((acc,b)=>acc+draft.days[d][b.key].length,0);
     html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${totalEx} ejerc.</span></div><div class="acc-body">`;
+    // Copiar el día completo a otro: útil cuando al atleta se le cambia el
+    // horario y hay que mover el entreno de un día a otro.
+    const otrosDias = DAYS.filter(x=>x!==d);
+    html += `<div class="day-tools">
+      <span class="day-tools-label">Copiar este día a</span>
+      <select class="copy-target" data-from="${d}">
+        ${otrosDias.map(x=>`<option value="${x}">${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}
+      </select>
+      <button class="btn ghost small" data-copyday="${d}" data-mode="replace">Sustituir</button>
+      <button class="btn ghost small" data-copyday="${d}" data-mode="append">Añadir</button>
+      ${totalEx?`<button class="btn ghost small" data-swapday="${d}">Intercambiar</button>
+      <button class="btn ghost small" data-clearday="${d}">Vaciar día</button>`:''}
+    </div>`;
+    // Copiar este día al de otro atleta: cuando dos entrenan lo mismo.
+    if(totalEx && state.athletes.length > 1){
+      const otros = state.athletes.filter(a=>a.id !== athleteId);
+      html += `<div class="day-tools">
+        <span class="day-tools-label">Copiar a otro atleta</span>
+        <select class="xfer-athlete" data-from="${d}">
+          ${otros.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}
+        </select>
+        <select class="xfer-day" data-from="${d}">
+          ${DAYS.map(x=>`<option value="${x}" ${x===d?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}
+        </select>
+        <button class="btn ghost small" data-xferday="${d}" data-mode="replace">Sustituir</button>
+        <button class="btn ghost small" data-xferday="${d}" data-mode="append">Añadir</button>
+      </div>`;
+    }
     BLOCKS.forEach(b=>{
       html += `<div class="block-title">${b.label}</div>`;
       draft.days[d][b.key].forEach(ex=>{
@@ -2743,6 +2837,7 @@ async function tplDiarioLectura(athleteId){
     if(editando){
       html += `<div class="ex-grid" style="margin-top:10px;">
         <div><label class="field-label">Fecha</label><input type="date" class="ed-date" value="${e.date}"></div>
+        <div><label class="field-label">Día de rutina</label><select class="ed-day">${DAYS.map(x=>`<option value="${x}" ${x===e.day?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}</select></div>
         <div><label class="field-label">Duración (min)</label><input type="number" class="ed-min" value="${Math.round((e.durationSeconds||0)/60)}"></div>
         <div><label class="field-label">RPE general</label><input type="number" class="ed-rpe" min="1" max="10" value="${e.overallRPE||''}"></div>
         <div><label class="field-label">Fatiga (1-5)</label><input type="number" class="ed-fat" min="1" max="5" value="${e.fatiga||''}"></div>
@@ -3205,6 +3300,134 @@ async function bindDynamicEvents(){
     state.openDays[d] = !wasOpen;
   }));
 
+  // --- Copiar / intercambiar / vaciar días de la planificación ---
+  // Los ejercicios se clonan con identificadores nuevos: si compartieran id,
+  // editar uno cambiaría también el del otro día.
+  const clonaBloques = (dias)=>{
+    const copia = {};
+    BLOCKS.forEach(b=>{
+      copia[b.key] = (dias[b.key]||[]).map(ex=>({ ...ex, id: uid(), timer: {...exTimer(ex)} }));
+    });
+    return copia;
+  };
+  const totalDe = (dias)=> BLOCKS.reduce((a,b)=>a+((dias&&dias[b.key])?dias[b.key].length:0),0);
+
+  document.querySelectorAll('[data-copyday]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const origen = btn.dataset.copyday;
+    const modo = btn.dataset.mode;
+    const sel = document.querySelector(`.copy-target[data-from="${origen}"]`);
+    if(!sel) return;
+    const destino = sel.value;
+    const athleteId = state.selectedId;
+    const draft = await getRoutine(athleteId, true);
+    if(totalDe(draft.days[origen]) === 0){ toast(`${origen} no tiene ejercicios que copiar`, true); return; }
+    const yaHay = totalDe(draft.days[destino]);
+    if(modo === 'replace' && yaHay){
+      if(!confirm(`${destino.charAt(0).toUpperCase()+destino.slice(1)} ya tiene ${yaHay} ejercicio${yaHay===1?'':'s'}.\n\n¿Sustituirlos por los de ${origen}?`)) return;
+    }
+    const clon = clonaBloques(draft.days[origen]);
+    if(modo === 'replace'){
+      draft.days[destino] = clon;
+    } else {
+      BLOCKS.forEach(b=>{ draft.days[destino][b.key] = (draft.days[destino][b.key]||[]).concat(clon[b.key]); });
+    }
+    draft.updatedAt = new Date().toISOString();
+    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    if(!ok){ toast('No se pudo guardar', true); return; }
+    toast(`${origen} → ${destino}: ${totalDe(clon)} ejercicios ${modo==='replace'?'copiados':'añadidos'}`);
+    state.openDays = {}; state.openDays[destino] = true;
+    renderKeepScroll();
+  }));
+
+  // --- Copiar un día al de OTRO atleta ---
+  document.querySelectorAll('[data-xferday]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const origen = btn.dataset.xferday;
+    const modo = btn.dataset.mode;
+    const fila = btn.closest('.day-tools');
+    const destinoAtleta = fila.querySelector('.xfer-athlete').value;
+    const destinoDia = fila.querySelector('.xfer-day').value;
+    const nombreDest = (state.athletes.find(a=>a.id===destinoAtleta)||{}).name || 'ese atleta';
+    try{
+      const draftOrigen = await getRoutine(athleteId, true);
+      const clon = clonaBloques(draftOrigen.days[origen]);
+      const total = BLOCKS.reduce((a,b)=>a+clon[b.key].length,0);
+      if(!total){ toast('Ese día no tiene ejercicios', true); return; }
+      const draftDestino = await getRoutine(destinoAtleta, true);
+      const yaTenia = BLOCKS.reduce((a,b)=>a+draftDestino.days[destinoDia][b.key].length,0);
+      if(modo==='replace' && yaTenia){
+        if(!confirm(`${nombreDest} ya tiene ${yaTenia} ejercicio(s) el ${destinoDia}.\n\n¿Sustituirlos por los ${total} de tu ${origen}?`)) return;
+      }
+      BLOCKS.forEach(b=>{
+        draftDestino.days[destinoDia][b.key] = (modo==='append')
+          ? draftDestino.days[destinoDia][b.key].concat(clon[b.key])
+          : clon[b.key];
+      });
+      draftDestino.updatedAt = new Date().toISOString();
+      const ok = await safeSet('routine-draft-'+destinoAtleta, JSON.stringify(draftDestino), true);
+      toast(ok ? `${total} ejercicios copiados a ${nombreDest} (${destinoDia})` : 'No se pudo copiar', !ok);
+      if(ok) toast(`Recuerda compartir la planificación de ${nombreDest}`);
+    }catch(e){ toast('Error al copiar: '+e.message, true); }
+  }));
+
+  // --- Copiar la semana completa a otro atleta ---
+  const xferWeek = document.getElementById('xferWeekBtn');
+  if(xferWeek) xferWeek.addEventListener('click', async ()=>{
+    const destino = document.getElementById('xferWeekAthlete').value;
+    const nombreDest = (state.athletes.find(a=>a.id===destino)||{}).name || 'ese atleta';
+    try{
+      const draftOrigen = await getRoutine(athleteId, true);
+      let total = 0;
+      DAYS.forEach(d=>{ BLOCKS.forEach(b=>{ total += draftOrigen.days[d][b.key].length; }); });
+      if(!total){ toast('Esta semana no tiene ejercicios', true); return; }
+      const draftDestino = await getRoutine(destino, true);
+      let tenia = 0;
+      DAYS.forEach(d=>{ BLOCKS.forEach(b=>{ tenia += draftDestino.days[d][b.key].length; }); });
+      const aviso = tenia
+        ? `${nombreDest} ya tiene ${tenia} ejercicio(s) en su borrador.\n\n¿Sustituir su semana entera por esta (${total} ejercicios)?`
+        : `¿Copiar la semana entera (${total} ejercicios) a ${nombreDest}?`;
+      if(!confirm(aviso)) return;
+      DAYS.forEach(d=>{ draftDestino.days[d] = clonaBloques(draftOrigen.days[d]); });
+      draftDestino.updatedAt = new Date().toISOString();
+      const ok = await safeSet('routine-draft-'+destino, JSON.stringify(draftDestino), true);
+      toast(ok ? `Semana copiada a ${nombreDest}` : 'No se pudo copiar', !ok);
+      if(ok) toast(`Queda en su borrador: revísala y compártela`);
+    }catch(e){ toast('Error al copiar: '+e.message, true); }
+  });
+
+  document.querySelectorAll('[data-swapday]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const origen = btn.dataset.swapday;
+    const sel = document.querySelector(`.copy-target[data-from="${origen}"]`);
+    if(!sel) return;
+    const destino = sel.value;
+    const athleteId = state.selectedId;
+    const draft = await getRoutine(athleteId, true);
+    if(!confirm(`¿Intercambiar los entrenamientos de ${origen} y ${destino}?`)) return;
+    const a = draft.days[origen], b = draft.days[destino];
+    draft.days[origen] = b; draft.days[destino] = a;
+    draft.updatedAt = new Date().toISOString();
+    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    if(!ok){ toast('No se pudo guardar', true); return; }
+    toast(`${origen} ↔ ${destino}`);
+    state.openDays = {}; state.openDays[destino] = true;
+    renderKeepScroll();
+  }));
+
+  document.querySelectorAll('[data-clearday]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const d = btn.dataset.clearday;
+    const athleteId = state.selectedId;
+    const draft = await getRoutine(athleteId, true);
+    const n = totalDe(draft.days[d]);
+    if(!n) return;
+    if(!confirm(`¿Vaciar ${d}?\n\nSe quitan sus ${n} ejercicio${n===1?'':'s'} del borrador.`)) return;
+    BLOCKS.forEach(b=>{ draft.days[d][b.key] = []; });
+    draft.updatedAt = new Date().toISOString();
+    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    if(!ok){ toast('No se pudo guardar', true); return; }
+    toast(`${d} vaciado`);
+    state.openDays = {}; state.openDays[d] = true;
+    renderKeepScroll();
+  }));
+
   // Añadir ejercicio: insertamos la tarjeta en el sitio y ya. Reconstruir la
   // pantalla entera hacía que el scroll saltara al principio en cada añadido.
   document.querySelectorAll('[data-addex]').forEach(b=>b.addEventListener('click', async ()=>{
@@ -3376,6 +3599,8 @@ async function bindDynamicEvents(){
     const mins  = Math.max(1, num('.ed-min', 1, 600, Math.round((e.durationSeconds||0)/60)));
     const rpe   = num('.ed-rpe', 1, 10, e.overallRPE);
     e.date = fecha;
+    const nuevoDia = card.querySelector('.ed-day');
+    if(nuevoDia) e.day = nuevoDia.value;
     e.durationSeconds = mins*60;
     e.overallRPE = rpe;
     e.fatiga = num('.ed-fat',1,5,e.fatiga);
@@ -3518,6 +3743,65 @@ async function bindDynamicEvents(){
     await safeSet(sessionKey(athleteId), '', true);
     toast('Sesión descartada');
     render();
+  });
+
+  // --- Registro manual de una sesión ya hecha ---
+  const manualBtn = document.getElementById('manualSessionBtn');
+  if(manualBtn) manualBtn.addEventListener('click', ()=>{ state.manualSession = true; renderKeepScroll(); });
+  const cancelManual = document.getElementById('cancelManualBtn');
+  if(cancelManual) cancelManual.addEventListener('click', ()=>{ state.manualSession = false; state.manual=null; renderKeepScroll(); });
+  document.querySelectorAll('[data-mnscale]').forEach(sc=>{
+    sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+      sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+    }));
+  });
+  const saveManual = document.getElementById('saveManualBtn');
+  if(saveManual) saveManual.addEventListener('click', async ()=>{
+    try{
+      const card = document.getElementById('manualCard');
+      const val = k=>{ const sc=card.querySelector(`[data-mnscale="${k}"]`); const sel=sc&&sc.querySelector('button.sel'); return sel?parseInt(sel.dataset.val,10):null; };
+      const overallRPE = val('overallRPE');
+      if(overallRPE===null){ toast('Marca al menos el RPE general', true); return; }
+      const fecha = card.querySelector('#mnDate').value || todayISO();
+      const mins = Math.max(1, parseInt(card.querySelector('#mnMin').value,10) || 60);
+      const dia = document.getElementById('sessionDay').value;
+
+      const ejercicios = [];
+      const rpes = [];
+      card.querySelectorAll('[data-mnex]').forEach(fila=>{
+        const nombre = fila.querySelector('div').textContent.trim();
+        const rpe = parseInt(fila.querySelector('.mn-rpe').value,10);
+        const carga = fila.querySelector('.mn-load').value.trim();
+        const series = fila.querySelector('.mn-series').value.trim();
+        const rir = fila.querySelector('.mn-rir').value.trim();
+        if(!isNaN(rpe) && rpe>=1 && rpe<=10) rpes.push(rpe);
+        ejercicios.push({ name:nombre, rpeApplied:(!isNaN(rpe)?rpe:null), loadApplied:carga,
+          seriesDone:series, rirApplied:rir, done:true });
+      });
+      const avg = rpes.length ? +(rpes.reduce((a,b)=>a+b,0)/rpes.length).toFixed(1) : 0;
+      const base = avg > 0 ? avg : overallRPE;
+      const carga = +(base * mins).toFixed(1);
+
+      const registro = {
+        date: fecha, day: dia, durationSeconds: mins*60, exercises: ejercicios,
+        avgExerciseRPE: avg, fatigueScore: carga, cargaDesdeRPEGeneral: !(avg>0),
+        overallRPE,
+        descanso: val('descanso'), fatiga: val('fatiga'), calidad: val('calidad'),
+        hidratacion: val('hidratacion'), satisfaccion: val('satisfaccion'),
+        notes: card.querySelector('#mnNotes').value.trim(),
+        registroManual: true
+      };
+      const raw = await safeGet('journal-'+athleteId, true);
+      const entries = raw ? JSON.parse(raw) : [];
+      entries.push(registro);
+      entries.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+      const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
+      if(!ok){ toast('No se pudo guardar', true); return; }
+      toast('Sesión registrada en el diario');
+      state.manualSession = false; state.manual = null;
+      state.tab = 'progreso'; render();
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
   });
 
   const startSession = document.getElementById('startSession');
