@@ -57,7 +57,8 @@
   button.btn.small{padding:6px 12px;font-size:12.5px;}
   button.btn:disabled{opacity:0.4;cursor:not-allowed;}
 
-  #tabContent, #main > .card:first-child{animation:fadeSlide .28s ease both;}
+  #tabContent.cargando{opacity:0.45;transition:opacity .18s ease;pointer-events:none;}
+  #tabContent.anim-in, #main.anim-in > .card:first-child{animation:fadeSlide .28s ease both;}
   @keyframes fadeSlide{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
   @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
 
@@ -78,11 +79,22 @@
      partir del sexto ejercicio y no se podía seguir bajando. La apertura se
      acompaña con un fundido para que no resulte brusca. */
   .acc-body{max-height:0;overflow:hidden;padding:0 16px;transition:padding .22s ease;}
-  .acc.open .acc-body{max-height:none;overflow:visible;padding:16px;animation:accOpen .26s ease both;}
+  .acc.open .acc-body{max-height:none;overflow:visible;padding:16px;}
+  .acc.just-opened .acc-body{animation:accOpen .26s ease both;}
   @keyframes accOpen{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
   .block-title{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin:14px 0 8px;padding-top:10px;border-top:1px dashed var(--border);}
   .block-title:first-child{border-top:none;padding-top:0;margin-top:0;}
 
+  .ex-note{display:flex;flex-direction:column;gap:2px;background:var(--panel2);border-left:2px solid var(--accent);border-radius:0 6px 6px 0;padding:7px 11px;margin-bottom:6px;}
+  .ex-note b{font-size:12px;color:var(--accent);font-weight:600;}
+  .ex-note span{font-size:12.5px;color:var(--ink);line-height:1.45;}
+  .video-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px dashed var(--border);margin-top:10px;padding-top:10px;}
+  .video-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:4px 11px;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .vid-item{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;margin-bottom:8px;}
+  .vid-item .vi-name{flex:1;min-width:0;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .vid-item .vi-size{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);white-space:nowrap;}
+  .video-player{width:100%;border-radius:10px;background:#000;max-height:60vh;}
+  .ex-move{min-width:38px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;}
   .ex-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;position:relative;}
   .ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
   .ex-grid .full{grid-column:1/-1;}
@@ -198,6 +210,7 @@
   .habit-tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:2px 8px;}
   .habit-check{background:var(--panel);border:1px solid var(--border);color:var(--muted);font-family:'Manrope',sans-serif;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:7px;cursor:pointer;}
   .habit-check.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
+  .habit-check.no.on{background:var(--danger);border-color:var(--danger);color:#FAF6EE;}
   .hstat{margin-bottom:14px;}
   .hstat-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13.5px;margin-bottom:5px;}
   .hstat-top b{font-family:'IBM Plex Mono',monospace;color:var(--accent);}
@@ -213,6 +226,13 @@
   .cal-day .cd-num{line-height:1;}
   .cal-day .cd-tag{font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:0.02em;color:var(--accent);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px;}
   .cal-day.trained{background:var(--accent-dim);color:var(--ink);}
+  .cal-day.comp{background:var(--danger);color:#FAF6EE;font-weight:700;}
+  .cal-day.comp .cd-tag{color:#FAF6EE;}
+  .cal-day.macro{border:1px dashed var(--accent);}
+  .cal-legend{display:flex;flex-direction:column;gap:5px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--border);}
+  .cal-legend span{font-family:'IBM Plex Mono',monospace;font-size:11px;}
+  .cl-comp{color:var(--danger);}
+  .cl-macro{color:var(--accent);}
   .cal-summary{margin-top:16px;border-top:1px dashed var(--border);padding-top:14px;}
   .cal-sum-kpis{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;}
   .cal-sum-kpis b{display:block;font-family:'IBM Plex Mono',monospace;font-size:19px;color:var(--accent);}
@@ -220,6 +240,13 @@
   .cal-sum-types{display:flex;gap:7px;flex-wrap:wrap;}
   .ctype{font-size:11.5px;background:var(--panel2);border:1px solid var(--border);border-radius:100px;padding:4px 11px;color:var(--ink);}
   .ctype i{font-style:normal;font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;margin-right:5px;}
+  .comp-group{display:flex;justify-content:space-between;align-items:baseline;gap:10px;background:var(--accent-dim);border-radius:8px;padding:9px 13px;margin:16px 0 10px;}
+  .comp-group b{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;}
+  .comp-group span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);white-space:nowrap;}
+  .week-nav{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:14px;}
+  .week-nav-mid{flex:1;text-align:center;min-width:0;}
+  .week-nav-mid b{display:block;font-family:'Fraunces',serif;font-size:14.5px;font-weight:600;}
+  .week-nav-mid span{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px;}
   .day-tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:var(--panel3);border:1px dashed var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;}
   .day-tools-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;}
   .day-tools select{padding:6px 9px;font-size:13px;}
@@ -451,6 +478,56 @@ async function safeSet(key, value, shared){
   }
 }
 
+// ---------- GALERÍA DE VÍDEOS ----------
+// Los vídeos viven en Supabase Storage; en la base de datos sólo guardamos su
+// referencia. Se suben una vez y se reutilizan en cualquier ejercicio o atleta.
+const VIDEO_BUCKET = 'umbral-videos';
+const MAX_VIDEO_MB = 25;
+
+async function getVideoLib(){
+  const raw = await safeGet('video-library', true);
+  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
+  catch(e){ return []; }
+}
+async function saveVideoLib(lib){ return safeSet('video-library', JSON.stringify(lib), true); }
+function videoPublicUrl(path){
+  return SUPA_URL + '/storage/v1/object/public/' + VIDEO_BUCKET + '/' + path;
+}
+async function subirVideo(file, nombre){
+  if(!file) throw new Error('no hay archivo');
+  const mb = file.size / (1024*1024);
+  if(mb > MAX_VIDEO_MB) throw new Error(`el vídeo pesa ${mb.toFixed(1)} MB (máximo ${MAX_VIDEO_MB})`);
+  const ext = (file.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^a-z0-9]/g,'');
+  const path = Date.now() + '-' + uid() + '.' + ext;
+  const r = await fetch(SUPA_URL + '/storage/v1/object/' + VIDEO_BUCKET + '/' + path, {
+    method: 'POST',
+    headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': file.type || 'video/mp4' },
+    body: file
+  });
+  if(!r.ok){
+    let detalle = 'HTTP ' + r.status;
+    try{ const j = await r.json(); if(j && j.message) detalle = j.message; }catch(e){}
+    if(r.status === 404) detalle = 'falta crear el almacén de vídeos en Supabase';
+    throw new Error(detalle);
+  }
+  const item = { id: uid(), name: nombre || file.name.replace(/\.[^.]+$/,''), path,
+                 url: videoPublicUrl(path), size: Math.round(file.size/1024), fecha: todayISO() };
+  const lib = await getVideoLib();
+  lib.push(item);
+  await saveVideoLib(lib);
+  return item;
+}
+async function borrarVideo(item){
+  try{
+    await fetch(SUPA_URL + '/storage/v1/object/' + VIDEO_BUCKET + '/' + item.path, {
+      method: 'DELETE',
+      headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+    });
+  }catch(e){ /* si falla el borrado del archivo, al menos lo quitamos de la lista */ }
+  const lib = await getVideoLib();
+  await saveVideoLib(lib.filter(v=>v.id !== item.id));
+}
+
 async function storageSelfTest(){
   const key = '__umbral_test__';
   const val = 'ok-' + Date.now();
@@ -652,6 +729,23 @@ async function findPausedSession(athleteId){
 
 // Terminar una sesión sin dejar cronómetros vivos: si el intervalo seguía
 // corriendo tras poner session=null, reventaba al leer session.elapsedSec.
+// Mantener la pantalla encendida durante la sesión (si el navegador lo permite).
+let wakeLockRef = null;
+async function keepScreenOn(){
+  try{
+    if('wakeLock' in navigator && !wakeLockRef){
+      wakeLockRef = await navigator.wakeLock.request('screen');
+      wakeLockRef.addEventListener('release', ()=>{ wakeLockRef = null; });
+    }
+  }catch(e){ /* puede denegarse: no es crítico */ }
+}
+function releaseScreen(){
+  try{ if(wakeLockRef){ wakeLockRef.release(); wakeLockRef = null; } }catch(e){}
+}
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'visible' && session && session.fullscreen) keepScreenOn();
+});
+
 function stopSession(){
   clearInterval(stopwatchInterval); stopwatchInterval = null;
   clearInterval(engineInterval); engineInterval = null;
@@ -854,8 +948,7 @@ function render(){
   bindShellEvents();
   maybeShowTutorial();
   setScrollPos(y);
-  requestAnimationFrame(()=>setScrollPos(y));
-  setTimeout(()=>setScrollPos(y), 30);
+  requestAnimationFrame(()=>{ setScrollPos(y); aplicarAnimacionEntrada(); });
 }
 
 // ---------- TUTORIAL DEL ATLETA ----------
@@ -961,7 +1054,22 @@ async function bindGateEvents(){
   if(pinInput) pinInput.addEventListener('keydown', e=>{ if(e.key==='Enter') tryAthlete(); });
 }
 function renderKeepScroll(){ render(); }
-function renderScrollTop(){ render(); requestAnimationFrame(()=>setScrollPos(0)); setTimeout(()=>setScrollPos(0), 30); }
+function renderScrollTop(){
+  state._animarEntrada = true;          // sólo al cambiar de pantalla
+  render();
+  requestAnimationFrame(()=>setScrollPos(0));
+}
+// Marca la animación de entrada una sola vez, tras pintar.
+function aplicarAnimacionEntrada(){
+  if(!state._animarEntrada) return;
+  state._animarEntrada = false;
+  const el = document.getElementById('tabContent') || document.getElementById('main');
+  if(!el) return;
+  el.classList.remove('anim-in');
+  void el.offsetWidth;
+  el.classList.add('anim-in');
+  setTimeout(()=>el.classList.remove('anim-in'), 400);
+}
 function toast(msg, isError){
   let t = document.getElementById('umbralToast');
   if(!t){ t=document.createElement('div'); t.id='umbralToast'; t.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;padding:10px 18px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,0.25);'; document.body.appendChild(t); }
@@ -1125,23 +1233,39 @@ async function bindShellEvents(){
   await renderTabContent();
 }
 
+let _renderToken = 0;
 async function renderTabContent(){
   const el = document.getElementById('tabContent'); if(!el) return;
   const mode = el.dataset.mode;
-  el.innerHTML = '<div class="empty">Cargando…</div>';
-  if(mode==='resumen') el.innerHTML = await tplResumen();
-  else if(mode==='calendario-coach') el.innerHTML = await tplCalendarioCoach();
-  else if(mode==='tareas') el.innerHTML = await tplTareas();
-  else if(mode==='athlete-detail') el.innerHTML = await tplAthleteDetail(el.dataset.athlete);
-  else if(mode==='intake') el.innerHTML = await tplIntake(el.dataset.athlete);
-  else {
-    const athleteId = el.dataset.athlete;
-    if(state.tab==='rutina') el.innerHTML = await tplRutinaAtleta(athleteId);
-    else if(state.tab==='diario') el.innerHTML = await tplSesionEntry(athleteId);
-    else if(state.tab==='calendario') el.innerHTML = await tplCalendarioAtleta(athleteId);
-    else if(state.tab==='progreso') el.innerHTML = await tplProgreso(athleteId);
-    else if(state.tab==='perfil') el.innerHTML = await tplPerfilAtleta(athleteId);
+  const token = ++_renderToken;
+
+  // No vaciamos la pantalla mientras cargamos: dejar el contenido anterior a la
+  // vista evita el parpadeo en cada toque. Sólo si tarda de verdad avisamos.
+  const lento = setTimeout(()=>{ if(token === _renderToken) el.classList.add('cargando'); }, 260);
+
+  let html = '';
+  try{
+    if(mode==='resumen') html = await tplResumen();
+    else if(mode==='calendario-coach') html = await tplCalendarioCoach();
+    else if(mode==='tareas') html = await tplTareas();
+    else if(mode==='athlete-detail') html = await tplAthleteDetail(el.dataset.athlete);
+    else if(mode==='intake') html = await tplIntake(el.dataset.athlete);
+    else {
+      const athleteId = el.dataset.athlete;
+      if(state.tab==='rutina') html = await tplRutinaAtleta(athleteId);
+      else if(state.tab==='diario') html = await tplSesionEntry(athleteId);
+      else if(state.tab==='calendario') html = await tplCalendarioAtleta(athleteId);
+      else if(state.tab==='progreso') html = await tplProgreso(athleteId);
+      else if(state.tab==='perfil') html = await tplPerfilAtleta(athleteId);
+    }
+  }catch(e){
+    html = `<div class="card"><div class="empty">No se pudo cargar esta pantalla. ${escapeHtml(e.message||'')}</div></div>`;
   }
+  clearTimeout(lento);
+  // Si mientras cargábamos el usuario ya se fue a otro sitio, descartamos.
+  if(token !== _renderToken) return;
+  el.classList.remove('cargando');
+  el.innerHTML = html;
   bindDynamicEvents();
   renderNav();
   if(session && session.fullscreen) mountSessionOverlay(state.athleteAsId || state.selectedId);
@@ -1165,15 +1289,67 @@ async function tplIntake(athleteId){
 }
 
 // ---------- ROUTINE HELPERS ----------
-async function getRoutine(athleteId, draft){
-  const key = draft ? 'routine-draft-'+athleteId : 'routine-'+athleteId;
-  const raw = await safeGet(key, true);
-  const r = raw ? JSON.parse(raw) : {};
+// ---------- RUTINAS POR SEMANA ----------
+// Cada semana natural tiene su propia clave, así se pueden preparar semanas
+// futuras sin pisar la que está en curso. Las rutinas antiguas (sin semana)
+// se migran solas a la semana actual la primera vez que se abren.
+const TURNOS = ['', 'Mañana', 'Tarde'];
+function lunesDe(fechaISO){
+  const d = new Date(fechaISO + 'T00:00:00');
+  const day = d.getDay() || 7;
+  d.setDate(d.getDate() - day + 1);
+  return d.toISOString().slice(0,10);
+}
+function semanaDesplazada(offset){
+  const d = new Date(weekOfISO() + 'T00:00:00');
+  d.setDate(d.getDate() + (offset||0)*7);
+  return d.toISOString().slice(0,10);
+}
+function routineKey(athleteId, draft, weekOf){
+  const base = draft ? 'routine-draft-' : 'routine-';
+  return base + athleteId + '-w' + weekOf;
+}
+function estructuraVacia(){
+  const days = {};
+  DAYS.forEach(d=>{ days[d] = {}; BLOCKS.forEach(b=>{ days[d][b.key] = []; }); });
+  return { days };
+}
+function normalizaRutina(r){
+  if(!r || typeof r !== 'object') r = {};
   if(!r.days) r.days = {};
-  DAYS.forEach(d=>{ if(!r.days[d]) r.days[d]={}; BLOCKS.forEach(b=>{ if(!r.days[d][b.key]) r.days[d][b.key]=[]; }); });
+  DAYS.forEach(d=>{
+    if(!r.days[d]) r.days[d] = {};
+    BLOCKS.forEach(b=>{ if(!Array.isArray(r.days[d][b.key])) r.days[d][b.key] = []; });
+  });
   return r;
 }
-function blankExercise(){ return {id:uid(), name:'', desc:'', section:'', load:'', series:3, reps:'', rest:'', rir:'', rpeTarget:'', timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}}; }
+async function getRoutine(athleteId, draft, weekOf){
+  const semana = weekOf || state.planWeek || weekOfISO();
+  const raw = await safeGet(routineKey(athleteId, draft, semana), true);
+  if(raw){ try{ return normalizaRutina(JSON.parse(raw)); }catch(e){} }
+  // Migración: lo guardado en el formato antiguo pasa a ser la semana actual.
+  if(semana === weekOfISO()){
+    const legacy = await safeGet((draft?'routine-draft-':'routine-')+athleteId, true);
+    if(legacy){
+      try{
+        const r = normalizaRutina(JSON.parse(legacy));
+        r.weekOf = semana;
+        await safeSet(routineKey(athleteId, draft, semana), JSON.stringify(r), true);
+        return r;
+      }catch(e){}
+    }
+  }
+  const vacia = normalizaRutina(estructuraVacia());
+  vacia.weekOf = semana;
+  return vacia;
+}
+async function saveRoutine(athleteId, draft, rutina, weekOf){
+  const semana = weekOf || state.planWeek || weekOfISO();
+  rutina.weekOf = semana;
+  rutina.updatedAt = new Date().toISOString();
+  return safeSet(routineKey(athleteId, draft, semana), JSON.stringify(rutina), true);
+}
+function blankExercise(){ return {id:uid(), name:'', desc:'', section:'', turno:'', load:'', series:3, reps:'', rest:'', rir:'', rpeTarget:'', timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}}; }
 function exTimer(ex){
   const t = (ex && ex.timer) ? ex.timer : {};
   return { type:t.type||'none', work:+t.work||30, rest:+t.rest||15, rounds:+t.rounds||8,
@@ -1302,7 +1478,7 @@ async function tplRutinaAtleta(athleteId){
 async function tplSesionEntry(athleteId){
   const routine = await getRoutine(athleteId, false);
   const histRaw = await safeGet('routine-history-'+athleteId, true);
-  const hist = histRaw ? JSON.parse(histRaw) : [];
+  const hist = normalizaHistorial(histRaw ? JSON.parse(histRaw) : []);
   const info = await currentMicro(athleteId);
   const todayDay = DAY_INDEX[new Date().getDay()];
   const selWeek = state.sessionWeek || 'actual';
@@ -1336,7 +1512,11 @@ async function tplSesionEntry(athleteId){
           ${DAYS.map(d=>`<option value="${d}" ${d===selDay?'selected':''}>${d.charAt(0).toUpperCase()+d.slice(1)}${d===todayDay?' (hoy)':''}</option>`).join('')}
         </select></div>
     </div>
-    <div id="sessionPreview" style="margin-top:14px;">${sessionPreviewHtml(source, selDay)}</div>
+    ${(()=>{ const ts = turnosDelDia(source, selDay);
+      if(ts.length<2) return '';
+      const sel = ts.includes(state.sessionTurno) ? state.sessionTurno : ts[0];
+      return `<div class="day-tools" style="margin-top:12px;"><span class="day-tools-label">Sesión de</span>${ts.map(t=>`<button class="btn ${sel===t?'':'ghost'} small" data-turno="${t}">${t||'Única'}</button>`).join('')}</div>`; })()}
+    <div id="sessionPreview" style="margin-top:14px;">${sessionPreviewHtml(source, selDay, turnoActivo(source, selDay))}</div>
     <div class="row" style="margin-top:14px;"><button class="btn" id="startSession">Iniciar sesión — pantalla completa</button>
     <button class="btn ghost" id="manualSessionBtn">Registrar una ya hecha</button></div>
   </div>`;
@@ -1355,8 +1535,12 @@ async function tplRegistroManual(athleteId, source, selDay){
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Se toman los ejercicios del día seleccionado arriba. Rellena lo que recuerdes: lo que dejes vacío no se guarda.</p>
     <div class="ex-grid">
-      <div><label class="field-label">Fecha</label><input type="date" id="mnDate" value="${m.date||todayISO()}" max="${todayISO()}"></div>
+      <div><label class="field-label">Fecha de la sesión</label><input type="date" id="mnDate" value="${m.date||todayISO()}" max="${todayISO()}"></div>
       <div><label class="field-label">Duración (min)</label><input type="number" id="mnMin" min="1" max="600" value="${m.min||60}"></div>
+      <div class="full"><label class="field-label">Ejercicios de</label>
+        <select id="mnDay">${DAYS.map(x=>`<option value="${x}" ${x===selDay?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}</select>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:5px;">Se ajusta solo al elegir la fecha, pero puedes cambiarlo si ese día hiciste otra cosa.</p>
+      </div>
     </div>`;
 
   if(!lista.length){
@@ -1374,6 +1558,7 @@ async function tplRegistroManual(athleteId, source, selDay){
           <div><label class="field-label">Series hechas</label><input type="number" class="mn-series" min="0" max="20" value="${ex.series||''}"></div>
           <div><label class="field-label">RPE</label><input type="number" class="mn-rpe" min="1" max="10" placeholder="1-10"></div>
           <div><label class="field-label">RIR</label><input type="text" class="mn-rir" value="${escapeHtml(ex.rir||'')}" placeholder="2"></div>
+          <div class="full"><label class="field-label">Nota</label><input type="text" class="mn-note" placeholder="Sensación, molestia, ajuste…"></div>
         </div>
       </div>`;
     });
@@ -1396,11 +1581,16 @@ function mnScale5(key,label){
   return `<div class="q-item"><p>${label}</p><div class="scale" data-mnscale="${key}">${[1,2,3,4,5].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div>
     <div class="scale-labels"><span>1 · deficiente</span><span>5 · excelente</span></div></div>`;
 }
-function sessionPreviewHtml(routine, day){
+function turnoActivo(routine, day){
+  const ts = turnosDelDia(routine, day);
+  if(ts.length < 2) return undefined;
+  return ts.includes(state.sessionTurno) ? state.sessionTurno : ts[0];
+}
+function sessionPreviewHtml(routine, day, turno){
   let html = '';
   let any = false;
   BLOCKS.forEach(b=>{
-    const list = routine.days[day][b.key];
+    const list = (routine.days[day][b.key]||[]).filter(ex=> turno===undefined||turno===null || (ex.turno||'')===turno);
     if(!list.length) return;
     any = true;
     html += `<div class="block-title">${b.label}</div>`;
@@ -1412,9 +1602,19 @@ function sessionPreviewHtml(routine, day){
   if(!any) html = `<div class="empty">Sin ejercicios programados para ese día.</div>`;
   return html;
 }
-function flattenExercises(routine, day){
+// Turnos presentes ese día: permite ofrecer mañana y tarde por separado.
+function turnosDelDia(routine, day){
+  const set = new Set();
+  BLOCKS.forEach(b=>{ (routine.days[day][b.key]||[]).forEach(ex=>set.add(ex.turno||'')); });
+  return ['','Mañana','Tarde'].filter(t=>set.has(t));
+}
+function flattenExercises(routine, day, turno){
   const list = [];
-  BLOCKS.forEach(b=>{ routine.days[day][b.key].forEach(ex=>{ list.push({ ...ex, block:b.key, blockLabel:b.label, setsDone: Array(parseInt(ex.series)||1).fill(false), done:false, rpeApplied:null }); }); });
+  BLOCKS.forEach(b=>{
+    (routine.days[day][b.key]||[])
+      .filter(ex=> turno===undefined || turno===null || (ex.turno||'')===turno)
+      .forEach(ex=>{ list.push({ ...ex, block:b.key, blockLabel:b.label, setsDone: Array(parseInt(ex.series)||1).fill(false), done:false, rpeApplied:null }); });
+  });
   return list;
 }
 async function mountSessionOverlay(athleteId){
@@ -1446,6 +1646,7 @@ function renderSessionOverlay(){
       <div class="ex-grid" style="margin-top:8px;">
         <div><label class="field-label">RPE aplicado</label><input type="number" min="1" max="10" class="rpe-applied-input" data-exi="${i}" value="${ex.rpeApplied ?? ''}"></div>
         <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
+        <div class="full"><label class="field-label">Nota para tu entrenador</label><textarea class="note-applied-input" data-exi="${i}" placeholder="Molestia, sensación, ajuste que hiciste…" style="min-height:38px;">${escapeHtml(ex.noteApplied||'')}</textarea></div>
       </div>
     </div>`;
   });
@@ -1467,6 +1668,16 @@ function bindSessionOverlayEvents(){
   }));
   document.querySelectorAll('.rpe-applied-input').forEach(inp=>inp.addEventListener('change', ()=>{ const i=parseInt(inp.dataset.exi,10); const v=parseInt(inp.value,10); session.exercises[i].rpeApplied=(v>=1&&v<=10)?v:null; queueSessionSave(); }));
   document.querySelectorAll('.load-applied-input').forEach(inp=>inp.addEventListener('change', ()=>{ const i=parseInt(inp.dataset.exi,10); session.exercises[i].loadApplied=inp.value.trim(); queueSessionSave(); }));
+  document.querySelectorAll('.note-applied-input').forEach(inp=>{
+    let deb=null;
+    const guardar = ()=>{ const i=parseInt(inp.dataset.exi,10); session.exercises[i].noteApplied=inp.value.trim(); queueSessionSave(); };
+    inp.addEventListener('input', ()=>{ clearTimeout(deb); deb=setTimeout(guardar,600); });
+    inp.addEventListener('change', ()=>{ clearTimeout(deb); guardar(); });
+  });
+  document.querySelectorAll('[data-playvideo]').forEach(b=>b.addEventListener('click', ()=>{
+    const [url, nombre] = b.dataset.playvideo.split('|');
+    abrirVideo(url, nombre);
+  }));
   const openTimerModal = document.getElementById('openTimerModal');
   if(openTimerModal) openTimerModal.addEventListener('click', ()=>openTimer());
   document.querySelectorAll('[data-extimer]').forEach(b=>b.addEventListener('click', ()=>{
@@ -1528,7 +1739,7 @@ function bindSurveyEvents(){
     const rpeBase = (session.avgExerciseRPE && session.avgExerciseRPE > 0) ? session.avgExerciseRPE : overallRPE;
     const cargaFinal = +(rpeBase * (session.elapsedSec/60)).toFixed(1);
     const record = { date: todayISO(), day: session.day, durationSeconds: session.elapsedSec,
-      exercises: session.exercises.map(e=>({name:e.name, section:e.section||'', rpeApplied:e.rpeApplied, loadPlanned:e.load||'', loadApplied:e.loadApplied||'', done:e.done})),
+      exercises: session.exercises.map(e=>({name:e.name, section:e.section||'', rpeApplied:e.rpeApplied, loadPlanned:e.load||'', loadApplied:e.loadApplied||'', noteApplied:e.noteApplied||'', done:e.done})),
       avgExerciseRPE: session.avgExerciseRPE, fatigueScore: cargaFinal,
       cargaDesdeRPEGeneral: !(session.avgExerciseRPE > 0),
       overallRPE, fatiga, calidad, hidratacion, satisfaccion, notes };
@@ -1792,7 +2003,7 @@ function abreviaTipo(t){
   if(map[t]) return map[t];
   return t.slice(0,4).toUpperCase();
 }
-function monthGridHtml(callDateStr, journal, offset){
+function monthGridHtml(callDateStr, journal, offset, plan){
   const base = new Date();
   base.setDate(1);
   base.setMonth(base.getMonth() + (offset||0));
@@ -1809,11 +2020,24 @@ function monthGridHtml(callDateStr, journal, offset){
     const d = new Date(e.date+'T00:00:00');
     if(d.getFullYear()===year && d.getMonth()===month) porDia[d.getDate()] = e;
   });
+  // Competiciones e inicios de macrociclo de ese mes
+  const compsDia = {}, macroDia = {};
+  ((plan&&plan.macros)||[]).forEach(m=>{
+    if(m.startDate){
+      const ms = new Date(m.startDate+'T00:00:00');
+      if(ms.getFullYear()===year && ms.getMonth()===month) macroDia[ms.getDate()] = m.name || 'Macrociclo';
+    }
+    (m.competitions||[]).forEach(c=>{
+      if(!c.date) return;
+      const cd = new Date(c.date+'T00:00:00');
+      if(cd.getFullYear()===year && cd.getMonth()===month) compsDia[cd.getDate()] = c.name || 'Competición';
+    });
+  });
   const nombreMes = base.toLocaleDateString('es-ES',{month:'long', year:'numeric'});
   let html = `<div class="cal-head">
     <button class="btn ghost small" data-calmove="-1">←</button>
-    <b>${nombreMes.charAt(0).toUpperCase()+nombreMes.slice(1)}</b>
-    <button class="btn ghost small" data-calmove="1" ${(offset||0)>=0?'disabled':''}>→</button>
+    <b>${nombreMes.charAt(0).toUpperCase()+nombreMes.slice(1)}${(offset||0)!==0?' <button class="btn ghost small" data-calmove="hoy" style="margin-left:8px;">Hoy</button>':''}</b>
+    <button class="btn ghost small" data-calmove="1">→</button>
   </div>`;
   html += `<div class="cal-grid">`;
   ['Lu','Ma','Mi','Ju','Vi','Sa','Do'].forEach(d=>html+=`<div class="dow">${d}</div>`);
@@ -1823,8 +2047,10 @@ function monthGridHtml(callDateStr, journal, offset){
     const isCall = callDate && callDate.getDate()===d && callDate.getMonth()===month && callDate.getFullYear()===year;
     const e = porDia[d];
     const tipo = e ? abreviaTipo(tipoDeSesion(e)) : '';
-    html += `<div class="cal-day ${isToday?'today':''} ${isCall?'call':''} ${e?'trained':''}" ${e?`title="${escapeHtml(e.date)} · carga ${e.fatigueScore}"`:''}>
-      <span class="cd-num">${d}</span>${tipo?`<span class="cd-tag">${tipo}</span>`:''}
+    const comp = compsDia[d], macroIni = macroDia[d];
+    const titulo = comp ? escapeHtml(comp) : (macroIni ? 'Empieza '+escapeHtml(macroIni) : (e?`${escapeHtml(e.date)} · carga ${e.fatigueScore}`:''));
+    html += `<div class="cal-day ${isToday?'today':''} ${isCall?'call':''} ${e?'trained':''} ${comp?'comp':''} ${macroIni&&!comp?'macro':''}" ${titulo?`title="${titulo}"`:''}>
+      <span class="cd-num">${d}</span>${comp?`<span class="cd-tag">★</span>`:(macroIni?`<span class="cd-tag">▮</span>`:(tipo?`<span class="cd-tag">${tipo}</span>`:''))}
     </div>`;
   }
   html += `</div>`;
@@ -1846,6 +2072,12 @@ function monthGridHtml(callDateStr, journal, offset){
     </div>`;
   } else {
     html += `<div class="empty" style="padding:10px 0;">Sin sesiones registradas este mes.</div>`;
+  }
+  if(Object.keys(compsDia).length || Object.keys(macroDia).length){
+    html += `<div class="cal-legend">`;
+    Object.keys(compsDia).forEach(dd=>{ html += `<span class="cl-comp">★ ${escapeHtml(compsDia[dd])} · día ${dd}</span>`; });
+    Object.keys(macroDia).forEach(dd=>{ if(!compsDia[dd]) html += `<span class="cl-macro">▮ ${escapeHtml(macroDia[dd])} · empieza el ${dd}</span>`; });
+    html += `</div>`;
   }
   return html;
 }
@@ -1911,7 +2143,8 @@ async function tplCalendarioAtleta(athleteId){
 
   const jRaw = await safeGet('journal-'+athleteId, true);
   const journal = jRaw ? JSON.parse(jRaw) : [];
-  let html = `<div class="card"><h2>Calendario</h2>${monthGridHtml(call.nextDate, journal, state.calOffset||0)}</div>`;
+  const planCal = await getPlan(athleteId);
+  let html = `<div class="card" id="calCard"><h2>Calendario</h2>${monthGridHtml(call.nextDate, journal, state.calOffset||0, planCal)}</div>`;
 
   // Videollamada
   html += `<div class="card"><h2>Videollamada de revisión</h2>`;
@@ -1958,7 +2191,7 @@ async function tplCalendarioAtleta(athleteId){
   </div>`;
 
   const histRaw = await safeGet('routine-history-'+athleteId, true);
-  const hist = histRaw ? JSON.parse(histRaw) : [];
+  const hist = normalizaHistorial(histRaw ? JSON.parse(histRaw) : []);
   if(hist.length){
     html += `<div class="card"><h2>Semanas anteriores</h2>${weekHistoryHtml(hist, athleteId)}</div>`;
   }
@@ -2294,8 +2527,12 @@ async function tplHabitos(athleteId){
         ${h.fijo?'<span class="habit-tag">de tu entrenador</span>':''}
       </div>`;
     if(h.type === 'check'){
-      const on = (v===true||v==='true');
-      html += `<button class="habit-check ${on?'on':''}" data-habit="${h.id}" data-type="check">${on?'✓ Hecho':'Marcar'}</button>`;
+      const si = (v===true||v==='true');
+      const no = (v===false||v==='false');
+      html += `<div class="row" style="gap:8px;">
+        <button class="habit-check ${si?'on':''}" data-habit="${h.id}" data-type="check" data-val="si">✓ Sí</button>
+        <button class="habit-check no ${no?'on':''}" data-habit="${h.id}" data-type="check" data-val="no">✕ No</button>
+      </div>`;
     } else if(h.type === 'scale'){
       html += `<div class="scale" data-habitscale="${h.id}">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${String(v)===String(n)?'sel':''}">${n}</button>`).join('')}</div>`;
     } else {
@@ -2635,7 +2872,27 @@ async function tplPeriodizacion(athleteId){
     html += `<div class="card"><div class="empty">Sin macrociclos todavía. Crea uno para empezar a planificar la temporada.</div></div>`;
     return html;
   }
+  // Agrupamos los macrociclos por la competición a la que apuntan, para ver de
+  // un vistazo qué bloques preparan la misma carrera.
+  const grupos = new Map();
+  plan.macros.forEach(m=>{
+    const comps = (m.competitions||[]).filter(c=>c.name||c.date);
+    const clave = comps.length ? comps.map(c=>`${c.name||'Competición'} · ${c.date||'sin fecha'}`).sort().join(' + ') : '__sin__';
+    if(!grupos.has(clave)) grupos.set(clave, []);
+    grupos.get(clave).push(m);
+  });
+  let grupoActual = null;
   plan.macros.forEach((macro)=>{
+    const comps = (macro.competitions||[]).filter(c=>c.name||c.date);
+    const clave = comps.length ? comps.map(c=>`${c.name||'Competición'} · ${c.date||'sin fecha'}`).sort().join(' + ') : '__sin__';
+    if(clave !== grupoActual){
+      grupoActual = clave;
+      const cuantos = grupos.get(clave).length;
+      html += `<div class="comp-group">
+        <b>${clave==='__sin__' ? 'Sin competición asignada' : escapeHtml(clave)}</b>
+        <span>${cuantos} macrociclo${cuantos===1?'':'s'}</span>
+      </div>`;
+    }
     const open = state.openDays['macro-'+macro.id] ? 'open':'';
     const peak = macro.micros.reduce((a,m)=>Math.max(a, m.intensity||0), 0);
     html += `<div class="card">
@@ -2663,7 +2920,20 @@ async function tplPeriodizacion(athleteId){
             <input type="date" class="comp-date" data-macro="${macro.id}" data-comp="${c.id}" value="${c.date||''}">
             <button class="btn ghost small" data-delcomp="${macro.id}|${c.id}">✕</button>
           </div>`).join('')}
-          <button class="btn ghost small" data-addcomp="${macro.id}">+ Añadir competición</button>
+          ${(()=>{ const otras = [];
+            plan.macros.forEach(m=>{ if(m.id===macro.id) return;
+              (m.competitions||[]).forEach(c=>{ if(c.name && c.date && !(macro.competitions||[]).some(x=>x.name===c.name&&x.date===c.date)) otras.push({...c, macro:m.name}); }); });
+            const vistas = [];
+            otras.forEach(c=>{
+              const clave = (c.name||'')+'|'+(c.date||'');
+              if(!vistas.some(v=>((v.name||'')+'|'+(v.date||''))===clave)) vistas.push(c);
+            });
+            if(!vistas.length) return '';
+            return `<div class="day-tools" style="margin-top:8px;">
+              <span class="day-tools-label">Ya usadas en otros macrociclos</span>
+              ${vistas.map(c=>`<button class="btn ghost small" data-usecomp="${macro.id}|${escapeHtml(c.name)}|${c.date}">${escapeHtml(c.name)} · ${c.date}</button>`).join('')}
+            </div>`; })()}
+          <button class="btn ghost small" data-addcomp="${macro.id}" style="margin-top:8px;">+ Añadir competición</button>
           <div class="block-title">Microciclos</div>
           ${macro.micros.map((m,i)=>{
             const d = microDate(macro, i);
@@ -2706,17 +2976,38 @@ async function autoArchiveWeek(athleteId){
   const marcada = published.weekOf;
   if(!marcada){
     published.weekOf = wk;
-    await safeSet('routine-'+athleteId, JSON.stringify(published), true);
+    await saveRoutine(athleteId, false, published);
     return;
   }
   if(marcada === wk) return;                       // seguimos en la misma semana
   const histRaw = await safeGet('routine-history-'+athleteId, true);
-  const hist = histRaw ? JSON.parse(histRaw) : [];
-  if(hist.some(h=>h.weekOf === marcada)) { published.weekOf = wk; await safeSet('routine-'+athleteId, JSON.stringify(published), true); return; }
-  hist.push({ weekNumber: hist.length+1, weekOf: marcada, days: published.days });
+  let hist = histRaw ? JSON.parse(histRaw) : [];
+  if(!Array.isArray(hist)) hist = [];
+  if(!hist.some(h=>h.weekOf === marcada)){
+    hist.push({ weekOf: marcada, days: published.days });
+  }
+  hist = normalizaHistorial(hist);
   await safeSet('routine-history-'+athleteId, JSON.stringify(hist), true);
   published.weekOf = wk;
-  await safeSet('routine-'+athleteId, JSON.stringify(published), true);
+  await saveRoutine(athleteId, false, published);
+}
+
+// Una entrada por semana natural, ordenadas y numeradas de forma coherente.
+// Repara además historiales que quedaron duplicados por el fallo anterior.
+function normalizaHistorial(hist){
+  if(!Array.isArray(hist)) return [];
+  const porSemana = new Map();
+  hist.forEach(h=>{
+    if(!h || !h.weekOf) return;
+    // Si ya había una entrada para esa semana, nos quedamos con la que tenga
+    // contenido; entre dos con contenido, la última guardada.
+    const previa = porSemana.get(h.weekOf);
+    const cuenta = o => DAYS.reduce((a,d)=>a + BLOCKS.reduce((x,b)=>x + ((o.days&&o.days[d]&&o.days[d][b.key])||[]).length, 0), 0);
+    if(!previa || cuenta(h) >= cuenta(previa)) porSemana.set(h.weekOf, h);
+  });
+  return [...porSemana.values()]
+    .sort((a,b)=>String(a.weekOf).localeCompare(String(b.weekOf)))
+    .map((h,i)=>({ weekNumber: i+1, weekOf: h.weekOf, days: h.days }));
 }
 
 // Plantilla de una tarjeta de ejercicio. Extraída para poder insertar una nueva
@@ -2725,7 +3016,12 @@ function exCardHtml(ex, blockKey, d){
   const t = exTimer(ex);
   return `<div class="ex-card" data-exid="${ex.id}" data-block="${blockKey}" data-day="${d}">
           <span class="save-flag" data-flagfor="${ex.id}">Guardado ✓</span>
-          <input type="text" class="ex-section" value="${escapeHtml(ex.section||'')}" placeholder="Sección (Fuerza, Hipertrofia, Pliometría…)" list="sectionSuggestions" style="width:100%;font-size:12px;color:var(--accent);margin-bottom:6px;">
+          <div class="row" style="gap:6px;margin-bottom:6px;">
+            <select class="ex-turno" style="width:110px;font-size:12px;">
+              ${TURNOS.map(tt=>`<option value="${tt}" ${(ex.turno||'')===tt?'selected':''}>${tt||'Sesión única'}</option>`).join('')}
+            </select>
+            <input type="text" class="ex-section" value="${escapeHtml(ex.section||'')}" placeholder="Sección (Fuerza, Hipertrofia…)" list="sectionSuggestions" style="flex:1;min-width:0;font-size:12px;color:var(--accent);">
+          </div>
           <input type="text" class="ex-name full" value="${escapeHtml(ex.name)}" placeholder="Nombre del ejercicio" style="width:100%;font-weight:700;">
           <textarea class="ex-desc" placeholder="Descripción / técnica" style="min-height:36px;margin-top:6px;">${escapeHtml(ex.desc||'')}</textarea>
           <div class="ex-grid">
@@ -2760,16 +3056,43 @@ function exCardHtml(ex, blockKey, d){
               <div><label class="field-label">Nº de series</label><input type="number" class="tm-seriescount" value="${t.seriesCount}"></div>
             </div><div style="font-size:11.5px;color:var(--muted);margin-top:4px;">Cuenta atrás de ${Math.floor(t.seriesRestSec/60)}'${String(t.seriesRestSec%60).padStart(2,'0')} repetida ${t.seriesCount} veces.</div>` : ''}
           </div>
-          <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-removeex="${ex.id}">Eliminar ejercicio</button></div>
+          <div class="row" style="margin-top:8px;">
+            <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="up" title="Subir">↑</button>
+            <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="down" title="Bajar">↓</button>
+            <button class="btn ghost small" data-removeex="${ex.id}">Eliminar ejercicio</button>
+          </div>
         </div>`;
 }
 
 async function tplPlanificacionCoach(athleteId){
   await autoArchiveWeek(athleteId);
-  const draft = await getRoutine(athleteId, true);
-  const published = await getRoutine(athleteId, false);
+  const off = state.planOffset || 0;
+  state.planWeek = semanaDesplazada(off);
+  const draft = await getRoutine(athleteId, true, state.planWeek);
+  const published = await getRoutine(athleteId, false, state.planWeek);
   const sameAsPublished = JSON.stringify(draft.days) === JSON.stringify(published.days);
-  let html = `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
+
+  // Selector de semana: se pueden preparar semanas futuras sin tocar la actual.
+  const ini = new Date(state.planWeek+'T00:00:00');
+  const fin = new Date(ini); fin.setDate(fin.getDate()+6);
+  const etiqueta = off===0 ? 'Semana actual' : (off===1 ? 'Semana que viene' : (off>0 ? `Dentro de ${off} semanas` : `Hace ${Math.abs(off)} semanas`));
+  let html = `<div class="week-nav">
+    <button class="btn ghost small" data-planmove="-1">←</button>
+    <div class="week-nav-mid">
+      <b>${etiqueta}</b>
+      <span>${fmtShortDate(ini)} – ${fmtShortDate(fin)}</span>
+    </div>
+    <button class="btn ghost small" data-planmove="1">→</button>
+    ${off!==0?'<button class="btn ghost small" data-planmove="hoy">Hoy</button>':''}
+  </div>`;
+  const vacia = DAYS.every(d=>BLOCKS.every(b=>draft.days[d][b.key].length===0));
+  if(vacia && off>0){
+    html += `<div class="day-tools" style="margin-bottom:14px;">
+      <span class="day-tools-label">Semana en blanco</span>
+      <button class="btn ghost small" id="copyPrevWeekBtn">Partir de la semana anterior</button>
+    </div>`;
+  }
+  html += `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
     <button class="btn small" id="shareRoutineBtn">Compartir planificación</button></div>`;
   if(state.athletes.length > 1){
     const otros = state.athletes.filter(a=>a.id !== athleteId);
@@ -2833,6 +3156,7 @@ async function tplDiarioLectura(athleteId){
     html += `<div class="entry"><div class="entry-top"><span>${e.date} · ${e.day}</span><span class="pill" style="background:${rpeColor(e.overallRPE)};color:#08130F;">RPE ${e.overallRPE}</span></div>
       <div style="font-size:12.5px;color:var(--muted);margin-top:6px;">Duración ${fmtTime(e.durationSeconds)} · carga (sRPE) ${e.fatigueScore} · fatiga ${e.fatiga}/5 · calidad ${e.calidad}/5 · hidratación ${e.hidratacion}/5 · satisfacción ${e.satisfaccion}/5</div>
       ${(e.exercises&&e.exercises.some(x=>x.loadApplied))?`<div style="font-size:12px;color:var(--muted);margin-top:6px;">${e.exercises.filter(x=>x.loadApplied).map(x=>escapeHtml(x.name)+': <b style="color:var(--ink);">'+escapeHtml(x.loadApplied)+'</b>'+(x.loadPlanned&&x.loadPlanned!==x.loadApplied?' <span style="opacity:.7;">(previsto '+escapeHtml(x.loadPlanned)+')</span>':'')).join(' · ')}</div>`:''}
+      ${(e.exercises&&e.exercises.some(x=>x.noteApplied))?`<div style="margin-top:8px;">${e.exercises.filter(x=>x.noteApplied).map(x=>`<div class="ex-note"><b>${escapeHtml(x.name)}</b><span>${escapeHtml(x.noteApplied)}</span></div>`).join('')}</div>`:''}
       ${e.notes?`<div style="font-size:12.5px;color:var(--muted);margin-top:6px;">"${escapeHtml(e.notes)}"</div>`:''}`;
     if(editando){
       html += `<div class="ex-grid" style="margin-top:10px;">
@@ -3034,10 +3358,37 @@ function bindRemoveEx(btn, athleteId){
     const draft = await getRoutine(athleteId, true);
     draft.days[d][blockKey] = draft.days[d][blockKey].filter(x=>x.id!==exId);
     draft.updatedAt = new Date().toISOString();
-    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    const ok = await saveRoutine(athleteId, true, draft);
     if(!ok){ toast('No se pudo guardar. Comprueba la conexión.', true); return; }
     card.remove();
     actualizaContadorDia(d);
+  });
+}
+
+// Reordenar ejercicios dentro de su bloque, sin reconstruir la pantalla.
+function bindMoveEx(btn, athleteId){
+  btn.addEventListener('click', async ()=>{
+    const card = btn.closest('.ex-card');
+    if(!card) return;
+    const d = card.dataset.day, blockKey = card.dataset.block, exId = card.dataset.exid;
+    const dir = btn.dataset.dir;
+    const draft = await getRoutine(athleteId, true);
+    const lista = draft.days[d][blockKey];
+    const i = lista.findIndex(x=>x.id===exId);
+    if(i === -1) return;
+    const j = dir==='up' ? i-1 : i+1;
+    if(j < 0 || j >= lista.length){ toast(dir==='up'?'Ya es el primero':'Ya es el último'); return; }
+    [lista[i], lista[j]] = [lista[j], lista[i]];
+    draft.updatedAt = new Date().toISOString();
+    const ok = await saveRoutine(athleteId, true, draft);
+    if(!ok){ toast('No se pudo guardar el orden', true); return; }
+    // Movemos la tarjeta en el DOM en vez de re-renderizar
+    const hermana = dir==='up' ? card.previousElementSibling : card.nextElementSibling;
+    if(hermana && hermana.classList.contains('ex-card')){
+      if(dir==='up') card.parentNode.insertBefore(card, hermana);
+      else card.parentNode.insertBefore(hermana, card);
+    }
+    if(typeof card.scrollIntoView === 'function') card.scrollIntoView({block:'nearest'});
   });
 }
 
@@ -3053,6 +3404,9 @@ function bindExerciseCard(card, athleteId){
         ex.name = card.querySelector('.ex-name').value.trim();
         ex.desc = card.querySelector('.ex-desc').value.trim();
         ex.section = card.querySelector('.ex-section').value.trim();
+        const turnoEl = card.querySelector('.ex-turno');
+        // videoUrl/videoName se asignan desde el selector de vídeo, no desde un campo
+        if(turnoEl) ex.turno = turnoEl.value;
         ex.load = card.querySelector('.ex-load').value.trim();
         ex.series = card.querySelector('.ex-series').value.trim();
         ex.reps = card.querySelector('.ex-reps').value.trim();
@@ -3076,7 +3430,7 @@ function bindExerciseCard(card, athleteId){
         t.seriesCount = num('.tm-seriescount', t.seriesCount);
         ex.timer = t;
         draft.updatedAt = new Date().toISOString();
-        await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+        await saveRoutine(athleteId, true, draft);
         const flag = card.querySelector('.save-flag'); if(flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
         // Al cambiar el tipo de temporizador cambian sus campos: redibujamos
         // sólo esta tarjeta, no la pantalla entera (eso hacía saltar el scroll).
@@ -3090,6 +3444,9 @@ function bindExerciseCard(card, athleteId){
       }
     };
     let debounce = null;
+    card.querySelectorAll('[data-moveex]').forEach(mb=>{
+      if(!mb.dataset.bound){ mb.dataset.bound='1'; bindMoveEx(mb, athleteId); }
+    });
     const delBtn = card.querySelector('[data-removeex]');
     if(delBtn && !delBtn.dataset.bound){ delBtn.dataset.bound='1'; bindRemoveEx(delBtn, athleteId); }
     fields.forEach(f=>{
@@ -3107,6 +3464,111 @@ function actualizaContadorDia(d){
   const n = acc.querySelectorAll('.ex-card').length;
   const cnt = acc.querySelector('.chev-count');
   if(cnt) cnt.textContent = n + ' ejerc.';
+}
+
+// Reproductor sencillo a pantalla completa
+function abrirVideo(url, nombre){
+  let back = document.getElementById('videoBack');
+  if(!back){ back = document.createElement('div'); back.id='videoBack'; back.className='modal-back'; document.body.appendChild(back); }
+  back.innerHTML = `<div class="modal">
+    <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <h2 style="font-family:'Fraunces',serif;font-size:17px;">${escapeHtml(nombre||'Vídeo')}</h2>
+      <button class="btn ghost small" id="closeVideoBtn">Cerrar</button>
+    </div>
+    <video class="video-player" src="${escapeHtml(url)}" controls autoplay loop playsinline></video>
+  </div>`;
+  const cerrar = ()=>{ const v=back.querySelector('video'); if(v){ try{ v.pause(); }catch(e){} } back.remove(); };
+  document.getElementById('closeVideoBtn').addEventListener('click', cerrar);
+  back.addEventListener('click', e=>{ if(e.target===back) cerrar(); });
+}
+
+// Galería: subir uno nuevo o reutilizar uno ya subido
+async function abrirGaleria(exId, athleteId){
+  const lib = await getVideoLib();
+  let back = document.getElementById('galeriaBack');
+  if(!back){ back = document.createElement('div'); back.id='galeriaBack'; back.className='modal-back'; document.body.appendChild(back); }
+  back.innerHTML = `<div class="modal">
+    <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <h2 style="font-family:'Fraunces',serif;font-size:17px;">Galería de vídeos</h2>
+      <button class="btn ghost small" id="closeGalBtn">Cerrar</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">Sube un vídeo corto (5-10 s, 720p basta) o reutiliza uno que ya tengas. Máximo ${MAX_VIDEO_MB} MB.</p>
+    <div class="day-tools" style="margin-bottom:14px;">
+      <input type="file" id="galFile" accept="video/*" style="flex:1;min-width:0;font-size:12.5px;">
+      <button class="btn small" id="galUploadBtn">Subir</button>
+    </div>
+    <div id="galList">${lib.length ? lib.slice().reverse().map(v=>`
+      <div class="vid-item">
+        <span class="vi-name">${escapeHtml(v.name)}</span>
+        <span class="vi-size">${v.size>1024?(v.size/1024).toFixed(1)+' MB':v.size+' KB'}</span>
+        <button class="btn ghost small" data-galplay="${v.id}">Ver</button>
+        <button class="btn small" data-galuse="${v.id}">Usar</button>
+        <button class="btn ghost small" data-galdel="${v.id}">✕</button>
+      </div>`).join('') : '<div class="empty">Todavía no has subido ningún vídeo.</div>'}</div>
+  </div>`;
+
+  const cerrar = ()=>{ back.remove(); };
+  document.getElementById('closeGalBtn').addEventListener('click', cerrar);
+  back.addEventListener('click', e=>{ if(e.target===back) cerrar(); });
+
+  const asignar = async (v)=>{
+    const draft = await getRoutine(athleteId, true);
+    let encontrado = false;
+    DAYS.forEach(d=>BLOCKS.forEach(b=>{
+      const ex = draft.days[d][b.key].find(x=>x.id===exId);
+      if(ex){ ex.videoUrl = v ? v.url : ''; ex.videoName = v ? v.name : ''; encontrado = true; }
+    }));
+    if(!encontrado) return;
+    const ok = await saveRoutine(athleteId, true, draft);
+    toast(ok ? (v?'Vídeo asignado':'Vídeo quitado') : 'No se pudo guardar', !ok);
+    cerrar();
+    renderKeepScroll();
+  };
+
+  document.getElementById('galUploadBtn').addEventListener('click', async ()=>{
+    const f = document.getElementById('galFile').files[0];
+    if(!f){ toast('Elige un archivo primero', true); return; }
+    const btn = document.getElementById('galUploadBtn');
+    btn.textContent = 'Subiendo…'; btn.disabled = true;
+    try{
+      const item = await subirVideo(f);
+      toast('Vídeo subido');
+      await asignar(item);
+    }catch(e){
+      toast('No se pudo subir: ' + e.message, true);
+      btn.textContent = 'Subir'; btn.disabled = false;
+    }
+  });
+  back.querySelectorAll('[data-galuse]').forEach(b=>b.addEventListener('click', async ()=>{
+    const v = (await getVideoLib()).find(x=>x.id===b.dataset.galuse);
+    if(v) await asignar(v);
+  }));
+  back.querySelectorAll('[data-galplay]').forEach(b=>b.addEventListener('click', async ()=>{
+    const v = (await getVideoLib()).find(x=>x.id===b.dataset.galplay);
+    if(v) abrirVideo(v.url, v.name);
+  }));
+  back.querySelectorAll('[data-galdel]').forEach(b=>b.addEventListener('click', async ()=>{
+    const v = (await getVideoLib()).find(x=>x.id===b.dataset.galdel);
+    if(!v) return;
+    if(!confirm(`¿Eliminar "${v.name}" de la galería?\n\nLos ejercicios que lo usen dejarán de mostrarlo.`)) return;
+    await borrarVideo(v);
+    toast('Vídeo eliminado');
+    abrirGaleria(exId, athleteId);
+  }));
+}
+
+// Cambiar de mes sustituye sólo la tarjeta del calendario: reconstruir la
+// pantalla entera provocaba el parpadeo en cada toque de las flechas.
+async function refrescarCalendario(athleteId){
+  const card = document.getElementById('calCard');
+  if(!card){ renderKeepScroll(); return; }
+  const raw = await safeGet('call-'+athleteId, true);
+  const call = raw ? JSON.parse(raw) : {};
+  const jRaw = await safeGet('journal-'+athleteId, true);
+  const journal = jRaw ? JSON.parse(jRaw) : [];
+  const plan = await getPlan(athleteId);
+  card.innerHTML = `<h2>Calendario</h2>` + monthGridHtml(call.nextDate, journal, state.calOffset||0, plan);
+  bindDynamicEvents();
 }
 
 async function bindDynamicEvents(){
@@ -3151,6 +3613,16 @@ async function bindDynamicEvents(){
       while(m.micros.length < n) m.micros.push({ id:uid(), intensity:2, volume:3, type:'Acumulación', note:'' });
       while(m.micros.length > n) m.micros.pop();
     });
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-usecomp]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [mid, nombre, fecha] = b.dataset.usecomp.split('|');
+    await periodSave(p=>{
+      const m = p.macros.find(x=>x.id===mid); if(!m) return;
+      if(!Array.isArray(m.competitions)) m.competitions = [];
+      m.competitions.push({ id:uid(), name:nombre, date:fecha });
+    });
+    toast('Competición vinculada a este macrociclo');
     renderKeepScroll();
   }));
   document.querySelectorAll('[data-addcomp]').forEach(b=>b.addEventListener('click', async ()=>{
@@ -3296,6 +3768,10 @@ async function bindDynamicEvents(){
     const container = acc.parentElement;
     container.querySelectorAll(':scope > .acc.open').forEach(el=>{ if(el!==acc) el.classList.remove('open'); });
     acc.classList.toggle('open', !wasOpen);
+    if(!wasOpen){
+      acc.classList.add('just-opened');
+      setTimeout(()=>acc.classList.remove('just-opened'), 400);
+    }
     Object.keys(state.openDays).forEach(k=>{ state.openDays[k] = false; });
     state.openDays[d] = !wasOpen;
   }));
@@ -3332,12 +3808,54 @@ async function bindDynamicEvents(){
       BLOCKS.forEach(b=>{ draft.days[destino][b.key] = (draft.days[destino][b.key]||[]).concat(clon[b.key]); });
     }
     draft.updatedAt = new Date().toISOString();
-    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    const ok = await saveRoutine(athleteId, true, draft);
     if(!ok){ toast('No se pudo guardar', true); return; }
     toast(`${origen} → ${destino}: ${totalDe(clon)} ejercicios ${modo==='replace'?'copiados':'añadidos'}`);
     state.openDays = {}; state.openDays[destino] = true;
     renderKeepScroll();
   }));
+
+  // --- Vídeos de técnica ---
+  document.querySelectorAll('[data-pickvideo]').forEach(b=>b.addEventListener('click', ()=>{
+    abrirGaleria(b.dataset.pickvideo, athleteId);
+  }));
+  document.querySelectorAll('[data-unlinkvideo]').forEach(b=>b.addEventListener('click', async ()=>{
+    const exId = b.dataset.unlinkvideo;
+    const draft = await getRoutine(athleteId, true);
+    DAYS.forEach(d=>BLOCKS.forEach(bl=>{
+      const ex = draft.days[d][bl.key].find(x=>x.id===exId);
+      if(ex){ ex.videoUrl=''; ex.videoName=''; }
+    }));
+    const ok = await saveRoutine(athleteId, true, draft);
+    toast(ok?'Vídeo quitado':'No se pudo guardar', !ok);
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-playvideo]').forEach(b=>b.addEventListener('click', ()=>{
+    const [url, nombre] = b.dataset.playvideo.split('|');
+    abrirVideo(url, nombre);
+  }));
+
+  // --- Navegación entre semanas de planificación ---
+  document.querySelectorAll('[data-planmove]').forEach(b=>b.addEventListener('click', ()=>{
+    if(b.dataset.planmove === 'hoy'){ state.planOffset = 0; }
+    else state.planOffset = Math.max(-12, Math.min(26, (state.planOffset||0) + parseInt(b.dataset.planmove,10)));
+    state.openDays = {};
+    renderScrollTop();
+  }));
+  const copyPrev = document.getElementById('copyPrevWeekBtn');
+  if(copyPrev) copyPrev.addEventListener('click', async ()=>{
+    const actual = state.planWeek;
+    const anterior = (()=>{ const d=new Date(actual+'T00:00:00'); d.setDate(d.getDate()-7); return d.toISOString().slice(0,10); })();
+    const previa = await getRoutine(athleteId, true, anterior);
+    let total = 0;
+    DAYS.forEach(d=>BLOCKS.forEach(b=>{ total += previa.days[d][b.key].length; }));
+    if(!total){ toast('La semana anterior también está vacía', true); return; }
+    const nueva = estructuraVacia();
+    DAYS.forEach(d=>{ nueva.days[d] = clonaBloques(previa.days[d]); });
+    const ok = await saveRoutine(athleteId, true, nueva, actual);
+    toast(ok ? `${total} ejercicios copiados de la semana anterior` : 'No se pudo copiar', !ok);
+    renderKeepScroll();
+  });
 
   // --- Copiar un día al de OTRO atleta ---
   document.querySelectorAll('[data-xferday]').forEach(btn=>btn.addEventListener('click', async ()=>{
@@ -3363,7 +3881,7 @@ async function bindDynamicEvents(){
           : clon[b.key];
       });
       draftDestino.updatedAt = new Date().toISOString();
-      const ok = await safeSet('routine-draft-'+destinoAtleta, JSON.stringify(draftDestino), true);
+      const ok = await saveRoutine(destinoAtleta, true, draftDestino);
       toast(ok ? `${total} ejercicios copiados a ${nombreDest} (${destinoDia})` : 'No se pudo copiar', !ok);
       if(ok) toast(`Recuerda compartir la planificación de ${nombreDest}`);
     }catch(e){ toast('Error al copiar: '+e.message, true); }
@@ -3388,7 +3906,7 @@ async function bindDynamicEvents(){
       if(!confirm(aviso)) return;
       DAYS.forEach(d=>{ draftDestino.days[d] = clonaBloques(draftOrigen.days[d]); });
       draftDestino.updatedAt = new Date().toISOString();
-      const ok = await safeSet('routine-draft-'+destino, JSON.stringify(draftDestino), true);
+      const ok = await saveRoutine(destino, true, draftDestino);
       toast(ok ? `Semana copiada a ${nombreDest}` : 'No se pudo copiar', !ok);
       if(ok) toast(`Queda en su borrador: revísala y compártela`);
     }catch(e){ toast('Error al copiar: '+e.message, true); }
@@ -3405,7 +3923,7 @@ async function bindDynamicEvents(){
     const a = draft.days[origen], b = draft.days[destino];
     draft.days[origen] = b; draft.days[destino] = a;
     draft.updatedAt = new Date().toISOString();
-    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    const ok = await saveRoutine(athleteId, true, draft);
     if(!ok){ toast('No se pudo guardar', true); return; }
     toast(`${origen} ↔ ${destino}`);
     state.openDays = {}; state.openDays[destino] = true;
@@ -3421,7 +3939,7 @@ async function bindDynamicEvents(){
     if(!confirm(`¿Vaciar ${d}?\n\nSe quitan sus ${n} ejercicio${n===1?'':'s'} del borrador.`)) return;
     BLOCKS.forEach(b=>{ draft.days[d][b.key] = []; });
     draft.updatedAt = new Date().toISOString();
-    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    const ok = await saveRoutine(athleteId, true, draft);
     if(!ok){ toast('No se pudo guardar', true); return; }
     toast(`${d} vaciado`);
     state.openDays = {}; state.openDays[d] = true;
@@ -3437,7 +3955,7 @@ async function bindDynamicEvents(){
     const nuevo = blankExercise();
     draft.days[d][blockKey].push(nuevo);
     draft.updatedAt = new Date().toISOString();
-    const ok = await safeSet('routine-draft-'+athleteId, JSON.stringify(draft), true);
+    const ok = await saveRoutine(athleteId, true, draft);
     if(!ok){ toast('No se pudo guardar. Comprueba la conexión.', true); return; }
     state.openDays[d] = true;
     b.insertAdjacentHTML('beforebegin', exCardHtml(nuevo, blockKey, d));
@@ -3457,22 +3975,13 @@ async function bindDynamicEvents(){
   const shareRoutineBtn = document.getElementById('shareRoutineBtn');
   if(shareRoutineBtn) shareRoutineBtn.addEventListener('click', async ()=>{
     const athleteId = state.selectedId;
-    const previousPublished = await getRoutine(athleteId, false);
-    const hasContent = DAYS.some(d => BLOCKS.some(b => previousPublished.days[d][b.key].length > 0));
-    if(hasContent){
-      const histRaw = await safeGet('routine-history-'+athleteId, true);
-      const hist = histRaw ? JSON.parse(histRaw) : [];
-      const currentWeekOf = weekOfISO();
-      const alreadyArchivedThisWeek = hist.length && hist[hist.length-1].weekOf === currentWeekOf;
-      if(!alreadyArchivedThisWeek){
-        hist.push({ weekNumber: hist.length+1, weekOf: currentWeekOf, days: previousPublished.days });
-        await safeSet('routine-history-'+athleteId, JSON.stringify(hist), true);
-      }
-    }
+    // El archivado lo lleva sólo ensureWeeklyArchive, al cambiar de semana real.
+    // Antes se archivaba también aquí etiquetando la semana antigua con la
+    // fecha de la semana actual, y salían semanas repetidas.
     const draft = await getRoutine(athleteId, true);
     draft.updatedAt = new Date().toISOString();
     draft.weekOf = weekOfISO();
-    const ok = await safeSet('routine-'+athleteId, JSON.stringify(draft), true);
+    const ok = await saveRoutine(athleteId, false, draft);
     toast(ok ? 'Planificación compartida' : 'No se pudo compartir', !ok);
     shareRoutineBtn.textContent = ok?'Compartido ✓':'Error';
     setTimeout(()=>{ shareRoutineBtn.textContent='Compartir planificación'; render(); },1300);
@@ -3484,12 +3993,13 @@ async function bindDynamicEvents(){
   });
 
   // --- Navegación de meses del calendario ---
-  document.querySelectorAll('[data-calmove]').forEach(b=>b.addEventListener('click', ()=>{
+  document.querySelectorAll('[data-calmove]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(b.dataset.calmove === 'hoy'){ state.calOffset = 0; await refrescarCalendario(athleteId); return; }
     const paso = parseInt(b.dataset.calmove,10);
-    const nuevo = (state.calOffset||0) + paso;
-    if(nuevo > 0) return;              // no tiene sentido ir al futuro
-    state.calOffset = nuevo;
-    renderKeepScroll();
+    // Se puede mirar hacia atrás (histórico) y hacia delante (lo planificado):
+    // limitamos a un año en cada sentido para no perderse.
+    state.calOffset = Math.max(-24, Math.min(12, (state.calOffset||0) + paso));
+    await refrescarCalendario(athleteId);
   }));
 
   // --- CHECK DIARIO DE HÁBITOS ---
@@ -3507,14 +4017,20 @@ async function bindDynamicEvents(){
     await saveHabitLog(athleteId, log);
   };
   document.querySelectorAll('[data-habit][data-type="check"]').forEach(b=>b.addEventListener('click', async ()=>{
-    const on = b.classList.contains('on');
-    await marcarHabito(b.dataset.habit, !on);
-    renderKeepScroll();
+    const quiere = b.dataset.val === 'si';
+    const yaMarcado = b.classList.contains('on');   // re-pulsar lo deja sin responder
+    const valor = yaMarcado ? null : quiere;
+    // Pintamos al instante y guardamos después: así el toque se siente inmediato.
+    const fila = b.closest('.habit-row');
+    if(fila) fila.querySelectorAll('[data-type="check"]').forEach(x=>x.classList.remove('on'));
+    if(valor !== null) b.classList.add('on');
+    await marcarHabito(b.dataset.habit, valor);
   }));
   document.querySelectorAll('[data-habitscale]').forEach(sc=>{
     sc.querySelectorAll('button').forEach(btn=>btn.addEventListener('click', async ()=>{
+      sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
+      btn.classList.add('sel');
       await marcarHabito(sc.dataset.habitscale, parseInt(btn.dataset.val,10));
-      renderKeepScroll();
     }));
   });
   document.querySelectorAll('.habit-num').forEach(inp=>{
@@ -3702,19 +4218,15 @@ async function bindDynamicEvents(){
   // --- Selectores de semana y día en Sesión ---
   const sessionWeekSel = document.getElementById('sessionWeek');
   const sessionDaySelect = document.getElementById('sessionDay');
-  const refreshPreview = async ()=>{
+  // Al cambiar de día o semana hay que rehacer también el selector de turno
+  // (mañana/tarde), no sólo la lista: por eso re-renderizamos la pestaña.
+  const refreshPreview = ()=>{
     const week = sessionWeekSel ? sessionWeekSel.value : 'actual';
     const day = sessionDaySelect ? sessionDaySelect.value : DAY_INDEX[new Date().getDay()];
-    state.sessionWeek = week; state.sessionDay = day;
-    let source = await getRoutine(athleteId, false);
-    if(week !== 'actual'){
-      const histRaw = await safeGet('routine-history-'+athleteId, true);
-      const hist = histRaw ? JSON.parse(histRaw) : [];
-      const h = hist.find(w=>String(w.weekNumber)===String(week));
-      if(h) source = { days:h.days };
-    }
-    const box = document.getElementById('sessionPreview');
-    if(box) box.innerHTML = sessionPreviewHtml(source, day);
+    state.sessionWeek = week;
+    if(day !== state.sessionDay) state.sessionTurno = undefined;  // turno por defecto del nuevo día
+    state.sessionDay = day;
+    renderKeepScroll();
   };
   if(sessionWeekSel) sessionWeekSel.addEventListener('change', refreshPreview);
   if(sessionDaySelect) sessionDaySelect.addEventListener('change', refreshPreview);
@@ -3748,6 +4260,23 @@ async function bindDynamicEvents(){
   // --- Registro manual de una sesión ya hecha ---
   const manualBtn = document.getElementById('manualSessionBtn');
   if(manualBtn) manualBtn.addEventListener('click', ()=>{ state.manualSession = true; renderKeepScroll(); });
+  const mnDate = document.getElementById('mnDate');
+  if(mnDate) mnDate.addEventListener('change', ()=>{
+    // La fecha manda: colocamos el día de la semana que le corresponde.
+    const f = mnDate.value;
+    if(!f) return;
+    const dia = DAY_INDEX[new Date(f+'T00:00:00').getDay()];
+    state.manual = { date:f, min: parseInt((document.getElementById('mnMin')||{}).value,10) || 60 };
+    state.sessionDay = dia;
+    renderKeepScroll();
+  });
+  const mnDay = document.getElementById('mnDay');
+  if(mnDay) mnDay.addEventListener('change', ()=>{
+    state.manual = { date:(document.getElementById('mnDate')||{}).value || todayISO(),
+                     min: parseInt((document.getElementById('mnMin')||{}).value,10) || 60 };
+    state.sessionDay = mnDay.value;
+    renderKeepScroll();
+  });
   const cancelManual = document.getElementById('cancelManualBtn');
   if(cancelManual) cancelManual.addEventListener('click', ()=>{ state.manualSession = false; state.manual=null; renderKeepScroll(); });
   document.querySelectorAll('[data-mnscale]').forEach(sc=>{
@@ -3765,7 +4294,8 @@ async function bindDynamicEvents(){
       if(overallRPE===null){ toast('Marca al menos el RPE general', true); return; }
       const fecha = card.querySelector('#mnDate').value || todayISO();
       const mins = Math.max(1, parseInt(card.querySelector('#mnMin').value,10) || 60);
-      const dia = document.getElementById('sessionDay').value;
+      const selDia = card.querySelector('#mnDay');
+      const dia = selDia ? selDia.value : document.getElementById('sessionDay').value;
 
       const ejercicios = [];
       const rpes = [];
@@ -3776,8 +4306,9 @@ async function bindDynamicEvents(){
         const series = fila.querySelector('.mn-series').value.trim();
         const rir = fila.querySelector('.mn-rir').value.trim();
         if(!isNaN(rpe) && rpe>=1 && rpe<=10) rpes.push(rpe);
+        const nota = fila.querySelector('.mn-note') ? fila.querySelector('.mn-note').value.trim() : '';
         ejercicios.push({ name:nombre, rpeApplied:(!isNaN(rpe)?rpe:null), loadApplied:carga,
-          seriesDone:series, rirApplied:rir, done:true });
+          seriesDone:series, rirApplied:rir, noteApplied:nota, done:true });
       });
       const avg = rpes.length ? +(rpes.reduce((a,b)=>a+b,0)/rpes.length).toFixed(1) : 0;
       const base = avg > 0 ? avg : overallRPE;
@@ -3804,6 +4335,9 @@ async function bindDynamicEvents(){
     }catch(e){ toast('Error al guardar: '+e.message, true); }
   });
 
+  document.querySelectorAll('[data-turno]').forEach(b=>b.addEventListener('click', ()=>{
+    state.sessionTurno = b.dataset.turno; renderKeepScroll();
+  }));
   const startSession = document.getElementById('startSession');
   if(startSession) startSession.addEventListener('click', async ()=>{
     const day = document.getElementById('sessionDay').value;
@@ -3811,11 +4345,11 @@ async function bindDynamicEvents(){
     let routine = await getRoutine(state.athleteAsId, false);
     if(week !== 'actual'){
       const histRaw = await safeGet('routine-history-'+state.athleteAsId, true);
-      const hist = histRaw ? JSON.parse(histRaw) : [];
+      const hist = normalizaHistorial(histRaw ? JSON.parse(histRaw) : []);
       const h = hist.find(w=>String(w.weekNumber)===String(week));
       if(h) routine = { days:h.days };
     }
-    const list = flattenExercises(routine, day);
+    const list = flattenExercises(routine, day, turnoActivo(routine, day));
     if(!list.length){ toast('No hay ejercicios programados para ese día', true); return; }
     session = { day, elapsedSec:0, exercises:list, fullscreen:true, showSurvey:false, avgExerciseRPE:null, fatigueScore:null, startedAt:Date.now() };
     ensureAudio();
@@ -3829,6 +4363,7 @@ async function bindDynamicEvents(){
       if(disp) disp.textContent=fmtTime(session.elapsedSec);
       if(session.elapsedSec % 15 === 0) queueSessionSave();
     },1000);
+    keepScreenOn();
     mountSessionOverlay(state.athleteAsId);
   });
 
