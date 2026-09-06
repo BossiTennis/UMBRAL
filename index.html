@@ -760,9 +760,18 @@ let timerModal = null;
 let stopwatchInterval = null, engineInterval = null;
 
 function uid(){ return Math.random().toString(36).slice(2,9); }
-function todayISO(){ return new Date().toISOString().slice(0,10); }
-function weekOfISO(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.getDate()-day+1); return d.toISOString().slice(0,10); }
-function saturdayOfWeek(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.getDate()-day+6); return d.toISOString().slice(0,10); }
+function todayISO(){ return fechaLocalISO(new Date()); }
+// Fecha en horario LOCAL. Usar toISOString() aquí restaba un día en España
+// (medianoche local = 22:00 UTC del día anterior), así que las claves de semana
+// caían en domingo y la app escribía en una y leía de otra.
+function fechaLocalISO(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const dia = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dia}`;
+}
+function weekOfISO(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.getDate()-day+1); return fechaLocalISO(d); }
+function saturdayOfWeek(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.getDate()-day+6); return fechaLocalISO(d); }
 function fmtTime(sec){ const m=Math.floor(sec/60), s=Math.abs(sec%60); return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
 function rpeColor(rpe){ if(rpe<=3) return '#5FD99A'; if(rpe<=6) return '#E8A548'; return '#E86A5C'; }
 function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c)); }
@@ -1257,7 +1266,7 @@ async function bindShellEvents(){
   });
 
   document.querySelectorAll('[data-openathlete]').forEach(b=>b.addEventListener('click', ()=>{
-    state.selectedId = b.dataset.openathlete; state._inAthleteDetail = true; state.athleteSubTab='planificacion'; renderScrollTop();
+    state.selectedId = b.dataset.openathlete; state._inAthleteDetail = true; state.athleteSubTab='planificacion'; state.planOffset = 0; state.openDays = {}; renderScrollTop();
   }));
   await renderTabContent();
 }
@@ -1327,12 +1336,12 @@ function lunesDe(fechaISO){
   const d = new Date(fechaISO + 'T00:00:00');
   const day = d.getDay() || 7;
   d.setDate(d.getDate() - day + 1);
-  return d.toISOString().slice(0,10);
+  return fechaLocalISO(d);
 }
 function semanaDesplazada(offset){
   const d = new Date(weekOfISO() + 'T00:00:00');
   d.setDate(d.getDate() + (offset||0)*7);
-  return d.toISOString().slice(0,10);
+  return fechaLocalISO(d);
 }
 function routineKey(athleteId, draft, weekOf){
   const base = draft ? 'routine-draft-' : 'routine-';
@@ -1360,6 +1369,25 @@ async function getRoutine(athleteId, draft, weekOf){
   const tieneContenido = r => !!r && DAYS.some(d=>BLOCKS.some(b=>(r.days[d][b.key]||[]).length>0));
   if(tieneContenido(actual)) return actual;
 
+  // Rescate de claves desplazadas un día: un fallo de zona horaria hizo que
+  // algunas semanas se guardaran etiquetadas con el sábado o el domingo
+  // anterior. Si la clave correcta está vacía, miramos esos dos vecinos.
+  for(const desfase of [-1, -2]){
+    const v = new Date(semana + 'T00:00:00');
+    v.setDate(v.getDate() + desfase);
+    const claveVecina = routineKey(athleteId, draft, fechaLocalISO(v));
+    const rawV = await safeGet(claveVecina, true);
+    if(!rawV) continue;
+    try{
+      const rv = normalizaRutina(JSON.parse(rawV));
+      if(tieneContenido(rv)){
+        rv.weekOf = semana;
+        await safeSet(routineKey(athleteId, draft, semana), JSON.stringify(rv), true);
+        return rv;
+      }
+    }catch(e){}
+  }
+
   // Migración del formato antiguo. Antes sólo actuaba si la clave de la semana
   // no existía; bastaba con que se hubiera creado vacía para que la migración
   // quedara bloqueada y las rutinas parecieran perdidas.
@@ -1382,9 +1410,11 @@ async function getRoutine(athleteId, draft, weekOf){
   return vacia;
 }
 async function saveRoutine(athleteId, draft, rutina, weekOf){
-  // Preferimos la semana marcada en la propia rutina antes que el estado de la
-  // pantalla, que puede haber quedado apuntando a otra semana.
-  const semana = weekOf || rutina.weekOf || state.planWeek || weekOfISO();
+  // Prioridad: la semana explícita del parámetro, luego la que la PANTALLA
+  // tiene abierta ahora (state.planWeek). La etiqueta interna de la rutina va
+  // la última: si quedó obsoleta, podía "secuestrar" guardados futuros hacia
+  // una semana que ya no se estaba viendo, sin ningún aviso.
+  const semana = weekOf || state.planWeek || rutina.weekOf || weekOfISO();
   rutina.weekOf = semana;
   rutina.updatedAt = new Date().toISOString();
   return safeSet(routineKey(athleteId, draft, semana), JSON.stringify(rutina), true);
