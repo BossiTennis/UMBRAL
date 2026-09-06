@@ -1152,6 +1152,35 @@ async function bindShellEvents(){
   if(backupSlot){
     backupSlot.innerHTML = await tplBackup();
     paintStorageHealth();
+    const recuperar = document.getElementById('recuperarRutinasBtn');
+    if(recuperar) recuperar.addEventListener('click', async ()=>{
+      recuperar.textContent = 'Buscando…'; recuperar.disabled = true;
+      const wk = weekOfISO();
+      let recuperadas = 0, revisados = 0;
+      const tiene = r => !!r && DAYS.some(d=>BLOCKS.some(b=>(r.days[d][b.key]||[]).length>0));
+      for(const a of state.athletes){
+        revisados++;
+        for(const esBorrador of [false, true]){
+          const legacyRaw = await safeGet((esBorrador?'routine-draft-':'routine-')+a.id, true);
+          if(!legacyRaw) continue;
+          let vieja = null;
+          try{ vieja = normalizaRutina(JSON.parse(legacyRaw)); }catch(e){ continue; }
+          if(!tiene(vieja)) continue;
+          const actualRaw = await safeGet(routineKey(a.id, esBorrador, wk), true);
+          let actual = null;
+          try{ actual = actualRaw ? normalizaRutina(JSON.parse(actualRaw)) : null; }catch(e){}
+          if(tiene(actual)) continue;             // ya hay algo: no lo pisamos
+          vieja.weekOf = wk;
+          const ok = await safeSet(routineKey(a.id, esBorrador, wk), JSON.stringify(vieja), true);
+          if(ok) recuperadas++;
+        }
+      }
+      toast(recuperadas
+        ? `Recuperadas ${recuperadas} rutinas de ${revisados} atletas`
+        : `Revisados ${revisados} atletas: no había nada antiguo que recuperar`);
+      recuperar.textContent = 'Buscar y recuperar'; recuperar.disabled = false;
+      render();
+    });
     const saveCode = document.getElementById('saveCoachCodeBtn');
     if(saveCode) saveCode.addEventListener('click', async ()=>{
       const v = (document.getElementById('newCoachCode').value||'').trim();
@@ -1326,25 +1355,36 @@ function normalizaRutina(r){
 async function getRoutine(athleteId, draft, weekOf){
   const semana = weekOf || state.planWeek || weekOfISO();
   const raw = await safeGet(routineKey(athleteId, draft, semana), true);
-  if(raw){ try{ return normalizaRutina(JSON.parse(raw)); }catch(e){} }
-  // Migración: lo guardado en el formato antiguo pasa a ser la semana actual.
+  let actual = null;
+  if(raw){ try{ actual = normalizaRutina(JSON.parse(raw)); }catch(e){} }
+  const tieneContenido = r => !!r && DAYS.some(d=>BLOCKS.some(b=>(r.days[d][b.key]||[]).length>0));
+  if(tieneContenido(actual)) return actual;
+
+  // Migración del formato antiguo. Antes sólo actuaba si la clave de la semana
+  // no existía; bastaba con que se hubiera creado vacía para que la migración
+  // quedara bloqueada y las rutinas parecieran perdidas.
   if(semana === weekOfISO()){
     const legacy = await safeGet((draft?'routine-draft-':'routine-')+athleteId, true);
     if(legacy){
       try{
         const r = normalizaRutina(JSON.parse(legacy));
-        r.weekOf = semana;
-        await safeSet(routineKey(athleteId, draft, semana), JSON.stringify(r), true);
-        return r;
+        if(tieneContenido(r)){
+          r.weekOf = semana;
+          await safeSet(routineKey(athleteId, draft, semana), JSON.stringify(r), true);
+          return r;
+        }
       }catch(e){}
     }
   }
+  if(actual) return actual;
   const vacia = normalizaRutina(estructuraVacia());
   vacia.weekOf = semana;
   return vacia;
 }
 async function saveRoutine(athleteId, draft, rutina, weekOf){
-  const semana = weekOf || state.planWeek || weekOfISO();
+  // Preferimos la semana marcada en la propia rutina antes que el estado de la
+  // pantalla, que puede haber quedado apuntando a otra semana.
+  const semana = weekOf || rutina.weekOf || state.planWeek || weekOfISO();
   rutina.weekOf = semana;
   rutina.updatedAt = new Date().toISOString();
   return safeSet(routineKey(athleteId, draft, semana), JSON.stringify(rutina), true);
@@ -2840,6 +2880,10 @@ async function tplBackup(){
       <button class="btn ghost" id="importBtn">Restaurar desde la copia pegada</button>
     </div>
     <p style="font-size:11.5px;color:var(--muted);margin-top:10px;">Restaurar añade o actualiza los atletas de la copia sin borrar los que ya tengas.</p>
+    <div class="block-title">Recuperar rutinas antiguas</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:8px;">Si tras una actualización no ves las rutinas de algún atleta, pulsa aquí: busca las guardadas en el formato anterior y las coloca en la semana actual. No borra nada.</p>
+    <button class="btn ghost" id="recuperarRutinasBtn">Buscar y recuperar</button>
+
     <div class="block-title">Código de acceso de entrenador</div>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:8px;">Cámbialo si crees que alguien más lo conoce. Apúntalo: si lo olvidas, tendrás que restaurar el código por defecto desde el código fuente.</p>
     <div class="row">
@@ -2969,14 +3013,14 @@ async function tplPeriodizacion(athleteId){
 // Antes sólo se archivaba al pulsar "Compartir": si una semana no cambiabas el
 // plan, esa semana desaparecía del histórico del atleta.
 async function autoArchiveWeek(athleteId){
-  const published = await getRoutine(athleteId, false);
+  const published = await getRoutine(athleteId, false, weekOfISO());
   const hasContent = DAYS.some(d => BLOCKS.some(b => published.days[d][b.key].length > 0));
   if(!hasContent) return;
   const wk = weekOfISO();
   const marcada = published.weekOf;
   if(!marcada){
     published.weekOf = wk;
-    await saveRoutine(athleteId, false, published);
+    await saveRoutine(athleteId, false, published, wk);
     return;
   }
   if(marcada === wk) return;                       // seguimos en la misma semana
@@ -3065,9 +3109,11 @@ function exCardHtml(ex, blockKey, d){
 }
 
 async function tplPlanificacionCoach(athleteId){
-  await autoArchiveWeek(athleteId);
+  // La semana se fija antes de archivar: al revés, el archivado usaba la semana
+  // que hubiera quedado de otro atleta y escribía en la clave equivocada.
   const off = state.planOffset || 0;
   state.planWeek = semanaDesplazada(off);
+  await autoArchiveWeek(athleteId);
   const draft = await getRoutine(athleteId, true, state.planWeek);
   const published = await getRoutine(athleteId, false, state.planWeek);
   const sameAsPublished = JSON.stringify(draft.days) === JSON.stringify(published.days);
