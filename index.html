@@ -1515,9 +1515,31 @@ function weekHeaderHtml(info){
 
 async function tplRutinaAtleta(athleteId){
   await autoArchiveWeek(athleteId);
-  const routine = await getRoutine(athleteId, false);
-  const info = await currentMicro(athleteId);
-  let html = `<div class="card"><h2>Rutina semanal</h2>${weekHeaderHtml(info)}`;
+  // El atleta también puede mirar semanas pasadas y las que le has dejado
+  // preparadas, no sólo la que está en curso.
+  const off = state.rutinaOffset || 0;
+  const semana = semanaDesplazada(off);
+  const routine = await getRoutine(athleteId, false, semana);
+  const ini = new Date(semana+'T00:00:00');
+  const fin = new Date(ini); fin.setDate(fin.getDate()+6);
+  const etiqueta = off===0 ? 'Esta semana' : (off===1 ? 'La semana que viene'
+    : (off===-1 ? 'La semana pasada' : (off>0 ? `Dentro de ${off} semanas` : `Hace ${Math.abs(off)} semanas`)));
+  const info = off===0 ? await currentMicro(athleteId) : await currentMicro(athleteId, semana);
+  let html = `<div class="card"><h2>Rutina semanal</h2>
+    <div class="week-nav">
+      <button class="btn ghost small" data-rutmove="-1">←</button>
+      <div class="week-nav-mid"><b>${etiqueta}</b><span>${fmtShortDate(ini)} – ${fmtShortDate(fin)}</span></div>
+      <button class="btn ghost small" data-rutmove="1">→</button>
+      ${off!==0?'<button class="btn ghost small" data-rutmove="hoy">Hoy</button>':''}
+    </div>
+    ${weekHeaderHtml(info)}`;
+  const vacia = DAYS.every(d=>BLOCKS.every(b=>(routine.days[d][b.key]||[]).length===0));
+  if(vacia){
+    html += `<div class="empty" style="padding:18px 0;">${off>0
+      ? 'Tu entrenador aún no ha publicado esta semana.'
+      : (off<0 ? 'No hay nada guardado de esa semana.' : 'Tu entrenador aún no ha publicado tu rutina.')}</div></div>`;
+    return html;
+  }
   DAYS.forEach(d=>{
     const open = state.openDays[d] ? 'open':'';
     const totalEx = BLOCKS.reduce((a,b)=>a+routine.days[d][b.key].length,0);
@@ -3169,7 +3191,10 @@ async function tplPlanificacionCoach(athleteId){
     </div>`;
   }
   html += `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
-    <button class="btn small" id="shareRoutineBtn">Compartir planificación</button></div>`;
+    <span class="row" style="gap:8px;">
+      ${sameAsPublished ? '' : '<button class="btn ghost small" id="discardDraftBtn">Descartar cambios</button>'}
+      <button class="btn small" id="shareRoutineBtn">Compartir planificación</button>
+    </span></div>`;
   if(state.athletes.length > 1){
     const otros = state.athletes.filter(a=>a.id !== athleteId);
     html += `<div class="day-tools" style="margin-bottom:14px;">
@@ -3208,6 +3233,25 @@ async function tplPlanificacionCoach(athleteId){
         </select>
         <button class="btn ghost small" data-xferday="${d}" data-mode="replace">Sustituir</button>
         <button class="btn ghost small" data-xferday="${d}" data-mode="append">Añadir</button>
+      </div>`;
+    }
+    // Copiar este día a OTRA SEMANA del mismo atleta
+    if(totalEx){
+      html += `<div class="day-tools">
+        <span class="day-tools-label">Copiar a otra semana</span>
+        <select class="wxfer-week" data-from="${d}">
+          ${[-2,-1,1,2,3,4].map(o=>{
+            const w = semanaDesplazada((state.planOffset||0)+o);
+            const ini = new Date(w+'T00:00:00');
+            const et = o===1?'La siguiente':(o===-1?'La anterior':(o>0?`+${o} semanas`:`${o} semanas`));
+            return `<option value="${w}">${et} · ${fmtShortDate(ini)}</option>`;
+          }).join('')}
+        </select>
+        <select class="wxfer-day" data-from="${d}">
+          ${DAYS.map(x=>`<option value="${x}" ${x===d?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}
+        </select>
+        <button class="btn ghost small" data-wxferday="${d}" data-mode="replace">Sustituir</button>
+        <button class="btn ghost small" data-wxferday="${d}" data-mode="append">Añadir</button>
       </div>`;
     }
     BLOCKS.forEach(b=>{
@@ -3933,6 +3977,34 @@ async function bindDynamicEvents(){
     renderKeepScroll();
   });
 
+  // --- Copiar un día a OTRA SEMANA del mismo atleta ---
+  document.querySelectorAll('[data-wxferday]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const origen = btn.dataset.wxferday;
+    const modo = btn.dataset.mode;
+    const fila = btn.closest('.day-tools');
+    const semanaDestino = fila.querySelector('.wxfer-week').value;
+    const diaDestino = fila.querySelector('.wxfer-day').value;
+    try{
+      const draftOrigen = await getRoutine(athleteId, true, state.planWeek);
+      const clon = clonaBloques(draftOrigen.days[origen]);
+      const total = BLOCKS.reduce((a,b)=>a+clon[b.key].length,0);
+      if(!total){ toast('Ese día no tiene ejercicios', true); return; }
+      const destino = await getRoutine(athleteId, true, semanaDestino);
+      const yaTenia = BLOCKS.reduce((a,b)=>a+destino.days[diaDestino][b.key].length,0);
+      const ini = new Date(semanaDestino+'T00:00:00');
+      if(modo==='replace' && yaTenia){
+        if(!confirm(`El ${diaDestino} de la semana del ${fmtShortDate(ini)} ya tiene ${yaTenia} ejercicio(s).\n\n¿Sustituirlos por los ${total} de este día?`)) return;
+      }
+      BLOCKS.forEach(b=>{
+        destino.days[diaDestino][b.key] = (modo==='append')
+          ? destino.days[diaDestino][b.key].concat(clon[b.key])
+          : clon[b.key];
+      });
+      const ok = await saveRoutine(athleteId, true, destino, semanaDestino);
+      toast(ok ? `${total} ejercicios copiados al ${diaDestino} de la semana del ${fmtShortDate(ini)}` : 'No se pudo copiar', !ok);
+    }catch(e){ toast('Error al copiar: '+e.message, true); }
+  }));
+
   // --- Copiar un día al de OTRO atleta ---
   document.querySelectorAll('[data-xferday]').forEach(btn=>btn.addEventListener('click', async ()=>{
     const origen = btn.dataset.xferday;
@@ -4048,6 +4120,20 @@ async function bindDynamicEvents(){
   // auto-save per exercise field on blur
   document.querySelectorAll('.ex-card').forEach(card=>bindExerciseCard(card, athleteId));
 
+  // Deshacer: devuelve el borrador a lo que el atleta ya está viendo.
+  const descartarBorrador = document.getElementById('discardDraftBtn');
+  if(descartarBorrador) descartarBorrador.addEventListener('click', async ()=>{
+    const athleteId = state.selectedId;
+    const semana = state.planWeek;
+    if(!confirm('¿Descartar los cambios sin compartir de esta semana?\n\nEl borrador volverá a ser exactamente lo que ve tu atleta ahora mismo.')) return;
+    const publicado = await getRoutine(athleteId, false, semana);
+    const copia = estructuraVacia();
+    DAYS.forEach(d=>{ copia.days[d] = clonaBloques(publicado.days[d]); });
+    const ok = await saveRoutine(athleteId, true, copia, semana);
+    toast(ok ? 'Cambios descartados' : 'No se pudo descartar', !ok);
+    if(ok) renderScrollTop();
+  });
+
   const shareRoutineBtn = document.getElementById('shareRoutineBtn');
   if(shareRoutineBtn) shareRoutineBtn.addEventListener('click', async ()=>{
     const athleteId = state.selectedId;
@@ -4076,6 +4162,13 @@ async function bindDynamicEvents(){
     // limitamos a un año en cada sentido para no perderse.
     state.calOffset = Math.max(-24, Math.min(12, (state.calOffset||0) + paso));
     await refrescarCalendario(athleteId);
+  }));
+
+  document.querySelectorAll('[data-rutmove]').forEach(b=>b.addEventListener('click', ()=>{
+    if(b.dataset.rutmove === 'hoy') state.rutinaOffset = 0;
+    else state.rutinaOffset = Math.max(-12, Math.min(12, (state.rutinaOffset||0) + parseInt(b.dataset.rutmove,10)));
+    state.openDays = {};
+    renderScrollTop();
   }));
 
   // --- CHECK DIARIO DE HÁBITOS ---
