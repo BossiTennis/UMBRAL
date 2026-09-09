@@ -85,6 +85,14 @@
   .block-title{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin:14px 0 8px;padding-top:10px;border-top:1px dashed var(--border);}
   .block-title:first-child{border-top:none;padding-top:0;margin-top:0;}
 
+  .diario-detalle{margin-top:10px;overflow-x:auto;}
+  .tabla-comp{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:10px;}
+  .tabla-comp th{text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);padding:5px 7px;border-bottom:1px solid var(--border);font-weight:600;}
+  .tabla-comp td{padding:6px 7px;border-bottom:1px dashed var(--border);}
+  .tabla-comp .col-prev{color:var(--muted);}
+  .tabla-comp .col-dif{color:var(--accent);font-weight:700;}
+  .tabla-comp .col-bien{color:var(--accent);font-weight:700;}
+  .tabla-comp .fila-nota td{font-size:11.5px;color:var(--muted);font-style:italic;padding-top:0;border-bottom:1px dashed var(--border);}
   .ex-note{display:flex;flex-direction:column;gap:2px;background:var(--panel2);border-left:2px solid var(--accent);border-radius:0 6px 6px 0;padding:7px 11px;margin-bottom:6px;}
   .ex-note b{font-size:12px;color:var(--accent);font-weight:600;}
   .ex-note span{font-size:12.5px;color:var(--ink);line-height:1.45;}
@@ -211,6 +219,30 @@
   .habit-check{background:var(--panel);border:1px solid var(--border);color:var(--muted);font-family:'Manrope',sans-serif;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:7px;cursor:pointer;}
   .habit-check.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
   .habit-check.no.on{background:var(--danger);border-color:var(--danger);color:#FAF6EE;}
+  .drill-reg{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:13px 14px;margin-bottom:12px;}
+  .drill-reg-cab{margin-bottom:6px;}
+  .drill-reg-cab b{font-family:'Fraunces',serif;font-size:14.5px;font-weight:600;}
+  .drill-preview{margin-bottom:12px;background:var(--panel3);border-radius:8px;padding:10px 12px;}
+  .drill-preview summary{font-size:12px;color:var(--accent);cursor:pointer;font-weight:600;}
+  .drill-preview[open] summary{margin-bottom:10px;}
+  .pista-wrap{margin:10px 0;}
+  .drill-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative;}
+  .jug-picker{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+  .jp{width:36px;height:36px;border-radius:8px;background:var(--panel);border:1px solid var(--border);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-weight:700;cursor:pointer;}
+  .jp.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
+  .jug-fila{background:var(--panel3);border:1px dashed var(--border);border-radius:8px;padding:10px 12px;margin-bottom:9px;}
+  .jug-cab{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;}
+  .drill-view{background:var(--panel2);border:1px solid var(--accent);border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+  .drill-view-cab b{font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;}
+  .drill-obj{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:2px 9px;margin-left:8px;}
+  .drill-jugs{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+  .drill-jug{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:12.5px;background:var(--panel3);border-radius:6px;padding:7px 10px;}
+  .dj-num{font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--accent);}
+  .dj-rol{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;padding:2px 7px;border-radius:100px;background:var(--panel2);}
+  .dj-rol.dirige{color:var(--accent);border:1px solid var(--accent);}
+  .dj-rol.consistente{color:var(--muted);}
+  .dj-zona b{font-weight:600;}
+  .z-roja{color:var(--danger);} .z-azul{color:#5B8FD9;} .z-amarilla{color:var(--warn);} .z-verde{color:var(--accent);}
   .lib-letra{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);font-weight:600;padding:10px 0 5px;border-bottom:1px solid var(--border);margin-bottom:6px;}
   .lib-item{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:7px;cursor:pointer;}
   .lib-item.sel{border-color:var(--accent);background:var(--accent-dim);}
@@ -346,6 +378,10 @@
   .athlete-row > span:last-child{flex-shrink:0;}
   .ex-view-card h4{overflow-wrap:anywhere;}
   .week-main b{overflow-wrap:anywhere;}
+  .mod-tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;padding:3px 8px;border-radius:100px;}
+  .mod-tag.mod-gym{background:var(--accent-dim);color:var(--accent);}
+  .mod-tag.mod-tenis{background:var(--panel3);color:var(--warn);}
+  .mod-tag.mod-mixto{background:var(--panel3);color:var(--ink);border:1px solid var(--accent);}
   .athlete-row .status{font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:3px 9px;border-radius:100px;}
   .status.activo{background:var(--accent-dim);color:var(--accent);}
   .status.pausado{background:#3A2A12;color:var(--warn);}
@@ -815,6 +851,38 @@ document.addEventListener('visibilitychange', ()=>{
   if(document.visibilityState === 'visible' && session && session.fullscreen) keepScreenOn();
 });
 
+// Cronómetro basado en la hora real, no en contar ticks. Si el móvil se apaga
+// o el navegador congela los temporizadores al cambiar de app, al volver el
+// tiempo transcurrido sigue siendo correcto.
+function arrancarCronometro(){
+  clearInterval(stopwatchInterval);
+  if(!session) return;
+  // Punto de referencia: lo ya acumulado y el momento en que se (re)arranca.
+  session.baseElapsed = session.elapsedSec || 0;
+  session.runFrom = Date.now();
+  const refresca = ()=>{
+    if(!session){ clearInterval(stopwatchInterval); stopwatchInterval=null; return; }
+    const transcurrido = Math.floor((Date.now() - session.runFrom)/1000);
+    session.elapsedSec = (session.baseElapsed || 0) + Math.max(0, transcurrido);
+    const disp = document.getElementById('stopwatchDisplay');
+    if(disp) disp.textContent = fmtTime(session.elapsedSec);
+    if(session.elapsedSec % 15 === 0) queueSessionSave();
+  };
+  refresca();
+  stopwatchInterval = setInterval(refresca, 1000);
+}
+// Al volver a la app tras tenerla en segundo plano, recalculamos de inmediato
+// en vez de esperar al siguiente tick.
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'visible' && session && stopwatchInterval){
+    const transcurrido = Math.floor((Date.now() - session.runFrom)/1000);
+    session.elapsedSec = (session.baseElapsed || 0) + Math.max(0, transcurrido);
+    const disp = document.getElementById('stopwatchDisplay');
+    if(disp) disp.textContent = fmtTime(session.elapsedSec);
+    queueSessionSave();
+  }
+});
+
 function stopSession(){
   clearInterval(stopwatchInterval); stopwatchInterval = null;
   clearInterval(engineInterval); engineInterval = null;
@@ -1201,10 +1269,20 @@ function renderCoachAtletas(){
   let html = `<div class="card"><h2>Tus atletas</h2><div class="athlete-list" id="athleteList">`;
   if(!state.athletes.length) html += '<div class="empty">Aún no has añadido ningún atleta.</div>';
   else state.athletes.forEach(a=>{
-    html += `<button class="athlete-row" data-openathlete="${a.id}"><span class="name">${escapeHtml(a.name)}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">PIN ${a.pin}</span></button>`;
+    const modEtq = { gym:'Gym', tenis:'Tenis', mixto:'Mixto' }[a.modalidad] || 'Gym';
+    html += `<button class="athlete-row" data-openathlete="${a.id}"><span class="name">${escapeHtml(a.name)}</span>
+      <span class="row" style="gap:7px;flex-shrink:0;">
+        <span class="mod-tag mod-${a.modalidad||'gym'}">${modEtq}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">PIN ${a.pin}</span>
+      </span></button>`;
   });
   html += `</div><div class="row" style="margin-top:12px;">
     <input type="text" id="newAthleteName" placeholder="Nombre del nuevo atleta">
+    <select id="newAthleteModalidad" style="min-width:100px;">
+      <option value="gym">Gym</option>
+      <option value="tenis">Tenis</option>
+      <option value="mixto">Mixto</option>
+    </select>
     <button class="btn ghost" id="addAthleteBtn">+ Añadir atleta</button>
   </div>
   ${state.athletes.length?`<div class="row" style="margin-top:10px;">
@@ -1321,7 +1399,8 @@ async function bindShellEvents(){
       if(!usados.has(c)){ pin = c; break; }
     }
     if(!pin){ toast('No quedan PINs libres de 4 dígitos', true); return; }
-    const newAthlete = { id: uid(), name, pin };
+    const modalidad = (document.getElementById('newAthleteModalidad')||{}).value || 'gym';
+    const newAthlete = { id: uid(), name, pin, modalidad };
     state.athletes.push(newAthlete);
     const ok = await safeSet('athletes-list', JSON.stringify(state.athletes), true);
     toast(ok ? `${name} añadido · PIN ${pin}` : 'No se pudo guardar', !ok);
@@ -1490,6 +1569,32 @@ async function saveRoutine(athleteId, draft, rutina, weekOf){
   rutina.updatedAt = new Date().toISOString();
   return safeSet(routineKey(athleteId, draft, semana), JSON.stringify(rutina), true);
 }
+// ---------- DRILLS DE TENIS ----------
+const DRILL_OBJETIVOS = ['Cambio de dirección','Approach','Buscar el espacio libre','Consistencia','Saque y resto','Subir a la red (volea)'];
+const ZONAS_PISTA = {
+  roja:   { nombre:'Roja · Defensa',  desc:'2 m detrás de la línea de fondo' },
+  azul:   { nombre:'Azul · Neutral',  desc:'Línea de fondo o algo detrás' },
+  amarilla:{ nombre:'Amarilla · Ataque', desc:'Dentro de los 3/4 de pista' },
+  verde:  { nombre:'Verde · Volea',   desc:'Dentro de la línea de saque' }
+};
+function blankDrill(){
+  return { id:'d'+uid(), nombre:'', objetivo:'', fronton:false, duracion:'', intentos:'',
+    puntuacion:'', series:'', jugadores:[ blankJugadorDrill(1), blankJugadorDrill(2) ] };
+}
+function blankJugadorDrill(n){
+  // 'lado' resuelve la ambigüedad de en qué mitad física de la pista se coloca
+  // cada jugador. Por defecto quien dirige va en «mi lado» y quien es
+  // consistente en el «contrario», pero es editable: si dirigen dos jugadores
+  // desde el mismo lado, o cualquier otra combinación, se puede corregir.
+  const rolDefecto = n===1 ? 'dirige' : 'consistente';
+  return { numero:n, rol:rolDefecto, lado: rolDefecto==='dirige'?'mio':'contrario',
+    zonaOrigen:'', zonaDestino:'', bolasObjetivo:'' };
+}
+async function getDrills(athleteId, dia, weekOf){
+  const r = await getRoutine(athleteId, true, weekOf);
+  return Array.isArray(r.days[dia].drills) ? r.days[dia].drills : [];
+}
+
 // ---------- SERIES COMBINADAS ----------
 // Superserie (2), triserie (3) o circuito (2-8). Los ejercicios de un grupo
 // comparten identidad pero cada uno mantiene sus propias reps, peso y RIR.
@@ -1646,6 +1751,130 @@ function weekHeaderHtml(info){
   </div>`;
 }
 
+// ---------- PISTA 2D ----------
+// Bandas de cada zona, ordenadas de la red hacia el fondo. Se usan igual en
+// ambas mitades (reflejadas) y también como «altura objetivo» en el frontón.
+const BANDA_ZONAS = [
+  { zona:'verde',    y0:190, y1:250, color:'#2E8B57' },
+  { zona:'amarilla', y0:110, y1:190, color:'#C9A227' },
+  { zona:'azul',     y0:40,  y1:110, color:'#3A5FA8' },
+  { zona:'roja',     y0:0,   y1:40,  color:'#9E3040' }
+];
+function bandaDe(zona){ return BANDA_ZONAS.find(b=>b.zona===zona); }
+function yMitad(zona, esMio){
+  const b = bandaDe(zona) || BANDA_ZONAS[1];
+  const medio = (b.y0+b.y1)/2;
+  return esMio ? 260 + (260-medio) + 20 : medio + 20;   // +20 de margen superior
+}
+
+function tplPistaSVG(dr){
+  const W = 260, H = 540;
+  const jugadores = dr.jugadores || [];
+  let g = '';
+  // Fondo y líneas de pista
+  g += `<rect width="${W}" height="${H}" fill="#1C1B17" rx="10"/>`;
+  const dibujaBandas = (esMio, esPared) => {
+    BANDA_ZONAS.forEach(b=>{
+      const y0 = esMio ? H-20-b.y1 : 20+b.y0;
+      const alto = b.y1-b.y0;
+      g += `<rect x="30" y="${y0}" width="200" height="${alto}" fill="${b.color}" opacity="${esPared?0.35:0.5}"/>`;
+    });
+    if(esPared){
+      g += `<g opacity="0.5">${[...Array(6)].map((_,i)=>`<line x1="30" y1="${20+i*46+23}" x2="230" y2="${20+i*46+23}" stroke="#0A0A08" stroke-width="1"/>`).join('')}</g>`;
+      g += `<text x="130" y="${20+250/2}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#8C8578" opacity="0.8">FRONTÓN</text>`;
+    }
+  };
+  dibujaBandas(true, false);
+  dibujaBandas(false, dr.fronton);
+  g += `<rect x="30" y="20" width="200" height="${H-40}" fill="none" stroke="#EDE4D3" stroke-width="1.5"/>`;
+  if(!dr.fronton){
+    g += `<line x1="15" y1="${H/2}" x2="245" y2="${H/2}" stroke="#EDE4D3" stroke-width="3"/>`;
+  }
+
+  // Jugadores: posición según su lado y zona de origen, repartidos en X si
+  // coinciden varios en la misma banda para no solaparse.
+  const porCelda = {};
+  const posiciones = {};
+  jugadores.forEach(j=>{
+    const esMio = (j.lado||'mio') !== 'contrario';
+    const clave = esMio+'|'+(j.zonaOrigen||'azul');
+    if(!porCelda[clave]) porCelda[clave] = [];
+    porCelda[clave].push(j.numero);
+  });
+  jugadores.forEach(j=>{
+    const esMio = (j.lado||'mio') !== 'contrario';
+    const clave = esMio+'|'+(j.zonaOrigen||'azul');
+    const lista = porCelda[clave];
+    const idx = lista.indexOf(j.numero);
+    const n = lista.length;
+    const x = 130 + (idx - (n-1)/2) * 42;
+    const y = yMitad(j.zonaOrigen||'azul', esMio);
+    posiciones[j.numero] = {x, y, esMio};
+  });
+
+  // Flechas: sólo quien dirige y tiene zona de destino definida.
+  let idxFlecha = 0;
+  jugadores.filter(j=>j.rol==='dirige' && j.zonaDestino).forEach(j=>{
+    const origen = posiciones[j.numero];
+    const destinoEsMio = dr.fronton ? true : !origen.esMio;
+    const yDestino = dr.fronton
+      ? (yMitad(j.zonaDestino, false))   // en frontón el destino se marca en la pared (mitad "contraria")
+      : yMitad(j.zonaDestino, destinoEsMio);
+    const xDestino = 130 + ((idxFlecha%3)-1)*35;
+    const d = `M${origen.x} ${origen.y} L${xDestino} ${yDestino}`;
+    g += `<path class="pista-arrow" data-order="${idxFlecha}" d="${d}" stroke="#EDE4D3" stroke-width="2.5" fill="none" marker-end="url(#pistaArrow)" stroke-dasharray="500" stroke-dashoffset="0"/>`;
+    idxFlecha++;
+  });
+
+  // Marcadores de jugador, encima de las flechas
+  jugadores.forEach(j=>{
+    const p = posiciones[j.numero];
+    const color = j.rol==='dirige' ? '#C08A5A' : '#EDE4D3';
+    g += `<circle cx="${p.x}" cy="${p.y}" r="13" fill="${color}"/>
+      <text x="${p.x}" y="${p.y+4}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" font-weight="700" fill="#1C1B17">J${j.numero}</text>`;
+  });
+
+  g += `<defs><marker id="pistaArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#EDE4D3"/></marker></defs>`;
+  g += `<g class="pista-open" style="opacity:0;">
+      <ellipse cx="130" cy="270" rx="38" ry="24" fill="#EDE4D3" stroke="#1C1B17" stroke-width="2"/>
+      <path d="M100 288 L88 302 L110 292 Z" fill="#EDE4D3" stroke="#1C1B17" stroke-width="2"/>
+      <text x="130" y="276" text-anchor="middle" font-family="'Fraunces',serif" font-size="17" font-weight="700" fill="#1C1B17">OPEN</text>
+    </g>`;
+
+  return `<svg class="pista-svg" viewBox="0 0 ${W} ${H}" style="width:100%;max-width:280px;display:block;margin:0 auto;">${g}</svg>`;
+}
+
+// Lectura de un drill para el atleta: texto claro, sin dibujo todavía.
+
+function tplDrillLectura(dr){
+  const rolLbl = { dirige:'Dirige', consistente:'Consistente' };
+  return `<div class="drill-view">
+    <div class="drill-view-cab">
+      <b>${escapeHtml(dr.nombre||'Drill sin nombre')}</b>
+      ${dr.objetivo?`<span class="drill-obj">${escapeHtml(dr.objetivo)}</span>`:''}
+    </div>
+    <div class="pista-wrap" data-drillview="${dr.id}">${tplPistaSVG(dr)}</div>
+    <div class="row" style="justify-content:center;margin:10px 0;">
+      <button class="btn ghost small" data-verrecorrido="${dr.id}" data-drilljson="${escapeHtml(JSON.stringify(dr))}">▶ Ver recorrido</button>
+    </div>
+    <div class="ex-meta" style="margin:8px 0;">
+      ${dr.series?`<span>Series: <b>${escapeHtml(dr.series)}</b></span>`:''}
+      ${dr.duracion?`<span>Duración: <b>${escapeHtml(dr.duracion)} min</b></span>`:''}
+      ${dr.intentos?`<span>Intentos: <b>${escapeHtml(dr.intentos)}</b></span>`:''}
+      ${dr.puntuacion?`<span>Objetivo: <b>${escapeHtml(dr.puntuacion)}</b></span>`:''}
+      ${dr.fronton?`<span>🧱 Frontón</span>`:''}
+    </div>
+    ${dr.jugadores.length?`<div class="drill-jugs">${dr.jugadores.sort((a,b)=>a.numero-b.numero).map(j=>`
+      <div class="drill-jug">
+        <span class="dj-num">J${j.numero}</span>
+        <span class="dj-rol ${j.rol}">${rolLbl[j.rol]||j.rol}</span>
+        ${j.rol==='dirige'&&j.bolasObjetivo?`<span class="dj-bolas">${escapeHtml(j.bolasObjetivo)} bolas</span>`:''}
+        ${j.zonaOrigen?`<span class="dj-zona">Desde <b class="z-${j.zonaOrigen}">${ZONAS_PISTA[j.zonaOrigen]?.nombre||j.zonaOrigen}</b></span>`:''}
+        ${j.zonaDestino?`<span class="dj-zona">A <b class="z-${j.zonaDestino}">${ZONAS_PISTA[j.zonaDestino]?.nombre||j.zonaDestino}</b></span>`:''}
+      </div>`).join('')}</div>`:''}
+  </div>`;
+}
+
 async function tplRutinaAtleta(athleteId){
   await autoArchiveWeek(athleteId);
   // El atleta también puede mirar semanas pasadas y las que le has dejado
@@ -1666,17 +1895,34 @@ async function tplRutinaAtleta(athleteId){
       ${off!==0?'<button class="btn ghost small" data-rutmove="hoy">Hoy</button>':''}
     </div>
     ${weekHeaderHtml(info)}`;
-  const vacia = DAYS.every(d=>BLOCKS.every(b=>(routine.days[d][b.key]||[]).length===0));
+  // Una semana también tiene contenido si hay drills, no sólo ejercicios de
+  // gimnasio. Sin esto, un día publicado sólo con drills se veía como si el
+  // entrenador no hubiera publicado nada.
+  const vacia = DAYS.every(d=>
+    BLOCKS.every(b=>(routine.days[d][b.key]||[]).length===0) &&
+    (!Array.isArray(routine.days[d].drills) || routine.days[d].drills.length===0)
+  );
   if(vacia){
     html += `<div class="empty" style="padding:18px 0;">${off>0
       ? 'Tu entrenador aún no ha publicado esta semana.'
       : (off<0 ? 'No hay nada guardado de esa semana.' : 'Tu entrenador aún no ha publicado tu rutina.')}</div></div>`;
     return html;
   }
+  const atletaActual = state.athletes.find(a=>a.id===athleteId);
+  const esTenisOMixtoAt = atletaActual && (atletaActual.modalidad==='tenis' || atletaActual.modalidad==='mixto');
   DAYS.forEach(d=>{
     const open = state.openDays[d] ? 'open':'';
-    const totalEx = BLOCKS.reduce((a,b)=>a+routine.days[d][b.key].length,0);
-    html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${routine.days[d].tipo?escapeHtml(routine.days[d].tipo)+' · ':''}${totalEx} ejerc.</span></div><div class="acc-body">`;
+    const esPistaAt = esTenisOMixtoAt && routine.days[d].lugar==='pista';
+    const numDrillsAt = Array.isArray(routine.days[d].drills) ? routine.days[d].drills.length : 0;
+    const totalEx = esPistaAt ? numDrillsAt : BLOCKS.reduce((a,b)=>a+routine.days[d][b.key].length,0);
+    const lugarIco = esPistaAt ? '🎾 ' : '';
+    const etiquetaCant = esPistaAt ? `${totalEx} drill${totalEx===1?'':'s'}` : `${totalEx} ejerc.`;
+    html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${lugarIco}${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${routine.days[d].tipo?escapeHtml(routine.days[d].tipo)+' · ':''}${etiquetaCant}</span></div><div class="acc-body">`;
+    if(esTenisOMixtoAt && (routine.days[d].lugar||'gym')==='pista'){
+      const drills = Array.isArray(routine.days[d].drills) ? routine.days[d].drills : [];
+      if(!drills.length) html += `<div class="empty">Sin drills programados este día.</div>`;
+      drills.forEach(dr=>{ html += tplDrillLectura(dr); });
+    } else {
     BLOCKS.forEach(b=>{
       html += `<div class="block-title">${b.label}</div>`;
       if(!routine.days[d][b.key].length) html += `<div class="empty">Sin ejercicios en este bloque.</div>`;
@@ -1725,6 +1971,7 @@ async function tplRutinaAtleta(athleteId){
         </div>`;
       });
     });
+    }
     html += `</div></div>`;
   });
   html += `</div>`;
@@ -1745,6 +1992,9 @@ async function tplSesionEntry(athleteId){
     ? routine
     : (()=>{ const h = hist.find(w=>String(w.weekNumber)===String(selWeek)); return h ? {days:h.days} : routine; })();
 
+  const atletaSes = state.athletes.find(a=>a.id===athleteId);
+  const esTenisMixtoSes = atletaSes && (atletaSes.modalidad==='tenis' || atletaSes.modalidad==='mixto');
+  const esPistaSesion = esTenisMixtoSes && (source.days[selDay].lugar||'gym')==='pista';
   const paused = await findPausedSession(athleteId);
   let html = '';
   if(paused){
@@ -1773,12 +2023,63 @@ async function tplSesionEntry(athleteId){
       if(ts.length<2) return '';
       const sel = ts.includes(state.sessionTurno) ? state.sessionTurno : ts[0];
       return `<div class="day-tools" style="margin-top:12px;"><span class="day-tools-label">Sesión de</span>${ts.map(t=>`<button class="btn ${sel===t?'':'ghost'} small" data-turno="${t}">${t||'Única'}</button>`).join('')}</div>`; })()}
-    <div id="sessionPreview" style="margin-top:14px;">${sessionPreviewHtml(source, selDay, turnoActivo(source, selDay))}</div>
-    <div class="row" style="margin-top:14px;"><button class="btn" id="startSession">Iniciar sesión — pantalla completa</button>
-    <button class="btn ghost" id="manualSessionBtn">Registrar una ya hecha</button></div>
+    <div id="sessionPreview" style="margin-top:14px;">${esPistaSesion ? '' : sessionPreviewHtml(source, selDay, turnoActivo(source, selDay))}</div>
+    ${esPistaSesion ? '' : `<div class="row" style="margin-top:14px;"><button class="btn" id="startSession">Iniciar sesión — pantalla completa</button>
+    <button class="btn ghost" id="manualSessionBtn">Registrar una ya hecha</button></div>`}
   </div>`;
+  if(esPistaSesion) html += tplRegistroDrills(source, selDay, athleteId);
   if(state.manualSession) html += await tplRegistroManual(athleteId, source, selDay);
   return html;
+}
+
+// Registro de una sesión de pista: el atleta anota lo que consiguió en cada
+// drill. Cada drill guarda su propia fila para poder seguir su tendencia.
+function tplRegistroDrills(source, selDay, athleteId){
+  const drills = Array.isArray(source.days[selDay].drills) ? source.days[selDay].drills : [];
+  if(!drills.length) return `<div class="card"><div class="empty">No hay drills programados para ese día.</div></div>`;
+  const prev = state.drillReg || {};
+  let html = `<div class="card" id="drillRegCard">
+    <h2>Registrar sesión de pista</h2>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Anota lo que consigas en cada drill. Lo que dejes en blanco no se guarda.</p>
+    <div class="ex-grid">
+      <div><label class="field-label">Fecha</label><input type="date" id="drDate" value="${prev.date||todayISO()}" max="${todayISO()}"></div>
+      <div><label class="field-label">Duración total (min)</label><input type="number" id="drMin" min="1" max="400" value="${prev.min||60}"></div>
+    </div>`;
+
+  drills.forEach((dr,i)=>{
+    html += `<div class="drill-reg" data-dridx="${i}" data-drid="${dr.id}">
+      <div class="drill-reg-cab">
+        <b>${escapeHtml(dr.nombre||'Drill '+(i+1))}</b>
+        ${dr.objetivo?`<span class="drill-obj">${escapeHtml(dr.objetivo)}</span>`:''}
+      </div>
+      <div class="ex-meta" style="margin-bottom:8px;">
+        ${dr.intentos?`<span>Intentos previstos: <b>${escapeHtml(dr.intentos)}</b></span>`:''}
+        ${dr.puntuacion?`<span>Objetivo: <b>${escapeHtml(dr.puntuacion)}</b></span>`:''}
+        ${dr.series?`<span>Series: <b>${escapeHtml(dr.series)}</b></span>`:''}
+      </div>
+      <div class="ex-grid">
+        <div><label class="field-label">Intentos hechos</label><input type="number" class="dr-intentos" min="0" placeholder="${escapeHtml(dr.intentos||'0')}"></div>
+        <div><label class="field-label">Acertados</label><input type="number" class="dr-acertados" min="0" placeholder="0"></div>
+        <div><label class="field-label">Tiempo (min)</label><input type="number" class="dr-tiempo" min="0" placeholder="${escapeHtml(dr.duracion||'')}"></div>
+        <div><label class="field-label">Sensación (1-5)</label><input type="number" class="dr-sensacion" min="1" max="5" placeholder="1-5"></div>
+        <div class="full"><label class="field-label">Nota</label><input type="text" class="dr-nota" placeholder="Qué costó, qué salió bien…"></div>
+      </div>
+    </div>`;
+  });
+
+  html += `<div class="block-title">Valoración general</div>
+    <div class="q-item"><p>RPE general de la sesión (1-10)</p>
+      <div class="scale" data-drscale="overallRPE">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div></div>
+    ${drScale5('fatiga','Fatiga tras la sesión')}
+    ${drScale5('calidad','Calidad del entreno')}
+    <div class="q-item"><p>Notas del diario</p><textarea id="drNotes" style="min-height:52px;" placeholder="Sensaciones generales, molestias…"></textarea></div>
+    <button class="btn" id="saveDrillsBtn">Guardar en el diario</button>
+  </div>`;
+  return html;
+}
+function drScale5(key,label){
+  return `<div class="q-item"><p>${label}</p><div class="scale" data-drscale="${key}">${[1,2,3,4,5].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div>
+    <div class="scale-labels"><span>1 · deficiente</span><span>5 · excelente</span></div></div>`;
 }
 
 // Registro de una sesión ya entrenada: sin cronómetro, rellenando a mano.
@@ -2715,6 +3016,61 @@ function tplMetricasEjercicio(entries){
   return html;
 }
 
+// Tendencia por drill: porcentaje de acierto, intentos y sensación a lo largo
+// del tiempo. Es el equivalente de «Evolución por ejercicio» para el tenis.
+function tplMetricasDrills(entries){
+  const porDrill = new Map();
+  entries.filter(e=>e.esPista && Array.isArray(e.drills)).forEach(e=>{
+    e.drills.forEach(dr=>{
+      const clave = (dr.name||'').trim() || 'Drill sin nombre';
+      if(!porDrill.has(clave)) porDrill.set(clave, []);
+      porDrill.get(clave).push({ fecha:e.date, ...dr });
+    });
+  });
+  porDrill.forEach(arr=>arr.sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha))));
+  const nombres = [...porDrill.keys()].filter(n=>porDrill.get(n).length >= 1).sort((a,b)=>a.localeCompare(b,'es'));
+  if(!nombres.length) return '';
+
+  const sel = nombres.includes(state.drillSel) ? state.drillSel : nombres[0];
+  const datos = porDrill.get(sel);
+  const conPct = datos.filter(d=>d.aciertoPct!==null && d.aciertoPct!==undefined);
+  const primero = conPct.length ? conPct[0].aciertoPct : null;
+  const ultimo = conPct.length ? conPct[conPct.length-1].aciertoPct : null;
+  let variacion = '';
+  if(primero!==null && ultimo!==null && conPct.length>=2){
+    const dif = ultimo - primero;
+    variacion = dif===0 ? 'Mismo acierto que la primera vez'
+      : (dif>0 ? `<b style="color:var(--accent);">+${dif} puntos</b> de acierto desde la primera vez`
+               : `<b style="color:var(--warn);">${dif} puntos</b> de acierto desde la primera vez`);
+  }
+  const mejor = conPct.length ? Math.max(...conPct.map(d=>d.aciertoPct)) : null;
+  const sens = datos.map(d=>d.sensacion).filter(v=>typeof v==='number');
+
+  let html = `<div class="card"><h2>Evolución por drill</h2>
+    <label class="field-label">Drill</label>
+    <select id="drillSelect" style="width:100%;margin-bottom:14px;">
+      ${nombres.map(n=>`<option value="${escapeHtml(n)}" ${n===sel?'selected':''}>${escapeHtml(n)} (${porDrill.get(n).length})</option>`).join('')}
+    </select>
+    <div class="kpi-row">
+      <div class="kpi"><b>${datos.length}</b><span>Veces</span></div>
+      ${mejor!==null?`<div class="kpi"><b>${mejor}%</b><span>Mejor acierto</span></div>`:''}
+      ${sens.length?`<div class="kpi"><b>${(sens.reduce((a,b)=>a+b,0)/sens.length).toFixed(1)}</b><span>Sensación media</span></div>`:''}
+    </div>
+    ${variacion?`<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">${variacion}</p>`:''}`;
+
+  if(conPct.length >= 2){
+    html += `<div class="metrica"><span>Porcentaje de acierto</span>${miniGrafica(conPct.map(d=>({v:d.aciertoPct})),'v','var(--accent)')}</div>`;
+  }
+  html += `<div class="block-title">Historial</div>`;
+  datos.slice().reverse().slice(0,10).forEach(d=>{
+    html += `<div class="entry"><div class="entry-top"><span>${d.fecha}</span>
+      <span>${d.aciertoPct!==null&&d.aciertoPct!==undefined?`<b style="color:var(--accent);">${d.aciertoPct}%</b>`:'—'}${(d.acertados!==null&&d.intentos)?` · ${d.acertados}/${d.intentos}`:''}${d.tiempo?` · ${d.tiempo} min`:''}${d.sensacion?` · sensación ${d.sensacion}/5`:''}</span></div>
+      ${d.nota?`<div style="font-size:12px;color:var(--muted);margin-top:4px;">"${escapeHtml(d.nota)}"</div>`:''}</div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
 async function tplProgreso(athleteId){
   const raw = await safeGet('journal-'+athleteId, true);
   const entries = raw ? JSON.parse(raw) : [];
@@ -2876,6 +3232,7 @@ async function tplProgreso(athleteId){
   }
   html += `</div>`;
   html += tplMetricasEjercicio(entries);
+  html += tplMetricasDrills(entries);
   return html;
 }
 
@@ -3042,6 +3399,12 @@ function tplTendenciaHabitos(todos, log){
   svg += `</svg>`;
 
   const conDatos = puntos.filter(v=>v!==null).length;
+  // Si no hay ni un solo día registrado, la gráfica saldría vacía y parecería
+  // que está rota. Mejor explicar qué falta.
+  if(!conDatos){
+    return `<div class="card"><h2>Regularidad</h2>
+      <div class="empty">Aún no has registrado ningún día. En cuanto marques tus hábitos un par de días, aquí verás tu gráfica de constancia de las últimas 3 semanas.</div></div>`;
+  }
   const huecos = N - conDatos;
   const media = conDatos ? (puntos.filter(v=>v!==null).reduce((a,b)=>a+b,0)/conDatos) : 0;
   // Racha actual de días seguidos registrando
@@ -3135,7 +3498,11 @@ async function tplHabitos(athleteId){
     <button class="btn ghost" id="addHabitBtn" style="margin-top:10px;">+ Añadir</button>
   </div>`;
 
-  // Estadística de los últimos 7 días
+  // Estadística de constancia
+  if(!todos.length){
+    html += `<div class="card"><h2>Regularidad</h2>
+      <div class="empty">Cuando tengas hábitos que seguir, aquí aparecerá tu gráfica de constancia. Añade los tuyos arriba o espera a que tu entrenador te asigne alguno.</div></div>`;
+  }
   if(todos.length){
     const dias = ultimosDias(7);
     html += tplTendenciaHabitos(todos, log);
@@ -3586,6 +3953,71 @@ function normalizaHistorial(hist){
 
 // Plantilla de una tarjeta de ejercicio. Extraída para poder insertar una nueva
 // sin reconstruir la pantalla entera, que hacía saltar el scroll al principio.
+// Tarjeta de edición de un drill de pista. Sin dibujo todavía: por ahora es
+// texto estructurado, con todos los campos que el atleta necesitará leer.
+function drillCardHtml(dr, d){
+  const jugCheckeados = new Set(dr.jugadores.map(j=>j.numero));
+  const hayJugadoresConfig = dr.jugadores.length > 0;
+  return `<div class="drill-card" data-drillid="${dr.id}" data-day="${d}">
+    <span class="save-flag" data-flagfor="${dr.id}">Guardado ✓</span>
+    ${hayJugadoresConfig?`<details class="drill-preview"><summary>Vista previa de la pista</summary>${tplPistaSVG(dr)}</details>`:''}
+    <input type="text" class="drill-nombre" placeholder="Nombre del drill" value="${escapeHtml(dr.nombre)}" style="width:100%;font-weight:700;font-family:'Fraunces',serif;font-size:15px;margin-bottom:8px;">
+    <div class="ex-grid">
+      <div class="full"><label class="field-label">Objetivo</label>
+        <select class="drill-objetivo" style="width:100%;">
+          <option value="">Selecciona…</option>
+          ${DRILL_OBJETIVOS.map(o=>`<option value="${o}" ${dr.objetivo===o?'selected':''}>${o}</option>`).join('')}
+        </select>
+      </div>
+      <div><label class="field-label">Duración (min)</label><input type="number" class="drill-duracion" value="${escapeHtml(dr.duracion)}"></div>
+      <div><label class="field-label">Intentos</label><input type="text" class="drill-intentos" value="${escapeHtml(dr.intentos)}" placeholder="ej. 10"></div>
+      <div><label class="field-label">Series</label><input type="number" class="drill-series" value="${escapeHtml(dr.series)}"></div>
+      <div><label class="field-label">Puntuación objetivo</label><input type="text" class="drill-puntuacion" value="${escapeHtml(dr.puntuacion)}" placeholder="ej. 7 de 10"></div>
+      <div class="full"><label class="row" style="gap:8px;font-size:13px;"><input type="checkbox" class="drill-fronton" ${dr.fronton?'checked':''}> Modo frontón (1 vs pared)</label></div>
+    </div>
+    <div class="block-title">Jugadores (1-6)</div>
+    <div class="jug-picker">
+      ${[1,2,3,4,5,6].map(n=>`<button class="jp ${jugCheckeados.has(n)?'on':''}" data-drilljug="${n}">J${n}</button>`).join('')}
+    </div>
+    ${dr.jugadores.sort((a,b)=>a.numero-b.numero).map(j=>`
+      <div class="jug-fila" data-jugnum="${j.numero}">
+        <div class="jug-cab">Jugador ${j.numero}</div>
+        <div class="ex-grid">
+          <div><label class="field-label">Rol</label>
+            <select class="jug-rol">
+              <option value="dirige" ${j.rol==='dirige'?'selected':''}>Dirige</option>
+              <option value="consistente" ${j.rol==='consistente'?'selected':''}>Consistente</option>
+            </select>
+          </div>
+          <div><label class="field-label">Lado de pista</label>
+            <select class="jug-lado">
+              <option value="mio" ${(j.lado||'mio')==='mio'?'selected':''}>Mi lado</option>
+              <option value="contrario" ${j.lado==='contrario'?'selected':''}>Lado contrario</option>
+            </select>
+          </div>
+          ${j.rol==='dirige'?`<div><label class="field-label">Bolas objetivo</label><input type="text" class="jug-bolas" value="${escapeHtml(j.bolasObjetivo)}" placeholder="ej. 8"></div>`:'<div></div>'}
+          <div><label class="field-label">Juega desde</label>
+            <select class="jug-origen">
+              <option value="">Sin definir</option>
+              ${Object.keys(ZONAS_PISTA).map(z=>`<option value="${z}" ${j.zonaOrigen===z?'selected':''}>${ZONAS_PISTA[z].nombre}</option>`).join('')}
+            </select>
+          </div>
+          <div><label class="field-label">Apunta a</label>
+            <select class="jug-destino">
+              <option value="">Sin definir</option>
+              ${Object.keys(ZONAS_PISTA).map(z=>`<option value="${z}" ${j.zonaDestino===z?'selected':''}>${ZONAS_PISTA[z].nombre}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+      </div>`).join('')}
+    <div class="row" style="margin-top:10px;">
+      <button class="btn ghost small drill-move" data-dir="up">↑</button>
+      <button class="btn ghost small drill-move" data-dir="down">↓</button>
+      <button class="btn ghost small" data-drilldel="${dr.id}">Eliminar drill</button>
+    </div>
+  </div>`;
+}
+
 function exCardHtml(ex, blockKey, d, listaBloque){
   const t = exTimer(ex);
   const draftBloqueActual = listaBloque || [];
@@ -3650,6 +4082,8 @@ function exCardHtml(ex, blockKey, d, listaBloque){
 }
 
 async function tplPlanificacionCoach(athleteId){
+  const atleta = state.athletes.find(a=>a.id===athleteId);
+  const esTenisOMixto = atleta && (atleta.modalidad==='tenis' || atleta.modalidad==='mixto');
   // La semana se fija antes de archivar: al revés, el archivado usaba la semana
   // que hubiera quedado de otro atleta y escribía en la clave equivocada.
   const off = state.planOffset || 0;
@@ -3672,7 +4106,10 @@ async function tplPlanificacionCoach(athleteId){
     <button class="btn ghost small" data-planmove="1">→</button>
     ${off!==0?'<button class="btn ghost small" data-planmove="hoy">Hoy</button>':''}
   </div>`;
-  const vacia = DAYS.every(d=>BLOCKS.every(b=>draft.days[d][b.key].length===0));
+  const vacia = DAYS.every(d=>
+    BLOCKS.every(b=>draft.days[d][b.key].length===0) &&
+    (!Array.isArray(draft.days[d].drills) || draft.days[d].drills.length===0)
+  );
   if(vacia && off>0){
     html += `<div class="day-tools" style="margin-bottom:14px;">
       <span class="day-tools-label">Semana en blanco</span>
@@ -3694,11 +4131,24 @@ async function tplPlanificacionCoach(athleteId){
   }
   DAYS.forEach(d=>{
     const open = state.openDays[d] ? 'open':'';
-    const totalEx = BLOCKS.reduce((acc,b)=>acc+draft.days[d][b.key].length,0);
-    html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${totalEx} ejerc.</span></div><div class="acc-body">`;
+    const esPistaHoy = esTenisOMixto && (draft.days[d].lugar||'gym')==='pista';
+    const numDrills = Array.isArray(draft.days[d].drills) ? draft.days[d].drills.length : 0;
+    const totalEx = esPistaHoy ? numDrills : BLOCKS.reduce((acc,b)=>acc+draft.days[d][b.key].length,0);
+    const lugarIcoCoach = esPistaHoy ? '🎾 ' : '';
+    const etiquetaCantCoach = esPistaHoy ? `${totalEx} drill${totalEx===1?'':'s'}` : `${totalEx} ejerc.`;
+    html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${lugarIcoCoach}${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${etiquetaCantCoach}</span></div><div class="acc-body">`;
     // Copiar el día completo a otro: útil cuando al atleta se le cambia el
     // horario y hay que mover el entreno de un día a otro.
     const otrosDias = DAYS.filter(x=>x!==d);
+    if(esTenisOMixto){
+      const lugar = draft.days[d].lugar || 'gym';
+      html += `<div class="day-tools">
+        <span class="day-tools-label">Dónde se entrena</span>
+        <button class="btn ${lugar==='gym'?'':'ghost'} small" data-lugar="${d}" data-val="gym">🏋️ En gym</button>
+        <button class="btn ${lugar==='pista'?'':'ghost'} small" data-lugar="${d}" data-val="pista">🎾 En pista</button>
+      </div>`;
+
+    }
     html += `<div class="day-tools">
       <span class="day-tools-label">Tipo de sesión</span>
       <input type="text" class="dia-tipo" data-dia="${d}" value="${escapeHtml(draft.days[d].tipo||'')}"
@@ -3748,17 +4198,25 @@ async function tplPlanificacionCoach(athleteId){
         <button class="btn ghost small" data-wxferday="${d}" data-mode="append">Añadir</button>
       </div>`;
     }
-    BLOCKS.forEach(b=>{
-      html += `<div class="block-title">${b.label}</div>`;
-      draft.days[d][b.key].forEach(ex=>{
-        html += exCardHtml(ex, b.key, d, draft.days[d][b.key]);
+    if(esTenisOMixto && (draft.days[d].lugar||'gym')==='pista'){
+      // Día en pista: drills en vez de ejercicios de gimnasio.
+      const drills = Array.isArray(draft.days[d].drills) ? draft.days[d].drills : [];
+      if(!drills.length) html += `<div class="empty">Sin drills todavía. Añade el primero abajo.</div>`;
+      drills.forEach(dr=>{ html += drillCardHtml(dr, d); });
+      html += `<div class="row" style="margin-top:8px;"><button class="btn ghost small" data-adddrill="${d}">+ Añadir drill</button></div>`;
+    } else {
+      BLOCKS.forEach(b=>{
+        html += `<div class="block-title">${b.label}</div>`;
+        draft.days[d][b.key].forEach(ex=>{
+          html += exCardHtml(ex, b.key, d, draft.days[d][b.key]);
+        });
+        html += `<div class="row" style="gap:8px;flex-wrap:wrap;">
+          <button class="btn ghost small" data-addex="${d}|${b.key}">+ Añadir a ${b.label.toLowerCase()}</button>
+          <button class="btn ghost small" data-fromlib="${d}|${b.key}">Desde galería</button>
+          ${draft.days[d][b.key].length?`<button class="btn ghost small" data-saveblock="${d}|${b.key}">Guardar bloque</button>`:''}
+        </div>`;
       });
-      html += `<div class="row" style="gap:8px;flex-wrap:wrap;">
-        <button class="btn ghost small" data-addex="${d}|${b.key}">+ Añadir a ${b.label.toLowerCase()}</button>
-        <button class="btn ghost small" data-fromlib="${d}|${b.key}">Desde galería</button>
-        ${draft.days[d][b.key].length?`<button class="btn ghost small" data-saveblock="${d}|${b.key}">Guardar bloque</button>`:''}
-      </div>`;
-    });
+    }
     html += `</div></div>`;
   });
   return html;
@@ -3771,11 +4229,46 @@ async function tplDiarioLectura(athleteId){
   else entries.slice().reverse().forEach((e, revIdx)=>{
     const idx = entries.length - 1 - revIdx;   // índice real en el array
     const editando = state.editEntry === idx;
-    html += `<div class="entry"><div class="entry-top"><span>${e.date} · ${e.day}</span><span class="pill" style="background:${rpeColor(e.overallRPE)};color:#08130F;">RPE ${e.overallRPE}</span></div>
-      <div style="font-size:12.5px;color:var(--muted);margin-top:6px;">Duración ${fmtTime(e.durationSeconds)} · carga (sRPE) ${e.fatigueScore} · fatiga ${e.fatiga}/5 · calidad ${e.calidad}/5 · hidratación ${e.hidratacion}/5 · satisfacción ${e.satisfaccion}/5</div>
-      ${(e.exercises&&e.exercises.some(x=>x.loadApplied))?`<div style="font-size:12px;color:var(--muted);margin-top:6px;">${e.exercises.filter(x=>x.loadApplied).map(x=>escapeHtml(x.name)+': <b style="color:var(--ink);">'+escapeHtml(x.loadApplied)+'</b>'+(x.loadPlanned&&x.loadPlanned!==x.loadApplied?' <span style="opacity:.7;">(previsto '+escapeHtml(x.loadPlanned)+')</span>':'')).join(' · ')}</div>`:''}
-      ${(e.exercises&&e.exercises.some(x=>x.noteApplied))?`<div style="margin-top:8px;">${e.exercises.filter(x=>x.noteApplied).map(x=>`<div class="ex-note"><b>${escapeHtml(x.name)}</b><span>${escapeHtml(x.noteApplied)}</span></div>`).join('')}</div>`:''}
-      ${e.notes?`<div style="font-size:12.5px;color:var(--muted);margin-top:6px;">"${escapeHtml(e.notes)}"</div>`:''}`;
+    const abierto = state.diarioAbierto === idx;
+    const tieneDetalle = (e.exercises && e.exercises.length) || (e.drills && e.drills.length);
+    html += `<div class="entry"><div class="entry-top diario-cab" data-diario="${idx}" style="cursor:pointer;">
+        <span>${abierto?'▾':'▸'} ${e.date} · ${e.day}${e.tipoSesion?` · ${escapeHtml(e.tipoSesion)}`:''}</span>
+        <span class="pill" style="background:${rpeColor(e.overallRPE)};color:#08130F;">RPE ${e.overallRPE}</span></div>
+      <div style="font-size:12.5px;color:var(--muted);margin-top:6px;">Duración ${fmtTime(e.durationSeconds)} · carga ${e.fatigueScore}${e.fatiga?` · fatiga ${e.fatiga}/5`:''}${e.calidad?` · calidad ${e.calidad}/5`:''}</div>`;
+    if(abierto && tieneDetalle){
+      html += `<div class="diario-detalle">`;
+      if(e.exercises && e.exercises.length){
+        html += `<table class="tabla-comp"><thead><tr><th>Ejercicio</th><th>Previsto</th><th>Hecho</th><th>RPE</th></tr></thead><tbody>`;
+        e.exercises.forEach(x=>{
+          const prev = x.loadPlanned || '—';
+          const hecho = x.loadApplied || '—';
+          const difiere = x.loadPlanned && x.loadApplied && x.loadPlanned !== x.loadApplied;
+          html += `<tr>
+            <td>${escapeHtml(x.name||'—')}</td>
+            <td class="col-prev">${escapeHtml(prev)}</td>
+            <td class="${difiere?'col-dif':''}">${escapeHtml(hecho)}</td>
+            <td>${x.rpeApplied!==null&&x.rpeApplied!==undefined?x.rpeApplied:'—'}</td>
+          </tr>`;
+          if(x.noteApplied) html += `<tr class="fila-nota"><td colspan="4">💬 ${escapeHtml(x.noteApplied)}</td></tr>`;
+        });
+        html += `</tbody></table>`;
+      }
+      if(e.drills && e.drills.length){
+        html += `<table class="tabla-comp"><thead><tr><th>Drill</th><th>Intentos</th><th>Acierto</th><th>Sens.</th></tr></thead><tbody>`;
+        e.drills.forEach(x=>{
+          html += `<tr>
+            <td>${escapeHtml(x.name||'—')}</td>
+            <td>${(x.acertados!==null&&x.intentos)?`${x.acertados}/${x.intentos}`:'—'}</td>
+            <td class="${x.aciertoPct>=70?'col-bien':''}">${x.aciertoPct!==null&&x.aciertoPct!==undefined?x.aciertoPct+'%':'—'}</td>
+            <td>${x.sensacion||'—'}</td>
+          </tr>`;
+          if(x.nota) html += `<tr class="fila-nota"><td colspan="4">💬 ${escapeHtml(x.nota)}</td></tr>`;
+        });
+        html += `</tbody></table>`;
+      }
+      html += `</div>`;
+    }
+    html += `${e.notes?`<div style="font-size:12.5px;color:var(--muted);margin-top:6px;">"${escapeHtml(e.notes)}"</div>`:''}`;
     if(editando){
       html += `<div class="ex-grid" style="margin-top:10px;">
         <div><label class="field-label">Fecha</label><input type="date" class="ed-date" value="${e.date}"></div>
@@ -3857,6 +4350,11 @@ async function tplPerfilCoachBody(athleteId){
     <div class="row" style="flex-direction:column;align-items:stretch;gap:12px;">
       <div><label class="field-label">Nombre del atleta</label><input type="text" id="editAthName" value="${escapeHtml(a?a.name:'')}" style="width:100%;"></div>
       <div><label class="field-label">PIN de acceso</label><input type="text" id="editAthPin" value="${a?a.pin:''}" maxlength="6" inputmode="numeric" style="width:100%;font-family:'IBM Plex Mono',monospace;letter-spacing:0.2em;"></div>
+      <div><label class="field-label">Modalidad</label><select id="editAthModalidad" style="width:100%;">
+        <option value="gym" ${(!a||a.modalidad==='gym'||!a.modalidad)?'selected':''}>Gym</option>
+        <option value="tenis" ${a&&a.modalidad==='tenis'?'selected':''}>Tenis</option>
+        <option value="mixto" ${a&&a.modalidad==='mixto'?'selected':''}>Mixto (gym + tenis)</option>
+      </select></div>
       <div class="row">
         <button class="btn" id="saveAthBasics" data-athleteid="${athleteId}">Guardar</button>
         <button class="btn ghost danger" id="deleteAthBtn" data-athleteid="${athleteId}">Eliminar atleta</button>
@@ -4100,6 +4598,35 @@ function actualizaContadorDia(d){
   if(cnt) cnt.textContent = tipo + n + ' ejerc.';
 }
 
+// Anima las flechas del drill en orden y remata con el «OPEN» de cómic.
+function reproducirRecorrido(wrap){
+  const svg = wrap.querySelector('.pista-svg');
+  if(!svg) return;
+  const flechas = [...svg.querySelectorAll('.pista-arrow')].sort((a,b)=>+a.dataset.order-+b.dataset.order);
+  const open = svg.querySelector('.pista-open');
+  if(open) open.style.opacity = '0';
+  const PASO = 550;
+  flechas.forEach((f,i)=>{
+    const largo = f.getTotalLength ? f.getTotalLength() : 300;
+    f.style.transition = 'none';
+    f.setAttribute('stroke-dasharray', largo);
+    f.setAttribute('stroke-dashoffset', largo);
+    setTimeout(()=>{
+      f.style.transition = `stroke-dashoffset ${PASO*0.85}ms ease`;
+      f.setAttribute('stroke-dashoffset', '0');
+    }, 30 + i*PASO);
+  });
+  const totalTiempo = flechas.length ? 30 + flechas.length*PASO : 0;
+  if(open){
+    setTimeout(()=>{
+      open.style.transition = 'opacity .25s ease, transform .25s cubic-bezier(.3,1.6,.4,1)';
+      open.style.transformOrigin = '130px 270px';
+      open.style.transform = 'scale(1)';
+      open.style.opacity = '1';
+    }, totalTiempo + 150);
+  }
+}
+
 // Reproductor sencillo a pantalla completa
 function abrirVideo(url, nombre){
   let back = document.getElementById('videoBack');
@@ -4207,15 +4734,30 @@ async function refrescarCalendario(athleteId){
 
 // Galería: elegir varios ejercicios o un bloque entero y pegarlos en un día.
 async function abrirGaleriaEjercicios(dia, bloque, athleteId){
-  let back = document.getElementById('exLibBack');
-  if(!back){ back = document.createElement('div'); back.id='exLibBack'; back.className='modal-back'; document.body.appendChild(back); }
+  // Recreamos el modal siempre desde cero: reutilizar uno que hubiera quedado
+  // a medio cerrar arrastraba listeners duplicados y selección de otra sesión.
+  const viejo = document.getElementById('exLibBack');
+  if(viejo) viejo.remove();
+  const back = document.createElement('div');
+  back.id = 'exLibBack'; back.className = 'modal-back';
+  document.body.appendChild(back);
   state.libSel = [];
   state.libFiltro = '';
-  state.libTab = state.libTab || 'ejercicios';
+  state.libSeccion = null;
+  state.libTab = 'ejercicios';
+  let cargando = false;
 
   const pintar = async ()=>{
-    const lib = await getExLib();
-    const blocks = await getBlockLib();
+    let lib = [], blocks = [];
+    try{
+      lib = await getExLib();
+      blocks = await getBlockLib();
+    }catch(e){
+      back.innerHTML = `<div class="modal"><div class="empty">No se pudo cargar la galería. Comprueba la conexión e inténtalo de nuevo.</div>
+        <button class="btn ghost small" id="closeLibBtn" style="margin-top:10px;">Cerrar</button></div>`;
+      document.getElementById('closeLibBtn').addEventListener('click', ()=>back.remove());
+      return;
+    }
     const q = (state.libFiltro||'').toLowerCase().trim();
     const secciones = [...new Set(lib.map(e=>e.section).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
     const filtrados = lib
@@ -4312,17 +4854,29 @@ async function abrirGaleriaEjercicios(dia, bloque, athleteId){
     }));
 
     const insertar = async (plantillas)=>{
+      if(!plantillas.length){ toast('Nada que añadir', true); return; }
       const draft = await getRoutine(athleteId, true, state.planWeek);
+      if(!draft.days[dia] || !draft.days[dia][bloque]){
+        toast('No se encontró ese día en la rutina. Cierra y ábrela de nuevo.', true);
+        return;
+      }
       plantillas.forEach(pl=>{ draft.days[dia][bloque].push(desdePlantilla(pl)); });
       const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
-      toast(ok ? `${plantillas.length} ejercicio${plantillas.length===1?'':'s'} añadido${plantillas.length===1?'':'s'}` : 'No se pudo añadir', !ok);
+      toast(ok ? `${plantillas.length} ejercicio${plantillas.length===1?'':'s'} añadido${plantillas.length===1?'':'s'}` : 'No se pudo guardar: revisa la conexión', !ok);
       cerrar();
       if(ok){ state.openDays[dia]=true; renderKeepScroll(); }
     };
     const insBtn = document.getElementById('libInsertBtn');
     if(insBtn) insBtn.addEventListener('click', async ()=>{
-      const lib2 = await getExLib();
-      await insertar(state.libSel.map(id=>lib2.find(x=>x.id===id)).filter(Boolean));
+      if(cargando) return;
+      cargando = true; insBtn.disabled = true; insBtn.textContent = 'Añadiendo…';
+      try{
+        const lib2 = await getExLib();
+        await insertar(state.libSel.map(id=>lib2.find(x=>x.id===id)).filter(Boolean));
+      }catch(e){
+        toast('No se pudo añadir: '+e.message, true);
+        cargando = false; insBtn.disabled = false; insBtn.textContent = 'Añadir al día';
+      }
     });
     back.querySelectorAll('[data-blockuse]').forEach(b=>b.addEventListener('click', async ()=>{
       const blocks2 = await getBlockLib();
@@ -4586,6 +5140,115 @@ async function bindDynamicEvents(){
   }));
 
   // --- Galería de ejercicios ---
+  // --- Gym o pista (tenis/mixto) ---
+  document.querySelectorAll('[data-lugar]').forEach(b=>b.addEventListener('click', async ()=>{
+    const dia = b.dataset.lugar, val = b.dataset.val;
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    draft.days[dia].lugar = val;
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    if(ok){ state.openDays[dia]=true; renderKeepScroll(); }
+    else toast('No se pudo guardar', true);
+  }));
+
+  // --- Drills de pista ---
+  document.querySelectorAll('[data-adddrill]').forEach(b=>b.addEventListener('click', async ()=>{
+    const dia = b.dataset.adddrill;
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    if(!Array.isArray(draft.days[dia].drills)) draft.days[dia].drills = [];
+    draft.days[dia].drills.push(blankDrill());
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    if(ok){ state.openDays[dia]=true; renderKeepScroll(); }
+    else toast('No se pudo añadir el drill', true);
+  }));
+  document.querySelectorAll('[data-drilldel]').forEach(b=>b.addEventListener('click', async ()=>{
+    const card = b.closest('.drill-card');
+    const dia = card.dataset.day, id = b.dataset.drilldel;
+    if(!confirm('¿Eliminar este drill?')) return;
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    draft.days[dia].drills = (draft.days[dia].drills||[]).filter(x=>x.id!==id);
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    if(ok){ card.remove(); }
+    else toast('No se pudo eliminar', true);
+  }));
+  // Selección de jugadores 1-6: añade o quita su fila de configuración.
+  document.querySelectorAll('[data-drilljug]').forEach(b=>b.addEventListener('click', async ()=>{
+    const card = b.closest('.drill-card');
+    const dia = card.dataset.day, id = card.dataset.drillid;
+    const n = parseInt(b.dataset.drilljug,10);
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
+    if(!dr) return;
+    const ya = dr.jugadores.find(j=>j.numero===n);
+    if(ya) dr.jugadores = dr.jugadores.filter(j=>j.numero!==n);
+    else dr.jugadores.push(blankJugadorDrill(n));
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    if(ok){
+      const nuevaHtml = drillCardHtml(dr, dia);
+      card.insertAdjacentHTML('afterend', nuevaHtml);
+      card.remove();
+      renderKeepScroll();  // los checks de jugador cambian la forma de la tarjeta
+    } else toast('No se pudo guardar', true);
+  }));
+  // Reordenar drills dentro del día
+  document.querySelectorAll('.drill-move').forEach(b=>b.addEventListener('click', async ()=>{
+    const card = b.closest('.drill-card');
+    const dia = card.dataset.day, id = card.dataset.drillid;
+    const dir = b.dataset.dir;
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const lista = draft.days[dia].drills || [];
+    const i = lista.findIndex(x=>x.id===id);
+    const j = dir==='up' ? i-1 : i+1;
+    if(i===-1 || j<0 || j>=lista.length){ toast(dir==='up'?'Ya es el primero':'Ya es el último'); return; }
+    [lista[i], lista[j]] = [lista[j], lista[i]];
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    if(ok) renderKeepScroll();
+    else toast('No se pudo reordenar', true);
+  }));
+  // Autoguardado del resto de campos de cada drill
+  document.querySelectorAll('.drill-card').forEach(card=>{
+    const dia = card.dataset.day, id = card.dataset.drillid;
+    const guardar = async ()=>{
+      const draft = await getRoutine(athleteId, true, state.planWeek);
+      const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
+      if(!dr) return;
+      dr.nombre = card.querySelector('.drill-nombre').value.trim();
+      dr.objetivo = card.querySelector('.drill-objetivo').value;
+      dr.duracion = card.querySelector('.drill-duracion').value.trim();
+      dr.intentos = card.querySelector('.drill-intentos').value.trim();
+      dr.series = card.querySelector('.drill-series').value.trim();
+      dr.puntuacion = card.querySelector('.drill-puntuacion').value.trim();
+      dr.fronton = card.querySelector('.drill-fronton').checked;
+      let rehacerVista = false;
+      card.querySelectorAll('.jug-fila').forEach(fila=>{
+        const num = parseInt(fila.dataset.jugnum,10);
+        const j = dr.jugadores.find(x=>x.numero===num);
+        if(!j) return;
+        const nuevoRol = fila.querySelector('.jug-rol').value;
+        if(nuevoRol !== j.rol) rehacerVista = true;   // aparece/desaparece «bolas objetivo»
+        j.rol = nuevoRol;
+        const ladoEl = fila.querySelector('.jug-lado'); if(ladoEl) j.lado = ladoEl.value;
+        j.zonaOrigen = fila.querySelector('.jug-origen').value;
+        j.zonaDestino = fila.querySelector('.jug-destino').value;
+        const bolasInput = fila.querySelector('.jug-bolas');
+        if(bolasInput) j.bolasObjetivo = bolasInput.value.trim();
+      });
+      const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+      const flag = card.querySelector('.save-flag');
+      if(ok && flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
+      if(!ok) toast('No se pudo guardar', true);
+      if(ok && rehacerVista){
+        const nuevaHtml = drillCardHtml(dr, dia);
+        card.insertAdjacentHTML('afterend', nuevaHtml);
+        card.remove();
+        bindDynamicEvents();
+      }
+    };
+    let deb=null;
+    card.querySelectorAll('input,select,textarea').forEach(f=>{
+      f.addEventListener('change', ()=>{ clearTimeout(deb); deb=setTimeout(guardar, 100); });
+    });
+  });
+
   // --- Tipo de sesión escrito a mano ---
   document.querySelectorAll('.dia-tipo').forEach(inp=>{
     let deb=null;
@@ -4635,6 +5298,75 @@ async function bindDynamicEvents(){
       exercises: lista.map(plantillaDe) });
     const ok = await saveBlockLib(blocks);
     toast(ok ? `Bloque "${nombre.trim()}" guardado (${lista.length} ejercicios)` : 'No se pudo guardar', !ok);
+  }));
+
+  // --- Guardar una sesión de pista ---
+  document.querySelectorAll('[data-drscale]').forEach(sc=>{
+    sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+      sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+    }));
+  });
+  const saveDrills = document.getElementById('saveDrillsBtn');
+  if(saveDrills) saveDrills.addEventListener('click', async ()=>{
+    try{
+      const card = document.getElementById('drillRegCard');
+      const val = k=>{ const sc=card.querySelector(`[data-drscale="${k}"]`); const sel=sc&&sc.querySelector('button.sel'); return sel?parseInt(sel.dataset.val,10):null; };
+      const overallRPE = val('overallRPE');
+      if(overallRPE===null){ toast('Marca al menos el RPE general', true); return; }
+      const fecha = card.querySelector('#drDate').value || todayISO();
+      const mins = Math.max(1, parseInt(card.querySelector('#drMin').value,10) || 60);
+      const dia = document.getElementById('sessionDay').value;
+
+      // Leemos la rutina aquí: 'source' vive en el ámbito de la plantilla, no aquí.
+      const rutinaHoy = await getRoutine(athleteId, false);
+      const tipoDelDia = (rutinaHoy.days[dia] && rutinaHoy.days[dia].tipo) || '';
+      const num = (el)=>{ const v = parseInt(el.value,10); return isNaN(v) ? null : v; };
+      const registros = [];
+      card.querySelectorAll('.drill-reg').forEach(fila=>{
+        const nombre = fila.querySelector('.drill-reg-cab b').textContent.trim();
+        const intentos = num(fila.querySelector('.dr-intentos'));
+        const acertados = num(fila.querySelector('.dr-acertados'));
+        const tiempo = num(fila.querySelector('.dr-tiempo'));
+        const sensacion = num(fila.querySelector('.dr-sensacion'));
+        const nota = fila.querySelector('.dr-nota').value.trim();
+        // Sólo guardamos el drill si el atleta anotó algo
+        if(intentos===null && acertados===null && tiempo===null && sensacion===null && !nota) return;
+        const pct = (intentos && intentos>0 && acertados!==null) ? Math.round((acertados/intentos)*100) : null;
+        registros.push({ drillId: fila.dataset.drid, name: nombre,
+          intentos, acertados, aciertoPct: pct, tiempo, sensacion, nota });
+      });
+
+      const registro = {
+        date: fecha, day: dia, durationSeconds: mins*60,
+        esPista: true, drills: registros,
+        exercises: [],
+        avgExerciseRPE: 0, fatigueScore: +(overallRPE*mins).toFixed(1),
+        cargaDesdeRPEGeneral: true,
+        tipoSesion: tipoDelDia || 'Tenis',
+        overallRPE, fatiga: val('fatiga'), calidad: val('calidad'),
+        hidratacion: null, satisfaccion: null,
+        notes: card.querySelector('#drNotes').value.trim()
+      };
+      const raw = await safeGet('journal-'+athleteId, true);
+      const entries = raw ? JSON.parse(raw) : [];
+      entries.push(registro);
+      entries.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+      const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
+      if(!ok){ toast('No se pudo guardar', true); return; }
+      toast(`Sesión de pista guardada · ${registros.length} drill${registros.length===1?'':'s'}`);
+      state.drillReg = null;
+      state.tab = 'progreso'; render();
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
+  });
+
+  // --- Pista 2D: reproducir el recorrido de un drill ---
+  document.querySelectorAll('[data-verrecorrido]').forEach(b=>b.addEventListener('click', ()=>{
+    try{
+      const dr = JSON.parse(b.dataset.drilljson);
+      const wrap = b.closest('.drill-view')?.querySelector('.pista-wrap');
+      if(wrap) reproducirRecorrido(wrap);
+    }catch(e){ toast('No se pudo reproducir el recorrido', true); }
   }));
 
   // --- Vídeos de técnica ---
@@ -4873,6 +5605,9 @@ async function bindDynamicEvents(){
     renderScrollTop();
   }));
 
+  const drSel = document.getElementById('drillSelect');
+  if(drSel) drSel.addEventListener('change', ()=>{ state.drillSel = drSel.value; renderKeepScroll(); });
+
   const ejSel = document.getElementById('ejercicioSelect');
   if(ejSel) ejSel.addEventListener('change', ()=>{ state.ejercicioSel = ejSel.value; renderKeepScroll(); });
 
@@ -4966,6 +5701,12 @@ async function bindDynamicEvents(){
     renderKeepScroll();
   }));
 
+  document.querySelectorAll('[data-diario]').forEach(b=>b.addEventListener('click', ()=>{
+    const idx = parseInt(b.dataset.diario,10);
+    state.diarioAbierto = (state.diarioAbierto === idx) ? null : idx;
+    renderKeepScroll();
+  }));
+
   // --- Corregir y eliminar sesiones del diario ---
   document.querySelectorAll('[data-editentry]').forEach(b=>b.addEventListener('click', ()=>{
     state.editEntry = parseInt(b.dataset.editentry,10); renderKeepScroll();
@@ -5032,7 +5773,8 @@ async function bindDynamicEvents(){
     }
     const at = state.athletes.find(x=>x.id===id);
     if(!at) return;
-    at.name = nuevoNombre; at.pin = nuevoPin;
+    const modalidad = document.getElementById('editAthModalidad').value;
+    at.name = nuevoNombre; at.pin = nuevoPin; at.modalidad = modalidad;
     const ok = await safeSet('athletes-list', JSON.stringify(state.athletes), true);
     toast(ok ? 'Datos actualizados' : 'No se pudo guardar', !ok);
     if(ok) render();
@@ -5124,14 +5866,7 @@ async function bindDynamicEvents(){
     session = { day: paused.day, elapsedSec: paused.elapsedSec||0, exercises: paused.exercises,
       fullscreen:true, showSurvey: !!paused.showSurvey, startedAt: paused.startedAt,
       avgExerciseRPE: paused.avgExerciseRPE, fatigueScore: paused.fatigueScore };
-    clearInterval(stopwatchInterval);
-    stopwatchInterval = setInterval(()=>{
-      if(!session){ clearInterval(stopwatchInterval); stopwatchInterval=null; return; }
-      session.elapsedSec++;
-      const disp=document.getElementById('stopwatchDisplay');
-      if(disp) disp.textContent=fmtTime(session.elapsedSec);
-      if(session.elapsedSec % 15 === 0) queueSessionSave();
-    },1000);
+    arrancarCronometro();
     keepAwake(true);
     mountSessionOverlay(athleteId);
   });
@@ -5242,14 +5977,7 @@ async function bindDynamicEvents(){
     ensureAudio();
     keepAwake(true);
     persistSession();
-    clearInterval(stopwatchInterval);
-    stopwatchInterval = setInterval(()=>{
-      if(!session){ clearInterval(stopwatchInterval); stopwatchInterval=null; return; }
-      session.elapsedSec++;
-      const disp=document.getElementById('stopwatchDisplay');
-      if(disp) disp.textContent=fmtTime(session.elapsedSec);
-      if(session.elapsedSec % 15 === 0) queueSessionSave();
-    },1000);
+    arrancarCronometro();
     keepScreenOn();
     mountSessionOverlay(state.athleteAsId);
   });
@@ -5315,8 +6043,9 @@ async function bindDynamicEvents(){
     sp.classList.add('hide');
     setTimeout(()=>{ if(sp && sp.parentNode) sp.parentNode.removeChild(sp); }, 500);
   };
-  // Se cierra sola al terminar la animación
-  const DURACION = 2500;
+  // Se cierra sola al terminar la animación. Medio segundo extra sobre el fin
+  // de la animación para que dé tiempo a leer la frase.
+  const DURACION = 3000;
   setTimeout(cerrar, DURACION);
   // …o antes, si el usuario toca la pantalla
   sp.addEventListener('click', cerrar);
