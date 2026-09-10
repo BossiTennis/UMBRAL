@@ -118,7 +118,9 @@
   }
   .ex-view-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;}
   .ex-view-card h4{font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;margin-bottom:4px;}
-  .ex-view-card p.desc{font-size:12.5px;color:var(--muted);margin-bottom:8px;}
+  /* pre-wrap conserva los saltos de línea que escribe el entrenador, para que
+     una descripción numerada se lea como una lista y no como un párrafo. */
+  .ex-view-card p.desc{font-size:12.5px;color:var(--muted);margin-bottom:8px;white-space:pre-wrap;line-height:1.6;}
   .ex-meta{display:flex;gap:14px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);}
   .ex-meta b{color:var(--ink);}
   .save-flag{position:absolute;top:10px;right:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);opacity:0;transition:opacity .3s;}
@@ -306,6 +308,16 @@
   .week-nav-mid{flex:1;text-align:center;min-width:0;}
   .week-nav-mid b{display:block;font-family:'Fraunces',serif;font-size:14.5px;font-weight:600;}
   .week-nav-mid span{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px;}
+  .dia-cabecera{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+  .dia-cabecera .dia-tipo{flex:1;min-width:0;}
+  .dia-menu-btn{flex-shrink:0;width:36px;height:36px;border-radius:8px;background:var(--panel2);border:1px solid var(--border);color:var(--muted);font-size:18px;line-height:1;cursor:pointer;font-family:'Manrope',sans-serif;}
+  .dia-menu-btn.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
+  .dia-menu{background:var(--panel3);border:1px dashed var(--border);border-radius:8px;padding:12px 13px;margin-bottom:12px;animation:fadeSlide .2s ease both;}
+  .dm-seccion{padding-bottom:11px;margin-bottom:11px;border-bottom:1px dashed var(--border);}
+  .dm-seccion:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0;}
+  .dm-label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:7px;}
+  .dm-seccion select{padding:6px 9px;font-size:13px;}
+  .dm-peligro{padding-top:2px;}
   .day-tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:var(--panel3);border:1px dashed var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;}
   .day-tools-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;}
   .day-tools select{padding:6px 9px;font-size:13px;}
@@ -366,7 +378,7 @@
   .combi-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;}
   .combi-det{flex:1;min-width:0;}
   .combi-det > b{display:block;font-size:14px;font-weight:600;margin-bottom:3px;}
-  .combi-desc{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;}
+  .combi-desc{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;white-space:pre-wrap;line-height:1.6;}
   .section-tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:3px 11px;margin:10px 0 6px;letter-spacing:0.04em;}
   .timer-badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-top:8px;}
   .timer-config{border-top:1px dashed var(--border);margin-top:10px;padding-top:10px;}
@@ -434,7 +446,7 @@
     <rect class="sp-floor" x="20" y="88" width="60" height="3.5" rx="1.75" fill="#C08A5A"/>
   </svg>
   <div class="splash-word">UMBRAL</div>
-  <div class="splash-sub">Nadie lo hará por ti</div>
+  <div class="splash-sub" id="splashSub">La constancia no se negocia</div>
 </div>
 <div class="app" id="app">
   <header>
@@ -1272,17 +1284,17 @@ function renderCoachAtletas(){
     const modEtq = { gym:'Gym', tenis:'Tenis', mixto:'Mixto' }[a.modalidad] || 'Gym';
     html += `<button class="athlete-row" data-openathlete="${a.id}"><span class="name">${escapeHtml(a.name)}</span>
       <span class="row" style="gap:7px;flex-shrink:0;">
-        <span class="mod-tag mod-${a.modalidad||'gym'}">${modEtq}</span>
+        ${TENIS_ACTIVO?`<span class="mod-tag mod-${a.modalidad||'gym'}">${modEtq}</span>`:''}
         <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">PIN ${a.pin}</span>
       </span></button>`;
   });
   html += `</div><div class="row" style="margin-top:12px;">
     <input type="text" id="newAthleteName" placeholder="Nombre del nuevo atleta">
-    <select id="newAthleteModalidad" style="min-width:100px;">
+    ${TENIS_ACTIVO?`<select id="newAthleteModalidad" style="min-width:100px;">
       <option value="gym">Gym</option>
       <option value="tenis">Tenis</option>
       <option value="mixto">Mixto</option>
-    </select>
+    </select>`:''}
     <button class="btn ghost" id="addAthleteBtn">+ Añadir atleta</button>
   </div>
   ${state.athletes.length?`<div class="row" style="margin-top:10px;">
@@ -1569,6 +1581,11 @@ async function saveRoutine(athleteId, draft, rutina, weekOf){
   rutina.updatedAt = new Date().toISOString();
   return safeSet(routineKey(athleteId, draft, semana), JSON.stringify(rutina), true);
 }
+// Interruptor del módulo de tenis. En false, la app se comporta como si el
+// módulo no existiera: no aparece la modalidad, ni gym/pista, ni drills.
+// El código permanece intacto para reactivarlo poniendo true.
+const TENIS_ACTIVO = false;
+
 // ---------- DRILLS DE TENIS ----------
 const DRILL_OBJETIVOS = ['Cambio de dirección','Approach','Buscar el espacio libre','Consistencia','Saque y resto','Subir a la red (volea)'];
 const ZONAS_PISTA = {
@@ -1909,7 +1926,7 @@ async function tplRutinaAtleta(athleteId){
     return html;
   }
   const atletaActual = state.athletes.find(a=>a.id===athleteId);
-  const esTenisOMixtoAt = atletaActual && (atletaActual.modalidad==='tenis' || atletaActual.modalidad==='mixto');
+  const esTenisOMixtoAt = TENIS_ACTIVO && atletaActual && (atletaActual.modalidad==='tenis' || atletaActual.modalidad==='mixto');
   DAYS.forEach(d=>{
     const open = state.openDays[d] ? 'open':'';
     const esPistaAt = esTenisOMixtoAt && routine.days[d].lugar==='pista';
@@ -1993,7 +2010,7 @@ async function tplSesionEntry(athleteId){
     : (()=>{ const h = hist.find(w=>String(w.weekNumber)===String(selWeek)); return h ? {days:h.days} : routine; })();
 
   const atletaSes = state.athletes.find(a=>a.id===athleteId);
-  const esTenisMixtoSes = atletaSes && (atletaSes.modalidad==='tenis' || atletaSes.modalidad==='mixto');
+  const esTenisMixtoSes = TENIS_ACTIVO && atletaSes && (atletaSes.modalidad==='tenis' || atletaSes.modalidad==='mixto');
   const esPistaSesion = esTenisMixtoSes && (source.days[selDay].lugar||'gym')==='pista';
   const paused = await findPausedSession(athleteId);
   let html = '';
@@ -3232,7 +3249,7 @@ async function tplProgreso(athleteId){
   }
   html += `</div>`;
   html += tplMetricasEjercicio(entries);
-  html += tplMetricasDrills(entries);
+  if(TENIS_ACTIVO) html += tplMetricasDrills(entries);
   return html;
 }
 
@@ -4039,7 +4056,7 @@ function exCardHtml(ex, blockKey, d, listaBloque){
             <input type="text" class="ex-section" value="${escapeHtml(ex.section||'')}" placeholder="Sección (Fuerza, Hipertrofia…)" list="sectionSuggestions" style="flex:1;min-width:0;font-size:12px;color:var(--accent);">
           </div>
           <input type="text" class="ex-name full" value="${escapeHtml(ex.name)}" placeholder="Nombre del ejercicio" style="width:100%;font-weight:700;">
-          <textarea class="ex-desc" placeholder="Descripción / técnica" style="min-height:36px;margin-top:6px;">${escapeHtml(ex.desc||'')}</textarea>
+          <textarea class="ex-desc" placeholder="Descripción / técnica&#10;Puedes usar varias líneas:&#10;1. Cat camel&#10;2. Zancada spiderman" style="min-height:62px;margin-top:6px;white-space:pre-wrap;">${escapeHtml(ex.desc||'')}</textarea>
           <div class="ex-grid">
             <div><label class="field-label">Series</label><input type="number" class="ex-series" value="${ex.series||''}"></div>
             <div><label class="field-label">Reps</label><input type="text" class="ex-reps" value="${escapeHtml(ex.reps||'')}"></div>
@@ -4083,7 +4100,7 @@ function exCardHtml(ex, blockKey, d, listaBloque){
 
 async function tplPlanificacionCoach(athleteId){
   const atleta = state.athletes.find(a=>a.id===athleteId);
-  const esTenisOMixto = atleta && (atleta.modalidad==='tenis' || atleta.modalidad==='mixto');
+  const esTenisOMixto = TENIS_ACTIVO && atleta && (atleta.modalidad==='tenis' || atleta.modalidad==='mixto');
   // La semana se fija antes de archivar: al revés, el archivado usaba la semana
   // que hubiera quedado de otro atleta y escribía en la clave equivocada.
   const off = state.planOffset || 0;
@@ -4137,66 +4154,81 @@ async function tplPlanificacionCoach(athleteId){
     const lugarIcoCoach = esPistaHoy ? '🎾 ' : '';
     const etiquetaCantCoach = esPistaHoy ? `${totalEx} drill${totalEx===1?'':'s'}` : `${totalEx} ejerc.`;
     html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${lugarIcoCoach}${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${etiquetaCantCoach}</span></div><div class="acc-body">`;
-    // Copiar el día completo a otro: útil cuando al atleta se le cambia el
-    // horario y hay que mover el entreno de un día a otro.
+    // El tipo de sesión se rellena a diario, así que queda a la vista. Todo lo
+    // demás (copiar, mover, vaciar) va tras el menú de tres puntos para no
+    // llenar la pantalla de opciones que se usan de vez en cuando.
     const otrosDias = DAYS.filter(x=>x!==d);
-    if(esTenisOMixto){
-      const lugar = draft.days[d].lugar || 'gym';
-      html += `<div class="day-tools">
-        <span class="day-tools-label">Dónde se entrena</span>
-        <button class="btn ${lugar==='gym'?'':'ghost'} small" data-lugar="${d}" data-val="gym">🏋️ En gym</button>
-        <button class="btn ${lugar==='pista'?'':'ghost'} small" data-lugar="${d}" data-val="pista">🎾 En pista</button>
-      </div>`;
-
-    }
-    html += `<div class="day-tools">
-      <span class="day-tools-label">Tipo de sesión</span>
+    const menuAbierto = state.menuDia === d;
+    html += `<div class="dia-cabecera">
       <input type="text" class="dia-tipo" data-dia="${d}" value="${escapeHtml(draft.days[d].tipo||'')}"
-        placeholder="Fuerza, Carrera, Hyrox…" list="tipoSuggestions" style="flex:1;min-width:120px;">
-    </div>
-    <div class="day-tools">
-      <span class="day-tools-label">Copiar este día a</span>
-      <select class="copy-target" data-from="${d}">
-        ${otrosDias.map(x=>`<option value="${x}">${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}
-      </select>
-      <button class="btn ghost small" data-copyday="${d}" data-mode="replace">Sustituir</button>
-      <button class="btn ghost small" data-copyday="${d}" data-mode="append">Añadir</button>
-      ${totalEx?`<button class="btn ghost small" data-swapday="${d}">Intercambiar</button>
-      <button class="btn ghost small" data-clearday="${d}">Vaciar día</button>`:''}
+        placeholder="Tipo de sesión (Fuerza, Carrera…)" list="tipoSuggestions">
+      <button class="dia-menu-btn ${menuAbierto?'on':''}" data-diamenu="${d}" title="Más opciones">⋮</button>
     </div>`;
-    // Copiar este día al de otro atleta: cuando dos entrenan lo mismo.
-    if(totalEx && state.athletes.length > 1){
-      const otros = state.athletes.filter(a=>a.id !== athleteId);
-      html += `<div class="day-tools">
-        <span class="day-tools-label">Copiar a otro atleta</span>
-        <select class="xfer-athlete" data-from="${d}">
-          ${otros.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}
-        </select>
-        <select class="xfer-day" data-from="${d}">
-          ${DAYS.map(x=>`<option value="${x}" ${x===d?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}
-        </select>
-        <button class="btn ghost small" data-xferday="${d}" data-mode="replace">Sustituir</button>
-        <button class="btn ghost small" data-xferday="${d}" data-mode="append">Añadir</button>
+    if(menuAbierto){
+      html += `<div class="dia-menu">`;
+      if(esTenisOMixto){
+        const lugar = draft.days[d].lugar || 'gym';
+        html += `<div class="dm-seccion">
+          <span class="dm-label">Dónde se entrena</span>
+          <div class="row" style="gap:7px;">
+            <button class="btn ${lugar==='gym'?'':'ghost'} small" data-lugar="${d}" data-val="gym">🏋️ En gym</button>
+            <button class="btn ${lugar==='pista'?'':'ghost'} small" data-lugar="${d}" data-val="pista">🎾 En pista</button>
+          </div>
+        </div>`;
+      }
+      html += `<div class="dm-seccion">
+        <span class="dm-label">Mover o copiar a otro día</span>
+        <div class="row" style="gap:7px;flex-wrap:wrap;">
+          <select class="copy-target" data-from="${d}">
+            ${otrosDias.map(x=>`<option value="${x}">${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}
+          </select>
+          <button class="btn ghost small" data-copyday="${d}" data-mode="replace">Sustituir</button>
+          <button class="btn ghost small" data-copyday="${d}" data-mode="append">Añadir</button>
+          ${totalEx?`<button class="btn ghost small" data-swapday="${d}">Intercambiar</button>`:''}
+        </div>
       </div>`;
-    }
-    // Copiar este día a OTRA SEMANA del mismo atleta
-    if(totalEx){
-      html += `<div class="day-tools">
-        <span class="day-tools-label">Copiar a otra semana</span>
-        <select class="wxfer-week" data-from="${d}">
-          ${[-2,-1,1,2,3,4].map(o=>{
-            const w = semanaDesplazada((state.planOffset||0)+o);
-            const ini = new Date(w+'T00:00:00');
-            const et = o===1?'La siguiente':(o===-1?'La anterior':(o>0?`+${o} semanas`:`${o} semanas`));
-            return `<option value="${w}">${et} · ${fmtShortDate(ini)}</option>`;
-          }).join('')}
-        </select>
-        <select class="wxfer-day" data-from="${d}">
-          ${DAYS.map(x=>`<option value="${x}" ${x===d?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}
-        </select>
-        <button class="btn ghost small" data-wxferday="${d}" data-mode="replace">Sustituir</button>
-        <button class="btn ghost small" data-wxferday="${d}" data-mode="append">Añadir</button>
-      </div>`;
+      if(totalEx){
+        html += `<div class="dm-seccion">
+          <span class="dm-label">Copiar a otra semana</span>
+          <div class="row" style="gap:7px;flex-wrap:wrap;">
+            <select class="wxfer-week" data-from="${d}">
+              ${[-2,-1,1,2,3,4].map(o=>{
+                const w = semanaDesplazada((state.planOffset||0)+o);
+                const iniW = new Date(w+'T00:00:00');
+                const et = o===1?'La siguiente':(o===-1?'La anterior':(o>0?`+${o} sem.`:`${o} sem.`));
+                return `<option value="${w}">${et} · ${fmtShortDate(iniW)}</option>`;
+              }).join('')}
+            </select>
+            <select class="wxfer-day" data-from="${d}">
+              ${DAYS.map(x=>`<option value="${x}" ${x===d?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}
+            </select>
+            <button class="btn ghost small" data-wxferday="${d}" data-mode="replace">Sustituir</button>
+            <button class="btn ghost small" data-wxferday="${d}" data-mode="append">Añadir</button>
+          </div>
+        </div>`;
+      }
+      if(totalEx && state.athletes.length > 1){
+        const otros = state.athletes.filter(a=>a.id !== athleteId);
+        html += `<div class="dm-seccion">
+          <span class="dm-label">Copiar a otro atleta</span>
+          <div class="row" style="gap:7px;flex-wrap:wrap;">
+            <select class="xfer-athlete" data-from="${d}">
+              ${otros.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}
+            </select>
+            <select class="xfer-day" data-from="${d}">
+              ${DAYS.map(x=>`<option value="${x}" ${x===d?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}
+            </select>
+            <button class="btn ghost small" data-xferday="${d}" data-mode="replace">Sustituir</button>
+            <button class="btn ghost small" data-xferday="${d}" data-mode="append">Añadir</button>
+          </div>
+        </div>`;
+      }
+      if(totalEx){
+        html += `<div class="dm-seccion dm-peligro">
+          <button class="btn ghost small" data-clearday="${d}">Vaciar día</button>
+        </div>`;
+      }
+      html += `</div>`;
     }
     if(esTenisOMixto && (draft.days[d].lugar||'gym')==='pista'){
       // Día en pista: drills en vez de ejercicios de gimnasio.
@@ -4350,11 +4382,11 @@ async function tplPerfilCoachBody(athleteId){
     <div class="row" style="flex-direction:column;align-items:stretch;gap:12px;">
       <div><label class="field-label">Nombre del atleta</label><input type="text" id="editAthName" value="${escapeHtml(a?a.name:'')}" style="width:100%;"></div>
       <div><label class="field-label">PIN de acceso</label><input type="text" id="editAthPin" value="${a?a.pin:''}" maxlength="6" inputmode="numeric" style="width:100%;font-family:'IBM Plex Mono',monospace;letter-spacing:0.2em;"></div>
-      <div><label class="field-label">Modalidad</label><select id="editAthModalidad" style="width:100%;">
+      ${TENIS_ACTIVO?`<div><label class="field-label">Modalidad</label><select id="editAthModalidad" style="width:100%;">
         <option value="gym" ${(!a||a.modalidad==='gym'||!a.modalidad)?'selected':''}>Gym</option>
         <option value="tenis" ${a&&a.modalidad==='tenis'?'selected':''}>Tenis</option>
         <option value="mixto" ${a&&a.modalidad==='mixto'?'selected':''}>Mixto (gym + tenis)</option>
-      </select></div>
+      </select></div>`:''}
       <div class="row">
         <button class="btn" id="saveAthBasics" data-athleteid="${athleteId}">Guardar</button>
         <button class="btn ghost danger" id="deleteAthBtn" data-athleteid="${athleteId}">Eliminar atleta</button>
@@ -5140,6 +5172,14 @@ async function bindDynamicEvents(){
   }));
 
   // --- Galería de ejercicios ---
+  // --- Menú de tres puntos por día ---
+  document.querySelectorAll('[data-diamenu]').forEach(b=>b.addEventListener('click', ()=>{
+    const dia = b.dataset.diamenu;
+    state.menuDia = (state.menuDia === dia) ? null : dia;
+    state.openDays[dia] = true;
+    renderKeepScroll();
+  }));
+
   // --- Gym o pista (tenis/mixto) ---
   document.querySelectorAll('[data-lugar]').forEach(b=>b.addEventListener('click', async ()=>{
     const dia = b.dataset.lugar, val = b.dataset.val;
@@ -5415,7 +5455,7 @@ async function bindDynamicEvents(){
   document.querySelectorAll('[data-wxferday]').forEach(btn=>btn.addEventListener('click', async ()=>{
     const origen = btn.dataset.wxferday;
     const modo = btn.dataset.mode;
-    const fila = btn.closest('.day-tools');
+    const fila = btn.closest('.dm-seccion') || btn.closest('.day-tools');
     const semanaDestino = fila.querySelector('.wxfer-week').value;
     const diaDestino = fila.querySelector('.wxfer-day').value;
     try{
@@ -5443,7 +5483,7 @@ async function bindDynamicEvents(){
   document.querySelectorAll('[data-xferday]').forEach(btn=>btn.addEventListener('click', async ()=>{
     const origen = btn.dataset.xferday;
     const modo = btn.dataset.mode;
-    const fila = btn.closest('.day-tools');
+    const fila = btn.closest('.dm-seccion') || btn.closest('.day-tools');
     const destinoAtleta = fila.querySelector('.xfer-athlete').value;
     const destinoDia = fila.querySelector('.xfer-day').value;
     const nombreDest = (state.athletes.find(a=>a.id===destinoAtleta)||{}).name || 'ese atleta';
@@ -5773,7 +5813,8 @@ async function bindDynamicEvents(){
     }
     const at = state.athletes.find(x=>x.id===id);
     if(!at) return;
-    const modalidad = document.getElementById('editAthModalidad').value;
+    const modEl = document.getElementById('editAthModalidad');
+    const modalidad = modEl ? modEl.value : (at ? at.modalidad : 'gym');
     at.name = nuevoNombre; at.pin = nuevoPin; at.modalidad = modalidad;
     const ok = await safeSet('athletes-list', JSON.stringify(state.athletes), true);
     toast(ok ? 'Datos actualizados' : 'No se pudo guardar', !ok);
@@ -6033,9 +6074,34 @@ async function bindDynamicEvents(){
 // ---------- PANTALLA DE ENTRADA ----------
 // Sólo en arranque en frío: al cambiar de pestaña no se vuelve a mostrar,
 // porque una intro de dos segundos veinte veces al día acaba estorbando.
+// Frases de la intro. Cambian en cada arranque para que la app no se sienta
+// siempre igual, manteniendo el mismo tono.
+const FRASES_INTRO = [
+  'Lo sagrado es constante',
+  'Tu templo se construye a diario',
+  'La constancia no se negocia',
+  'Hoy también cuenta',
+  'El progreso no avisa',
+  'Nadie ve los días grises',
+  'Suma, aunque hoy sea poco'
+];
+
 (function initSplash(){
   const sp = document.getElementById('splash');
   if(!sp) return;
+  // Elegimos frase evitando repetir la del arranque anterior.
+  try{
+    const sub = document.getElementById('splashSub');
+    if(sub && FRASES_INTRO.length > 1){
+      let previa = null;
+      try{ previa = localStorage.getItem('umbral-frase-previa'); }catch(e){}
+      let opciones = FRASES_INTRO.filter(f => f !== previa);
+      if(!opciones.length) opciones = FRASES_INTRO;
+      const elegida = opciones[Math.floor(Math.random()*opciones.length)];
+      sub.textContent = elegida;
+      try{ localStorage.setItem('umbral-frase-previa', elegida); }catch(e){}
+    }
+  }catch(e){ /* si algo falla, se queda la frase por defecto */ }
   let cerrado = false;
   const cerrar = ()=>{
     if(cerrado) return;
