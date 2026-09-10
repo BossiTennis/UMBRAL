@@ -304,6 +304,16 @@
   .comp-group{display:flex;justify-content:space-between;align-items:baseline;gap:10px;background:var(--accent-dim);border-radius:8px;padding:9px 13px;margin:16px 0 10px;}
   .comp-group b{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;}
   .comp-group span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);white-space:nowrap;}
+  .demo-intro{border:1px solid var(--accent);}
+  .demo-tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:3px 10px;margin-bottom:10px;}
+  .demo-intro p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:10px;}
+  .demo-intro p b{color:var(--ink);}
+  .demo-lista{margin:0 0 12px 18px;padding:0;}
+  .demo-lista li{font-size:12.5px;color:var(--muted);line-height:1.7;}
+  .demo-lista b{color:var(--accent);}
+  .demo-cierre{border-left:3px solid var(--accent);padding-left:12px;font-style:italic;}
+  .demo-nota{background:var(--accent-dim);border-radius:7px;padding:9px 12px;font-size:12.5px;color:var(--ink);line-height:1.55;margin-bottom:12px;}
+  .gate-demo{border-style:dashed;}
   .week-nav{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:14px;}
   .week-nav-mid{flex:1;text-align:center;min-width:0;}
   .week-nav-mid b{display:block;font-family:'Fraunces',serif;font-size:14.5px;font-weight:600;}
@@ -561,7 +571,36 @@ async function supaList(){
   return Array.isArray(rows) ? rows.map(x=>x.key) : [];
 }
 
+// En modo demo todo ocurre en memoria: se puede trastear sin miedo y al
+// recargar vuelve a estar como el primer día, igual para todo el mundo.
+const demoStore = new Map();
+function demoSemilla(){
+  demoStore.clear();
+  const r = rutinaDemo();
+  demoStore.set('athletes-list', JSON.stringify([{ id:DEMO_ID, name:'Atleta de muestra', pin:DEMO_PIN }]));
+  demoStore.set('routine-'+DEMO_ID+'-w'+weekOfISO(), JSON.stringify(r));
+  demoStore.set('routine-draft-'+DEMO_ID+'-w'+weekOfISO(), JSON.stringify(r));
+  demoStore.set('intake-'+DEMO_ID, JSON.stringify({ edad:'30', genero:'—', peso:'72', altura:'176',
+    contacto:'muestra@umbral.app', aniosExperiencia:'4',
+    historial:'Corredor popular que ha añadido fuerza los dos últimos años.',
+    objetivos:'Mejorar en Hyrox sin perder velocidad en carrera.', disponibilidad:'5',
+    franjas:'Mañanas entre semana, sábado libre', lesiones:'Molestia antigua en rodilla derecha, sin lesión activa',
+    comoLlego:'Recomendación', material:'Gimnasio completo' }));
+  demoStore.set('profile-'+DEMO_ID, JSON.stringify({ estado:'Activo', tarifa:'90', pagado:'Sí',
+    vence:'', plaza:'Ejemplo', alta:'', notas:'' }));
+  demoStore.set('journal-'+DEMO_ID, JSON.stringify(diarioDemo()));
+  demoStore.set('habits-config-'+DEMO_ID, JSON.stringify(habitosDemo()));
+  demoStore.set('habits-'+DEMO_ID, JSON.stringify(habitosLogDemo()));
+  demoStore.set('call-'+DEMO_ID, JSON.stringify({ nextDate:'', duration:'25 min',
+    notes:'En la revisión repasamos la semana, ajustamos cargas y resolvemos dudas.' }));
+  demoStore.set('quest-config-'+DEMO_ID, JSON.stringify(['sleep_quality','fatigue_accum','motivation','pain_unusual']));
+  demoStore.set('seed-done-v1','true');
+}
+
 async function safeGet(key, shared){
+  if(state.modoDemo && shared){
+    return demoStore.has(key) ? demoStore.get(key) : null;
+  }
   // Lo no compartido es de este dispositivo: nunca sale a la nube.
   if(!shared) return readLocal(key, false);
   try{
@@ -578,6 +617,13 @@ async function safeGet(key, shared){
 }
 
 async function safeSet(key, value, shared){
+  if(state.modoDemo){
+    // Se acepta el cambio para que la app responda con normalidad, pero sólo
+    // vive en memoria: al recargar, la demo vuelve a su estado original.
+    if(shared) demoStore.set(key, value);
+    else cacheLocal(key, false, value);
+    return true;
+  }
   if(!shared){ cacheLocal(key, false, value); return true; }
   cacheLocal(key, true, value);   // guardamos siempre en local primero
   try{
@@ -987,6 +1033,7 @@ async function init(){
     state.authRole=null; state.role='coach'; state.athleteAsId=null; state.gateMode=null; state.tab='atletas';
     // Limpiamos subvistas abiertas: si no, al volver a entrar se aterrizaba en
     // el check de hábitos o el cuestionario de la sesión anterior.
+    state.modoDemo = false; demoStore.clear();
     state.calShowHabits=false; state.calShowQuest=false; state.questWeek=null;
     state.editEntry=null; state.editTask=null; state._inAthleteDetail=false;
     state.openDays={}; state.calOffset=0; state.sessionWeek=null; state.sessionDay=null;
@@ -1037,6 +1084,10 @@ function renderGate(){
     <button class="gate-option" data-gate="coach">
       <span class="gate-ic">${icPeople()}</span>
       <span class="gate-txt"><b>Soy entrenador</b><span>Requiere código de acceso</span></span>
+    </button>
+    <button class="gate-option gate-demo" data-gate="demo">
+      <span class="gate-ic">${icClipboard()}</span>
+      <span class="gate-txt"><b>Ver cómo funciona</b><span>Semana de ejemplo para trastear sin compromiso</span></span>
     </button>
   </div>`;
 }
@@ -1172,7 +1223,17 @@ async function maybeShowTutorial(){
 }
 
 async function bindGateEvents(){
-  document.querySelectorAll('[data-gate]').forEach(b=>b.addEventListener('click', ()=>{
+  document.querySelectorAll('[data-gate]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(b.dataset.gate === 'demo'){
+      demoSemilla();
+      state.modoDemo = true;
+      await loadAthletes();
+      state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = DEMO_ID;
+      state.gateMode = null; state.tab = 'rutina';
+      state.openDays = {}; state.rutinaOffset = 0;
+      render();
+      return;
+    }
     state.gateMode = b.dataset.gate; render();
   }));
   const backBtn = document.getElementById('gateBackBtn');
@@ -1200,6 +1261,16 @@ async function bindGateEvents(){
       if(!pin){ toast('Introduce el PIN', true); return; }
       // Buscamos a quién corresponde el PIN: así ningún atleta ve la lista
       // de nombres de los demás.
+      if(pin === DEMO_PIN){
+        demoSemilla();
+        state.modoDemo = true;
+        await loadAthletes();
+        state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = DEMO_ID;
+        state.gateMode = null; state.tab = 'rutina';
+        state.openDays = {}; state.rutinaOffset = 0;
+        render();
+        return;
+      }
       const a = state.athletes.find(x=>String(x.pin) === pin);
       if(a){
         state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = a.id; state.gateMode = null;
@@ -1581,6 +1652,120 @@ async function saveRoutine(athleteId, draft, rutina, weekOf){
   rutina.updatedAt = new Date().toISOString();
   return safeSet(routineKey(athleteId, draft, semana), JSON.stringify(rutina), true);
 }
+// ---------- USUARIO DEMO ----------
+// Atleta de muestra con una semana completa diseñada. Vive en el código, no en
+// la base de datos: así siempre es idéntico para todo el que reciba el enlace,
+// y nada de lo que toquen queda guardado.
+const DEMO_PIN = '0000';
+const DEMO_ID = 'demo';
+const DEMO_GUIA = {
+  lunes:      'Hipertrofia. Series largas, RIR bajo y superserie al final para acumular volumen sin alargar la sesión.',
+  martes:     'Fuerza para corredores. Poco volumen y mucha calidad: lo justo para correr más rápido sin cargar las piernas.',
+  miércoles:  'Movilidad y control. Sesión corta de mantenimiento, la que casi nadie programa y la que evita lesiones.',
+  jueves:     'Hyrox. Circuito con transiciones, trabajando la fatiga específica de la competición.',
+  viernes:    'Powerlifting. Fuerza máxima en los básicos y accesorios de hipertrofia después.',
+  sábado:     'Carrera. Tirada con cambios de ritmo controlados por sensación, no por reloj.',
+  domingo:    'Prevención. Trabajo de tejido y estabilidad para llegar entero a la semana siguiente.'
+};
+function ex(o){
+  return Object.assign({ id:'dx'+Math.random().toString(36).slice(2,8), name:'', desc:'', section:'', turno:'',
+    grupoId:'', grupoTipo:'', load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
+    timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5} }, o);
+}
+function rutinaDemo(){
+  const d = {};
+  DAYS.forEach(x=>{ d[x] = { calentamiento:[], principal:[], vueltaCalma:[] }; });
+
+  d.lunes.tipo = 'Hipertrofia';
+  d.lunes.calentamiento = [ex({name:'Bici suave', section:'Activación', desc:'Ritmo conversacional, solo para subir temperatura.', series:'1', reps:'6 min', rpeTarget:'3'})];
+  d.lunes.principal = [
+    ex({name:'Sentadilla búlgara', section:'Hipertrofia', desc:'1. Pie adelantado firme\n2. Baja controlando 3 segundos\n3. Sube sin bloquear del todo', load:'20kg', series:'4', reps:'10 por pierna', rest:'90s', rir:'2', rpeTarget:'8'}),
+    ex({name:'Hip thrust', section:'Hipertrofia', desc:'Pausa de 1 segundo arriba, barbilla metida.', load:'80kg', series:'4', reps:'12', rest:'90s', rir:'2', rpeTarget:'8', grupoId:'gDemo1', grupoTipo:'superserie'}),
+    ex({name:'Pull over', section:'Hipertrofia', desc:'Sin arquear la zona lumbar.', load:'25kg', series:'4', reps:'12', rest:'90s', rir:'3', rpeTarget:'7', grupoId:'gDemo1', grupoTipo:'superserie'})
+  ];
+  d.lunes.vueltaCalma = [ex({name:'Respiración diafragmática', section:'Recuperación', desc:'Tumbado, exhalación el doble de larga que la inhalación.', series:'1', reps:'4 min', rpeTarget:'1'})];
+
+  d.martes.tipo = 'Fuerza para runners';
+  d.martes.calentamiento = [ex({name:'Movilidad de tobillo', section:'Activación', desc:'1. Rodilla a pared\n2. Círculos de tobillo\n3. Elevaciones de gemelo', series:'2', reps:'10 por lado', rpeTarget:'3'})];
+  d.martes.principal = [
+    ex({name:'Sentadilla trasera', section:'Fuerza', desc:'Intensidad alta, lejos del fallo: se busca fuerza, no fatiga.', load:'70kg', series:'4', reps:'4', rest:'2-3 min', rir:'3', rpeTarget:'7'}),
+    ex({name:'Zancada caminando', section:'Fuerza', desc:'Tronco erguido, paso largo.', load:'2x12kg', series:'3', reps:'12 por pierna', rest:'90s', rir:'2', rpeTarget:'7'}),
+    ex({name:'Elevación de gemelo a una pierna', section:'Fuerza', desc:'Rango completo, pausa abajo.', load:'peso corporal', series:'3', reps:'15 por pierna', rest:'60s', rir:'2', rpeTarget:'7'})
+  ];
+
+  d['miércoles'].tipo = 'Movilidad';
+  d['miércoles'].principal = [
+    ex({name:'Circuito de movilidad', section:'Movilidad', desc:'1. Cat camel\n2. Zancada spiderman\n3. Rotación torácica\n4. 90/90 de cadera\n5. Perro boca abajo', series:'3', reps:'8 por posición', rest:'30s', rpeTarget:'4', timer:{type:'series', seriesRestSec:30, seriesCount:3, work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12}}),
+    ex({name:'Plancha lateral', section:'Core', desc:'Cadera alta, sin dejarla caer.', series:'3', reps:'30s por lado', rest:'30s', rpeTarget:'6'})
+  ];
+
+  d.jueves.tipo = 'Hyrox';
+  d.jueves.calentamiento = [ex({name:'Trote progresivo', section:'Activación', series:'1', reps:'8 min', rpeTarget:'4'})];
+  d.jueves.principal = [
+    ex({name:'Circuito Hyrox', section:'Específico Hyrox', desc:'1. 500 m remo\n2. 20 wall balls\n3. 15 burpee broad jump\n4. 50 m farmer carry\nTransición directa, sin descanso entre estaciones.', series:'3', reps:'1 vuelta', rest:'3 min', rpeTarget:'9', timer:{type:'series', seriesRestSec:180, seriesCount:3, work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12}}),
+    ex({name:'Carrera comprometida', section:'Resistencia', desc:'Correr con las piernas ya cargadas: es lo que decide la carrera.', series:'1', reps:'10 min', rpeTarget:'8'})
+  ];
+
+  d.viernes.tipo = 'Powerlifting';
+  d.viernes.calentamiento = [ex({name:'Activación de core y glúteo', section:'Activación', desc:'1. Puente de glúteo\n2. Bird dog\n3. Pallof press', series:'2', reps:'10', rpeTarget:'4'})];
+  d.viernes.principal = [
+    ex({name:'Peso muerto', section:'Fuerza máxima', desc:'Subidas de carga progresivas hasta la serie objetivo.', load:'110kg', series:'5', reps:'3', rest:'3 min', rir:'2', rpeTarget:'8', timer:{type:'series', seriesRestSec:180, seriesCount:5, work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12}}),
+    ex({name:'Press banca', section:'Fuerza máxima', desc:'Escápulas retraídas, pausa en el pecho.', load:'60kg', series:'4', reps:'5', rest:'2-3 min', rir:'2', rpeTarget:'8'}),
+    ex({name:'Remo con barra', section:'Hipertrofia', desc:'Accesorio: más repeticiones, menos carga.', load:'50kg', series:'3', reps:'10', rest:'90s', rir:'2', rpeTarget:'7'})
+  ];
+
+  d['sábado'].tipo = 'Carrera';
+  d['sábado'].principal = [
+    ex({name:'Tirada con cambios', section:'Resistencia', desc:'1. 15 min suave\n2. 6 x (2 min fuerte / 2 min suave)\n3. 10 min suave\nEl ritmo lo marcan las sensaciones, no el reloj.', series:'1', reps:'50 min', rpeTarget:'7', timer:{type:'intervalos', work:120, rest:120, rounds:6, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}})
+  ];
+  d['sábado'].vueltaCalma = [ex({name:'Estiramiento de cadena posterior', section:'Recuperación', series:'1', reps:'6 min', rpeTarget:'2'})];
+
+  d.domingo.tipo = 'Prevención';
+  d.domingo.principal = [
+    ex({name:'Isométricos de tendón', section:'Prevención', desc:'1. Sentadilla isométrica en pared 45s\n2. Isométrico de isquios 30s\n3. Gemelo isométrico 45s', series:'3', reps:'ver descripción', rest:'60s', rpeTarget:'6'}),
+    ex({name:'Trabajo escapular', section:'Prevención', desc:'Bandas: face pull, rotación externa, Y-T-W.', load:'banda media', series:'3', reps:'12', rest:'45s', rir:'3', rpeTarget:'5'})
+  ];
+  return { days:d, weekOf: weekOfISO() };
+}
+function habitosDemo(){
+  return { coach:[
+    {id:'hd1', name:'Creatina', type:'check'},
+    {id:'hd2', name:'Horas de sueño', type:'number', unit:'h'},
+    {id:'hd3', name:'Calidad del sueño', type:'scale'},
+    {id:'hd4', name:'Proteína objetivo', type:'check'}
+  ], athlete:[] };
+}
+function diarioDemo(){
+  const j = [];
+  const hoy = new Date();
+  // Un mes de historial: hace falta para que el ratio de carga y el semáforo de
+  // riesgo tengan sentido, que es de lo que más convence al enseñar la app.
+  const cargas = [
+    [29,'Hipertrofia',400,7],[27,'Carrera',380,6],[25,'Powerlifting',460,8],[23,'Movilidad',180,4],
+    [21,'Hyrox',620,9],[20,'Fuerza para runners',340,6],[18,'Hipertrofia',430,7],[16,'Carrera',420,7],
+    [15,'Powerlifting',500,8],[13,'Movilidad',190,4],[11,'Hyrox',680,9],[9,'Hipertrofia',450,7],
+    [8,'Fuerza para runners',360,6],[6,'Carrera',440,7],[4,'Powerlifting',520,8],[2,'Hyrox',700,9]];
+  cargas.forEach(([diasAtras,tipo,carga,rpe])=>{
+    const f = new Date(hoy); f.setDate(f.getDate()-diasAtras);
+    j.push({ date: fechaLocalISO(f), day:'lunes', durationSeconds: 3600, overallRPE: rpe,
+      fatigueScore: carga, fatiga:3, calidad:4, hidratacion:4, satisfaccion:4, tipoSesion: tipo,
+      exercises:[
+        {name:'Sentadilla búlgara', section:'Hipertrofia', loadPlanned:'20kg', loadApplied:(diasAtras<8?'22kg':'20kg'), rpeApplied:rpe, noteApplied: diasAtras===4?'Subí carga, salió sólida':''},
+        {name:'Hip thrust', section:'Hipertrofia', loadPlanned:'80kg', loadApplied:(diasAtras<8?'85kg':'80kg'), rpeApplied:rpe, noteApplied:''}
+      ], notes:'' });
+  });
+  return j;
+}
+function habitosLogDemo(){
+  const log = {};
+  for(let i=20;i>=0;i--){
+    if(i===12 || i===5) continue;                 // dos huecos, para que la gráfica se vea real
+    const f = new Date(); f.setDate(f.getDate()-i);
+    log[fechaLocalISO(f)] = { hd1: i%4!==0, hd2: 7 + (i%3)*0.5, hd3: 3 + (i%3), hd4: i%3!==0 };
+  }
+  return log;
+}
+
 // Interruptor del módulo de tenis. En false, la app se comporta como si el
 // módulo no existiera: no aparece la modalidad, ni gym/pista, ni drills.
 // El código permanece intacto para reactivarlo poniendo true.
@@ -1904,7 +2089,23 @@ async function tplRutinaAtleta(athleteId){
   const etiqueta = off===0 ? 'Esta semana' : (off===1 ? 'La semana que viene'
     : (off===-1 ? 'La semana pasada' : (off>0 ? `Dentro de ${off} semanas` : `Hace ${Math.abs(off)} semanas`)));
   const info = off===0 ? await currentMicro(athleteId) : await currentMicro(athleteId, semana);
-  let html = `<div class="card"><h2>Rutina semanal</h2>
+  let html = '';
+  if(state.modoDemo){
+    html += `<div class="card demo-intro">
+      <span class="demo-tag">Modo demostración</span>
+      <h2>Así trabajo contigo</h2>
+      <p>Esto es una semana real de entrenamiento, diseñada por mí. Puedes tocar todo lo que quieras: <b>nada se guarda</b>, y al recargar vuelve a estar como estaba.</p>
+      <p>Cada día verás un tipo de sesión distinto para que entiendas cómo planifico. Despliega cualquiera y mira el detalle: series, cargas, RIR, descansos y las notas de técnica.</p>
+      <ul class="demo-lista">
+        <li><b>Sesión</b> — cronómetro, marcado de series y registro de lo que mueves de verdad.</li>
+        <li><b>Calendario</b> — check diario de hábitos y cuestionario semanal.</li>
+        <li><b>Progreso</b> — carga de entrenamiento, riesgo de lesión y evolución por ejercicio.</li>
+        <li><b>Perfil</b> — tus datos y el estado de tu plaza.</li>
+      </ul>
+      <p class="demo-cierre">Lo que no se ve aquí es lo que más importa: cada semana reviso tus registros, ajusto las cargas y hablamos. La app es la herramienta; el servicio es que alguien esté pendiente.</p>
+    </div>`;
+  }
+  html += `<div class="card"><h2>Rutina semanal</h2>
     <div class="week-nav">
       <button class="btn ghost small" data-rutmove="-1">←</button>
       <div class="week-nav-mid"><b>${etiqueta}</b><span>${fmtShortDate(ini)} – ${fmtShortDate(fin)}</span></div>
@@ -1935,6 +2136,9 @@ async function tplRutinaAtleta(athleteId){
     const lugarIco = esPistaAt ? '🎾 ' : '';
     const etiquetaCant = esPistaAt ? `${totalEx} drill${totalEx===1?'':'s'}` : `${totalEx} ejerc.`;
     html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${lugarIco}${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${routine.days[d].tipo?escapeHtml(routine.days[d].tipo)+' · ':''}${etiquetaCant}</span></div><div class="acc-body">`;
+    if(state.modoDemo && DEMO_GUIA[d]){
+      html += `<div class="demo-nota">${DEMO_GUIA[d]}</div>`;
+    }
     if(esTenisOMixtoAt && (routine.days[d].lugar||'gym')==='pista'){
       const drills = Array.isArray(routine.days[d].drills) ? routine.days[d].drills : [];
       if(!drills.length) html += `<div class="empty">Sin drills programados este día.</div>`;
