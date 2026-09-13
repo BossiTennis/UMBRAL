@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#2E1016">
+<meta name="theme-color" content="#1B2A49">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,20 +18,26 @@
   body.theme-dark{
     --bg:#121210; --panel:#1C1B17; --panel2:#232019; --panel3:#2A2116; --border:#2A2822;
     --ink:#F2EEE4; --muted:#8C8578; --accent:#C98A3E; --accent-dim:#3A2A14; --on-accent:#14100A;
+    --gold:#C98A3E; --gold-dim:#3A2A14;
     --warn:#E0A050; --danger:#E2685C;
   }
+  /* Modo claro con la paleta de marca: azul marino, mostaza y blanco roto.
+     El azul lleva la estructura (texto, botones) porque es lo más legible sobre
+     claro; la mostaza queda para los acentos que deben destacar. */
   body.theme-light{
-    --bg:#EDE4D3; --panel:#FAF6EE; --panel2:#F3E9DA; --panel3:#F3E4E1; --border:#DED0BC;
-    --ink:#3A2A22; --muted:#8C8073; --accent:#6E1F2A; --accent-dim:#F3E4E1; --on-accent:#FAF6EE;
-    --warn:#A6741F; --danger:#A83A2E;
+    --bg:#F4F2EA; --panel:#FFFFFF; --panel2:#EFECE1; --panel3:#E8E5D8; --border:#D9D4C4;
+    --ink:#1B2A49; --muted:#6C7488; --accent:#1B2A49; --accent-dim:#E6E9F1; --on-accent:#FFFFFF;
+    --gold:#B8891F; --gold-dim:#F6EDD6;
+    --warn:#B8891F; --danger:#A83A2E;
   }
+
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;min-height:100vh;transition:background .25s,color .25s;}
   .app{max-width:720px;margin:0 auto;padding:18px 16px calc(var(--navh) + 34px);}
   header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
   .brand{display:flex;align-items:baseline;gap:9px;}
   .brand h1{font-family:'Fraunces',serif;font-weight:700;font-size:21px;letter-spacing:-0.01em;}
-  .brand span{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;}
+  .brand span{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;}
   .role-switch{display:flex;background:var(--panel);border:1px solid var(--border);border-radius:100px;padding:3px;}
   .role-switch button{border:none;background:transparent;color:var(--muted);font-weight:700;font-size:12.5px;padding:7px 15px;border-radius:100px;cursor:pointer;font-family:'Manrope',sans-serif;}
   .role-switch button.active{background:var(--accent);color:var(--on-accent);}
@@ -82,7 +88,7 @@
   .acc.open .acc-body{max-height:none;overflow:visible;padding:16px;}
   .acc.just-opened .acc-body{animation:accOpen .26s ease both;}
   @keyframes accOpen{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
-  .block-title{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin:14px 0 8px;padding-top:10px;border-top:1px dashed var(--border);}
+  .block-title{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin:14px 0 8px;padding-top:10px;border-top:1px dashed var(--border);}
   .block-title:first-child{border-top:none;padding-top:0;margin-top:0;}
 
   .diario-detalle{margin-top:10px;overflow-x:auto;}
@@ -304,6 +310,10 @@
   .comp-group{display:flex;justify-content:space-between;align-items:baseline;gap:10px;background:var(--accent-dim);border-radius:8px;padding:9px 13px;margin:16px 0 10px;}
   .comp-group b{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;}
   .comp-group span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);white-space:nowrap;}
+  .demo-badge{background:var(--warn);color:#1C1B17;font-weight:700;}
+  .demo-barra{background:var(--accent-dim);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:11px 14px;margin-bottom:14px;}
+  .demo-barra p{font-size:12.5px;color:var(--ink);line-height:1.55;margin:6px 0 5px;}
+  .demo-pie{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
   .demo-intro{border:1px solid var(--accent);}
   .demo-tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:3px 10px;margin-bottom:10px;}
   .demo-intro p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:10px;}
@@ -333,19 +343,19 @@
   .day-tools select{padding:6px 9px;font-size:13px;}
   .chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   /* ---------- PANTALLA DE ENTRADA ---------- */
-  .splash{position:fixed;inset:0;z-index:400;background:#2E1016;display:flex;flex-direction:column;
+  .splash{position:fixed;inset:0;z-index:400;background:#1B2A49;display:flex;flex-direction:column;
     align-items:center;justify-content:center;gap:0;transition:opacity .45s ease, visibility .45s;}
   .splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
   .splash-mark{width:min(42vw,180px);height:auto;overflow:visible;}
-  .sp-outline{stroke:#5F343C;stroke-width:2.5;fill:none;}
-  .sp-ring{fill:none;stroke:#C08A5A;stroke-width:2;opacity:0;transform-origin:50px 52px;
+  .sp-outline{stroke:#3A4A6B;stroke-width:2.5;fill:none;}
+  .sp-ring{fill:none;stroke:#C9A227;stroke-width:2;opacity:0;transform-origin:50px 52px;
     animation:spRipple 1.1s ease 1.35s forwards;}
   .sp-floor{opacity:0;transform-origin:50px 90px;animation:spFloor .5s cubic-bezier(.2,.8,.3,1) .1s forwards;}
   .sp-fill{transform:translateY(96px);animation:spFill 1.05s cubic-bezier(.32,.72,.24,1) .5s forwards;}
   .splash-word{margin-top:26px;font-family:'Fraunces',serif;font-size:25px;font-weight:600;
-    color:#EDE4D3;letter-spacing:0.2em;opacity:0;animation:spWord .55s ease 1.55s forwards;}
+    color:#F4F2EA;letter-spacing:0.2em;opacity:0;animation:spWord .55s ease 1.55s forwards;}
   .splash-sub{margin-top:9px;font-family:'Fraunces',serif;font-style:italic;font-weight:400;
-    font-size:14.5px;color:#C08A5A;letter-spacing:0.02em;opacity:0;animation:spWord .55s ease 1.85s forwards;}
+    font-size:14.5px;color:#C9A227;letter-spacing:0.02em;opacity:0;animation:spWord .55s ease 1.85s forwards;}
   @keyframes spFill{to{transform:translateY(0);}}
   @keyframes spFloor{from{opacity:0;transform:scaleX(0);}to{opacity:1;transform:scaleX(1);}}
   @keyframes spRipple{0%{opacity:.55;transform:scale(.55);}100%{opacity:0;transform:scale(2.2);}}
@@ -389,7 +399,7 @@
   .combi-det{flex:1;min-width:0;}
   .combi-det > b{display:block;font-size:14px;font-weight:600;margin-bottom:3px;}
   .combi-desc{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;white-space:pre-wrap;line-height:1.6;}
-  .section-tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:3px 11px;margin:10px 0 6px;letter-spacing:0.04em;}
+  .section-tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--gold);background:var(--gold-dim);border-radius:100px;padding:3px 11px;margin:10px 0 6px;letter-spacing:0.04em;}
   .timer-badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-top:8px;}
   .timer-config{border-top:1px dashed var(--border);margin-top:10px;padding-top:10px;}
   .q-cat{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;margin:12px 0 5px;}
@@ -415,6 +425,22 @@
   .metrica{margin-bottom:14px;}
   .metrica > span{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;}
   .resumen-carga{margin-bottom:16px;}
+  .foco-banner{background:var(--gold-dim);border-left:4px solid var(--gold);border-radius:0 9px 9px 0;padding:12px 15px;margin-top:12px;}
+  .foco-tag{display:block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:5px;}
+  .foco-banner p{font-size:13.5px;color:var(--ink);line-height:1.55;font-weight:500;}
+  .rd-zona{display:flex;align-items:center;gap:14px;border-radius:10px;padding:14px 16px;border-left:4px solid;}
+  .rd-zona b{display:block;font-family:'Fraunces',serif;font-size:15px;font-weight:600;margin-bottom:3px;}
+  .rd-zona span{font-size:12.5px;line-height:1.55;opacity:0.9;}
+  .rd-num{flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:600;line-height:1;}
+  .rd-num span{font-size:12px;opacity:0.65;}
+  .rd-verde{background:var(--accent-dim);border-color:var(--accent);}
+  .rd-verde .rd-num{color:var(--accent);}
+  .rd-ambar{background:var(--gold-dim);border-color:var(--gold);}
+  .rd-ambar .rd-num{color:var(--gold);}
+  .rd-rojo{background:var(--panel3);border-color:var(--danger);}
+  .rd-rojo .rd-num{color:var(--danger);}
+  .rd-detalle{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+  .rd-detalle b{color:var(--ink);}
   .rc-cabecera{display:flex;align-items:center;gap:13px;background:var(--panel2);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
   .rc-cabecera b{display:block;font-family:'Fraunces',serif;font-size:15px;font-weight:600;margin-bottom:3px;}
   .rc-cabecera span{font-size:12.5px;color:var(--muted);line-height:1.5;}
@@ -435,7 +461,7 @@
   .expl b{color:var(--ink);}
   .kpi-row{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:16px;}
   .kpi{font-family:'IBM Plex Mono',monospace;}
-  .kpi b{display:block;font-size:22px;color:var(--accent);}
+  .kpi b{display:block;font-size:22px;color:var(--gold);}
   .kpi span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;}
 </style>
 </head>
@@ -450,10 +476,10 @@
     <path class="sp-outline" d="M26 18 L26 62 L50 82 L50 64 L40 56 L40 18 Z"/>
     <path class="sp-outline" d="M74 18 L74 62 L50 82 L50 64 L60 56 L60 18 Z"/>
     <g clip-path="url(#splashU)"><g class="sp-fill">
-      <rect x="18" y="8" width="32" height="92" fill="#EDE4D3"/>
-      <rect x="50" y="8" width="32" height="92" fill="#C08A5A"/>
+      <rect x="18" y="8" width="32" height="92" fill="#F4F2EA"/>
+      <rect x="50" y="8" width="32" height="92" fill="#C9A227"/>
     </g></g>
-    <rect class="sp-floor" x="20" y="88" width="60" height="3.5" rx="1.75" fill="#C08A5A"/>
+    <rect class="sp-floor" x="20" y="88" width="60" height="3.5" rx="1.75" fill="#C9A227"/>
   </svg>
   <div class="splash-word">UMBRAL</div>
   <div class="splash-sub" id="splashSub">La constancia no se negocia</div>
@@ -598,9 +624,10 @@ function demoSemilla(){
 }
 
 async function safeGet(key, shared){
-  if(state.modoDemo && shared){
-    return demoStore.has(key) ? demoStore.get(key) : null;
-  }
+  // En modo demo leemos lo que el entrenador tenga diseñado de verdad; sólo si
+  // el visitante ha tocado algo durante su visita se devuelve su versión
+  // temporal, que vive únicamente en memoria.
+  if(state.modoDemo && shared && demoStore.has(key)) return demoStore.get(key);
   // Lo no compartido es de este dispositivo: nunca sale a la nube.
   if(!shared) return readLocal(key, false);
   try{
@@ -1085,10 +1112,6 @@ function renderGate(){
       <span class="gate-ic">${icPeople()}</span>
       <span class="gate-txt"><b>Soy entrenador</b><span>Requiere código de acceso</span></span>
     </button>
-    <button class="gate-option gate-demo" data-gate="demo">
-      <span class="gate-ic">${icClipboard()}</span>
-      <span class="gate-txt"><b>Ver cómo funciona</b><span>Semana de ejemplo para trastear sin compromiso</span></span>
-    </button>
   </div>`;
 }
 
@@ -1223,17 +1246,7 @@ async function maybeShowTutorial(){
 }
 
 async function bindGateEvents(){
-  document.querySelectorAll('[data-gate]').forEach(b=>b.addEventListener('click', async ()=>{
-    if(b.dataset.gate === 'demo'){
-      demoSemilla();
-      state.modoDemo = true;
-      await loadAthletes();
-      state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = DEMO_ID;
-      state.gateMode = null; state.tab = 'rutina';
-      state.openDays = {}; state.rutinaOffset = 0;
-      render();
-      return;
-    }
+  document.querySelectorAll('[data-gate]').forEach(b=>b.addEventListener('click', ()=>{
     state.gateMode = b.dataset.gate; render();
   }));
   const backBtn = document.getElementById('gateBackBtn');
@@ -1261,17 +1274,10 @@ async function bindGateEvents(){
       if(!pin){ toast('Introduce el PIN', true); return; }
       // Buscamos a quién corresponde el PIN: así ningún atleta ve la lista
       // de nombres de los demás.
-      if(pin === DEMO_PIN){
-        demoSemilla();
-        state.modoDemo = true;
-        await loadAthletes();
-        state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = DEMO_ID;
-        state.gateMode = null; state.tab = 'rutina';
-        state.openDays = {}; state.rutinaOffset = 0;
-        render();
-        return;
-      }
       const a = state.athletes.find(x=>String(x.pin) === pin);
+      // El atleta de muestra entra como cualquier otro, pero en modo aislado:
+      // lee lo que tú hayas diseñado y nada de lo que toque queda guardado.
+      if(a && a.esDemo) state.modoDemo = true;
       if(a){
         state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = a.id; state.gateMode = null;
         await safeSet('umbral-session', JSON.stringify({role:'atleta', athleteAsId:a.id}), false);
@@ -1355,6 +1361,7 @@ function renderCoachAtletas(){
     const modEtq = { gym:'Gym', tenis:'Tenis', mixto:'Mixto' }[a.modalidad] || 'Gym';
     html += `<button class="athlete-row" data-openathlete="${a.id}"><span class="name">${escapeHtml(a.name)}</span>
       <span class="row" style="gap:7px;flex-shrink:0;">
+        ${a.esDemo?`<span class="mod-tag demo-badge">Muestra</span>`:''}
         ${TENIS_ACTIVO?`<span class="mod-tag mod-${a.modalidad||'gym'}">${modEtq}</span>`:''}
         <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">PIN ${a.pin}</span>
       </span></button>`;
@@ -1367,6 +1374,12 @@ function renderCoachAtletas(){
       <option value="mixto">Mixto</option>
     </select>`:''}
     <button class="btn ghost" id="addAthleteBtn">+ Añadir atleta</button>
+  </div>
+  ${state.athletes.some(a=>a.esDemo) ? '' : `<div class="day-tools" style="margin-top:10px;">
+    <span class="day-tools-label">Para enseñar la app</span>
+    <button class="btn ghost small" id="crearDemoBtn">Crear atleta de muestra</button>
+  </div>`}
+  <div class="row" style="display:none;">
   </div>
   ${state.athletes.length?`<div class="row" style="margin-top:10px;">
     <select id="previewAthleteSel" style="flex:1;min-width:140px;">
@@ -1469,6 +1482,40 @@ async function bindShellEvents(){
       importBtn.textContent = 'Restaurar desde la copia pegada'; importBtn.disabled = false;
     });
   }
+  // Crea el atleta de muestra con una semana ya diseñada. A partir de ahí es un
+  // atleta normal: lo editas como cualquier otro y quien lo pruebe verá tu
+  // versión, sin poder ensuciarla.
+  const crearDemo = document.getElementById('crearDemoBtn');
+  if(crearDemo) crearDemo.addEventListener('click', async ()=>{
+    crearDemo.textContent = 'Creando…'; crearDemo.disabled = true;
+    try{
+      const usados = new Set(state.athletes.map(a=>String(a.pin)));
+      if(usados.has(DEMO_PIN)){ toast('El PIN 0000 ya está en uso por otro atleta', true); return; }
+      const nuevo = { id: DEMO_ID, name: 'Atleta de muestra', pin: DEMO_PIN, esDemo: true };
+      state.athletes.push(nuevo);
+      await safeSet('athletes-list', JSON.stringify(state.athletes), true);
+      const r = rutinaDemo();
+      await safeSet(routineKey(DEMO_ID, false, weekOfISO()), JSON.stringify(r), true);
+      await safeSet(routineKey(DEMO_ID, true, weekOfISO()), JSON.stringify(r), true);
+      await safeSet('intake-'+DEMO_ID, JSON.stringify({ edad:'30', genero:'', peso:'72', altura:'176',
+        contacto:'', aniosExperiencia:'4',
+        historial:'Corredor popular que ha añadido fuerza los dos últimos años.',
+        objetivos:'Mejorar en Hyrox sin perder velocidad en carrera.', disponibilidad:'5',
+        franjas:'Mañanas entre semana, sábado libre',
+        lesiones:'Molestia antigua en rodilla derecha, sin lesión activa',
+        comoLlego:'Recomendación', material:'Gimnasio completo' }), true);
+      await safeSet('profile-'+DEMO_ID, JSON.stringify({ estado:'Activo', tarifa:'90', pagado:'Sí',
+        vence:'', plaza:'Ejemplo', alta:'', notas:'Atleta de muestra para enseñar la app.' }), true);
+      await safeSet('journal-'+DEMO_ID, JSON.stringify(diarioDemo()), true);
+      await safeSet('habits-config-'+DEMO_ID, JSON.stringify(habitosDemo()), true);
+      await safeSet('habits-'+DEMO_ID, JSON.stringify(habitosLogDemo()), true);
+      await safeSet('quest-config-'+DEMO_ID, JSON.stringify(['sleep_quality','fatigue_accum','motivation','pain_unusual']), true);
+      toast('Atleta de muestra creado · PIN ' + DEMO_PIN);
+      renderScrollTop();
+    }catch(e){ toast('No se pudo crear: '+e.message, true); }
+    crearDemo.textContent = 'Crear atleta de muestra'; crearDemo.disabled = false;
+  });
+
   const addBtn = document.getElementById('addAthleteBtn');
   if(addBtn) addBtn.addEventListener('click', async ()=>{
     const nameInput = document.getElementById('newAthleteName');
@@ -1505,6 +1552,25 @@ async function bindShellEvents(){
 }
 
 let _renderToken = 0;
+// Explicación breve según la pestaña, sólo para el atleta de muestra.
+const DEMO_PESTANAS = {
+  rutina:    'Esta es la semana que te prepararía. Despliega cualquier día y verás series, cargas, RIR, descansos y notas de técnica.',
+  diario:    'Aquí entrenas: cronómetro, marcas cada serie y anotas lo que has movido de verdad. Al terminar registras cómo ha ido.',
+  calendario:'Tu check diario de hábitos y el cuestionario semanal. Es lo que me dice cómo estás llegando a cada sesión.',
+  progreso:  'Tu carga de entrenamiento y el riesgo de subir demasiado rápido, además de la evolución de cada ejercicio.',
+  perfil:    'Tus datos y el estado de tu plaza. Aquí también puedes repasar la guía de uso cuando quieras.'
+};
+function tplDemoAviso(){
+  if(!state.modoDemo) return '';
+  const texto = DEMO_PESTANAS[state.tab];
+  if(!texto) return '';
+  return `<div class="demo-barra">
+    <span class="demo-tag">Demostración</span>
+    <p>${texto}</p>
+    <span class="demo-pie">Puedes tocar lo que quieras: nada se guarda.</span>
+  </div>`;
+}
+
 async function renderTabContent(){
   const el = document.getElementById('tabContent'); if(!el) return;
   const mode = el.dataset.mode;
@@ -1536,7 +1602,7 @@ async function renderTabContent(){
   // Si mientras cargábamos el usuario ya se fue a otro sitio, descartamos.
   if(token !== _renderToken) return;
   el.classList.remove('cargando');
-  el.innerHTML = html;
+  el.innerHTML = tplDemoAviso() + html;
   bindDynamicEvents();
   renderNav();
   if(session && session.fullscreen) mountSessionOverlay(state.athleteAsId || state.selectedId);
@@ -1766,6 +1832,38 @@ function habitosLogDemo(){
   return log;
 }
 
+// ---------- READINESS (check-in de 30 segundos) ----------
+// Cuatro escalas de 1 a 5 antes de entrenar. La suma decide si conviene
+// entrenar como estaba previsto o autorregular la carga.
+const READINESS_ITEMS = [
+  { id:'sueno',   label:'Calidad del sueño',        bajo:'Muy mala',  alto:'Excelente' },
+  { id:'fatiga',  label:'Fatiga muscular',          bajo:'Muy alta',  alto:'Ninguna' },
+  { id:'estres',  label:'Estrés percibido',         bajo:'Muy alto',  alto:'Ninguno' },
+  { id:'animo',   label:'Ánimo y motivación',       bajo:'Muy bajo',  alto:'Muy alto' }
+];
+// 4 ítems x 5 = 20 máximo. Los umbrales salen de repartir en tres tramos
+// interpretables, no de ninguna tabla normativa: es una guía, no un semáforo médico.
+function zonaReadiness(total){
+  if(total === null || total === undefined) return null;
+  if(total >= 16) return { clave:'verde',  titulo:'Listo para entrenar',
+    texto:'Buenas sensaciones. Entrena la sesión tal y como está planificada.' };
+  if(total >= 11) return { clave:'ambar',  titulo:'Entrena, pero con cabeza',
+    texto:'Algo justo de recuperación. Mantén el trabajo principal y recorta lo accesorio si la cosa no mejora al calentar.' };
+  return { clave:'rojo', titulo:'Día para autorregular',
+    texto:'Vienes muy justo. Baja la carga o el volumen, prioriza técnica y no busques máximos hoy.' };
+}
+async function getReadiness(athleteId){
+  const raw = await safeGet('readiness-'+athleteId, true);
+  try{ const o = raw ? JSON.parse(raw) : {}; return (o && typeof o==='object') ? o : {}; }
+  catch(e){ return {}; }
+}
+function readinessDeHoy(log){ return log[todayISO()] || null; }
+function totalReadiness(dia){
+  if(!dia) return null;
+  const vals = READINESS_ITEMS.map(i=>dia[i.id]).filter(v=>typeof v==='number');
+  return vals.length === READINESS_ITEMS.length ? vals.reduce((a,b)=>a+b,0) : null;
+}
+
 // Interruptor del módulo de tenis. En false, la app se comporta como si el
 // módulo no existiera: no aparece la modalidad, ni gym/pista, ni drills.
 // El código permanece intacto para reactivarlo poniendo true.
@@ -1948,7 +2046,10 @@ function weekHeaderHtml(info){
       <span class="wpill"><i>Intensidad</i>${micro.intensity} · ${INTENSITY_LABELS[micro.intensity]||''}</span>
       <span class="wpill"><i>Volumen</i>${micro.volume} · ${VOLUME_LABELS[micro.volume]||''}</span>
     </div>
-    ${micro.note?`<div class="week-note">${escapeHtml(micro.note)}</div>`:''}
+    ${micro.note?`<div class="foco-banner">
+      <span class="foco-tag">Foco · Microciclo ${index+1}</span>
+      <p>${escapeHtml(micro.note)}</p>
+    </div>`:''}
     ${comp?`<div class="week-comp">${escapeHtml(comp.name||'Competición')} · faltan ${dias} día${dias===1?'':'s'}</div>`:''}
   </div>`;
 }
@@ -2200,6 +2301,34 @@ async function tplRutinaAtleta(athleteId){
 }
 
 // ---------- SESIÓN (athlete) ----------
+// Test rápido que aparece antes de la sesión si hoy no se ha hecho.
+function tplReadiness(dia){
+  const total = totalReadiness(dia);
+  const z = zonaReadiness(total);
+  if(dia && total !== null && !state.readinessEditar){
+    return `<div class="card">
+      <h2>Cómo llegas hoy</h2>
+      <div class="rd-zona rd-${z.clave}">
+        <div class="rd-num">${total}<span>/20</span></div>
+        <div><b>${z.titulo}</b><span>${z.texto}</span></div>
+      </div>
+      <div class="rd-detalle">${READINESS_ITEMS.map(i=>`<span>${i.label}: <b>${dia[i.id]}</b></span>`).join('')}</div>
+      <button class="btn ghost small" id="rdEditar" style="margin-top:12px;">Volver a responder</button>
+    </div>`;
+  }
+  let html = `<div class="card" id="rdCard">
+    <h2>Cómo llegas hoy</h2>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Medio minuto antes de empezar. Sirve para ajustar la sesión a cómo estás de verdad, no a cómo tocaba.</p>`;
+  READINESS_ITEMS.forEach(i=>{
+    const val = dia ? dia[i.id] : null;
+    html += `<div class="q-item"><p>${i.label}</p>
+      <div class="scale" data-rd="${i.id}">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${val===n?'sel':''}">${n}</button>`).join('')}</div>
+      <div class="scale-labels"><span>1 · ${i.bajo}</span><span>5 · ${i.alto}</span></div></div>`;
+  });
+  html += `<button class="btn" id="rdGuardar">Guardar y ver la sesión</button></div>`;
+  return html;
+}
+
 async function tplSesionEntry(athleteId){
   const routine = await getRoutine(athleteId, false);
   const histRaw = await safeGet('routine-history-'+athleteId, true);
@@ -2217,7 +2346,9 @@ async function tplSesionEntry(athleteId){
   const esTenisMixtoSes = TENIS_ACTIVO && atletaSes && (atletaSes.modalidad==='tenis' || atletaSes.modalidad==='mixto');
   const esPistaSesion = esTenisMixtoSes && (source.days[selDay].lugar||'gym')==='pista';
   const paused = await findPausedSession(athleteId);
-  let html = '';
+  const rdLog = await getReadiness(athleteId);
+  const rdHoy = readinessDeHoy(rdLog);
+  let html = tplReadiness(rdHoy);
   if(paused){
     const hechos = paused.exercises.filter(e=>e.done).length;
     const hace = Math.round((Date.now()-(paused.savedAt||Date.now()))/60000);
@@ -4115,7 +4246,7 @@ async function tplPeriodizacion(athleteId){
                     ${MICRO_TYPES.map(t=>`<option ${m.type===t?'selected':''}>${t}</option>`).join('')}
                   </select></div>
                 <div class="full"><label class="field-label">Nota</label>
-                  <input type="text" class="micro-note" data-macro="${macro.id}" data-micro="${m.id}" value="${escapeHtml(m.note||'')}" placeholder="Foco de la semana"></div>
+                  <input type="text" class="micro-note" data-macro="${macro.id}" data-micro="${m.id}" value="${escapeHtml(m.note||'')}" placeholder="Ej. velocidad de intención concéntrica · RPE 7-8"></div>
               </div>
             </div>`;
           }).join('')}
@@ -6090,6 +6221,36 @@ async function bindDynamicEvents(){
 
   // --- Selectores de semana y día en Sesión ---
   const sessionWeekSel = document.getElementById('sessionWeek');
+  // --- Readiness ---
+  document.querySelectorAll('[data-rd]').forEach(sc=>{
+    sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+      sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+    }));
+  });
+  const rdEditar = document.getElementById('rdEditar');
+  if(rdEditar) rdEditar.addEventListener('click', ()=>{ state.readinessEditar = true; renderKeepScroll(); });
+  const rdGuardar = document.getElementById('rdGuardar');
+  if(rdGuardar) rdGuardar.addEventListener('click', async ()=>{
+    const card = document.getElementById('rdCard');
+    const dia = {};
+    let faltan = false;
+    READINESS_ITEMS.forEach(i=>{
+      const sel = card.querySelector(`[data-rd="${i.id}"] button.sel`);
+      if(!sel){ faltan = true; return; }
+      dia[i.id] = parseInt(sel.dataset.val,10);
+    });
+    if(faltan){ toast('Responde las cuatro escalas', true); return; }
+    const log = await getReadiness(athleteId);
+    log[todayISO()] = dia;
+    const ok = await safeSet('readiness-'+athleteId, JSON.stringify(log), true);
+    if(!ok){ toast('No se pudo guardar', true); return; }
+    const z = zonaReadiness(totalReadiness(dia));
+    toast(z ? z.titulo : 'Guardado');
+    state.readinessEditar = false;
+    renderKeepScroll();
+  });
+
   const sessionDaySelect = document.getElementById('sessionDay');
   // Al cambiar de día o semana hay que rehacer también el selector de turno
   // (mañana/tarde), no sólo la lista: por eso re-renderizamos la pestaña.
