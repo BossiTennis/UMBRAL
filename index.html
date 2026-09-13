@@ -27,7 +27,7 @@
   body.theme-light{
     --bg:#F4F2EA; --panel:#FFFFFF; --panel2:#EFECE1; --panel3:#E8E5D8; --border:#D9D4C4;
     --ink:#1B2A49; --muted:#6C7488; --accent:#1B2A49; --accent-dim:#E6E9F1; --on-accent:#FFFFFF;
-    --gold:#B8891F; --gold-dim:#F6EDD6;
+    --gold:#8F6A12; --gold-dim:#F6EDD6;
     --warn:#B8891F; --danger:#A83A2E;
   }
 
@@ -59,7 +59,7 @@
   button.btn:hover{filter:brightness(1.08);}
   button.btn:active{transform:scale(0.97);}
   button.btn.ghost{background:transparent; border:1px solid var(--border); color:var(--ink); font-weight:600;}
-  button.btn.danger{background:var(--danger);color:#FAF6EE;}
+  button.btn.danger{background:var(--danger);color:#FFFFFF;}
   button.btn.small{padding:6px 12px;font-size:12.5px;}
   button.btn:disabled{opacity:0.4;cursor:not-allowed;}
 
@@ -172,7 +172,7 @@
   .interval-display .phase{display:block;font-size:14px;font-weight:700;letter-spacing:0.08em;margin-bottom:6px;}
   .interval-display .round{display:block;font-size:12px;font-family:'Manrope',sans-serif;font-weight:600;margin-top:6px;color:var(--muted);}
   .interval-display.work{background:var(--accent-dim);color:var(--accent);}
-  .interval-display.rest{background:#3A2A12;color:var(--warn);}
+  .interval-display.rest{background:var(--gold-dim);color:var(--gold);}
   .interval-display.idle{background:var(--panel2);color:var(--muted);}
   .amrap-count{font-family:'IBM Plex Mono',monospace;font-size:40px;text-align:center;color:var(--accent);margin:10px 0;}
 
@@ -226,7 +226,7 @@
   .habit-tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:2px 8px;}
   .habit-check{background:var(--panel);border:1px solid var(--border);color:var(--muted);font-family:'Manrope',sans-serif;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:7px;cursor:pointer;}
   .habit-check.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
-  .habit-check.no.on{background:var(--danger);border-color:var(--danger);color:#FAF6EE;}
+  .habit-check.no.on{background:var(--danger);border-color:var(--danger);color:#FFFFFF;}
   .drill-reg{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:13px 14px;margin-bottom:12px;}
   .drill-reg-cab{margin-bottom:6px;}
   .drill-reg-cab b{font-family:'Fraunces',serif;font-size:14.5px;font-weight:600;}
@@ -293,8 +293,8 @@
   .cal-day .cd-num{line-height:1;}
   .cal-day .cd-tag{font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:0.02em;color:var(--accent);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px;}
   .cal-day.trained{background:var(--accent-dim);color:var(--ink);}
-  .cal-day.comp{background:var(--danger);color:#FAF6EE;font-weight:700;}
-  .cal-day.comp .cd-tag{color:#FAF6EE;}
+  .cal-day.comp{background:var(--danger);color:#FFFFFF;font-weight:700;}
+  .cal-day.comp .cd-tag{color:#FFFFFF;}
   .cal-day.macro{border:1px dashed var(--accent);}
   .cal-legend{display:flex;flex-direction:column;gap:5px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--border);}
   .cal-legend span{font-family:'IBM Plex Mono',monospace;font-size:11px;}
@@ -416,7 +416,7 @@
   .mod-tag.mod-mixto{background:var(--panel3);color:var(--ink);border:1px solid var(--accent);}
   .athlete-row .status{font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:3px 9px;border-radius:100px;}
   .status.activo{background:var(--accent-dim);color:var(--accent);}
-  .status.pausado{background:#3A2A12;color:var(--warn);}
+  .status.pausado{background:var(--gold-dim);color:var(--gold);}
   .status.baja{background:#3A1512;color:var(--danger);}
   .sub-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;}
   .sub-tabs button{white-space:nowrap;background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:6px;font-weight:700;font-size:12.5px;cursor:pointer;}
@@ -995,7 +995,8 @@ function fechaLocalISO(d){
 function weekOfISO(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.getDate()-day+1); return fechaLocalISO(d); }
 function saturdayOfWeek(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.getDate()-day+6); return fechaLocalISO(d); }
 function fmtTime(sec){ const m=Math.floor(sec/60), s=Math.abs(sec%60); return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
-function rpeColor(rpe){ if(rpe<=3) return '#5FD99A'; if(rpe<=6) return '#E8A548'; return '#E86A5C'; }
+// Colores del RPE dentro de la paleta: verde sobrio, mostaza y granate.
+function rpeColor(rpe){ if(rpe<=3) return '#2F7355'; if(rpe<=6) return '#8F6A12'; return '#A83A2E'; }
 function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c)); }
 
 async function loadAthletes(){ const raw=await safeGet('athletes-list', true); state.athletes = raw?JSON.parse(raw):[]; }
@@ -1311,7 +1312,7 @@ function toast(msg, isError){
   let t = document.getElementById('umbralToast');
   if(!t){ t=document.createElement('div'); t.id='umbralToast'; t.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;padding:10px 18px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,0.25);'; document.body.appendChild(t); }
   t.style.background = isError ? '#A83A2E' : 'var(--accent)';
-  t.style.color = isError ? '#FAF6EE' : 'var(--on-accent)';
+  t.style.color = isError ? '#FFFFFF' : 'var(--on-accent)';
   t.textContent = msg;
   t.style.opacity = '1';
   clearTimeout(window._toastTimer);
@@ -4600,7 +4601,7 @@ async function tplDiarioLectura(athleteId){
     const tieneDetalle = (e.exercises && e.exercises.length) || (e.drills && e.drills.length);
     html += `<div class="entry"><div class="entry-top diario-cab" data-diario="${idx}" style="cursor:pointer;">
         <span>${abierto?'▾':'▸'} ${e.date} · ${e.day}${e.tipoSesion?` · ${escapeHtml(e.tipoSesion)}`:''}</span>
-        <span class="pill" style="background:${rpeColor(e.overallRPE)};color:#08130F;">RPE ${e.overallRPE}</span></div>
+        <span class="pill" style="background:${rpeColor(e.overallRPE)};color:#FFFFFF;">RPE ${e.overallRPE}</span></div>
       <div style="font-size:12.5px;color:var(--muted);margin-top:6px;">Duración ${fmtTime(e.durationSeconds)} · carga ${e.fatigueScore}${e.fatiga?` · fatiga ${e.fatiga}/5`:''}${e.calidad?` · calidad ${e.calidad}/5`:''}</div>`;
     if(abierto && tieneDetalle){
       html += `<div class="diario-detalle">`;
