@@ -173,6 +173,7 @@
   .interval-display .round{display:block;font-size:12px;font-family:'Manrope',sans-serif;font-weight:600;margin-top:6px;color:var(--muted);}
   .interval-display.work{background:var(--accent-dim);color:var(--accent);}
   .interval-display.rest{background:var(--gold-dim);color:var(--gold);}
+  .interval-display.prep{background:var(--panel3);color:var(--danger);}
   .interval-display.idle{background:var(--panel2);color:var(--muted);}
   .amrap-count{font-family:'IBM Plex Mono',monospace;font-size:40px;text-align:center;color:var(--accent);margin:10px 0;}
 
@@ -234,6 +235,7 @@
   .drill-preview summary{font-size:12px;color:var(--accent);cursor:pointer;font-weight:600;}
   .drill-preview[open] summary{margin-bottom:10px;}
   .pista-wrap{margin:10px 0;}
+  .gal-item{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 13px;margin-bottom:10px;position:relative;}
   .drill-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative;}
   .jug-picker{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
   .jp{width:36px;height:36px;border-radius:8px;background:var(--panel);border:1px solid var(--border);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-weight:700;cursor:pointer;}
@@ -332,7 +334,8 @@
   .dia-cabecera .dia-tipo{flex:1;min-width:0;}
   .dia-menu-btn{flex-shrink:0;width:36px;height:36px;border-radius:8px;background:var(--panel2);border:1px solid var(--border);color:var(--muted);font-size:18px;line-height:1;cursor:pointer;font-family:'Manrope',sans-serif;}
   .dia-menu-btn.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
-  .dia-menu{background:var(--panel3);border:1px dashed var(--border);border-radius:8px;padding:12px 13px;margin-bottom:12px;animation:fadeSlide .2s ease both;}
+  .dia-menu{display:none;background:var(--panel3);border:1px dashed var(--border);border-radius:8px;padding:12px 13px;margin-bottom:12px;}
+  .dia-menu.open{display:block;animation:fadeSlide .18s ease both;}
   .dm-seccion{padding-bottom:11px;margin-bottom:11px;border-bottom:1px dashed var(--border);}
   .dm-seccion:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0;}
   .dm-label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:7px;}
@@ -806,6 +809,9 @@ function icPeople(){
 function icGrid(){
   return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.3"/></svg>`;
 }
+function icPlayCircle(){
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z" fill="currentColor" stroke="none"/></svg>`;
+}
 function icPhone(){
   return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><line x1="10.5" y1="5.5" x2="13.5" y2="5.5"/><circle cx="12" cy="18" r="1"/></svg>`;
 }
@@ -956,6 +962,16 @@ function arrancarCronometro(){
   refresca();
   stopwatchInterval = setInterval(refresca, 1000);
 }
+// Lo mismo para los temporizadores de ejercicio (Tabata/EMOM/AMRAP/descanso
+// entre series): si el móvil estuvo en segundo plano, al volver recalculamos
+// contra el reloj real en vez de esperar al siguiente tick, incluso si se
+// saltaron fases enteras mientras no se miraba.
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState !== 'visible' || !timerModal) return;
+  const activo = timerModal.running || timerModal.running2 || timerModal.seriesRunning;
+  if(activo && typeof timerModal._tick === 'function') timerModal._tick();
+});
+
 // Al volver a la app tras tenerla en segundo plano, recalculamos de inmediato
 // en vez de esperar al siguiente tick.
 document.addEventListener('visibilitychange', ()=>{
@@ -1335,6 +1351,7 @@ function renderNav(){
     const items = [
       {key:'atletas', ic:icPeople(), label:'Atletas'},
       {key:'calendario', ic:icCalendar(), label:'Calendario'},
+      {key:'galeria', ic:icPlayCircle(), label:'Galería'},
       {key:'tareas', ic:icTasks(), label:'Tareas'},
       {key:'resumen', ic:icGrid(), label:'Resumen'}
     ];
@@ -1348,6 +1365,7 @@ function renderCoachShell(){
   if(state.tab==='atletas') return renderCoachAtletas();
   if(state.tab==='resumen') return `<div id="tabContent" data-mode="resumen"></div>`;
   if(state.tab==='calendario') return `<div id="tabContent" data-mode="calendario-coach"></div>`;
+  if(state.tab==='galeria') return `<div id="tabContent" data-mode="galeria-coach"></div>`;
   if(state.tab==='tareas') return `<div id="tabContent" data-mode="tareas"></div>`;
   return '';
 }
@@ -1583,6 +1601,7 @@ async function renderTabContent(){
 
   let html = '';
   try{
+    if(mode==='galeria-coach') html = await tplGaleriaCoach();
     if(mode==='resumen') html = await tplResumen();
     else if(mode==='calendario-coach') html = await tplCalendarioCoach();
     else if(mode==='tareas') html = await tplTareas();
@@ -1932,6 +1951,19 @@ function gruposDeBloque(lista){
 }
 
 // ---------- GALERÍA DE EJERCICIOS Y BLOQUES ----------
+// Secciones de la galería: una lista maestra editable, no sólo lo que se haya
+// escrito en cada ejercicio. Así se pueden crear secciones vacías (Cooldown,
+// Coordinación neuromuscular…) antes de tener ningún ejercicio dentro.
+const SECCIONES_DEFECTO = ['Activación','Movilidad','Carrera','Hipertrofia','Potencia','Fuerza'];
+async function getSecciones(){
+  const raw = await safeGet('galeria-secciones', true);
+  try{
+    const l = raw ? JSON.parse(raw) : null;
+    return (Array.isArray(l) && l.length) ? l : SECCIONES_DEFECTO.slice();
+  }catch(e){ return SECCIONES_DEFECTO.slice(); }
+}
+async function saveSecciones(lista){ return safeSet('galeria-secciones', JSON.stringify(lista), true); }
+
 // Guardas un ejercicio una vez y lo reutilizas en cualquier atleta, semana o
 // día. Los bloques son grupos completos (un circuito, un calentamiento tipo).
 async function getExLib(){
@@ -2759,7 +2791,7 @@ function bindSurveyEvents(){
 
 // ---------- TIMER MODAL ----------
 function openTimer(preset){
-  timerModal = { mode:null, work:30, rest:15, rounds:8, sets:1, setRest:60,
+  timerModal = { mode:null, work:30, rest:15, rounds:8, sets:1, setRest:60, prep:10,
     phase:'idle', remaining:30, round:1, setNum:1, running:false,
     emomRounds:10, emomLen:60, amrapMin:12, amrapRemaining:12*60, amrapLaps:0, running2:false,
     seriesRestSec:180, seriesCount:5, seriesRound:1, seriesRemaining:180, seriesRunning:false };
@@ -2802,8 +2834,8 @@ function renderTimerModal(){
     <h2 style="font-family:'Fraunces',serif;margin:10px 0 4px;">${TIMER_INFO[t.mode].title}</h2>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">${TIMER_INFO[t.mode].desc}</p>`;
   if(t.mode==='intervalos'){
-    const phaseLabel = !t.running ? 'LISTO' : (t.phase==='work' ? 'TRABAJO' : (t.phase==='setrest' ? 'DESCANSO ENTRE SETS' : 'DESCANSO'));
-    const dispClass = t.running ? (t.phase==='work' ? 'work' : 'rest') : 'idle';
+    const phaseLabel = !t.running ? 'LISTO' : (t.phase==='prep' ? 'PREPÁRATE' : (t.phase==='work' ? 'TRABAJO' : (t.phase==='setrest' ? 'DESCANSO ENTRE SETS' : 'DESCANSO')));
+    const dispClass = t.running ? (t.phase==='work' ? 'work' : (t.phase==='prep' ? 'prep' : 'rest')) : 'idle';
     html += `<div class="preset-grid">${TABATA_PRESETS.map(p=>`<button data-preset="${p.work}|${p.rest}">${p.label}</button>`).join('')}</div>
       <div class="timer-fields">
         <div><label class="field-label">Trabajo (s)</label><input type="number" id="ivWork" value="${t.work}"></div>
@@ -2811,6 +2843,7 @@ function renderTimerModal(){
         <div><label class="field-label">Ciclos/set</label><input type="number" id="ivRounds" value="${t.rounds}"></div>
         <div><label class="field-label">Nº sets</label><input type="number" id="ivSets" value="${t.sets}"></div>
         <div style="grid-column:span 2;"><label class="field-label">Descanso entre sets (s)</label><input type="number" id="ivSetRest" value="${t.setRest}"></div>
+        <div style="grid-column:span 2;"><label class="field-label">Preparación antes de empezar (s)</label><input type="number" id="ivPrep" value="${t.prep??10}"></div>
       </div>
       <div class="interval-display ${dispClass}" id="ivDisplay"><span class="phase">${phaseLabel}</span>${fmtTime(t.remaining)}<span class="round">Set ${t.setNum} de ${t.sets} · ciclo ${t.round} de ${t.rounds}</span></div>
       <div class="row" style="justify-content:center;"><button class="btn" id="ivStartBtn">${t.running?'Pausar':'Iniciar'}</button><button class="btn ghost" id="ivResetBtn">Reiniciar</button></div>`;
@@ -2848,6 +2881,46 @@ function bindTimerModalEvents(){
       timerModal.work=w; timerModal.rest=r; timerModal.phase='work'; timerModal.remaining=w; timerModal.round=1; timerModal.setNum=1; timerModal.running=false;
       clearInterval(engineInterval); renderTimerModal();
     }));
+    // Un solo paso de fase: separado del bucle para poder llamarlo varias
+    // veces seguidas si el móvil estuvo en segundo plano y se saltó más de
+    // una fase entera (p. ej. work + rest completos mientras no se miraba).
+    function avanzaFaseIntervalos(T){
+      // T.faseFin avanza sobre la línea de tiempo IDEAL (sumando la duración
+      // de la fase nueva a lo que ya tocaba), nunca se reinicia contra
+      // Date.now(): si no, al recuperar varias fases de golpe (móvil en
+      // segundo plano un buen rato) el bucle de abajo se detenía tras el
+      // primer salto, como si el resto del tiempo ausente no hubiera pasado.
+      if(T.phase==='prep'){
+        T.phase='work'; T.remaining=T.work; CUE.work();
+        T.faseFin += T.remaining*1000;
+        return;
+      }
+      if(T.phase==='work'){
+        if(T.round < T.rounds){ T.phase='rest'; T.remaining=T.rest; CUE.rest(); }
+        else if(T.setNum < T.sets){ T.phase='setrest'; T.remaining=T.setRest; CUE.setEnd(); }
+        else { T.running=false; T.phase='idle'; T.remaining=0; CUE.done(); return; }
+      } else if(T.phase==='rest'){
+        T.round++; T.phase='work'; T.remaining=T.work; CUE.work();
+      } else {
+        T.setNum++; T.round=1; T.phase='work'; T.remaining=T.work; CUE.work();
+      }
+      T.faseFin += T.remaining*1000;
+    }
+    function tickIntervalos(){
+      const T = timerModal;
+      if(!T || !T.running) return;
+      let restante = Math.round((T.faseFin - Date.now())/1000);
+      while(restante <= 0 && T.running){ avanzaFaseIntervalos(T); restante = Math.round((T.faseFin - Date.now())/1000); }
+      T.remaining = Math.max(0, restante);
+      cueCountdown(T.remaining);
+      const disp=document.getElementById('ivDisplay');
+      if(disp){
+        const lbl = !T.running ? 'COMPLETADO' : (T.phase==='work'?'TRABAJO':(T.phase==='setrest'?'DESCANSO ENTRE SETS':'DESCANSO'));
+        disp.className='interval-display '+(T.running ? (T.phase==='work'?'work':'rest') : 'idle');
+        disp.innerHTML=`<span class="phase">${lbl}</span>${fmtTime(Math.max(0,T.remaining))}<span class="round">Set ${T.setNum} de ${T.sets} · ciclo ${T.round} de ${T.rounds}</span>`;
+      }
+      if(!T.running) clearInterval(engineInterval);
+    }
     document.getElementById('ivStartBtn').addEventListener('click', ()=>{
       const T = timerModal;
       T.work=Math.max(1, parseInt(document.getElementById('ivWork').value,10)||30);
@@ -2855,33 +2928,22 @@ function bindTimerModalEvents(){
       T.rounds=Math.max(1, parseInt(document.getElementById('ivRounds').value,10)||8);
       T.sets=Math.max(1, parseInt(document.getElementById('ivSets').value,10)||1);
       T.setRest=Math.max(0, parseInt(document.getElementById('ivSetRest').value,10)||60);
+      const prepEl = document.getElementById('ivPrep');
+      const prepVal = prepEl ? parseInt(prepEl.value,10) : NaN;
+      T.prep = Math.max(0, isNaN(prepVal) ? (T.prep ?? 10) : prepVal);
       if(!T.running){
         T.running=true;
-        if(T.phase==='idle'){ T.phase='work'; T.remaining=T.work; T.round=1; T.setNum=1; }
-        ensureAudio(); CUE.work();
+        if(T.phase==='idle'){
+          T.round=1; T.setNum=1;
+          if(T.prep > 0){ T.phase='prep'; T.remaining=T.prep; }
+          else { T.phase='work'; T.remaining=T.work; }
+        }
+        T.faseFin = Date.now() + T.remaining*1000;
+        ensureAudio();
+        if(T.phase==='work') CUE.work();
         clearInterval(engineInterval);
-        engineInterval=setInterval(()=>{
-          T.remaining--;
-          cueCountdown(T.remaining);
-          if(T.remaining<=0){
-            if(T.phase==='work'){
-              // ¿queda algún ciclo más en este set?
-              if(T.round < T.rounds){ T.phase='rest'; T.remaining=T.rest; CUE.rest(); }
-              else if(T.setNum < T.sets){ T.phase='setrest'; T.remaining=T.setRest; CUE.setEnd(); }
-              else { clearInterval(engineInterval); T.running=false; T.phase='idle'; T.remaining=0; CUE.done(); }
-            } else if(T.phase==='rest'){
-              T.round++; T.phase='work'; T.remaining=T.work; CUE.work();
-            } else { // setrest
-              T.setNum++; T.round=1; T.phase='work'; T.remaining=T.work; CUE.work();
-            }
-          }
-          const disp=document.getElementById('ivDisplay');
-          if(disp){
-            const lbl = !T.running ? 'COMPLETADO' : (T.phase==='work'?'TRABAJO':(T.phase==='setrest'?'DESCANSO ENTRE SETS':'DESCANSO'));
-            disp.className='interval-display '+(T.running ? (T.phase==='work'?'work':'rest') : 'idle');
-            disp.innerHTML=`<span class="phase">${lbl}</span>${fmtTime(Math.max(0,T.remaining))}<span class="round">Set ${T.setNum} de ${T.sets} · ciclo ${T.round} de ${T.rounds}</span>`;
-          }
-        },1000);
+        timerModal._tick = tickIntervalos;
+        engineInterval=setInterval(tickIntervalos, 1000);
       } else { T.running=false; clearInterval(engineInterval); }
       renderTimerModal();
     });
@@ -2889,22 +2951,36 @@ function bindTimerModalEvents(){
       clearInterval(engineInterval);
       timerModal.phase='idle'; timerModal.round=1; timerModal.setNum=1; timerModal.running=false;
       timerModal.remaining=parseInt(document.getElementById('ivWork').value,10)||30;
+      timerModal.faseFin = null; timerModal._tick = null;
       renderTimerModal();
     });
   } else if(timerModal.mode==='emom'){
+    function tickEmom(){
+      const T = timerModal;
+      if(!T || !T.running) return;
+      let restante = Math.round((T.faseFin - Date.now())/1000);
+      while(restante <= 0 && T.running){
+        T.round++;
+        if(T.round>T.emomRounds){ T.running=false; T.round=T.emomRounds; CUE.done(); break; }
+        T.remaining=T.emomLen; CUE.work();
+        T.faseFin += T.remaining*1000;   // línea de tiempo ideal, no Date.now()
+        restante = Math.round((T.faseFin - Date.now())/1000);
+      }
+      T.remaining = Math.max(0, restante);
+      cueCountdown(T.remaining);
+      const disp=document.getElementById('emomDisplay');
+      if(disp) disp.innerHTML=`<span class="phase">${T.running?'EN CURSO':'LISTO'}</span>${fmtTime(Math.max(0,T.remaining))}<span class="round">Ronda ${T.round} de ${T.emomRounds}</span>`;
+      if(!T.running) clearInterval(engineInterval);
+    }
     document.getElementById('emomStartBtn').addEventListener('click', ()=>{
       timerModal.emomLen=Math.max(1, parseInt(document.getElementById('emomLen').value,10)||60);
       timerModal.emomRounds=Math.max(1, parseInt(document.getElementById('emomRounds').value,10)||10);
       if(!timerModal.running){
         timerModal.running=true; if(!timerModal.remaining||timerModal.remaining<=0) timerModal.remaining=timerModal.emomLen;
+        timerModal.faseFin = Date.now() + timerModal.remaining*1000;
         clearInterval(engineInterval);
-        engineInterval=setInterval(()=>{
-          timerModal.remaining--;
-          cueCountdown(timerModal.remaining);
-          if(timerModal.remaining<=0){ timerModal.round++; if(timerModal.round>timerModal.emomRounds){ clearInterval(engineInterval); timerModal.running=false; timerModal.round=timerModal.emomRounds; CUE.done(); } else { timerModal.remaining=timerModal.emomLen; CUE.work(); } }
-          const disp=document.getElementById('emomDisplay');
-          if(disp) disp.innerHTML=`<span class="phase">${timerModal.running?'EN CURSO':'LISTO'}</span>${fmtTime(Math.max(0,timerModal.remaining))}<span class="round">Ronda ${timerModal.round} de ${timerModal.emomRounds}</span>`;
-        },1000);
+        timerModal._tick = tickEmom;
+        engineInterval=setInterval(tickEmom, 1000);
       } else { timerModal.running=false; clearInterval(engineInterval); }
       renderTimerModal();
     });
@@ -2913,18 +2989,24 @@ function bindTimerModalEvents(){
       timerModal.remaining=parseInt(document.getElementById('emomLen').value,10)||60; renderTimerModal();
     });
   } else if(timerModal.mode==='amrap'){
+    function tickAmrap(){
+      const T = timerModal;
+      if(!T || !T.running2) return;
+      const restante = Math.round((T.faseFin - Date.now())/1000);
+      T.amrapRemaining = Math.max(0, restante);
+      cueCountdown(T.amrapRemaining);
+      if(restante<=0 && T.running2){ T.running2=false; CUE.done(); clearInterval(engineInterval); }
+      const disp=document.querySelector('.interval-display');
+      if(disp) disp.innerHTML=`<span class="phase">${T.running2?'EN CURSO':'LISTO'}</span>${fmtTime(Math.max(0,T.amrapRemaining))}`;
+    }
     document.getElementById('amrapStartBtn').addEventListener('click', ()=>{
       timerModal.amrapMin=Math.max(1, parseInt(document.getElementById('amrapMin').value,10)||12);
       if(!timerModal.running2){
         timerModal.running2=true; if(!timerModal.amrapRemaining||timerModal.amrapRemaining<=0) timerModal.amrapRemaining=timerModal.amrapMin*60;
+        timerModal.faseFin = Date.now() + timerModal.amrapRemaining*1000;
         clearInterval(engineInterval);
-        engineInterval=setInterval(()=>{
-          timerModal.amrapRemaining--;
-          cueCountdown(timerModal.amrapRemaining);
-          if(timerModal.amrapRemaining<=0){ clearInterval(engineInterval); timerModal.running2=false; CUE.done(); }
-          const disp=document.querySelector('.interval-display');
-          if(disp) disp.innerHTML=`<span class="phase">${timerModal.running2?'EN CURSO':'LISTO'}</span>${fmtTime(Math.max(0,timerModal.amrapRemaining))}`;
-        },1000);
+        timerModal._tick = tickAmrap;
+        engineInterval=setInterval(tickAmrap, 1000);
       } else { timerModal.running2=false; clearInterval(engineInterval); }
       renderTimerModal();
     });
@@ -2934,26 +3016,29 @@ function bindTimerModalEvents(){
       timerModal.amrapRemaining=(parseInt(document.getElementById('amrapMin').value,10)||12)*60; renderTimerModal();
     });
   } else {
+    function tickSeries(){
+      const T = timerModal;
+      if(!T || !T.seriesRunning) return;
+      const restante = Math.round((T.faseFin - Date.now())/1000);
+      T.seriesRemaining = Math.max(0, restante);
+      cueCountdown(T.seriesRemaining);
+      if(restante<=0){
+        clearInterval(engineInterval); T.seriesRunning=false; T.seriesRemaining=0;
+        CUE.work(); renderTimerModal(); return;
+      }
+      const disp=document.getElementById('serDisplay');
+      if(disp) disp.innerHTML=`<span class="phase">DESCANSO</span>${fmtTime(Math.max(0,T.seriesRemaining))}<span class="round">Serie ${T.seriesRound} de ${T.seriesCount}</span>`;
+    }
     document.getElementById('serStartBtn').addEventListener('click', ()=>{
       timerModal.seriesRestSec=Math.max(1, parseInt(document.getElementById('serRest').value,10)||180);
       timerModal.seriesCount=Math.max(1, parseInt(document.getElementById('serCount').value,10)||5);
       if(!timerModal.seriesRunning){
         timerModal.seriesRunning=true; ensureAudio();
         if(!timerModal.seriesRemaining||timerModal.seriesRemaining<=0) timerModal.seriesRemaining=timerModal.seriesRestSec;
+        timerModal.faseFin = Date.now() + timerModal.seriesRemaining*1000;
         clearInterval(engineInterval);
-        engineInterval=setInterval(()=>{
-          timerModal.seriesRemaining--;
-          cueCountdown(timerModal.seriesRemaining);
-          if(timerModal.seriesRemaining<=0){
-            clearInterval(engineInterval); timerModal.seriesRunning=false;
-            timerModal.seriesRemaining=0;
-            CUE.work();               // descanso terminado: toca la siguiente serie
-            renderTimerModal();
-            return;
-          }
-          const disp=document.getElementById('serDisplay');
-          if(disp) disp.innerHTML=`<span class="phase">DESCANSO</span>${fmtTime(Math.max(0,timerModal.seriesRemaining))}<span class="round">Serie ${timerModal.seriesRound} de ${timerModal.seriesCount}</span>`;
-        },1000);
+        timerModal._tick = tickSeries;
+        engineInterval=setInterval(tickSeries, 1000);
       } else { timerModal.seriesRunning=false; clearInterval(engineInterval); }
       renderTimerModal();
     });
@@ -4374,6 +4459,32 @@ function drillCardHtml(dr, d){
   </div>`;
 }
 
+// Sólo las opciones del selector de combinación cambian cuando se crea o se
+// une un grupo; el resto de la tarjeta no necesita tocarse. Actualizar
+// exactamente eso, en lugar de redibujar el bloque entero, es lo que evita el
+// salto de pantalla al montar superseries, triseries o circuitos.
+function opcionesGrupoHtml(ex, listaBloque){
+  return `<option value="">Sin combinar</option>
+    <option value="new:superserie">+ Nueva superserie</option>
+    <option value="new:triserie">+ Nueva triserie</option>
+    <option value="new:circuito">+ Nuevo circuito</option>
+    ${gruposDeBloque(listaBloque).map(g=>`<option value="${g.id}" ${ex.grupoId===g.id?'selected':''}>${GRUPO_TIPOS[g.tipo]||'Combinada'} · ${escapeHtml(g.nombres.slice(0,2).join(' + ')||g.n+' ejerc.')}</option>`).join('')}`;
+}
+function actualizaSelectsGrupo(cardOrigen, listaBloque){
+  const cuerpo = cardOrigen.closest('.acc-body') || document;
+  const blockKey = cardOrigen.dataset.block, dia = cardOrigen.dataset.day;
+  cuerpo.querySelectorAll(`.ex-card[data-day="${dia}"][data-block="${blockKey}"]`).forEach(card=>{
+    const sel = card.querySelector('.ex-grupo');
+    if(!sel) return;
+    const exId = card.dataset.exid;
+    const ex = listaBloque.find(x=>x.id===exId);
+    if(!ex) return;
+    sel.innerHTML = opcionesGrupoHtml(ex, listaBloque);
+    sel.style.color = ex.grupoId ? 'var(--accent)' : '';
+    sel.style.fontWeight = ex.grupoId ? '600' : '';
+  });
+}
+
 function exCardHtml(ex, blockKey, d, listaBloque){
   const t = exTimer(ex);
   const draftBloqueActual = listaBloque || [];
@@ -4444,55 +4555,8 @@ function exCardHtml(ex, blockKey, d, listaBloque){
         </div>`;
 }
 
-async function tplPlanificacionCoach(athleteId){
-  const atleta = state.athletes.find(a=>a.id===athleteId);
-  const esTenisOMixto = TENIS_ACTIVO && atleta && (atleta.modalidad==='tenis' || atleta.modalidad==='mixto');
-  // La semana se fija antes de archivar: al revés, el archivado usaba la semana
-  // que hubiera quedado de otro atleta y escribía en la clave equivocada.
-  const off = state.planOffset || 0;
-  state.planWeek = semanaDesplazada(off);
-  await autoArchiveWeek(athleteId);
-  const draft = await getRoutine(athleteId, true, state.planWeek);
-  const published = await getRoutine(athleteId, false, state.planWeek);
-  const sameAsPublished = JSON.stringify(draft.days) === JSON.stringify(published.days);
-
-  // Selector de semana: se pueden preparar semanas futuras sin tocar la actual.
-  const ini = new Date(state.planWeek+'T00:00:00');
-  const fin = new Date(ini); fin.setDate(fin.getDate()+6);
-  const etiqueta = off===0 ? 'Semana actual' : (off===1 ? 'Semana que viene' : (off>0 ? `Dentro de ${off} semanas` : `Hace ${Math.abs(off)} semanas`));
-  let html = `<div class="week-nav">
-    <button class="btn ghost small" data-planmove="-1">←</button>
-    <div class="week-nav-mid">
-      <b>${etiqueta}</b>
-      <span>${fmtShortDate(ini)} – ${fmtShortDate(fin)}</span>
-    </div>
-    <button class="btn ghost small" data-planmove="1">→</button>
-    ${off!==0?'<button class="btn ghost small" data-planmove="hoy">Hoy</button>':''}
-  </div>`;
-  const vacia = DAYS.every(d=>
-    BLOCKS.every(b=>draft.days[d][b.key].length===0) &&
-    (!Array.isArray(draft.days[d].drills) || draft.days[d].drills.length===0)
-  );
-  if(vacia && off>0){
-    html += `<div class="day-tools" style="margin-bottom:14px;">
-      <span class="day-tools-label">Semana en blanco</span>
-      <button class="btn ghost small" id="copyPrevWeekBtn">Partir de la semana anterior</button>
-    </div>`;
-  }
-  html += `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
-    <span class="row" style="gap:8px;">
-      ${sameAsPublished ? '' : '<button class="btn ghost small" id="discardDraftBtn">Descartar cambios</button>'}
-      <button class="btn small" id="shareRoutineBtn">Compartir planificación</button>
-    </span></div>`;
-  if(state.athletes.length > 1){
-    const otros = state.athletes.filter(a=>a.id !== athleteId);
-    html += `<div class="day-tools" style="margin-bottom:14px;">
-      <span class="day-tools-label">Copiar la semana entera a</span>
-      <select id="xferWeekAthlete">${otros.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}</select>
-      <button class="btn ghost small" id="xferWeekBtn">Copiar semana</button>
-    </div>`;
-  }
-  DAYS.forEach(d=>{
+function cuerpoDia(d, draft, athleteId, esTenisOMixto){
+  let html = '';
     const open = state.openDays[d] ? 'open':'';
     const esPistaHoy = esTenisOMixto && (draft.days[d].lugar||'gym')==='pista';
     const numDrills = Array.isArray(draft.days[d].drills) ? draft.days[d].drills.length : 0;
@@ -4504,13 +4568,13 @@ async function tplPlanificacionCoach(athleteId){
     // demás (copiar, mover, vaciar) va tras el menú de tres puntos para no
     // llenar la pantalla de opciones que se usan de vez en cuando.
     const otrosDias = DAYS.filter(x=>x!==d);
-    const menuAbierto = state.menuDia === d;
+    const menuAbierto = false; // el menú ya no depende del render: se abre/cierra por CSS
     html += `<div class="dia-cabecera">
       <input type="text" class="dia-tipo" data-dia="${d}" value="${escapeHtml(draft.days[d].tipo||'')}"
         placeholder="Tipo de sesión (Fuerza, Carrera…)" list="tipoSuggestions">
       <button class="dia-menu-btn ${menuAbierto?'on':''}" data-diamenu="${d}" title="Más opciones">⋮</button>
     </div>`;
-    if(menuAbierto){
+    {
       html += `<div class="dia-menu">`;
       if(esTenisOMixto){
         const lugar = draft.days[d].lugar || 'gym';
@@ -4596,7 +4660,58 @@ async function tplPlanificacionCoach(athleteId){
       });
     }
     html += `</div></div>`;
-  });
+  return html;
+}
+
+async function tplPlanificacionCoach(athleteId){
+  const atleta = state.athletes.find(a=>a.id===athleteId);
+  const esTenisOMixto = TENIS_ACTIVO && atleta && (atleta.modalidad==='tenis' || atleta.modalidad==='mixto');
+  // La semana se fija antes de archivar: al revés, el archivado usaba la semana
+  // que hubiera quedado de otro atleta y escribía en la clave equivocada.
+  const off = state.planOffset || 0;
+  state.planWeek = semanaDesplazada(off);
+  await autoArchiveWeek(athleteId);
+  const draft = await getRoutine(athleteId, true, state.planWeek);
+  const published = await getRoutine(athleteId, false, state.planWeek);
+  const sameAsPublished = JSON.stringify(draft.days) === JSON.stringify(published.days);
+
+  // Selector de semana: se pueden preparar semanas futuras sin tocar la actual.
+  const ini = new Date(state.planWeek+'T00:00:00');
+  const fin = new Date(ini); fin.setDate(fin.getDate()+6);
+  const etiqueta = off===0 ? 'Semana actual' : (off===1 ? 'Semana que viene' : (off>0 ? `Dentro de ${off} semanas` : `Hace ${Math.abs(off)} semanas`));
+  let html = `<div class="week-nav">
+    <button class="btn ghost small" data-planmove="-1">←</button>
+    <div class="week-nav-mid">
+      <b>${etiqueta}</b>
+      <span>${fmtShortDate(ini)} – ${fmtShortDate(fin)}</span>
+    </div>
+    <button class="btn ghost small" data-planmove="1">→</button>
+    ${off!==0?'<button class="btn ghost small" data-planmove="hoy">Hoy</button>':''}
+  </div>`;
+  const vacia = DAYS.every(d=>
+    BLOCKS.every(b=>draft.days[d][b.key].length===0) &&
+    (!Array.isArray(draft.days[d].drills) || draft.days[d].drills.length===0)
+  );
+  if(vacia && off>0){
+    html += `<div class="day-tools" style="margin-bottom:14px;">
+      <span class="day-tools-label">Semana en blanco</span>
+      <button class="btn ghost small" id="copyPrevWeekBtn">Partir de la semana anterior</button>
+    </div>`;
+  }
+  html += `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
+    <span class="row" style="gap:8px;">
+      ${sameAsPublished ? '' : '<button class="btn ghost small" id="discardDraftBtn">Descartar cambios</button>'}
+      <button class="btn small" id="shareRoutineBtn">Compartir planificación</button>
+    </span></div>`;
+  if(state.athletes.length > 1){
+    const otros = state.athletes.filter(a=>a.id !== athleteId);
+    html += `<div class="day-tools" style="margin-bottom:14px;">
+      <span class="day-tools-label">Copiar la semana entera a</span>
+      <select id="xferWeekAthlete">${otros.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}</select>
+      <button class="btn ghost small" id="xferWeekBtn">Copiar semana</button>
+    </div>`;
+  }
+  DAYS.forEach(d=>{ html += cuerpoDia(d, draft, athleteId, esTenisOMixto); });
   return html;
 }
 async function tplDiarioLectura(athleteId){
@@ -4803,6 +4918,89 @@ async function tplTareas(){
   html += `</div>`;
   return html;
 }
+// ---------- GALERÍA (pantalla propia del entrenador) ----------
+// A diferencia del selector que se abre desde un día concreto (para insertar
+// en una sesión), esta es la pantalla de gestión: editar nombre y sección,
+// asignar o quitar vídeo, mover de sección, crear secciones nuevas, y borrar
+// ejercicios de la galería. Insertar en una sesión sigue haciéndose desde
+// "Desde galería" dentro de cada día, como hasta ahora.
+async function tplGaleriaCoach(){
+  const lib = await getExLib();
+  const secciones = await getSecciones();
+  const q = (state.galFiltro||'').toLowerCase().trim();
+  const filtrados = lib.filter(e=>!q || (e.name+' '+(e.section||'')).toLowerCase().includes(q));
+
+  // Agrupar por sección maestra, en su orden; lo sin encajar va al final.
+  const grupos = new Map();
+  secciones.forEach(sec=>grupos.set(sec, []));
+  const sinSeccion = [];
+  filtrados.forEach(e=>{
+    const sec = e.section && secciones.includes(e.section) ? e.section : null;
+    if(sec) grupos.get(sec).push(e); else sinSeccion.push(e);
+  });
+  grupos.forEach(arr=>arr.sort((a,b)=>a.name.localeCompare(b.name,'es')));
+  sinSeccion.sort((a,b)=>a.name.localeCompare(b.name,'es'));
+
+  let html = `<div class="card"><h2>Galería de ejercicios</h2>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Guarda un ejercicio una vez y reutilízalo en cualquier atleta, semana o día. Los cambios que hagas aquí no afectan a los que ya insertaste en una rutina.</p>
+    <input type="text" id="galBuscador" placeholder="Buscar ejercicio…" value="${escapeHtml(state.galFiltro||'')}" style="width:100%;margin-bottom:14px;">
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+      <button class="btn ghost small" id="galNuevoBtn">+ Nuevo ejercicio</button>
+      <button class="btn ghost small" id="galNuevaSeccionBtn">+ Nueva sección</button>
+    </div>
+  </div>`;
+
+  secciones.forEach(sec=>{
+    const items = grupos.get(sec) || [];
+    if(q && !items.length) return;   // buscando: no mostrar secciones vacías
+    const abierta = state.galSeccionAbierta === sec;
+    html += `<div class="acc ${abierta?'open':''}" data-galsec="${escapeHtml(sec)}">
+      <div class="acc-head" data-toggle-gal="${escapeHtml(sec)}"><b>${escapeHtml(sec)}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${items.length}</span></div>
+      <div class="acc-body">
+        ${items.length ? items.map(e=>tplGalItem(e, secciones)).join('') : '<div class="empty">Sin ejercicios en esta sección.</div>'}
+        <button class="btn ghost small" data-galnuevoen="${escapeHtml(sec)}" style="margin-top:8px;">+ Añadir aquí</button>
+        <button class="btn ghost small" data-galborrarseccion="${escapeHtml(sec)}" style="margin-top:8px;">Eliminar sección</button>
+      </div>
+    </div>`;
+  });
+  if(sinSeccion.length || (!q && !secciones.length)){
+    const abierta = state.galSeccionAbierta === '__sin__';
+    html += `<div class="acc ${abierta?'open':''}" data-galsec="__sin__">
+      <div class="acc-head" data-toggle-gal="__sin__"><b>Sin sección</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${sinSeccion.length}</span></div>
+      <div class="acc-body">${sinSeccion.map(e=>tplGalItem(e, secciones)).join('') || '<div class="empty">Nada aquí.</div>'}</div>
+    </div>`;
+  }
+  return html;
+}
+
+function tplGalItem(ex, secciones){
+  return `<div class="gal-item" data-galid="${ex.id}">
+    <span class="save-flag" data-flagfor="gal-${ex.id}">Guardado ✓</span>
+    <div class="row" style="gap:8px;align-items:flex-start;">
+      <input type="text" class="gal-name" value="${escapeHtml(ex.name)}" placeholder="Nombre" style="flex:1;min-width:0;font-weight:600;">
+      <button class="btn ghost small" data-galdel="${ex.id}">✕</button>
+    </div>
+    <div class="ex-grid" style="margin-top:8px;">
+      <div><label class="field-label">Series</label><input type="text" class="gal-series" value="${escapeHtml(ex.series||'')}"></div>
+      <div><label class="field-label">Reps</label><input type="text" class="gal-reps" value="${escapeHtml(ex.reps||'')}"></div>
+      <div><label class="field-label">Carga</label><input type="text" class="gal-load" value="${escapeHtml(ex.load||'')}"></div>
+      <div><label class="field-label">Sección</label>
+        <select class="gal-section">
+          <option value="">Sin sección</option>
+          ${secciones.map(s=>`<option value="${escapeHtml(s)}" ${ex.section===s?'selected':''}>${escapeHtml(s)}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="video-row">
+      ${ex.videoUrl
+        ? `<span class="video-tag">▶ ${escapeHtml(ex.videoName||'Vídeo')}</span>
+           <button class="btn ghost small" data-galplayvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Vídeo')}">Ver</button>
+           <button class="btn ghost small" data-galunlinkvideo="${ex.id}">Quitar vídeo</button>`
+        : `<button class="btn ghost small" data-galpickvideo="${ex.id}">+ Vídeo de técnica</button>`}
+    </div>
+  </div>`;
+}
+
 async function tplResumen(){
   const now = new Date();
   const upcomingList = [], unpaidList = [], riskList = [];
@@ -4941,7 +5139,15 @@ function bindExerciseCard(card, athleteId){
         // Al cambiar el tipo de temporizador cambian sus campos: redibujamos
         // sólo esta tarjeta, no la pantalla entera (eso hacía saltar el scroll).
         const grupoCambiado = (grupoPrevio !== (ex.grupoId||''));
-        if(grupoCambiado){ state.openDays[d]=true; renderKeepScroll(); return; }
+        if(grupoCambiado){
+          // Combinar en superserie/triserie/circuito cambia qué grupos puede
+          // ver CADA ejercicio del bloque en su desplegable. Antes esto forzaba
+          // a redibujar la pantalla entera (el salto que se quejaba el
+          // usuario); ahora sólo se actualizan los <select> de combinación de
+          // los ejercicios de este mismo bloque, sin tocar el resto del DOM.
+          actualizaSelectsGrupo(card, draft.days[d][blockKey]);
+          return;
+        }
         if(t.type !== prevType){
           const nuevaHtml = exCardHtml(ex, blockKey, d);
           card.insertAdjacentHTML('afterend', nuevaHtml);
@@ -5086,6 +5292,77 @@ function abrirVideo(url, nombre){
 }
 
 // Galería: subir uno nuevo o reutilizar uno ya subido
+// Igual que abrirGaleria, pero para asignar el vídeo a un ítem de la GALERÍA
+// de ejercicios (no a un ejercicio ya insertado en la rutina de un atleta).
+async function abrirGaleriaVideoParaItem(exLibId){
+  const lib = await getVideoLib();
+  let back = document.getElementById('galeriaBack');
+  if(!back){ back = document.createElement('div'); back.id='galeriaBack'; back.className='modal-back'; document.body.appendChild(back); }
+  back.innerHTML = `<div class="modal">
+    <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <h2 style="font-family:'Fraunces',serif;font-size:17px;">Galería de vídeos</h2>
+      <button class="btn ghost small" id="closeGalBtn">Cerrar</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">Sube un vídeo corto (5-10 s, 720p basta) o reutiliza uno que ya tengas. Máximo ${MAX_VIDEO_MB} MB.</p>
+    <div class="day-tools" style="margin-bottom:14px;">
+      <input type="file" id="galFile" accept="video/*" style="flex:1;min-width:0;font-size:12.5px;">
+      <button class="btn small" id="galUploadBtn">Subir</button>
+    </div>
+    <div id="galList">${lib.length ? lib.slice().reverse().map(v=>`
+      <div class="vid-item">
+        <span class="vi-name">${escapeHtml(v.name)}</span>
+        <span class="vi-size">${v.size>1024?(v.size/1024).toFixed(1)+' MB':v.size+' KB'}</span>
+        <button class="btn ghost small" data-galplay="${v.id}">Ver</button>
+        <button class="btn small" data-galuse="${v.id}">Usar</button>
+        <button class="btn ghost small" data-galdel="${v.id}">✕</button>
+      </div>`).join('') : '<div class="empty">Todavía no has subido ningún vídeo.</div>'}</div>
+  </div>`;
+  const cerrar = ()=>{ back.remove(); };
+  document.getElementById('closeGalBtn').addEventListener('click', cerrar);
+  back.addEventListener('click', e=>{ if(e.target===back) cerrar(); });
+
+  const asignar = async (v)=>{
+    const libEx = await getExLib();
+    const ex = libEx.find(x=>x.id===exLibId);
+    if(!ex) return;
+    ex.videoUrl = v ? v.url : ''; ex.videoName = v ? v.name : '';
+    const ok = await saveExLib(libEx);
+    toast(ok ? (v?'Vídeo asignado':'Vídeo quitado') : 'No se pudo guardar', !ok);
+    cerrar();
+    renderKeepScroll();
+  };
+  document.getElementById('galUploadBtn').addEventListener('click', async ()=>{
+    const f = document.getElementById('galFile').files[0];
+    if(!f){ toast('Elige un archivo primero', true); return; }
+    const btn = document.getElementById('galUploadBtn');
+    btn.textContent = 'Subiendo…'; btn.disabled = true;
+    try{
+      const item = await subirVideo(f);
+      toast('Vídeo subido');
+      await asignar(item);
+    }catch(e){
+      toast('No se pudo subir: ' + e.message, true);
+      btn.textContent = 'Subir'; btn.disabled = false;
+    }
+  });
+  back.querySelectorAll('[data-galuse]').forEach(b=>b.addEventListener('click', async ()=>{
+    const v = (await getVideoLib()).find(x=>x.id===b.dataset.galuse);
+    if(v) await asignar(v);
+  }));
+  back.querySelectorAll('[data-galplay]').forEach(b=>b.addEventListener('click', async ()=>{
+    const v = (await getVideoLib()).find(x=>x.id===b.dataset.galplay);
+    if(v) abrirVideo(v.url, v.name);
+  }));
+  back.querySelectorAll('[data-galdel]').forEach(b=>b.addEventListener('click', async ()=>{
+    const v = (await getVideoLib()).find(x=>x.id===b.dataset.galdel);
+    if(!v) return;
+    if(!confirm(`¿Eliminar "${v.name}" de la galería de vídeos?\n\nLos ejercicios que lo usen dejarán de mostrarlo.`)) return;
+    await borrarVideo(v);
+    toast('Vídeo eliminado');
+    abrirGaleriaVideoParaItem(exLibId);
+  }));
+}
+
 async function abrirGaleria(exId, athleteId){
   const lib = await getVideoLib();
   let back = document.getElementById('galeriaBack');
@@ -5201,7 +5478,7 @@ async function abrirGaleriaEjercicios(dia, bloque, athleteId){
       return;
     }
     const q = (state.libFiltro||'').toLowerCase().trim();
-    const secciones = [...new Set(lib.map(e=>e.section).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+    const secciones = await getSecciones();
     const filtrados = lib
       .filter(e=>!q || (e.name+' '+(e.section||'')).toLowerCase().includes(q))
       .filter(e=>!state.libSeccion || e.section===state.libSeccion)
@@ -5583,11 +5860,14 @@ async function bindDynamicEvents(){
 
   // --- Galería de ejercicios ---
   // --- Menú de tres puntos por día ---
+  // El menú ya no re-renderiza la pantalla: sólo alterna una clase CSS sobre
+  // el propio menú, que vive siempre en el DOM oculto. Cero salto de scroll.
   document.querySelectorAll('[data-diamenu]').forEach(b=>b.addEventListener('click', ()=>{
-    const dia = b.dataset.diamenu;
-    state.menuDia = (state.menuDia === dia) ? null : dia;
-    state.openDays[dia] = true;
-    renderKeepScroll();
+    const menu = b.closest('.dia-cabecera')?.nextElementSibling;
+    if(!menu || !menu.classList.contains('dia-menu')) return;
+    const abrir = !menu.classList.contains('open');
+    menu.classList.toggle('open', abrir);
+    b.classList.toggle('on', abrir);
   }));
 
   // --- Gym o pista (tenis/mixto) ---
@@ -5599,6 +5879,106 @@ async function bindDynamicEvents(){
     if(ok){ state.openDays[dia]=true; renderKeepScroll(); }
     else toast('No se pudo guardar', true);
   }));
+
+  // --- Galería (pantalla de gestión) ---
+  document.querySelectorAll('[data-toggle-gal]').forEach(h=>h.addEventListener('click', ()=>{
+    const sec = h.dataset.toggleGal;
+    state.galSeccionAbierta = (state.galSeccionAbierta === sec) ? null : sec;
+    renderKeepScroll();
+  }));
+  const galBuscador = document.getElementById('galBuscador');
+  if(galBuscador){
+    let deb=null;
+    galBuscador.addEventListener('input', ()=>{
+      clearTimeout(deb);
+      deb=setTimeout(()=>{ state.galFiltro = galBuscador.value; renderKeepScroll(); }, 250);
+    });
+  }
+  const galNuevoBtn = document.getElementById('galNuevoBtn');
+  if(galNuevoBtn) galNuevoBtn.addEventListener('click', async ()=>{
+    const lib = await getExLib();
+    lib.push({ id: uid(), name:'', desc:'', section:'', load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
+      timer:{type:'none'}, videoUrl:'', videoName:'' });
+    const ok = await saveExLib(lib);
+    if(!ok){ toast('No se pudo crear', true); return; }
+    state.galSeccionAbierta = '__sin__';
+    renderKeepScroll();
+  });
+  document.querySelectorAll('[data-galnuevoen]').forEach(b=>b.addEventListener('click', async ()=>{
+    const sec = b.dataset.galnuevoen;
+    const lib = await getExLib();
+    lib.push({ id: uid(), name:'', desc:'', section:sec, load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
+      timer:{type:'none'}, videoUrl:'', videoName:'' });
+    const ok = await saveExLib(lib);
+    if(!ok){ toast('No se pudo crear', true); return; }
+    renderKeepScroll();
+  }));
+  const galNuevaSeccionBtn = document.getElementById('galNuevaSeccionBtn');
+  if(galNuevaSeccionBtn) galNuevaSeccionBtn.addEventListener('click', async ()=>{
+    const nombre = prompt('Nombre de la nueva sección (ej. Cooldown, Coordinación neuromuscular):');
+    if(!nombre || !nombre.trim()) return;
+    const secciones = await getSecciones();
+    if(secciones.some(s=>s.toLowerCase()===nombre.trim().toLowerCase())){ toast('Esa sección ya existe', true); return; }
+    secciones.push(nombre.trim());
+    const ok = await saveSecciones(secciones);
+    toast(ok?'Sección creada':'No se pudo guardar', !ok);
+    if(ok){ state.galSeccionAbierta = nombre.trim(); renderKeepScroll(); }
+  });
+  document.querySelectorAll('[data-galborrarseccion]').forEach(b=>b.addEventListener('click', async ()=>{
+    const sec = b.dataset.galborrarseccion;
+    const lib = await getExLib();
+    const dentro = lib.filter(e=>e.section===sec).length;
+    if(!confirm(`¿Eliminar la sección "${sec}"?${dentro?`\n\nLos ${dentro} ejercicios que tiene pasarán a "Sin sección", no se borran.`:''}`)) return;
+    const secciones = (await getSecciones()).filter(s=>s!==sec);
+    const ok = await saveSecciones(secciones);
+    toast(ok?'Sección eliminada':'No se pudo eliminar', !ok);
+    if(ok) renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-galdel]').forEach(b=>b.addEventListener('click', async ()=>{
+    const lib = await getExLib();
+    const ex = lib.find(x=>x.id===b.dataset.galdel);
+    if(!ex) return;
+    if(!confirm(`¿Eliminar "${ex.name||'este ejercicio'}" de la galería?\n\nLas rutinas donde ya lo hayas usado no se ven afectadas.`)) return;
+    const ok = await saveExLib(lib.filter(x=>x.id!==b.dataset.galdel));
+    toast(ok?'Eliminado':'No se pudo eliminar', !ok);
+    if(ok){ b.closest('.gal-item')?.remove(); }
+  }));
+  document.querySelectorAll('[data-galpickvideo]').forEach(b=>b.addEventListener('click', ()=>{
+    abrirGaleriaVideoParaItem(b.dataset.galpickvideo);
+  }));
+  document.querySelectorAll('[data-galunlinkvideo]').forEach(b=>b.addEventListener('click', async ()=>{
+    const lib = await getExLib();
+    const ex = lib.find(x=>x.id===b.dataset.galunlinkvideo);
+    if(ex){ ex.videoUrl=''; ex.videoName=''; }
+    const ok = await saveExLib(lib);
+    if(ok) renderKeepScroll(); else toast('No se pudo guardar', true);
+  }));
+  document.querySelectorAll('[data-galplayvideo]').forEach(b=>b.addEventListener('click', ()=>{
+    const [url, nombre] = b.dataset.galplayvideo.split('|');
+    abrirVideo(url, nombre);
+  }));
+  // Autoguardado de cada ficha (nombre, series, reps, carga, sección)
+  document.querySelectorAll('.gal-item').forEach(item=>{
+    const guardar = async ()=>{
+      const lib = await getExLib();
+      const ex = lib.find(x=>x.id===item.dataset.galid);
+      if(!ex) return;
+      ex.name = item.querySelector('.gal-name').value.trim();
+      ex.series = item.querySelector('.gal-series').value.trim();
+      ex.reps = item.querySelector('.gal-reps').value.trim();
+      ex.load = item.querySelector('.gal-load').value.trim();
+      ex.section = item.querySelector('.gal-section').value;
+      const ok = await saveExLib(lib);
+      const flag = item.querySelector('.save-flag');
+      if(ok && flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
+      if(!ok) toast('No se pudo guardar', true);
+    };
+    let deb=null;
+    item.querySelectorAll('input, select').forEach(f=>{
+      f.addEventListener('input', ()=>{ clearTimeout(deb); deb=setTimeout(guardar, 600); });
+      f.addEventListener('change', ()=>{ clearTimeout(deb); guardar(); });
+    });
+  });
 
   // --- Drills de pista ---
   document.querySelectorAll('[data-adddrill]').forEach(b=>b.addEventListener('click', async ()=>{
@@ -5990,7 +6370,7 @@ async function bindDynamicEvents(){
     const ok = await saveRoutine(athleteId, true, draft);
     if(!ok){ toast('No se pudo guardar. Comprueba la conexión.', true); return; }
     state.openDays[d] = true;
-    b.insertAdjacentHTML('beforebegin', exCardHtml(nuevo, blockKey, d));
+    b.insertAdjacentHTML('beforebegin', exCardHtml(nuevo, blockKey, d, draft.days[d][blockKey]));
     const card = b.previousElementSibling;
     if(card){
       bindExerciseCard(card, athleteId);
