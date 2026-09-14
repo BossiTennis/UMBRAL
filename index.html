@@ -848,25 +848,41 @@ function ensureAudio(){
     return audioCtx;
   }catch(e){ return null; }
 }
+// «triangle» corta más que una sinusoidal pura en un gimnasio con ruido de
+// fondo, y sumamos un segundo armónico una octava por encima: dos tonos a la
+// vez se perciben más fuertes y más «de aviso» que uno solo, sin necesidad de
+// forzar el volumen hasta el punto de distorsionar.
 function beep(freq, ms, vol){
   const ctx = ensureAudio();
   if(!ctx) return;
+  const v = Math.min(0.95, vol || 0.6);
   try{
     const osc = ctx.createOscillator(), gain = ctx.createGain();
-    osc.type = 'sine'; osc.frequency.value = freq;
-    gain.gain.setValueAtTime(vol || 0.25, ctx.currentTime);
+    osc.type = 'triangle'; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(v, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + ms/1000);
     osc.connect(gain); gain.connect(ctx.destination);
     osc.start(); osc.stop(ctx.currentTime + ms/1000);
+
+    const osc2 = ctx.createOscillator(), gain2 = ctx.createGain();
+    osc2.type = 'sine'; osc2.frequency.value = freq*2;
+    gain2.gain.setValueAtTime(v*0.35, ctx.currentTime);
+    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + ms/1000);
+    osc2.connect(gain2); gain2.connect(ctx.destination);
+    osc2.start(); osc2.stop(ctx.currentTime + ms/1000);
   }catch(e){}
 }
 function buzz(pattern){ try{ if(navigator.vibrate) navigator.vibrate(pattern); }catch(e){} }
+// Volúmenes subidos de forma notable respecto a la versión anterior (0.18-0.3
+// → 0.55-0.9): en un gimnasio real, con música y ruido, un aviso flojo no
+// sirve de nada. «done» además suena más largo, para que no pase inadvertido
+// aunque el atleta esté a media serie y no mirando el móvil.
 const CUE = {
-  tick:   ()=>{ beep(660, 90, 0.18); },                                  // 3-2-1
-  work:   ()=>{ beep(980,180,0.3); buzz(120); },                         // empieza trabajo
-  rest:   ()=>{ beep(520,220,0.26); buzz([70,60,70]); },                 // empieza descanso
-  setEnd: ()=>{ beep(760,160,0.3); setTimeout(()=>beep(1040,240,0.3),170); buzz([90,70,90]); },
-  done:   ()=>{ [0,190,380].forEach((d,i)=>setTimeout(()=>beep(720+i*230,300,0.3), d)); buzz([120,90,120,90,200]); }
+  tick:   ()=>{ beep(700, 110, 0.55); },                                 // 3-2-1
+  work:   ()=>{ beep(1000,260,0.85); buzz(160); },                       // empieza trabajo
+  rest:   ()=>{ beep(540,300,0.75); buzz([90,80,90]); },                 // empieza descanso
+  setEnd: ()=>{ beep(780,220,0.85); setTimeout(()=>beep(1080,320,0.85),190); buzz([120,90,120]); },
+  done:   ()=>{ [0,220,440,660].forEach((d,i)=>setTimeout(()=>beep(700+i*220,340,0.9), d)); buzz([150,100,150,100,260]); }
 };
 // Cuenta atrás de los últimos 3 segundos de cualquier fase
 function cueCountdown(rem){ if(rem===3||rem===2||rem===1) CUE.tick(); }
@@ -4954,31 +4970,34 @@ async function tplGaleriaCoach(){
     const items = grupos.get(sec) || [];
     if(q && !items.length) return;   // buscando: no mostrar secciones vacías
     const abierta = state.galSeccionAbierta === sec;
-    html += `<div class="acc ${abierta?'open':''}" data-galsec="${escapeHtml(sec)}">
-      <div class="acc-head" data-toggle-gal="${escapeHtml(sec)}"><b>${escapeHtml(sec)}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${items.length}</span></div>
-      <div class="acc-body">
-        ${items.length ? items.map(e=>tplGalItem(e, secciones)).join('') : '<div class="empty">Sin ejercicios en esta sección.</div>'}
-        <button class="btn ghost small" data-galnuevoen="${escapeHtml(sec)}" style="margin-top:8px;">+ Añadir aquí</button>
-        <button class="btn ghost small" data-galborrarseccion="${escapeHtml(sec)}" style="margin-top:8px;">Eliminar sección</button>
-      </div>
-    </div>`;
+    html += tplGalSeccionAcc(sec, items, secciones, abierta);
   });
   if(sinSeccion.length || (!q && !secciones.length)){
     const abierta = state.galSeccionAbierta === '__sin__';
     html += `<div class="acc ${abierta?'open':''}" data-galsec="__sin__">
       <div class="acc-head" data-toggle-gal="__sin__"><b>Sin sección</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${sinSeccion.length}</span></div>
-      <div class="acc-body">${sinSeccion.map(e=>tplGalItem(e, secciones)).join('') || '<div class="empty">Nada aquí.</div>'}</div>
+      <div class="acc-body"><div class="gal-lista">${sinSeccion.map(e=>tplGalItem(e, secciones)).join('') || '<div class="empty">Nada aquí.</div>'}</div></div>
     </div>`;
   }
   return html;
 }
 
+function tplGalSeccionAcc(sec, items, secciones, abierta){
+  return `<div class="acc ${abierta?'open':''}" data-galsec="${escapeHtml(sec)}">
+    <div class="acc-head" data-toggle-gal="${escapeHtml(sec)}"><b>${escapeHtml(sec)}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${items.length}</span></div>
+    <div class="acc-body">
+      <div class="gal-lista">${items.length ? items.map(e=>tplGalItem(e, secciones)).join('') : '<div class="empty">Sin ejercicios en esta sección.</div>'}</div>
+      <button class="btn ghost small" data-galnuevoen="${escapeHtml(sec)}" style="margin-top:8px;">+ Añadir aquí</button>
+      <button class="btn ghost small" data-galborrarseccion="${escapeHtml(sec)}" style="margin-top:8px;">Eliminar sección</button>
+    </div>
+  </div>`;
+}
 function tplGalItem(ex, secciones){
   return `<div class="gal-item" data-galid="${ex.id}">
     <span class="save-flag" data-flagfor="gal-${ex.id}">Guardado ✓</span>
     <div class="row" style="gap:8px;align-items:flex-start;">
       <input type="text" class="gal-name" value="${escapeHtml(ex.name)}" placeholder="Nombre" style="flex:1;min-width:0;font-weight:600;">
-      <button class="btn ghost small" data-galdel="${ex.id}">✕</button>
+      <button class="btn ghost small" data-galexdel="${ex.id}">✕</button>
     </div>
     <div class="ex-grid" style="margin-top:8px;">
       <div><label class="field-label">Series</label><input type="text" class="gal-series" value="${escapeHtml(ex.series||'')}"></div>
@@ -5294,6 +5313,147 @@ function abrirVideo(url, nombre){
 // Galería: subir uno nuevo o reutilizar uno ya subido
 // Igual que abrirGaleria, pero para asignar el vídeo a un ítem de la GALERÍA
 // de ejercicios (no a un ejercicio ya insertado en la rutina de un atleta).
+// Recalcula el número que muestra cada acordeón de sección, tras mover o
+// borrar ejercicios directamente en el DOM (sin volver a pintar la pantalla).
+function actualizaContadoresGal(){
+  document.querySelectorAll('[data-galsec]').forEach(acc=>{
+    const badge = acc.querySelector('.chev-count');
+    if(badge) badge.textContent = acc.querySelectorAll('.gal-item').length;
+  });
+}
+
+// Inserta un ejercicio recién creado directamente en el DOM de su sección
+// (abriéndola si estaba cerrada), sin volver a pintar el resto de la pantalla.
+async function insertaGalItemEnDOM(ex, sec){
+  const secciones = await getSecciones();
+  let acc = document.querySelector(`[data-galsec="${CSS.escape(sec)}"]`);
+  if(!acc){
+    // La sección aún no existe en el DOM (poco probable, red de seguridad).
+    const sinSecAcc = document.querySelector('[data-galsec="__sin__"]');
+    const html = tplGalSeccionAcc(sec, [], secciones, true);
+    if(sinSecAcc) sinSecAcc.insertAdjacentHTML('beforebegin', html);
+    acc = document.querySelector(`[data-galsec="${CSS.escape(sec)}"]`);
+    if(acc) bindGalSeccionAcc(acc);
+  }
+  if(!acc) return;
+  if(!acc.classList.contains('open')){
+    document.querySelectorAll(':scope > .acc.open', acc.parentElement).forEach(el=>{ if(el!==acc) el.classList.remove('open'); });
+    acc.classList.add('open');
+  }
+  const lista = acc.querySelector('.gal-lista');
+  if(!lista) return;
+  const vacio = lista.querySelector('.empty'); if(vacio) vacio.remove();
+  lista.insertAdjacentHTML('beforeend', tplGalItem(ex, secciones));
+  const nuevo = lista.querySelector(`.gal-item[data-galid="${CSS.escape(ex.id)}"]`);
+  if(nuevo){
+    bindGalItem(nuevo);
+    const nombre = nuevo.querySelector('.gal-name');
+    if(nombre) nombre.focus();
+    if(typeof nuevo.scrollIntoView === 'function') nuevo.scrollIntoView({block:'nearest', behavior:'smooth'});
+  }
+  actualizaContadoresGal();
+}
+
+// Conecta abrir/cerrar y los botones de una tarjeta de sección recién
+// insertada en el DOM (al crear una sección nueva).
+function bindGalSeccionAcc(acc){
+  const head = acc.querySelector('[data-toggle-gal]');
+  if(head) head.addEventListener('click', ()=>{
+    const wasOpen = acc.classList.contains('open');
+    acc.parentElement.querySelectorAll(':scope > .acc.open').forEach(el=>{ if(el!==acc) el.classList.remove('open'); });
+    acc.classList.toggle('open', !wasOpen);
+  });
+  const addBtn = acc.querySelector('[data-galnuevoen]');
+  if(addBtn) addBtn.addEventListener('click', async ()=>{
+    const sec = addBtn.dataset.galnuevoen;
+    const nuevo = { id: uid(), name:'', desc:'', section:sec, load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
+      timer:{type:'none'}, videoUrl:'', videoName:'' };
+    const lib = await getExLib();
+    lib.push(nuevo);
+    const ok = await saveExLib(lib);
+    if(!ok){ toast('No se pudo crear', true); return; }
+    insertaGalItemEnDOM(nuevo, sec);
+  });
+  const delBtn = acc.querySelector('[data-galborrarseccion]');
+  if(delBtn) delBtn.addEventListener('click', async ()=>{
+    const sec = delBtn.dataset.galborrarseccion;
+    const dentro = acc.querySelectorAll('.gal-item').length;
+    if(!confirm(`¿Eliminar la sección "${sec}"?${dentro?`\n\nLos ${dentro} ejercicios que tiene pasarán a "Sin sección", no se borran.`:''}`)) return;
+    const secciones = (await getSecciones()).filter(s=>s!==sec);
+    const ok = await saveSecciones(secciones);
+    if(!ok){ toast('No se pudo eliminar', true); return; }
+    (async ()=>{ const lib = await getExLib(); lib.forEach(e=>{ if(e.section===sec) e.section=''; }); await saveExLib(lib); })();
+    const sinSecBody = document.querySelector('[data-galsec="__sin__"] .gal-lista');
+    acc.querySelectorAll('.gal-item').forEach(item=>{
+      const sel = item.querySelector('.gal-section'); if(sel) sel.value = '';
+      if(sinSecBody) sinSecBody.appendChild(item);
+    });
+    acc.remove();
+    toast('Sección eliminada');
+    actualizaContadoresGal();
+  });
+}
+
+// Autoguardado de una ficha de la galería. Si el cambio fue de sección, el
+// propio nodo se muda de acordeón en vez de esperar a una nueva pintada.
+function bindGalItem(item){
+  const guardar = async ()=>{
+    const lib = await getExLib();
+    const ex = lib.find(x=>x.id===item.dataset.galid);
+    if(!ex) return;
+    const seccionAntes = ex.section || '';
+    ex.name = item.querySelector('.gal-name').value.trim();
+    ex.series = item.querySelector('.gal-series').value.trim();
+    ex.reps = item.querySelector('.gal-reps').value.trim();
+    ex.load = item.querySelector('.gal-load').value.trim();
+    ex.section = item.querySelector('.gal-section').value;
+    const ok = await saveExLib(lib);
+    const flag = item.querySelector('.save-flag');
+    if(ok && flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
+    if(!ok){ toast('No se pudo guardar', true); return; }
+    if(ex.section !== seccionAntes){
+      const claveDestino = ex.section || '__sin__';
+      const destino = document.querySelector(`[data-galsec="${CSS.escape(claveDestino)}"] .gal-lista`);
+      if(destino){
+        const vacio = destino.querySelector('.empty'); if(vacio) vacio.remove();
+        destino.appendChild(item);
+      }
+      actualizaContadoresGal();
+    }
+  };
+  let deb=null;
+  item.querySelectorAll('input, select').forEach(f=>{
+    f.addEventListener('input', ()=>{ clearTimeout(deb); deb=setTimeout(guardar, 600); });
+    f.addEventListener('change', ()=>{ clearTimeout(deb); guardar(); });
+  });
+  const pick = item.querySelector('[data-galpickvideo]');
+  if(pick) pick.addEventListener('click', ()=>abrirGaleriaVideoParaItem(pick.dataset.galpickvideo));
+  const play = item.querySelector('[data-galplayvideo]');
+  if(play) play.addEventListener('click', ()=>{ const [url,nombre]=play.dataset.galplayvideo.split('|'); abrirVideo(url,nombre); });
+  const unlink = item.querySelector('[data-galunlinkvideo]');
+  if(unlink) unlink.addEventListener('click', async ()=>{
+    const lib = await getExLib();
+    const ex = lib.find(x=>x.id===unlink.dataset.galunlinkvideo);
+    if(ex){ ex.videoUrl=''; ex.videoName=''; }
+    const ok = await saveExLib(lib);
+    if(!ok){ toast('No se pudo guardar', true); return; }
+    const secciones = await getSecciones();
+    item.outerHTML = tplGalItem(ex, secciones);
+    const nuevo = document.querySelector(`.gal-item[data-galid="${CSS.escape(ex.id)}"]`);
+    if(nuevo) bindGalItem(nuevo);
+  });
+  const del = item.querySelector('[data-galexdel]');
+  if(del) del.addEventListener('click', async ()=>{
+    const lib = await getExLib();
+    const ex = lib.find(x=>x.id===del.dataset.galexdel);
+    if(!ex) return;
+    if(!confirm(`¿Eliminar "${ex.name||'este ejercicio'}" de la galería?\n\nLas rutinas donde ya lo hayas usado no se ven afectadas.`)) return;
+    const ok = await saveExLib(lib.filter(x=>x.id!==del.dataset.galexdel));
+    toast(ok?'Eliminado':'No se pudo eliminar', !ok);
+    if(ok){ item.remove(); actualizaContadoresGal(); }
+  });
+}
+
 async function abrirGaleriaVideoParaItem(exLibId){
   const lib = await getVideoLib();
   let back = document.getElementById('galeriaBack');
@@ -5329,7 +5489,17 @@ async function abrirGaleriaVideoParaItem(exLibId){
     const ok = await saveExLib(libEx);
     toast(ok ? (v?'Vídeo asignado':'Vídeo quitado') : 'No se pudo guardar', !ok);
     cerrar();
-    renderKeepScroll();
+    if(!ok) return;
+    // Sólo esta ficha necesita redibujarse (el botón "Ver" pasa a "+ Vídeo" o
+    // al revés). Un renderKeepScroll() aquí volvía a pintar toda la pantalla
+    // de la galería — el mismo salto que ya arreglamos en el resto de acciones.
+    const item = document.querySelector(`.gal-item[data-galid="${CSS.escape(exLibId)}"]`);
+    if(item){
+      const secciones = await getSecciones();
+      item.outerHTML = tplGalItem(ex, secciones);
+      const nuevo = document.querySelector(`.gal-item[data-galid="${CSS.escape(ex.id)}"]`);
+      if(nuevo) bindGalItem(nuevo);
+    }
   };
   document.getElementById('galUploadBtn').addEventListener('click', async ()=>{
     const f = document.getElementById('galFile').files[0];
@@ -5881,10 +6051,22 @@ async function bindDynamicEvents(){
   }));
 
   // --- Galería (pantalla de gestión) ---
+  // Igual que los días de Planificación: el acordeón ya está en el DOM con su
+  // contenido; abrir/cerrar es sólo una clase CSS, sin volver a pintar nada.
+  // Antes esto llamaba a renderKeepScroll(), y cerrar la sección anterior al
+  // abrir otra cambiaba la altura de la página de golpe: el navegador recorta
+  // el scroll antes de que la corrección de posición llegue a aplicarse — el
+  // salto que se notaba al tocar cualquier cosa en la galería.
   document.querySelectorAll('[data-toggle-gal]').forEach(h=>h.addEventListener('click', ()=>{
     const sec = h.dataset.toggleGal;
-    state.galSeccionAbierta = (state.galSeccionAbierta === sec) ? null : sec;
-    renderKeepScroll();
+    const acc = h.closest('.acc');
+    if(!acc) return;
+    const wasOpen = acc.classList.contains('open');
+    const container = acc.parentElement;
+    container.querySelectorAll(':scope > .acc.open').forEach(el=>{ if(el!==acc) el.classList.remove('open'); });
+    acc.classList.toggle('open', !wasOpen);
+    if(!wasOpen){ acc.classList.add('just-opened'); setTimeout(()=>acc.classList.remove('just-opened'), 400); }
+    state.galSeccionAbierta = wasOpen ? null : sec;
   }));
   const galBuscador = document.getElementById('galBuscador');
   if(galBuscador){
@@ -5894,91 +6076,79 @@ async function bindDynamicEvents(){
       deb=setTimeout(()=>{ state.galFiltro = galBuscador.value; renderKeepScroll(); }, 250);
     });
   }
+  // A partir de aquí, ninguna de estas acciones vuelve a pintar la pantalla:
+  // se inserta, mueve o borra directamente el nodo del DOM que corresponde.
   const galNuevoBtn = document.getElementById('galNuevoBtn');
   if(galNuevoBtn) galNuevoBtn.addEventListener('click', async ()=>{
+    const nuevo = { id: uid(), name:'', desc:'', section:'', load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
+      timer:{type:'none'}, videoUrl:'', videoName:'' };
     const lib = await getExLib();
-    lib.push({ id: uid(), name:'', desc:'', section:'', load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
-      timer:{type:'none'}, videoUrl:'', videoName:'' });
+    lib.push(nuevo);
     const ok = await saveExLib(lib);
     if(!ok){ toast('No se pudo crear', true); return; }
-    state.galSeccionAbierta = '__sin__';
-    renderKeepScroll();
+    insertaGalItemEnDOM(nuevo, '__sin__');
   });
   document.querySelectorAll('[data-galnuevoen]').forEach(b=>b.addEventListener('click', async ()=>{
     const sec = b.dataset.galnuevoen;
+    const nuevo = { id: uid(), name:'', desc:'', section:sec, load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
+      timer:{type:'none'}, videoUrl:'', videoName:'' };
     const lib = await getExLib();
-    lib.push({ id: uid(), name:'', desc:'', section:sec, load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
-      timer:{type:'none'}, videoUrl:'', videoName:'' });
+    lib.push(nuevo);
     const ok = await saveExLib(lib);
     if(!ok){ toast('No se pudo crear', true); return; }
-    renderKeepScroll();
+    insertaGalItemEnDOM(nuevo, sec);
   }));
   const galNuevaSeccionBtn = document.getElementById('galNuevaSeccionBtn');
   if(galNuevaSeccionBtn) galNuevaSeccionBtn.addEventListener('click', async ()=>{
     const nombre = prompt('Nombre de la nueva sección (ej. Cooldown, Coordinación neuromuscular):');
     if(!nombre || !nombre.trim()) return;
+    const limpio = nombre.trim();
     const secciones = await getSecciones();
-    if(secciones.some(s=>s.toLowerCase()===nombre.trim().toLowerCase())){ toast('Esa sección ya existe', true); return; }
-    secciones.push(nombre.trim());
+    if(secciones.some(s=>s.toLowerCase()===limpio.toLowerCase())){ toast('Esa sección ya existe', true); return; }
+    secciones.push(limpio);
     const ok = await saveSecciones(secciones);
-    toast(ok?'Sección creada':'No se pudo guardar', !ok);
-    if(ok){ state.galSeccionAbierta = nombre.trim(); renderKeepScroll(); }
+    if(!ok){ toast('No se pudo guardar', true); return; }
+    toast('Sección creada');
+    // Se inserta justo antes de "Sin sección", como en el orden normal.
+    const sinSecAcc = document.querySelector('[data-galsec="__sin__"]');
+    const html = tplGalSeccionAcc(limpio, [], secciones, false);
+    if(sinSecAcc) sinSecAcc.insertAdjacentHTML('beforebegin', html);
+    else document.querySelector('#tabContent .card')?.insertAdjacentHTML('afterend', html);
+    const nuevaAcc = document.querySelector(`[data-galsec="${CSS.escape(limpio)}"]`);
+    if(nuevaAcc) bindGalSeccionAcc(nuevaAcc);
   });
   document.querySelectorAll('[data-galborrarseccion]').forEach(b=>b.addEventListener('click', async ()=>{
     const sec = b.dataset.galborrarseccion;
-    const lib = await getExLib();
-    const dentro = lib.filter(e=>e.section===sec).length;
+    const accSec = document.querySelector(`[data-galsec="${CSS.escape(sec)}"]`);
+    const dentro = accSec ? accSec.querySelectorAll('.gal-item').length : 0;
     if(!confirm(`¿Eliminar la sección "${sec}"?${dentro?`\n\nLos ${dentro} ejercicios que tiene pasarán a "Sin sección", no se borran.`:''}`)) return;
     const secciones = (await getSecciones()).filter(s=>s!==sec);
     const ok = await saveSecciones(secciones);
-    toast(ok?'Sección eliminada':'No se pudo eliminar', !ok);
-    if(ok) renderKeepScroll();
-  }));
-  document.querySelectorAll('[data-galdel]').forEach(b=>b.addEventListener('click', async ()=>{
-    const lib = await getExLib();
-    const ex = lib.find(x=>x.id===b.dataset.galdel);
-    if(!ex) return;
-    if(!confirm(`¿Eliminar "${ex.name||'este ejercicio'}" de la galería?\n\nLas rutinas donde ya lo hayas usado no se ven afectadas.`)) return;
-    const ok = await saveExLib(lib.filter(x=>x.id!==b.dataset.galdel));
-    toast(ok?'Eliminado':'No se pudo eliminar', !ok);
-    if(ok){ b.closest('.gal-item')?.remove(); }
-  }));
-  document.querySelectorAll('[data-galpickvideo]').forEach(b=>b.addEventListener('click', ()=>{
-    abrirGaleriaVideoParaItem(b.dataset.galpickvideo);
-  }));
-  document.querySelectorAll('[data-galunlinkvideo]').forEach(b=>b.addEventListener('click', async ()=>{
-    const lib = await getExLib();
-    const ex = lib.find(x=>x.id===b.dataset.galunlinkvideo);
-    if(ex){ ex.videoUrl=''; ex.videoName=''; }
-    const ok = await saveExLib(lib);
-    if(ok) renderKeepScroll(); else toast('No se pudo guardar', true);
-  }));
-  document.querySelectorAll('[data-galplayvideo]').forEach(b=>b.addEventListener('click', ()=>{
-    const [url, nombre] = b.dataset.galplayvideo.split('|');
-    abrirVideo(url, nombre);
-  }));
-  // Autoguardado de cada ficha (nombre, series, reps, carga, sección)
-  document.querySelectorAll('.gal-item').forEach(item=>{
-    const guardar = async ()=>{
+    if(!ok){ toast('No se pudo eliminar', true); return; }
+    // Los ejercicios que tuviera pasan a "Sin sección", tanto en la base
+    // (queda como sección vacía "sec" que ya no existe, se recalculará como
+    // sin sección en la próxima carga) como visualmente ahora mismo.
+    (async ()=>{
       const lib = await getExLib();
-      const ex = lib.find(x=>x.id===item.dataset.galid);
-      if(!ex) return;
-      ex.name = item.querySelector('.gal-name').value.trim();
-      ex.series = item.querySelector('.gal-series').value.trim();
-      ex.reps = item.querySelector('.gal-reps').value.trim();
-      ex.load = item.querySelector('.gal-load').value.trim();
-      ex.section = item.querySelector('.gal-section').value;
-      const ok = await saveExLib(lib);
-      const flag = item.querySelector('.save-flag');
-      if(ok && flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
-      if(!ok) toast('No se pudo guardar', true);
-    };
-    let deb=null;
-    item.querySelectorAll('input, select').forEach(f=>{
-      f.addEventListener('input', ()=>{ clearTimeout(deb); deb=setTimeout(guardar, 600); });
-      f.addEventListener('change', ()=>{ clearTimeout(deb); guardar(); });
-    });
-  });
+      lib.forEach(e=>{ if(e.section===sec) e.section=''; });
+      await saveExLib(lib);
+    })();
+    if(accSec){
+      const sinSecBody = document.querySelector('[data-galsec="__sin__"] .gal-lista');
+      accSec.querySelectorAll('.gal-item').forEach(item=>{
+        const sel = item.querySelector('.gal-section'); if(sel) sel.value = '';
+        if(sinSecBody) sinSecBody.appendChild(item);
+      });
+      accSec.remove();
+    }
+    toast('Sección eliminada');
+    actualizaContadoresGal();
+  }));
+  // (el borrado, el vídeo y el autoguardado de cada ficha ya quedan
+  // conectados por bindGalItem, más abajo — nada que enlazar aquí)
+  // Cada ficha de la galería se autoguarda con la misma función, tanto las
+  // que había al pintar la pantalla como las que se insertan después.
+  document.querySelectorAll('.gal-item').forEach(item=>bindGalItem(item));
 
   // --- Drills de pista ---
   document.querySelectorAll('[data-adddrill]').forEach(b=>b.addEventListener('click', async ()=>{
