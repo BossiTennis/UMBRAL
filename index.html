@@ -2263,6 +2263,7 @@ async function tplRutinaAtleta(athleteId){
             html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
               <div class="ex-meta"><span>Series x reps: <b>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</b></span>${ex.load?`<span>Carga: <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso: <b>${escapeHtml(ex.rest||'—')}</b></span><span>RIR: <b>${escapeHtml(ex.rir||'—')}</b></span><span>RPE objetivo: <b>${escapeHtml(ex.rpeTarget||'—')}</b></span></div>
               ${t.type!=='none'?`<div class="timer-badge">${TIMER_TYPE_LABELS[t.type]}</div>`:''}
+              ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:8px;">▶ Ver técnica</button>`:''}
             </div>`;
           });
           return;
@@ -2518,7 +2519,9 @@ function sessionPreviewHtml(routine, day, turno){
       }
       g.ejercicios.forEach(ex=>{
       html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
-        <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span><span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div></div>`;
+        <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span><span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div>
+        ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Ver técnica</button>`:''}
+        </div>`;
       });
     });
   });
@@ -4425,6 +4428,13 @@ function exCardHtml(ex, blockKey, d, listaBloque){
               <div><label class="field-label">Nº de series</label><input type="number" class="tm-seriescount" value="${t.seriesCount}"></div>
             </div><div style="font-size:11.5px;color:var(--muted);margin-top:4px;">Cuenta atrás de ${Math.floor(t.seriesRestSec/60)}'${String(t.seriesRestSec%60).padStart(2,'0')} repetida ${t.seriesCount} veces.</div>` : ''}
           </div>
+          <div class="video-row">
+            ${ex.videoUrl
+              ? `<span class="video-tag">▶ ${escapeHtml(ex.videoName||'Vídeo')}</span>
+                 <button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Vídeo')}">Ver</button>
+                 <button class="btn ghost small" data-unlinkvideo="${ex.id}">Quitar</button>`
+              : `<button class="btn ghost small" data-pickvideo="${ex.id}">+ Vídeo de técnica</button>`}
+          </div>
           <div class="row" style="margin-top:8px;">
             <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="up" title="Subir">↑</button>
             <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="down" title="Bajar">↓</button>
@@ -4953,6 +4963,70 @@ function bindExerciseCard(card, athleteId){
       // Guardamos también mientras escribe, con una pequeña espera.
       f.addEventListener('input', ()=>{ clearTimeout(debounce); debounce = setTimeout(commit, 600); });
       f.addEventListener('change', ()=>{ clearTimeout(debounce); commit(); });
+    });
+
+    // Esta tarjeta se insertó directamente en el DOM (sin redibujar la
+    // pantalla), así que sus botones de acción no pasaron por
+    // bindDynamicEvents. Los conectamos aquí para que funcionen desde el
+    // primer momento, sin esperar a la siguiente actualización de pantalla.
+    const pick = card.querySelector('[data-pickvideo]');
+    if(pick) pick.addEventListener('click', ()=>{
+      abrirGaleria(pick.dataset.pickvideo, athleteId);
+    });
+    const unlink = card.querySelector('[data-unlinkvideo]');
+    if(unlink) unlink.addEventListener('click', async ()=>{
+      const exId = unlink.dataset.unlinkvideo;
+      const d2 = card.dataset.day;
+      const draft = await getRoutine(athleteId, true);
+      const ex = draft.days[d2][card.dataset.block].find(x=>x.id===exId);
+      if(ex){ ex.videoUrl=''; ex.videoName=''; }
+      const ok = await saveRoutine(athleteId, true, draft);
+      toast(ok?'Vídeo quitado':'No se pudo guardar', !ok);
+      if(ok) renderKeepScroll();
+    });
+    const play = card.querySelector('[data-playvideo]');
+    if(play) play.addEventListener('click', ()=>{
+      const [url, nombre] = play.dataset.playvideo.split('|');
+      abrirVideo(url, nombre);
+    });
+    const tolib = card.querySelector('[data-tolib]');
+    if(tolib) tolib.addEventListener('click', async ()=>{
+      const draft = await getRoutine(athleteId, true);
+      let encontrado = null;
+      DAYS.forEach(dd2=>BLOCKS.forEach(bl=>{
+        const ex = draft.days[dd2][bl.key].find(x=>x.id===tolib.dataset.tolib);
+        if(ex) encontrado = ex;
+      }));
+      if(!encontrado || !encontrado.name.trim()){ toast('Ponle nombre al ejercicio primero', true); return; }
+      const lib = await getExLib();
+      if(lib.some(x=>x.name.toLowerCase() === encontrado.name.trim().toLowerCase())){
+        if(!confirm(`Ya tienes "${encontrado.name}" en la galería.\n\n¿Guardar otra versión?`)) return;
+      }
+      lib.push({ id: uid(), ...plantillaDe(encontrado) });
+      const ok = await saveExLib(lib);
+      toast(ok ? `"${encontrado.name}" guardado en la galería` : 'No se pudo guardar', !ok);
+    });
+    card.querySelectorAll('.ex-move').forEach(mv=>mv.addEventListener('click', async ()=>{
+      const exId = mv.dataset.moveex, dir = mv.dataset.dir;
+      const d2 = card.dataset.day, blockKey = card.dataset.block;
+      const draft = await getRoutine(athleteId, true);
+      const lista = draft.days[d2][blockKey];
+      const i = lista.findIndex(x=>x.id===exId);
+      const j = dir==='up' ? i-1 : i+1;
+      if(i===-1 || j<0 || j>=lista.length) return;
+      [lista[i], lista[j]] = [lista[j], lista[i]];
+      const ok = await saveRoutine(athleteId, true, draft);
+      if(ok){ state.openDays[d2]=true; renderKeepScroll(); }
+    }));
+    const removeBtn = card.querySelector('[data-removeex]');
+    if(removeBtn) removeBtn.addEventListener('click', async ()=>{
+      const exId = removeBtn.dataset.removeex;
+      const d2 = card.dataset.day, blockKey = card.dataset.block;
+      const draft = await getRoutine(athleteId, true);
+      draft.days[d2][blockKey] = draft.days[d2][blockKey].filter(x=>x.id!==exId);
+      const ok = await saveRoutine(athleteId, true, draft);
+      if(ok){ card.remove(); actualizaContadorDia(d2); }
+      else toast('No se pudo eliminar', true);
     });
 }
 // Refresca el "N ejerc." de la cabecera del día sin re-renderizar.
