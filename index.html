@@ -9,25 +9,28 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Umbral">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=marca2">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=marca2">
 <title>Umbral — Seguimiento de atletas</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
   :root{ --navh:64px; }
+  /* Modo oscuro con la misma marca: marino profundo de fondo y mostaza como
+     acento. Sobre oscuro la mostaza sí puede llevar el peso del acento (tiene
+     contraste de sobra), al revés que en claro, donde manda el marino. */
   body.theme-dark{
-    --bg:#121210; --panel:#1C1B17; --panel2:#232019; --panel3:#2A2116; --border:#2A2822;
-    --ink:#F2EEE4; --muted:#8C8578; --accent:#C98A3E; --accent-dim:#3A2A14; --on-accent:#14100A;
-    --gold:#C98A3E; --gold-dim:#3A2A14;
-    --warn:#E0A050; --danger:#E2685C;
+    --bg:#0E1622; --panel:#15202F; --panel2:#1C2838; --panel3:#233043; --border:#2B3648;
+    --ink:#F4F2EA; --muted:#9AA5B8; --accent:#C9A227; --accent-dim:#2B2716; --on-accent:#0E1622;
+    --gold:#C9A227; --gold-dim:#2B2716;
+    --warn:#D9A93C; --danger:#E2685C;
   }
   /* Modo claro con la paleta de marca: azul marino, mostaza y blanco roto.
      El azul lleva la estructura (texto, botones) porque es lo más legible sobre
      claro; la mostaza queda para los acentos que deben destacar. */
   body.theme-light{
-    --bg:#F4F2EA; --panel:#FFFFFF; --panel2:#EFECE1; --panel3:#E8E5D8; --border:#D9D4C4;
-    --ink:#1B2A49; --muted:#6C7488; --accent:#1B2A49; --accent-dim:#E6E9F1; --on-accent:#FFFFFF;
-    --gold:#8F6A12; --gold-dim:#F6EDD6;
+    --bg:#F4F2EA; --panel:#FFFFFF; --panel2:#F2EFE6; --panel3:#EDEADF; --border:#D9D4C4;
+    --ink:#1B2A49; --muted:#5F6678; --accent:#1B2A49; --accent-dim:#E6E9F1; --on-accent:#FFFFFF;
+    --gold:#856210; --gold-dim:#F6EDD6;
     --warn:#B8891F; --danger:#A83A2E;
   }
 
@@ -95,6 +98,9 @@
   .tabla-comp{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:10px;}
   .tabla-comp th{text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);padding:5px 7px;border-bottom:1px solid var(--border);font-weight:600;}
   .tabla-comp td{padding:6px 7px;border-bottom:1px dashed var(--border);}
+  .tabla-comp .cmp-mejor{color:var(--accent);font-weight:700;}
+  .tabla-comp .cmp-peor{color:var(--danger);font-weight:700;}
+  .tabla-comp .cmp-igual{color:var(--muted);}
   .tabla-comp .col-prev{color:var(--muted);}
   .tabla-comp .col-dif{color:var(--accent);font-weight:700;}
   .tabla-comp .col-bien{color:var(--accent);font-weight:700;}
@@ -235,6 +241,18 @@
   .drill-preview summary{font-size:12px;color:var(--accent);cursor:pointer;font-weight:600;}
   .drill-preview[open] summary{margin-bottom:10px;}
   .pista-wrap{margin:10px 0;}
+  .comp-fotos{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+  .comp-fotos figure{margin:0;background:var(--panel2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .comp-fotos img{width:100%;height:180px;object-fit:cover;display:block;cursor:pointer;}
+  .comp-fotos figcaption{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);padding:5px 7px;text-align:center;}
+  .gym-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:9px;margin-top:10px;}
+  .gym-item{position:relative;background:var(--panel2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .gym-item img{width:100%;height:90px;object-fit:cover;display:block;cursor:pointer;}
+  .gym-vid{width:100%;height:90px;background:var(--panel3);border:none;color:var(--accent);font-size:24px;cursor:pointer;}
+  .gym-cap{display:block;font-size:10.5px;color:var(--muted);padding:5px 7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .gym-del{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:11px;background:var(--panel);opacity:0.9;}
+  .test-instr{background:var(--panel2);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.7;white-space:pre-wrap;}
+  .tabla-comp-wrap{overflow-x:auto;}
   .gal-item{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 13px;margin-bottom:10px;position:relative;}
   .drill-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative;}
   .jug-picker{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
@@ -252,7 +270,7 @@
   .dj-rol.dirige{color:var(--accent);border:1px solid var(--accent);}
   .dj-rol.consistente{color:var(--muted);}
   .dj-zona b{font-weight:600;}
-  .z-roja{color:var(--danger);} .z-azul{color:#5B8FD9;} .z-amarilla{color:var(--warn);} .z-verde{color:var(--accent);}
+  .z-roja{color:var(--danger);} .z-azul{color:#3A5FA8;} .z-amarilla{color:var(--warn);} .z-verde{color:var(--accent);}
   .lib-letra{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);font-weight:600;padding:10px 0 5px;border-bottom:1px solid var(--border);margin-bottom:6px;}
   .lib-item{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:7px;cursor:pointer;}
   .lib-item.sel{border-color:var(--accent);background:var(--accent-dim);}
@@ -312,7 +330,7 @@
   .comp-group{display:flex;justify-content:space-between;align-items:baseline;gap:10px;background:var(--accent-dim);border-radius:8px;padding:9px 13px;margin:16px 0 10px;}
   .comp-group b{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;}
   .comp-group span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);white-space:nowrap;}
-  .demo-badge{background:var(--warn);color:#1C1B17;font-weight:700;}
+  .demo-badge{background:var(--gold);color:var(--panel);font-weight:700;}
   .demo-barra{background:var(--accent-dim);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:11px 14px;margin-bottom:14px;}
   .demo-barra p{font-size:12.5px;color:var(--ink);line-height:1.55;margin:6px 0 5px;}
   .demo-pie{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
@@ -370,6 +388,9 @@
   .identity-chip{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:6px 13px;white-space:nowrap;}
   .gate-wrap{max-width:460px;margin:6vh auto 0;}
   .gate-intro{text-align:center;margin-bottom:22px;}
+  .gate-logo{width:58px;height:58px;display:block;margin:0 auto 12px;}
+  .gate-logo path{fill:var(--accent);}
+  .gate-logo .gl-oro{fill:var(--gold);}
   .gate-intro h2{font-family:'Fraunces',serif;font-size:23px;font-weight:600;margin-bottom:6px;}
   .gate-intro p{color:var(--muted);font-size:13.5px;}
   .gate-option{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;cursor:pointer;transition:border-color .15s, transform .08s;font-family:'Manrope',sans-serif;color:var(--ink);}
@@ -420,7 +441,7 @@
   .athlete-row .status{font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:3px 9px;border-radius:100px;}
   .status.activo{background:var(--accent-dim);color:var(--accent);}
   .status.pausado{background:var(--gold-dim);color:var(--gold);}
-  .status.baja{background:#3A1512;color:var(--danger);}
+  .status.baja{background:var(--panel3);color:var(--danger);}
   .sub-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;}
   .sub-tabs button{white-space:nowrap;background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:6px;font-weight:700;font-size:12.5px;cursor:pointer;}
   .sub-tabs button.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
@@ -1028,7 +1049,7 @@ function weekOfISO(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.g
 function saturdayOfWeek(){ const d=new Date(); const day=d.getDay()||7; d.setDate(d.getDate()-day+6); return fechaLocalISO(d); }
 function fmtTime(sec){ const m=Math.floor(sec/60), s=Math.abs(sec%60); return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
 // Colores del RPE dentro de la paleta: verde sobrio, mostaza y granate.
-function rpeColor(rpe){ if(rpe<=3) return '#2F7355'; if(rpe<=6) return '#8F6A12'; return '#A83A2E'; }
+function rpeColor(rpe){ if(rpe<=3) return '#2F7355'; if(rpe<=6) return '#856210'; return '#A83A2E'; }
 function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c)); }
 
 async function loadAthletes(){ const raw=await safeGet('athletes-list', true); state.athletes = raw?JSON.parse(raw):[]; }
@@ -1134,7 +1155,11 @@ function renderGate(){
   }
   return `<div class="gate-wrap">
     <div class="gate-intro">
-      <h2>¿Cómo quieres entrar?</h2>
+      <svg class="gate-logo" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M26 18 L26 62 L50 82 L50 64 L40 56 L40 18 Z"/>
+        <path class="gl-oro" d="M74 18 L74 62 L50 82 L50 64 L60 56 L60 18 Z"/>
+      </svg>
+      <h2>Umbral</h2>
       <p>Elige tu perfil para continuar.</p>
     </div>
     <button class="gate-option" data-gate="atleta">
@@ -1629,7 +1654,12 @@ async function renderTabContent(){
       else if(state.tab==='diario') html = await tplSesionEntry(athleteId);
       else if(state.tab==='calendario') html = await tplCalendarioAtleta(athleteId);
       else if(state.tab==='progreso') html = await tplProgreso(athleteId);
-      else if(state.tab==='perfil') html = await tplPerfilAtleta(athleteId);
+      else if(state.tab==='perfil'){
+        if(state.verTests) html = await tplTestsAtleta(athleteId);
+        else if(state.verGym) html = await tplGym(athleteId, false);
+        else if(state.verFotos) html = await tplProgresoFotos(athleteId, false);
+        else html = await tplPerfilAtleta(athleteId);
+      }
     }
   }catch(e){
     html = `<div class="card"><div class="empty">No se pudo cargar esta pantalla. ${escapeHtml(e.message||'')}</div></div>`;
@@ -1866,6 +1896,354 @@ function habitosLogDemo(){
     log[fechaLocalISO(f)] = { hd1: i%4!==0, hd2: 7 + (i%3)*0.5, hd3: 3 + (i%3), hd4: i%3!==0 };
   }
   return log;
+}
+
+// ---------- BATERÍA DE TESTS INICIALES ----------
+// Catálogo de tests. El entrenador elige cuáles manda a cada atleta.
+// Clasificación: patrón de movimiento, complejo articular y segmento, para
+// poder agruparlos después en el perfil del atleta.
+const TEST_CATEGORIAS = {
+  patron:   ['Sentadilla','Bisagra de cadera','Empuje horizontal','Empuje vertical','Tracción horizontal','Tracción vertical','Zancada','Marcha/Carrera','Antirrotación','Global'],
+  complejo: ['Tobillo-pie','Rodilla','Cadera-pelvis','Columna lumbar','Columna torácica','Glenohumeral','Escapulotorácica','Cuello','Global'],
+  segmento: ['Tren inferior','Tren superior','Core','Cuerpo completo','Cardiorrespiratorio']
+};
+const TEST_MODOS = ['Sin peso','Peso libre','Máquina','Material propio'];
+
+// Escala compartida por todos los tests: el entrenador valora del 1 al 5 tres
+// dimensiones tras ver el vídeo. Es SU valoración, no automática.
+const TEST_VALORACIONES = [
+  { id:'controlMotor', label:'Control motor',
+    ayuda:'Cadencia, intencionalidad y dominio de las fases del movimiento.' },
+  { id:'biomecanica', label:'Biomecánica',
+    ayuda:'Alineación, compensaciones y estandarización de la ejecución.' },
+  { id:'umbralIntensidad', label:'Umbral de intensidad',
+    ayuda:'¿Falsa intensidad o bajo umbral? ¿El esfuerzo real corresponde al declarado?' }
+];
+
+// Catálogo base. `campos` son los datos numéricos que pide al atleta, y
+// `baremo` (si existe) permite devolverle una estimación de su estado.
+const TESTS_CATALOGO = [
+  {
+    id:'ohsq', nombre:'Overhead Squat (OHSQ)', tipo:'movilidad',
+    patron:'Sentadilla', complejo:'Global', segmento:'Cuerpo completo', modo:'Sin peso',
+    instrucciones:'1. Pies a la anchura de los hombros, punteras al frente.\n2. Brazos extendidos por encima de la cabeza, con una pica o palo.\n3. Baja tan profundo como puedas SIN que los talones se levanten, sin que las rodillas se vayan hacia dentro y sin que los brazos caigan hacia delante.\n4. Graba de frente y de perfil, 3 repeticiones lentas en cada plano.',
+    pideVideo:true, planos:['Frontal','Lateral'],
+    campos:[
+      {id:'profundidad', label:'¿Hasta dónde bajas?', tipo:'select',
+       opciones:['Por encima del paralelo','Llego al paralelo','Por debajo del paralelo']},
+      {id:'talones', label:'¿Se levantan los talones?', tipo:'select', opciones:['No','Un poco','Sí, claramente']},
+      {id:'brazos', label:'¿Caen los brazos hacia delante?', tipo:'select', opciones:['No','Un poco','Sí, claramente']},
+      {id:'rodillas', label:'¿Se van las rodillas hacia dentro?', tipo:'select', opciones:['No','Un poco','Sí, claramente']}
+    ],
+    // Estimación cualitativa a partir de las compensaciones declaradas.
+    estima:(v)=>{
+      const penaliza = (x)=> x==='Sí, claramente' ? 2 : (x==='Un poco' ? 1 : 0);
+      let p = penaliza(v.talones)+penaliza(v.brazos)+penaliza(v.rodillas);
+      if(v.profundidad==='Por encima del paralelo') p += 2;
+      else if(v.profundidad==='Llego al paralelo') p += 1;
+      if(p<=1) return { nivel:'bueno', texto:'Patrón de sentadilla limpio. Buena base de movilidad para cargar con seguridad.' };
+      if(p<=4) return { nivel:'medio', texto:'Aparecen algunas compensaciones. Se puede entrenar con normalidad, pero conviene trabajo específico de movilidad en paralelo.' };
+      return { nivel:'bajo', texto:'Varias compensaciones marcadas. Antes de cargar fuerte, prioridad al trabajo de movilidad y control del patrón.' };
+    }
+  },
+  {
+    id:'dorsiflexion', nombre:'Dorsiflexión de tobillo (test rodilla-pared)', tipo:'movilidad',
+    patron:'Sentadilla', complejo:'Tobillo-pie', segmento:'Tren inferior', modo:'Sin peso',
+    instrucciones:'NECESITAS: una pared, y para medir cualquiera de estas tres opciones: una cinta métrica, una regla, o un folio A4.\n\nCÓMO COLOCARTE\n1. Descalzo, de pie frente a una pared.\n2. Pon el pie mirando de frente a la pared, con el segundo dedo y el talón en línea recta hacia ella.\n3. Lleva la rodilla hacia delante hasta TOCAR la pared, sin que el talón se despegue del suelo ni un milímetro.\n4. Si la rodilla llega fácil, aleja el pie un centímetro y repite. Sigue alejándolo hasta encontrar la distancia MÁXIMA en la que la rodilla todavía toca la pared con el talón pegado al suelo.\n5. Esa es tu medida. Repite en el otro pie.\n\nCÓMO MEDIR (elige lo que tengas)\n· Con cinta métrica o regla: distancia desde la punta del dedo gordo hasta la pared, en centímetros.\n· Con un folio A4: colócalo en el suelo tocando la pared. El lado corto mide 21 cm y el largo 29,7 cm. Si tu dedo queda a media hoja por el lado corto, son unos 10 cm.\n· Con un móvil como referencia: la mayoría miden entre 14 y 16 cm de largo. Sirve para aproximar.\n\nSI NO PUEDES MEDIR\nDeja los centímetros en blanco y graba el vídeo igualmente: pon la cámara a ras de suelo, de perfil, viendo el pie, la rodilla y la pared. Marca el suelo con un objeto (una moneda, un boli) donde esté la punta del dedo. Con eso puedo valorarlo yo por comparación, aunque no tenga el número exacto.\n\nIMPORTANTE: no fuerces. Si notas pinzamiento en la parte delantera del tobillo, para ahí y anótalo.',
+    pideVideo:true, planos:['Lateral'],
+    campos:[
+      {id:'cmDer', label:'Distancia pie derecho (cm) — déjalo vacío si no has podido medir', tipo:'number'},
+      {id:'cmIzq', label:'Distancia pie izquierdo (cm) — déjalo vacío si no has podido medir', tipo:'number'},
+      {id:'sinMedir', label:'Si no has podido medir, ¿qué notaste?', tipo:'select',
+       opciones:['','La rodilla llega a la pared con el pie bastante alejado','La rodilla llega justo, con el pie cerca de la pared','La rodilla no llega sin levantar el talón']},
+      {id:'molestia', label:'¿Notaste pinzamiento delante del tobillo?', tipo:'select', opciones:['','No','Sí, en el derecho','Sí, en el izquierdo','Sí, en ambos']}
+    ],
+    // Referencias: valores normativos típicos 10-15 cm; <10 cm se considera
+    // restricción clínicamente relevante. Asimetría >1,5 cm es el umbral de
+    // cambio mínimo detectable, así que por debajo no la interpretamos.
+    estima:(v)=>{
+      const d = parseFloat(v.cmDer), i = parseFloat(v.cmIzq);
+      // Sin centímetros no inventamos un número: damos una lectura cualitativa
+      // a partir de lo que notó, y el vídeo decide.
+      if(isNaN(d) || isNaN(i)){
+        const s = v.sinMedir;
+        if(!s) return null;
+        if(s.startsWith('La rodilla llega a la pared con el pie bastante')) return { nivel:'bueno', texto:'Por lo que describes, la movilidad parece suficiente. Cuando puedas medirlo en centímetros lo afinamos; mientras, valoro el vídeo.' };
+        if(s.startsWith('La rodilla llega justo')) return { nivel:'medio', texto:'Parece un rango algo justo. Lo confirmo con tu vídeo y, si puedes, mídelo en centímetros la próxima vez.' };
+        return { nivel:'bajo', texto:'Si la rodilla no llega sin despegar el talón, hay una limitación clara. Lo veo en el vídeo y lo incluimos en tu trabajo de movilidad.' };
+      }
+      const min = Math.min(d,i), asim = Math.abs(d-i);
+      let nivel, texto;
+      if(min < 10){ nivel='bajo'; texto=`Tu lado más limitado llega a ${min} cm. Por debajo de 10 cm se considera una restricción relevante: condiciona la profundidad de sentadilla y el gesto de carrera.`; }
+      else if(min <= 15){ nivel='bueno'; texto=`Ambos tobillos en el rango habitual (10-15 cm). Movilidad suficiente para sentadilla profunda y carrera.`; }
+      else { nivel='bueno'; texto=`Movilidad amplia (${min} cm o más). Por encima de lo habitual; asegúrate de acompañarla con buen control y fuerza en rango.`; }
+      if(asim > 1.5) texto += ` Hay ${asim.toFixed(1)} cm de diferencia entre lados, por encima del margen de error del test: merece la pena trabajarlo.`;
+      if(v.molestia && v.molestia !== 'No') texto += ' Has marcado pinzamiento en la parte delantera del tobillo: eso cambia la lectura, porque puede estar frenándote antes que el propio músculo. Lo vemos en la revisión.';
+      return { nivel, texto };
+    }
+  },
+  {
+    id:'glenohumeral', nombre:'Movilidad glenohumeral (manos a la espalda)', tipo:'movilidad',
+    patron:'Tracción vertical', complejo:'Glenohumeral', segmento:'Tren superior', modo:'Sin peso',
+    instrucciones:'1. De pie, lleva una mano por encima del hombro hacia la espalda y la otra por debajo, desde la cintura.\n2. Intenta que los dedos de ambas manos se toquen.\n3. Mide en centímetros la distancia entre las puntas de los dedos (0 si se tocan, negativo si se solapan).\n4. Repite cambiando qué brazo va arriba. Graba de espaldas.',
+    pideVideo:true, planos:['Posterior'],
+    campos:[
+      {id:'cmDerArriba', label:'Distancia con brazo DERECHO arriba (cm)', tipo:'number'},
+      {id:'cmIzqArriba', label:'Distancia con brazo IZQUIERDO arriba (cm)', tipo:'number'}
+    ],
+    estima:(v)=>{
+      const d = parseFloat(v.cmDerArriba), i = parseFloat(v.cmIzqArriba);
+      if(isNaN(d) || isNaN(i)) return null;
+      const peor = Math.max(d,i), asim = Math.abs(d-i);
+      let nivel, texto;
+      if(peor <= 0){ nivel='bueno'; texto='Las manos se tocan o se solapan por ambos lados. Movilidad de hombro muy buena para trabajo por encima de la cabeza.'; }
+      else if(peor <= 5){ nivel='bueno'; texto=`Te quedas a ${peor} cm en el lado más limitado. Es un margen pequeño y funcional.`; }
+      else if(peor <= 12){ nivel='medio'; texto=`Te faltan ${peor} cm en el lado más limitado. Conviene trabajo de movilidad de hombro antes de cargar mucho por encima de la cabeza.`; }
+      else { nivel='bajo'; texto=`Distancia amplia (${peor} cm). Limitación marcada: adaptaremos los ejercicios por encima de la cabeza mientras la mejoramos.`; }
+      if(asim > 5) texto += ` Además hay ${asim.toFixed(0)} cm de diferencia entre un lado y otro, que trabajaremos específicamente.`;
+      return { nivel, texto };
+    }
+  },
+  {
+    id:'thomas', nombre:'Test de Thomas', tipo:'movilidad',
+    patron:'Bisagra de cadera', complejo:'Cadera-pelvis', segmento:'Tren inferior', modo:'Sin peso',
+    instrucciones:'1. Túmbate boca arriba al borde de una camilla o cama, con las piernas colgando desde la rodilla.\n2. Abraza una rodilla contra el pecho.\n3. Deja la otra pierna relajada, colgando.\n4. Observa esa pierna: ¿el muslo se queda apoyado o se levanta? ¿la rodilla se estira?\n5. Graba de perfil, en ambos lados.',
+    pideVideo:true, planos:['Lateral'],
+    campos:[
+      {id:'musloDer', label:'Muslo derecho', tipo:'select', opciones:['Se queda apoyado','Se levanta un poco','Se levanta claramente']},
+      {id:'musloIzq', label:'Muslo izquierdo', tipo:'select', opciones:['Se queda apoyado','Se levanta un poco','Se levanta claramente']},
+      {id:'rodillaDer', label:'Rodilla derecha (¿se estira sola?)', tipo:'select', opciones:['Se mantiene flexionada ~90°','Se estira un poco','Se estira claramente']},
+      {id:'rodillaIzq', label:'Rodilla izquierda (¿se estira sola?)', tipo:'select', opciones:['Se mantiene flexionada ~90°','Se estira un poco','Se estira claramente']}
+    ],
+    estima:(v)=>{
+      const pen = (x)=> (x==='Se levanta claramente'||x==='Se estira claramente') ? 2 : ((x==='Se levanta un poco'||x==='Se estira un poco') ? 1 : 0);
+      const p = pen(v.musloDer)+pen(v.musloIzq)+pen(v.rodillaDer)+pen(v.rodillaIzq);
+      if(p===0) return { nivel:'bueno', texto:'Test negativo en ambos lados: buena extensibilidad de flexores de cadera y recto femoral.' };
+      if(p<=3) return { nivel:'medio', texto:'Hay cierta tensión en los flexores de cadera. Nada alarmante, pero lo incluiremos en tu trabajo de movilidad.' };
+      return { nivel:'bajo', texto:'Tensión marcada en flexores de cadera y/o recto femoral. Influye en la postura pélvica y en el patrón de sentadilla: le daremos prioridad.' };
+    }
+  },
+  {
+    id:'rm6_sentadilla', nombre:'Test 6RM · Sentadilla', tipo:'fuerza',
+    patron:'Sentadilla', complejo:'Global', segmento:'Tren inferior', modo:'Peso libre',
+    instrucciones:'1. Calienta progresivamente con series de aproximación.\n2. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n3. Si te salen 8, súbelo y descansa 3-5 min antes de reintentar.\n4. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n5. Graba la serie de perfil.\nSeguridad: usa barras de seguridad o un ayudante. Ante cualquier duda técnica, para.',
+    pideVideo:true, planos:['Lateral'],
+    campos:[
+      {id:'peso', label:'Peso utilizado (kg)', tipo:'number'},
+      {id:'reps', label:'Repeticiones conseguidas', tipo:'number'},
+      {id:'rpe', label:'RPE (1-10)', tipo:'number'},
+      {id:'rir', label:'RIR (repeticiones en recámara)', tipo:'number'}
+    ],
+    lift:'sentadilla'
+  },
+  {
+    id:'rm6_banca', nombre:'Test 6RM · Press de banca', tipo:'fuerza',
+    patron:'Empuje horizontal', complejo:'Glenohumeral', segmento:'Tren superior', modo:'Peso libre',
+    instrucciones:'1. Calienta progresivamente con series de aproximación.\n2. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n3. Si te salen 8, súbelo y descansa 3-5 min antes de reintentar.\n4. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n5. Graba la serie de perfil.\nSeguridad: imprescindible un ayudante o pinzas de seguridad.',
+    pideVideo:true, planos:['Lateral'],
+    campos:[
+      {id:'peso', label:'Peso utilizado (kg)', tipo:'number'},
+      {id:'reps', label:'Repeticiones conseguidas', tipo:'number'},
+      {id:'rpe', label:'RPE (1-10)', tipo:'number'},
+      {id:'rir', label:'RIR (repeticiones en recámara)', tipo:'number'}
+    ],
+    lift:'banca'
+  },
+  {
+    id:'rm6_muerto', nombre:'Test 6RM · Peso muerto', tipo:'fuerza',
+    patron:'Bisagra de cadera', complejo:'Columna lumbar', segmento:'Tren inferior', modo:'Peso libre',
+    instrucciones:'1. Calienta progresivamente con series de aproximación.\n2. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n3. Si te salen 8, súbelo y descansa 3-5 min antes de reintentar.\n4. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n5. Graba la serie de perfil.\nSeguridad: para en cuanto la espalda pierda la posición, aunque te queden repeticiones.',
+    pideVideo:true, planos:['Lateral'],
+    campos:[
+      {id:'peso', label:'Peso utilizado (kg)', tipo:'number'},
+      {id:'reps', label:'Repeticiones conseguidas', tipo:'number'},
+      {id:'rpe', label:'RPE (1-10)', tipo:'number'},
+      {id:'rir', label:'RIR (repeticiones en recámara)', tipo:'number'}
+    ],
+    lift:'muerto'
+  }
+];
+
+// 1RM estimado. Brzycki y Epley coinciden casi exactamente en el rango 1-6;
+// en 6 repeticiones Brzycki es algo más conservador, que es lo que interesa
+// para programar cargas. Promediamos ambas para no heredar el sesgo de una.
+function estima1RM(peso, reps){
+  const w = parseFloat(peso), r = parseInt(reps,10);
+  if(isNaN(w) || isNaN(r) || w<=0 || r<1 || r>12) return null;
+  if(r === 1) return w;
+  const brzycki = w * 36 / (37 - r);
+  const epley   = w * (1 + r/30);
+  return Math.round(((brzycki + epley) / 2) * 10) / 10;
+}
+
+// Estándares de fuerza como múltiplo del peso corporal. Son referencias de
+// uso común en la comunidad (no un consenso científico): sirven para orientar,
+// no para juzgar. Mujeres ~80% en tren inferior y ~65% en tren superior.
+// Cada array es el umbral MÍNIMO para entrar en ese nivel, en el mismo orden
+// que NIVELES_FUERZA. El primer valor es el mínimo de "Principiante", así que
+// alcanzar el umbral de un nivel te coloca EN ese nivel, no en el siguiente.
+const ESTANDARES_FUERZA = {
+  //            Princip. Novel  Interm. Avanz.  Élite
+  sentadilla: { hombre:[0.75,  1.25,  1.5,    2.0,   2.5],
+                mujer: [0.60,  1.00,  1.25,   1.6,   2.0] },
+  banca:      { hombre:[0.50,  0.75,  1.0,    1.5,   2.0],
+                mujer: [0.35,  0.50,  0.75,   1.0,   1.3] },
+  muerto:     { hombre:[1.00,  1.50,  2.0,    2.5,   3.0],
+                mujer: [0.80,  1.20,  1.5,    2.0,   2.5] }
+};
+const NIVELES_FUERZA = ['Principiante','Novel','Intermedio','Avanzado','Élite'];
+function nivelFuerza(lift, unRM, pesoCorporal, genero){
+  const est = ESTANDARES_FUERZA[lift];
+  if(!est || !unRM || !pesoCorporal) return null;
+  const clave = (genero||'').toLowerCase().startsWith('mujer') ? 'mujer' : 'hombre';
+  const umbrales = est[clave];
+  const ratio = unRM / pesoCorporal;
+  // El nivel es el del umbral más alto que se alcanza; por debajo del primero,
+  // aún está construyendo base.
+  let idx = -1;
+  umbrales.forEach((u,i)=>{ if(ratio >= u) idx = i; });
+  const nivel = idx < 0 ? 'Construyendo base' : NIVELES_FUERZA[idx];
+  return { nivel, ratio: Math.round(ratio*100)/100, clave };
+}
+
+// Batería asignada a un atleta. El entrenador elige qué tests manda y si el
+// atleta ve o no las estimaciones de condición física: con alguien inseguro o
+// que llega de una lesión, un «estás por debajo de la media» no ayuda.
+async function getBateria(athleteId){
+  const raw = await safeGet('bateria-'+athleteId, true);
+  try{ const o = raw ? JSON.parse(raw) : null; return (o && typeof o==='object') ? o : null; }
+  catch(e){ return null; }
+}
+async function saveBateria(athleteId, bat){ return safeSet('bateria-'+athleteId, JSON.stringify(bat), true); }
+
+// Histórico: cada vez que se completa una batería se archiva, para poder
+// comparar la evolución entre tandas.
+async function getHistorialTests(athleteId){
+  const raw = await safeGet('tests-historial-'+athleteId, true);
+  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
+  catch(e){ return []; }
+}
+async function saveHistorialTests(athleteId, lista){ return safeSet('tests-historial-'+athleteId, JSON.stringify(lista), true); }
+
+// Tests propios que creas tú, además de los del catálogo base. Se guardan en
+// la base como cualquier otro dato, así que los tienes en todos tus atletas.
+let _testsPropiosCache = null;
+async function getTestsPropios(){
+  const raw = await safeGet('tests-propios', true);
+  try{ const l = raw ? JSON.parse(raw) : []; _testsPropiosCache = Array.isArray(l) ? l : []; }
+  catch(e){ _testsPropiosCache = []; }
+  return _testsPropiosCache;
+}
+async function saveTestsPropios(lista){
+  _testsPropiosCache = lista;
+  return safeSet('tests-propios', JSON.stringify(lista), true);
+}
+// Catálogo completo = los de serie + los tuyos.
+function catalogoCompleto(){
+  return TESTS_CATALOGO.concat(_testsPropiosCache || []);
+}
+function testPorId(id){
+  return catalogoCompleto().find(t=>t.id===id) || null;
+}
+function esTestPropio(id){
+  return (_testsPropiosCache || []).some(t=>t.id===id);
+}
+function testVacio(){
+  return { id:'tp'+uid(), nombre:'', tipo:'movilidad', propio:true,
+    patron:'', complejo:'', segmento:'', modo:'Sin peso',
+    instrucciones:'', pideVideo:true, planos:['Lateral'],
+    campos:[{id:'c'+uid(), label:'', tipo:'number'}] };
+}
+// Devuelve la estimación de un test ya rellenado, o null si no aplica.
+function estimacionDeTest(test, resultado, intake){
+  if(!test || !resultado) return null;
+  if(test.lift){
+    const unRM = estima1RM(resultado.peso, resultado.reps);
+    if(!unRM) return null;
+    const pc = parseFloat(intake && intake.peso);
+    const nf = nivelFuerza(test.lift, unRM, pc, intake && intake.genero);
+    return {
+      titular: `1RM estimado: ${unRM} kg`,
+      nivel: nf ? nf.nivel.toLowerCase().includes('base') ? 'medio' : 'bueno' : 'medio',
+      texto: nf
+        ? `Equivale a ${nf.ratio}× tu peso corporal, lo que se sitúa en el nivel ${nf.nivel.toLowerCase()}. Es una referencia orientativa de uso común, no un consenso científico: la edad, las palancas y tu historial mueven mucho esa cifra.`
+        : 'Para situarlo por nivel necesito tu peso corporal en la ficha inicial.'
+    };
+  }
+  if(typeof test.estima === 'function'){
+    const e = test.estima(resultado);
+    if(!e) return null;
+    return { titular:null, nivel:e.nivel, texto:e.texto };
+  }
+  return null;
+}
+
+// ---------- FOTOS DE PROGRESO ----------
+// Sólo se piden si el objetivo lo justifica: estético o de composición
+// corporal. En un objetivo puramente de rendimiento no aportan y pueden
+// generar una relación innecesaria con la imagen.
+const OBJETIVOS_VALORACION = [
+  { id:'rendimiento', label:'Solo rendimiento', pideFotos:false,
+    ayuda:'Fuerza, resistencia, competición. No se piden fotos.' },
+  { id:'estetico', label:'Estético', pideFotos:true,
+    ayuda:'Cambio de composición corporal como objetivo principal.' },
+  { id:'mixto', label:'Rendimiento + composición', pideFotos:true,
+    ayuda:'Rinde mejor y además necesita bajar graso o ganar masa.' }
+];
+const PLANOS_FOTO = ['Frente','Lateral','Espalda'];
+
+async function getProgreso(athleteId){
+  const raw = await safeGet('progreso-fotos-'+athleteId, true);
+  try{
+    const o = raw ? JSON.parse(raw) : null;
+    if(o && typeof o === 'object') return { objetivo:o.objetivo||'', tomas:Array.isArray(o.tomas)?o.tomas:[] };
+  }catch(e){}
+  return { objetivo:'', tomas:[] };
+}
+async function saveProgreso(athleteId, p){ return safeSet('progreso-fotos-'+athleteId, JSON.stringify(p), true); }
+function objetivoPideFotos(objId){
+  const o = OBJETIVOS_VALORACION.find(x=>x.id===objId);
+  return !!(o && o.pideFotos);
+}
+
+// ---------- GYM / INSTALACIONES ----------
+// Carpeta propia de cada atleta con fotos y vídeos de dónde entrena, para
+// saber con qué material contamos antes de programar nada. Las subcarpetas
+// las defines tú: no hay una estructura fija impuesta.
+const SUBCARPETAS_DEFECTO = ['Instalaciones','Máquinas que más le gustan','Máquinas que no le gustan','Material disponible'];
+async function getGym(athleteId){
+  const raw = await safeGet('gym-'+athleteId, true);
+  try{
+    const o = raw ? JSON.parse(raw) : null;
+    if(o && Array.isArray(o.carpetas)) return o;
+  }catch(e){}
+  return { carpetas: SUBCARPETAS_DEFECTO.map(n=>({ id:'sc'+uid(), nombre:n, items:[] })) };
+}
+async function saveGym(athleteId, gym){ return safeSet('gym-'+athleteId, JSON.stringify(gym), true); }
+
+// Sube una foto o un vídeo al almacén. Reutiliza el bucket de vídeos, que ya
+// está configurado; las fotos pesan poquísimo comparadas con el vídeo.
+async function subirArchivoGym(file){
+  if(!file) throw new Error('no hay archivo');
+  const esVideo = (file.type||'').startsWith('video');
+  const maxMB = esVideo ? MAX_VIDEO_MB : 8;
+  const mb = file.size / (1024*1024);
+  if(mb > maxMB) throw new Error(`pesa ${mb.toFixed(1)} MB (máximo ${maxMB})`);
+  const ext = (file.name.split('.').pop() || (esVideo?'mp4':'jpg')).toLowerCase().replace(/[^a-z0-9]/g,'');
+  const path = 'gym/' + Date.now() + '-' + uid() + '.' + ext;
+  const r = await fetch(SUPA_URL + '/storage/v1/object/' + VIDEO_BUCKET + '/' + path, {
+    method:'POST',
+    headers:{ 'apikey':SUPA_KEY, 'Authorization':'Bearer '+SUPA_KEY, 'Content-Type': file.type || (esVideo?'video/mp4':'image/jpeg') },
+    body:file
+  });
+  if(!r.ok){
+    let detalle = 'HTTP ' + r.status;
+    try{ const j = await r.json(); if(j && j.message) detalle = j.message; }catch(e){}
+    if(r.status === 404) detalle = 'falta crear el almacén en Supabase';
+    throw new Error(detalle);
+  }
+  return { id:uid(), tipo: esVideo?'video':'foto', url: videoPublicUrl(path), path,
+           nombre: file.name.replace(/\.[^.]+$/,'').slice(0,40), fecha: todayISO() };
 }
 
 // ---------- READINESS (check-in de 30 segundos) ----------
@@ -2124,7 +2502,7 @@ function tplPistaSVG(dr){
   const jugadores = dr.jugadores || [];
   let g = '';
   // Fondo y líneas de pista
-  g += `<rect width="${W}" height="${H}" fill="#1C1B17" rx="10"/>`;
+  g += `<rect width="${W}" height="${H}" fill="#1B2A49" rx="10"/>`;
   const dibujaBandas = (esMio, esPared) => {
     BANDA_ZONAS.forEach(b=>{
       const y0 = esMio ? H-20-b.y1 : 20+b.y0;
@@ -2138,9 +2516,9 @@ function tplPistaSVG(dr){
   };
   dibujaBandas(true, false);
   dibujaBandas(false, dr.fronton);
-  g += `<rect x="30" y="20" width="200" height="${H-40}" fill="none" stroke="#EDE4D3" stroke-width="1.5"/>`;
+  g += `<rect x="30" y="20" width="200" height="${H-40}" fill="none" stroke="#F4F2EA" stroke-width="1.5"/>`;
   if(!dr.fronton){
-    g += `<line x1="15" y1="${H/2}" x2="245" y2="${H/2}" stroke="#EDE4D3" stroke-width="3"/>`;
+    g += `<line x1="15" y1="${H/2}" x2="245" y2="${H/2}" stroke="#F4F2EA" stroke-width="3"/>`;
   }
 
   // Jugadores: posición según su lado y zona de origen, repartidos en X si
@@ -2174,23 +2552,23 @@ function tplPistaSVG(dr){
       : yMitad(j.zonaDestino, destinoEsMio);
     const xDestino = 130 + ((idxFlecha%3)-1)*35;
     const d = `M${origen.x} ${origen.y} L${xDestino} ${yDestino}`;
-    g += `<path class="pista-arrow" data-order="${idxFlecha}" d="${d}" stroke="#EDE4D3" stroke-width="2.5" fill="none" marker-end="url(#pistaArrow)" stroke-dasharray="500" stroke-dashoffset="0"/>`;
+    g += `<path class="pista-arrow" data-order="${idxFlecha}" d="${d}" stroke="#F4F2EA" stroke-width="2.5" fill="none" marker-end="url(#pistaArrow)" stroke-dasharray="500" stroke-dashoffset="0"/>`;
     idxFlecha++;
   });
 
   // Marcadores de jugador, encima de las flechas
   jugadores.forEach(j=>{
     const p = posiciones[j.numero];
-    const color = j.rol==='dirige' ? '#C08A5A' : '#EDE4D3';
+    const color = j.rol==='dirige' ? '#C9A227' : '#F4F2EA';
     g += `<circle cx="${p.x}" cy="${p.y}" r="13" fill="${color}"/>
-      <text x="${p.x}" y="${p.y+4}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" font-weight="700" fill="#1C1B17">J${j.numero}</text>`;
+      <text x="${p.x}" y="${p.y+4}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" font-weight="700" fill="#1B2A49">J${j.numero}</text>`;
   });
 
-  g += `<defs><marker id="pistaArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#EDE4D3"/></marker></defs>`;
+  g += `<defs><marker id="pistaArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#F4F2EA"/></marker></defs>`;
   g += `<g class="pista-open" style="opacity:0;">
-      <ellipse cx="130" cy="270" rx="38" ry="24" fill="#EDE4D3" stroke="#1C1B17" stroke-width="2"/>
-      <path d="M100 288 L88 302 L110 292 Z" fill="#EDE4D3" stroke="#1C1B17" stroke-width="2"/>
-      <text x="130" y="276" text-anchor="middle" font-family="'Fraunces',serif" font-size="17" font-weight="700" fill="#1C1B17">OPEN</text>
+      <ellipse cx="130" cy="270" rx="38" ry="24" fill="#F4F2EA" stroke="#1B2A49" stroke-width="2"/>
+      <path d="M100 288 L88 302 L110 292 Z" fill="#F4F2EA" stroke="#1B2A49" stroke-width="2"/>
+      <text x="130" y="276" text-anchor="middle" font-family="'Fraunces',serif" font-size="17" font-weight="700" fill="#1B2A49">OPEN</text>
     </g>`;
 
   return `<svg class="pista-svg" viewBox="0 0 ${W} ${H}" style="width:100%;max-width:280px;display:block;margin:0 auto;">${g}</svg>`;
@@ -2659,7 +3037,10 @@ function renderSessionOverlay(){
       ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
       <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div>
       <div class="set-box">${ex.setsDone.map((done,si)=>`<div class="set-chip ${done?'done':''}" data-exi="${i}" data-si="${si}">S${si+1}</div>`).join('')}</div>
-      ${t.type!=='none'?`<button class="btn ghost small" data-extimer="${i}" style="margin-top:8px;">▶ ${TIMER_TYPE_LABELS[t.type]}</button>`:''}
+      <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px;">
+        ${t.type!=='none'?`<button class="btn ghost small" data-extimer="${i}">▶ ${TIMER_TYPE_LABELS[t.type]}</button>`:''}
+        ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}">▶ Ver técnica</button>`:''}
+      </div>
       <div class="ex-grid" style="margin-top:8px;">
         <div><label class="field-label">RPE aplicado</label><input type="number" min="1" max="10" class="rpe-applied-input" data-exi="${i}" value="${ex.rpeApplied ?? ''}"></div>
         <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
@@ -4030,6 +4411,49 @@ async function tplPerfilAtleta(athleteId){
     ${call.nextDate?`<div style="font-size:13px;color:var(--muted);">Próxima revisión: <b style="color:var(--accent);">${call.nextDate}</b>${call.duration?' · '+escapeHtml(call.duration):''}</div>`:''}
   </div>`;
 
+  // Banner de la batería de tests: sólo aparece si hay una asignada.
+  const batPerfil = await getBateria(athleteId);
+  const histPerfil = await getHistorialTests(athleteId);
+  if(batPerfil || histPerfil.length){
+    const pend = batPerfil ? batPerfil.tests.filter(t=>!t.resultado || !Object.keys(t.resultado).length).length : 0;
+    html += `<button class="task-banner ${pend?'':'done'}" id="abrirTestsBtn">
+      <span class="task-ic">${icClipboard()}</span>
+      <span class="task-txt">
+        <b>Batería de tests</b>
+        <span>${batPerfil
+          ? (pend ? `${pend} test${pend===1?'':'s'} por completar` : 'Completada · toca para revisar tus resultados')
+          : `${histPerfil.length} batería${histPerfil.length===1?'':'s'} anterior${histPerfil.length===1?'':'es'}`}</span>
+      </span>
+      <span class="task-arrow">${pend?'›':'✓'}</span>
+    </button>`;
+  }
+
+  // Banner de fotos de progreso: sólo si el objetivo lo justifica.
+  const progPerfil = await getProgreso(athleteId);
+  if(objetivoPideFotos(progPerfil.objetivo)){
+    const nT = progPerfil.tomas.length;
+    html += `<button class="task-banner ${nT?'done':''}" id="abrirFotosBtn" style="margin-top:10px;">
+      <span class="task-ic">${icChartUp()}</span>
+      <span class="task-txt">
+        <b>Fotos de progreso</b>
+        <span>${nT ? `${nT} toma${nT===1?'':'s'} · toca para añadir otra o comparar` : 'Sube tu primera toma para tener punto de partida'}</span>
+      </span>
+      <span class="task-arrow">${nT?'✓':'›'}</span>
+    </button>`;
+  }
+
+  // Banner de Gym / Instalaciones
+  const gymPerfil = await getGym(athleteId);
+  const nArch = gymPerfil.carpetas.reduce((a,c)=>a+c.items.length,0);
+  html += `<button class="task-banner ${nArch?'done':''}" id="abrirGymBtn" style="margin-top:10px;">
+    <span class="task-ic">${icGrid()}</span>
+    <span class="task-txt">
+      <b>Gym / Instalaciones</b>
+      <span>${nArch ? `${nArch} archivo${nArch===1?'':'s'} subido${nArch===1?'':'s'} · toca para añadir más` : 'Sube fotos de dónde entrenas y con qué material cuentas'}</span>
+    </span>
+    <span class="task-arrow">${nArch?'✓':'›'}</span>
+  </button>`;
+
   // Suscripción
   const pagadoColor = p.pagado==='Sí' ? 'var(--accent)' : (p.pagado==='No' ? 'var(--danger)' : 'var(--warn)');
   let vencAviso = '';
@@ -4098,6 +4522,9 @@ async function tplAthleteDetail(athleteId){
     <button data-subtab="progreso" class="${state.athleteSubTab==='progreso'?'active':''}">Progreso</button>
     <button data-subtab="cuestionarios" class="${state.athleteSubTab==='cuestionarios'?'active':''}">Cuestionarios</button>
     <button data-subtab="habitos" class="${state.athleteSubTab==='habitos'?'active':''}">Hábitos</button>
+    <button data-subtab="tests" class="${state.athleteSubTab==='tests'?'active':''}">Tests</button>
+    <button data-subtab="gym" class="${state.athleteSubTab==='gym'?'active':''}">Gym</button>
+    <button data-subtab="fotos" class="${state.athleteSubTab==='fotos'?'active':''}">Fotos</button>
     <button data-subtab="perfil" class="${state.athleteSubTab==='perfil'?'active':''}">Perfil</button>
   </div>`;
   if(state.athleteSubTab==='planificacion') html += await tplPlanificacionCoach(athleteId);
@@ -4105,8 +4532,680 @@ async function tplAthleteDetail(athleteId){
   else if(state.athleteSubTab==='diario') html += await tplDiarioLectura(athleteId);
   else if(state.athleteSubTab==='progreso') html += await tplProgreso(athleteId);
   else if(state.athleteSubTab==='habitos') html += await tplHabitosCoach(athleteId);
+  else if(state.athleteSubTab==='tests') html += await tplTestsCoach(athleteId);
+  else if(state.athleteSubTab==='gym') html += await tplGym(athleteId, true);
+  else if(state.athleteSubTab==='fotos') html += await tplProgresoFotos(athleteId, true);
   else if(state.athleteSubTab==='perfil') html += await tplPerfilCoachBody(athleteId);
   else html += await tplQuestConfigAndRead(athleteId);
+  return html;
+}
+
+// Reúne todas las veces que se ha hecho un test concreto, de la batería activa
+// y de las archivadas, ordenadas de más antigua a más reciente.
+function historicoDeTest(testId, batActiva, historial){
+  const tandas = [];
+  (historial||[]).forEach(h=>{
+    const t = (h.tests||[]).find(x=>x.testId===testId);
+    if(t && t.resultado && Object.keys(t.resultado).length) tandas.push({ fecha:h.fecha, ...t });
+  });
+  if(batActiva){
+    const t = (batActiva.tests||[]).find(x=>x.testId===testId);
+    if(t && t.resultado && Object.keys(t.resultado).length) tandas.push({ fecha:batActiva.fecha, ...t });
+  }
+  return tandas.sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha)));
+}
+
+// Compara dos valores del mismo campo e indica si ha mejorado. `mayorMejor`
+// es false en los campos donde bajar es progresar (p. ej. tiempos).
+function comparaValor(antes, ahora, mayorMejor){
+  const a = parseFloat(antes), b = parseFloat(ahora);
+  if(isNaN(a) || isNaN(b)) return null;
+  const dif = b - a;
+  if(Math.abs(dif) < 0.001) return { dif:0, texto:'igual', clase:'igual' };
+  const mejora = mayorMejor === false ? dif < 0 : dif > 0;
+  const signo = dif > 0 ? '+' : '';
+  return { dif, texto:`${signo}${Math.round(dif*10)/10}`, clase: mejora ? 'mejor' : 'peor' };
+}
+
+// Campos cuyo progreso tiene sentido comparar numéricamente, por test.
+const CAMPOS_COMPARABLES = {
+  dorsiflexion: [{ id:'cmDer', label:'Tobillo derecho', unidad:'cm' }, { id:'cmIzq', label:'Tobillo izquierdo', unidad:'cm' }],
+  glenohumeral: [{ id:'cmDerArriba', label:'Brazo derecho arriba', unidad:'cm', mayorMejor:false },
+                 { id:'cmIzqArriba', label:'Brazo izquierdo arriba', unidad:'cm', mayorMejor:false }],
+  rm6_sentadilla: [{ id:'peso', label:'Peso movido', unidad:'kg' }],
+  rm6_banca:      [{ id:'peso', label:'Peso movido', unidad:'kg' }],
+  rm6_muerto:     [{ id:'peso', label:'Peso movido', unidad:'kg' }]
+};
+
+// Tarjeta de evolución de un test entre tandas.
+function tplComparativaTest(def, tandas){
+  if(tandas.length < 2) return '';
+  const primera = tandas[0], ultima = tandas[tandas.length-1];
+  let filas = '';
+
+  // Campos numéricos definidos, o los del propio test si son numéricos.
+  let campos = CAMPOS_COMPARABLES[def.id];
+  if(!campos){
+    campos = (def.campos||[]).filter(c=>c.tipo==='number').map(c=>({ id:c.id, label:c.label, unidad:'' }));
+  }
+  campos.forEach(c=>{
+    const cmp = comparaValor(primera.resultado[c.id], ultima.resultado[c.id], c.mayorMejor);
+    if(!cmp) return;
+    filas += `<tr>
+      <td>${escapeHtml(c.label)}</td>
+      <td class="col-prev">${escapeHtml(String(primera.resultado[c.id]))}${c.unidad?' '+c.unidad:''}</td>
+      <td><b>${escapeHtml(String(ultima.resultado[c.id]))}${c.unidad?' '+c.unidad:''}</b></td>
+      <td class="cmp-${cmp.clase}">${cmp.texto}${c.unidad&&cmp.dif!==0?' '+c.unidad:''}</td>
+    </tr>`;
+  });
+
+  // Para los tests de fuerza, comparamos también el 1RM estimado.
+  if(def.lift){
+    const rmA = estima1RM(primera.resultado.peso, primera.resultado.reps);
+    const rmB = estima1RM(ultima.resultado.peso, ultima.resultado.reps);
+    const cmp = comparaValor(rmA, rmB, true);
+    if(cmp) filas += `<tr>
+      <td><b>1RM estimado</b></td>
+      <td class="col-prev">${rmA} kg</td>
+      <td><b>${rmB} kg</b></td>
+      <td class="cmp-${cmp.clase}">${cmp.texto} kg</td>
+    </tr>`;
+  }
+
+  // Y la evolución de tus tres valoraciones.
+  TEST_VALORACIONES.forEach(v=>{
+    const a = (primera.valoracion||{})[v.id], b = (ultima.valoracion||{})[v.id];
+    const cmp = comparaValor(a, b, true);
+    if(!cmp) return;
+    filas += `<tr>
+      <td>${escapeHtml(v.label)}</td>
+      <td class="col-prev">${a}/5</td>
+      <td><b>${b}/5</b></td>
+      <td class="cmp-${cmp.clase}">${cmp.texto}</td>
+    </tr>`;
+  });
+
+  if(!filas) return '';
+  return `<div class="card"><h2>${escapeHtml(def.nombre)}</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">${tandas.length} mediciones · de ${primera.fecha} a ${ultima.fecha}</p>
+    <div class="tabla-comp-wrap"><table class="tabla-comp">
+      <thead><tr><th>Dato</th><th>Primera</th><th>Última</th><th>Cambio</th></tr></thead>
+      <tbody>${filas}</tbody>
+    </table></div>
+  </div>`;
+}
+
+// Editor de un test propio. Se abre en modal para no perder de vista dónde
+// estabas componiendo la batería.
+async function abrirEditorTest(testId){
+  const propios = await getTestsPropios();
+  const test = testId ? propios.find(t=>t.id===testId) : testVacio();
+  if(!test) return;
+  const esNuevo = !testId;
+
+  let back = document.getElementById('testEdBack');
+  if(back) back.remove();
+  back = document.createElement('div');
+  back.id = 'testEdBack'; back.className = 'modal-back';
+  document.body.appendChild(back);
+
+  const pintar = ()=>{
+    back.innerHTML = `<div class="modal">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h2 style="font-family:'Fraunces',serif;font-size:17px;">${esNuevo?'Nuevo test':'Editar test'}</h2>
+        <button class="btn ghost small" id="cerrarTestEd">Cerrar</button>
+      </div>
+      <div class="ex-grid">
+        <div class="full"><label class="field-label">Nombre del test</label>
+          <input type="text" id="tedNombre" value="${escapeHtml(test.nombre||'')}" placeholder="Ej. Test de Cooper, Plancha isométrica…" style="width:100%;"></div>
+        <div><label class="field-label">Tipo</label>
+          <select id="tedTipo" style="width:100%;">
+            ${[['movilidad','Movilidad'],['fuerza','Fuerza'],['cardio','Cardiorrespiratorio'],['otro','Otro']].map(([v,l])=>`<option value="${v}" ${test.tipo===v?'selected':''}>${l}</option>`).join('')}
+          </select></div>
+        <div><label class="field-label">Modo</label>
+          <select id="tedModo" style="width:100%;">
+            ${TEST_MODOS.map(m=>`<option value="${escapeHtml(m)}" ${test.modo===m?'selected':''}>${escapeHtml(m)}</option>`).join('')}
+          </select></div>
+        <div><label class="field-label">Patrón de movimiento</label>
+          <select id="tedPatron" style="width:100%;">
+            <option value="">Sin clasificar</option>
+            ${TEST_CATEGORIAS.patron.map(x=>`<option value="${escapeHtml(x)}" ${test.patron===x?'selected':''}>${escapeHtml(x)}</option>`).join('')}
+          </select></div>
+        <div><label class="field-label">Complejo articular</label>
+          <select id="tedComplejo" style="width:100%;">
+            <option value="">Sin clasificar</option>
+            ${TEST_CATEGORIAS.complejo.map(x=>`<option value="${escapeHtml(x)}" ${test.complejo===x?'selected':''}>${escapeHtml(x)}</option>`).join('')}
+          </select></div>
+        <div><label class="field-label">Segmento</label>
+          <select id="tedSegmento" style="width:100%;">
+            <option value="">Sin clasificar</option>
+            ${TEST_CATEGORIAS.segmento.map(x=>`<option value="${escapeHtml(x)}" ${test.segmento===x?'selected':''}>${escapeHtml(x)}</option>`).join('')}
+          </select></div>
+        <div class="full"><label class="field-label">Instrucciones para el atleta</label>
+          <textarea id="tedInstr" style="min-height:120px;white-space:pre-wrap;" placeholder="Paso a paso. Puedes usar varias líneas:&#10;1. Colócate…&#10;2. Ejecuta…&#10;3. Anota…">${escapeHtml(test.instrucciones||'')}</textarea></div>
+        <div class="full"><label class="row" style="gap:8px;font-size:13px;">
+          <input type="checkbox" id="tedPideVideo" ${test.pideVideo?'checked':''}> Pedir vídeo al atleta</label></div>
+        <div class="full" id="tedPlanosWrap" style="${test.pideVideo?'':'display:none;'}">
+          <label class="field-label">Planos a grabar</label>
+          <div class="habit-pick">
+            ${['Frontal','Lateral','Posterior','Cenital'].map(pl=>`<button class="hp ${(test.planos||[]).includes(pl)?'on':''}" data-tedplano="${pl}">${pl}</button>`).join('')}
+          </div></div>
+      </div>
+
+      <div class="block-title">Datos que pide al atleta</div>
+      <div id="tedCampos">
+        ${(test.campos||[]).map((c,i)=>`
+          <div class="gal-item" data-tedcampo="${i}">
+            <div class="row" style="gap:8px;align-items:flex-start;">
+              <input type="text" class="ted-clabel" value="${escapeHtml(c.label||'')}" placeholder="Qué le preguntas (ej. Metros recorridos)" style="flex:1;min-width:0;">
+              <button class="btn ghost small" data-tedcampodel="${i}">✕</button>
+            </div>
+            <div class="ex-grid" style="margin-top:8px;">
+              <div><label class="field-label">Tipo de dato</label>
+                <select class="ted-ctipo" style="width:100%;">
+                  ${[['number','Número'],['text','Texto'],['select','Opciones']].map(([v,l])=>`<option value="${v}" ${c.tipo===v?'selected':''}>${l}</option>`).join('')}
+                </select></div>
+              <div><label class="field-label">Opciones (si aplica)</label>
+                <input type="text" class="ted-copciones" value="${escapeHtml((c.opciones||[]).join(', '))}" placeholder="Separadas por comas"></div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <button class="btn ghost small" id="tedAddCampo">+ Añadir dato</button>
+
+      <div class="lib-pie">
+        ${esNuevo?'':`<button class="btn ghost small" id="tedBorrar">Eliminar test</button>`}
+        <button class="btn" id="tedGuardar">Guardar test</button>
+      </div>
+    </div>`;
+    bindEditor();
+  };
+
+  // Lee el formulario al objeto en memoria, para no perder nada al repintar.
+  const leer = ()=>{
+    test.nombre = document.getElementById('tedNombre').value.trim();
+    test.tipo = document.getElementById('tedTipo').value;
+    test.modo = document.getElementById('tedModo').value;
+    test.patron = document.getElementById('tedPatron').value;
+    test.complejo = document.getElementById('tedComplejo').value;
+    test.segmento = document.getElementById('tedSegmento').value;
+    test.instrucciones = document.getElementById('tedInstr').value;
+    test.pideVideo = document.getElementById('tedPideVideo').checked;
+    test.campos = [...back.querySelectorAll('[data-tedcampo]')].map((el,i)=>{
+      const prev = (test.campos||[])[i] || {};
+      const opciones = el.querySelector('.ted-copciones').value.split(',').map(x=>x.trim()).filter(Boolean);
+      return {
+        id: prev.id || ('c'+uid()),
+        label: el.querySelector('.ted-clabel').value.trim(),
+        tipo: el.querySelector('.ted-ctipo').value,
+        opciones: opciones.length ? [''].concat(opciones) : undefined
+      };
+    });
+  };
+
+  function bindEditor(){
+    document.getElementById('cerrarTestEd').addEventListener('click', ()=>back.remove());
+    back.addEventListener('click', e=>{ if(e.target===back) back.remove(); });
+    const chk = document.getElementById('tedPideVideo');
+    chk.addEventListener('change', ()=>{
+      document.getElementById('tedPlanosWrap').style.display = chk.checked ? '' : 'none';
+    });
+    back.querySelectorAll('[data-tedplano]').forEach(b=>b.addEventListener('click', ()=>{
+      const pl = b.dataset.tedplano;
+      if(!Array.isArray(test.planos)) test.planos = [];
+      test.planos = test.planos.includes(pl) ? test.planos.filter(x=>x!==pl) : test.planos.concat(pl);
+      b.classList.toggle('on', test.planos.includes(pl));
+    }));
+    document.getElementById('tedAddCampo').addEventListener('click', ()=>{
+      leer();
+      test.campos.push({ id:'c'+uid(), label:'', tipo:'number' });
+      pintar();
+    });
+    back.querySelectorAll('[data-tedcampodel]').forEach(b=>b.addEventListener('click', ()=>{
+      leer();
+      const i = parseInt(b.dataset.tedcampodel,10);
+      test.campos.splice(i,1);
+      if(!test.campos.length) test.campos.push({ id:'c'+uid(), label:'', tipo:'number' });
+      pintar();
+    }));
+    const borrar = document.getElementById('tedBorrar');
+    if(borrar) borrar.addEventListener('click', async ()=>{
+      if(!confirm(`¿Eliminar el test "${test.nombre||'sin nombre'}"?\n\nLas baterías ya enviadas que lo usen dejarán de mostrarlo.`)) return;
+      const lista = (await getTestsPropios()).filter(t=>t.id!==test.id);
+      const ok = await saveTestsPropios(lista);
+      toast(ok?'Test eliminado':'No se pudo eliminar', !ok);
+      back.remove();
+      if(ok) renderScrollTop();
+    });
+    document.getElementById('tedGuardar').addEventListener('click', async ()=>{
+      leer();
+      if(!test.nombre){ toast('Ponle un nombre al test', true); return; }
+      const validos = test.campos.filter(c=>c.label);
+      if(!validos.length){ toast('Añade al menos un dato que pedirle', true); return; }
+      test.campos = validos;
+      const lista = await getTestsPropios();
+      const i = lista.findIndex(t=>t.id===test.id);
+      if(i >= 0) lista[i] = test; else lista.push(test);
+      const ok = await saveTestsPropios(lista);
+      toast(ok?'Test guardado':'No se pudo guardar', !ok);
+      back.remove();
+      if(ok) renderScrollTop();
+    });
+  }
+  pintar();
+}
+
+// ---------- FOTOS DE PROGRESO: PANTALLA COMPARTIDA ----------
+async function tplProgresoFotos(athleteId, esCoach){
+  const prog = await getProgreso(athleteId);
+  const pide = objetivoPideFotos(prog.objetivo);
+
+  let html = '';
+  if(!esCoach){
+    html += `<div class="row" style="margin-bottom:12px;"><button class="btn ghost small" id="volverPerfilFotosBtn">← Perfil</button></div>`;
+  }
+
+  if(!pide){
+    return html + `<div class="card"><h2>Fotos de progreso</h2>
+      <div class="empty">${esCoach
+        ? 'No se piden fotos con el objetivo actual. Cámbialo al enviar una batería si quieres valorar composición corporal.'
+        : 'Tu objetivo no requiere fotos de progreso ahora mismo.'}</div></div>`;
+  }
+
+  html += `<div class="card"><h2>Fotos de progreso</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">${esCoach
+      ? 'Comparativa de composición corporal entre tomas. Sólo aparecen porque el objetivo lo justifica.'
+      : 'Tres fotos cada pocas semanas, siempre en las mismas condiciones: misma luz, misma hora (mejor en ayunas por la mañana), misma distancia y ropa ajustada. Lo que importa no es cada foto suelta, sino poder compararlas.'}</p>
+    ${!esCoach ? `<p style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px;">Postura: de pie, relajado, brazos a los lados. No aprietes ni metas tripa — una foto forzada no sirve para comparar.</p>` : ''}
+  </div>`;
+
+  // Nueva toma (sólo el atleta sube)
+  if(!esCoach){
+    const enCurso = state.tomaEnCurso || {};
+    html += `<div class="card"><h2>Nueva toma</h2>
+      <div class="ex-grid">
+        <div class="full"><label class="field-label">Fecha</label>
+          <input type="date" id="tomaFecha" value="${enCurso.fecha||todayISO()}" max="${todayISO()}" style="width:100%;"></div>
+        <div class="full"><label class="field-label">Peso de hoy (kg, opcional)</label>
+          <input type="number" id="tomaPeso" step="any" inputmode="decimal" value="${enCurso.peso||''}" style="width:100%;"></div>
+      </div>`;
+    PLANOS_FOTO.forEach(pl=>{
+      const ya = enCurso[pl];
+      html += `<div class="video-row">
+        ${ya
+          ? `<span class="video-tag">✓ ${escapeHtml(pl)}</span>
+             <button class="btn ghost small" data-tomaquitar="${escapeHtml(pl)}">Quitar</button>`
+          : `<span class="video-tag" style="background:var(--panel3);color:var(--muted);">${escapeHtml(pl)}</span>
+             <input type="file" accept="image/*" class="toma-file" data-plano="${escapeHtml(pl)}" style="flex:1;min-width:0;font-size:12px;">
+             <button class="btn small" data-tomasubir="${escapeHtml(pl)}">Subir</button>`}
+      </div>`;
+    });
+    const completa = PLANOS_FOTO.every(pl=>enCurso[pl]);
+    html += `<button class="btn" id="guardarTomaBtn" style="margin-top:12px;" ${completa?'':'disabled'}>
+      ${completa?'Guardar esta toma':'Sube los tres planos para guardar'}</button></div>`;
+  }
+
+  // Tomas guardadas
+  if(!prog.tomas.length){
+    html += `<div class="card"><div class="empty">Aún no hay ninguna toma guardada.</div></div>`;
+  } else {
+    const tomas = prog.tomas.slice().sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha)));
+    const primera = tomas[0], ultima = tomas[tomas.length-1];
+
+    // Comparativa primera vs última, que es lo que de verdad enseña el cambio
+    if(tomas.length >= 2){
+      html += `<div class="card"><h2>Primera vs última</h2>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">${primera.fecha} → ${ultima.fecha}${
+          (primera.peso && ultima.peso) ? ` · ${primera.peso} kg → <b>${ultima.peso} kg</b>` : ''}</p>`;
+      PLANOS_FOTO.forEach(pl=>{
+        if(!primera[pl] || !ultima[pl]) return;
+        html += `<div class="block-title">${escapeHtml(pl)}</div>
+          <div class="comp-fotos">
+            <figure><img src="${escapeHtml(primera[pl].url)}" loading="lazy" data-gymfoto="${escapeHtml(primera[pl].url)}|${escapeHtml(pl+' · '+primera.fecha)}"><figcaption>${primera.fecha}</figcaption></figure>
+            <figure><img src="${escapeHtml(ultima[pl].url)}" loading="lazy" data-gymfoto="${escapeHtml(ultima[pl].url)}|${escapeHtml(pl+' · '+ultima.fecha)}"><figcaption>${ultima.fecha}</figcaption></figure>
+          </div>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `<div class="card"><h2>Todas las tomas</h2>`;
+    tomas.slice().reverse().forEach(t=>{
+      html += `<div class="entry">
+        <div class="entry-top"><span>${t.fecha}</span><span>${t.peso?t.peso+' kg':''}</span></div>
+        <div class="gym-grid" style="margin-top:8px;">
+          ${PLANOS_FOTO.filter(pl=>t[pl]).map(pl=>`
+            <div class="gym-item">
+              <img src="${escapeHtml(t[pl].url)}" loading="lazy" data-gymfoto="${escapeHtml(t[pl].url)}|${escapeHtml(pl+' · '+t.fecha)}">
+              <span class="gym-cap">${escapeHtml(pl)}</span>
+            </div>`).join('')}
+        </div>
+        ${!esCoach?`<button class="btn ghost small" data-tomaborrar="${t.id}" style="margin-top:8px;">Eliminar toma</button>`:''}
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  return html;
+}
+
+// ---------- GYM: PANTALLA COMPARTIDA ----------
+// esCoach=true: puedes crear, renombrar y borrar subcarpetas.
+// esCoach=false: el atleta sube fotos y vídeos a las carpetas que hayas creado.
+async function tplGym(athleteId, esCoach){
+  const gym = await getGym(athleteId);
+  const total = gym.carpetas.reduce((a,c)=>a+c.items.length,0);
+
+  let html = '';
+  if(!esCoach){
+    html += `<div class="row" style="margin-bottom:12px;"><button class="btn ghost small" id="volverPerfilGymBtn">← Perfil</button></div>`;
+  }
+  html += `<div class="card"><h2>Gym / Instalaciones</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">${esCoach
+      ? 'Lo que suba tu atleta sobre dónde entrena. Organiza las subcarpetas a tu criterio: renómbralas, añade las que necesites o elimina las que no uses.'
+      : 'Sube fotos o vídeos de tu gimnasio: las instalaciones, las máquinas que tienes, las que más te gustan y las que evitas. Cuanto mejor sepa con qué cuentas, mejor te puedo programar.'}</p>
+    <div class="kpi-row" style="margin-top:10px;"><div class="kpi"><b>${total}</b><span>Archivos</span></div></div>
+    ${esCoach ? `<button class="btn ghost small" id="gymNuevaCarpetaBtn" style="margin-top:10px;">+ Nueva subcarpeta</button>` : ''}
+  </div>`;
+
+  gym.carpetas.forEach((c,ci)=>{
+    const abierta = state.gymCarpetaAbierta === c.id;
+    html += `<div class="acc ${abierta?'open':''}" data-gymcarpeta="${c.id}">
+      <div class="acc-head" data-toggle-gym="${c.id}">
+        <b style="text-transform:none;">${escapeHtml(c.nombre)}</b>
+        <span class="chev"><span class="chev-arrow">▾</span></span>
+        <span class="chev-count">${c.items.length}</span>
+      </div>
+      <div class="acc-body">`;
+
+    if(esCoach){
+      html += `<div class="day-tools">
+        <input type="text" class="gym-nombre" data-carpeta="${c.id}" value="${escapeHtml(c.nombre)}" style="flex:1;min-width:120px;">
+        <button class="btn ghost small" data-gymborrarcarpeta="${c.id}">Eliminar</button>
+      </div>`;
+    } else {
+      html += `<div class="day-tools">
+        <input type="file" accept="image/*,video/*" class="gym-file" data-carpeta="${c.id}" style="flex:1;min-width:0;font-size:12px;">
+        <button class="btn small" data-gymsubir="${c.id}">Subir</button>
+      </div>`;
+    }
+
+    if(!c.items.length){
+      html += `<div class="empty">${esCoach?'Tu atleta aún no ha subido nada aquí.':'Nada subido todavía.'}</div>`;
+    } else {
+      html += `<div class="gym-grid">`;
+      c.items.forEach(it=>{
+        html += `<div class="gym-item">
+          ${it.tipo==='foto'
+            ? `<img src="${escapeHtml(it.url)}" alt="${escapeHtml(it.nombre)}" loading="lazy" data-gymfoto="${escapeHtml(it.url)}|${escapeHtml(it.nombre)}">`
+            : `<button class="gym-vid" data-playvideo="${escapeHtml(it.url)}|${escapeHtml(it.nombre)}">▶</button>`}
+          <span class="gym-cap">${escapeHtml(it.nombre)}</span>
+          <button class="btn ghost small gym-del" data-gymborrar="${c.id}|${it.id}">✕</button>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div></div>`;
+  });
+  return html;
+}
+
+// ---------- TESTS: PANTALLA DEL ATLETA ----------
+async function tplTestsAtleta(athleteId){
+  await getTestsPropios();          // para que reconozca tus tests propios
+  const bat = await getBateria(athleteId);
+  const historial = await getHistorialTests(athleteId);
+  const intakeRaw = await safeGet('intake-'+athleteId, true);
+  const intake = intakeRaw ? JSON.parse(intakeRaw) : {};
+
+  // Si no hay batería activa pero sí historial, mostramos su evolución: es lo
+  // que más engancha de repetir los tests pasados unos meses.
+  if(!bat){
+    const ids = new Set();
+    historial.forEach(h=>(h.tests||[]).forEach(t=>{ if(t.resultado && Object.keys(t.resultado).length) ids.add(t.testId); }));
+    let ev = '';
+    ids.forEach(id=>{
+      const def = testPorId(id);
+      if(def) ev += tplComparativaTest(def, historicoDeTest(id, null, historial));
+    });
+    return `<div class="row" style="margin-bottom:12px;"><button class="btn ghost small" id="volverPerfilBtn">← Perfil</button></div>
+      <div class="card"><h2>Tests</h2><div class="empty">No tienes ninguna batería pendiente ahora mismo.</div></div>
+      ${ev ? `<div class="block-title">Tu evolución</div>` + ev : ''}`;
+  }
+
+  const total = bat.tests.length;
+  const hechos = bat.tests.filter(t=>t.resultado && Object.keys(t.resultado).length).length;
+  let html = `<div class="row" style="margin-bottom:12px;"><button class="btn ghost small" id="volverPerfilBtn">← Perfil</button></div>
+    <div class="card"><h2>Tu batería de tests</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Tómatelos con calma: no es una prueba que aprobar, es la foto de partida para ajustar tu plan. Lee las instrucciones, grábate como se indica y anota los datos con honestidad — un dato inflado solo sirve para que te programe mal.</p>
+    <div class="kpi-row" style="margin-top:12px;"><div class="kpi"><b>${hechos}/${total}</b><span>Completados</span></div></div>
+  </div>`;
+
+  bat.tests.forEach((t,i)=>{
+    const def = testPorId(t.testId);
+    if(!def) return;
+    const r = t.resultado || {};
+    const hecho = Object.keys(r).length > 0;
+    const abierto = state.testAbierto === i;
+    html += `<div class="acc ${abierto?'open':''}" data-testacc="${i}">
+      <div class="acc-head" data-toggle-test="${i}">
+        <b style="text-transform:none;">${hecho?'✓ ':''}${escapeHtml(def.nombre)}</b>
+        <span class="chev"><span class="chev-arrow">▾</span></span>
+        <span class="chev-count">${escapeHtml(def.modo||'')}</span>
+      </div>
+      <div class="acc-body">
+        <div class="test-instr">${escapeHtml(def.instrucciones||'')}</div>`;
+
+    // Vídeo de demostración que hayas adjuntado al test
+    if(def.videoUrl){
+      html += `<button class="btn ghost small" data-playvideo="${escapeHtml(def.videoUrl)}|${escapeHtml(def.nombre)}" style="margin-bottom:12px;">▶ Ver cómo se hace</button>`;
+    }
+
+    // Campos a rellenar
+    html += `<div class="ex-grid">`;
+    (def.campos||[]).forEach(c=>{
+      const v = r[c.id] !== undefined ? r[c.id] : '';
+      html += `<div class="full"><label class="field-label">${escapeHtml(c.label)}</label>`;
+      if(c.tipo==='select'){
+        html += `<select class="test-campo" data-testidx="${i}" data-campo="${c.id}" style="width:100%;">
+          <option value="">Selecciona…</option>
+          ${c.opciones.map(o=>`<option value="${escapeHtml(o)}" ${v===o?'selected':''}>${escapeHtml(o)}</option>`).join('')}
+        </select>`;
+      } else {
+        html += `<input type="${c.tipo==='number'?'number':'text'}" class="test-campo" data-testidx="${i}" data-campo="${c.id}" value="${escapeHtml(String(v))}" style="width:100%;" ${c.tipo==='number'?'step="any" inputmode="decimal"':''}>`;
+      }
+      html += `</div>`;
+    });
+    html += `</div>`;
+
+    // Subida de vídeo por plano
+    if(def.pideVideo){
+      html += `<div class="block-title">Vídeo (${(def.planos||['Vídeo']).join(' y ')})</div>`;
+      (def.planos||['Vídeo']).forEach(plano=>{
+        const ya = (t.videos||[]).find(v=>v.plano===plano);
+        html += `<div class="video-row">
+          ${ya
+            ? `<span class="video-tag">▶ ${escapeHtml(plano)}</span>
+               <button class="btn ghost small" data-playvideo="${escapeHtml(ya.url)}|${escapeHtml(plano)}">Ver</button>
+               <button class="btn ghost small" data-testvidquitar="${i}|${escapeHtml(plano)}">Quitar</button>`
+            : `<span class="video-tag" style="background:var(--panel3);color:var(--muted);">${escapeHtml(plano)}</span>
+               <input type="file" accept="video/*" class="test-video-file" data-testidx="${i}" data-plano="${escapeHtml(plano)}" style="flex:1;min-width:0;font-size:12px;">
+               <button class="btn small" data-testvidsubir="${i}|${escapeHtml(plano)}">Subir</button>`}
+        </div>`;
+      });
+    }
+
+    html += `<button class="btn" data-guardartest="${i}" style="margin-top:12px;">${hecho?'Actualizar resultado':'Guardar resultado'}</button>`;
+
+    // Devolución: estimación (si el entrenador la habilitó) y sus notas
+    if(hecho){
+      if(bat.mostrarEstimaciones){
+        const est = estimacionDeTest(def, r, intake);
+        if(est){
+          html += `<div class="rd-zona rd-${est.nivel==='bueno'?'verde':(est.nivel==='medio'?'ambar':'rojo')}" style="margin-top:14px;">
+            <div><b>${est.titular ? escapeHtml(est.titular) : 'Qué dice tu resultado'}</b><span>${escapeHtml(est.texto)}</span></div>
+          </div>`;
+        }
+      }
+      const val = t.valoracion || {};
+      if(Object.keys(val).length){
+        html += `<div class="block-title">Valoración de tu entrenador</div><div class="rd-detalle">`;
+        TEST_VALORACIONES.forEach(v=>{ if(val[v.id]) html += `<span>${v.label}: <b>${val[v.id]}/5</b></span>`; });
+        html += `</div>`;
+      }
+      if(t.notaCoach){
+        html += `<div class="demo-nota" style="margin-top:10px;">${escapeHtml(t.notaCoach)}</div>`;
+      }
+    }
+    html += `</div></div>`;
+  });
+
+  // Evolución respecto a tandas anteriores del mismo test
+  let evol = '';
+  bat.tests.forEach(t=>{
+    const def = testPorId(t.testId);
+    if(!def) return;
+    evol += tplComparativaTest(def, historicoDeTest(t.testId, bat, historial));
+  });
+  if(evol) html += `<div class="block-title">Tu evolución</div>` + evol;
+  return html;
+}
+
+// ---------- TESTS: PANTALLA DEL ENTRENADOR ----------
+async function tplTestsCoach(athleteId){
+  await getTestsPropios();          // los tuyos entran en el catálogo
+  const bat = await getBateria(athleteId);
+  const historial = await getHistorialTests(athleteId);
+  const intakeRaw = await safeGet('intake-'+athleteId, true);
+  const intake = intakeRaw ? JSON.parse(intakeRaw) : {};
+
+  let html = '';
+
+  // --- Batería en curso o resultados por revisar ---
+  if(bat){
+    const total = bat.tests.length;
+    const hechos = bat.tests.filter(t=>t.resultado && Object.keys(t.resultado).length).length;
+    const completa = hechos === total;
+    html += `<div class="card">
+      <div class="row" style="justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;">
+        <h2>Batería enviada</h2>
+        <span class="chev-count">${hechos} de ${total} completados</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Enviada el ${bat.fecha}. ${bat.mostrarEstimaciones ? 'El atleta <b>sí</b> ve las estimaciones de condición física.' : 'El atleta <b>no</b> ve las estimaciones: los resultados quedan sólo para ti.'}</p>
+      <div class="row" style="gap:8px;flex-wrap:wrap;">
+        ${completa ? `<button class="btn small" id="archivarBateriaBtn">Archivar y cerrar batería</button>` : ''}
+        <button class="btn ghost small" id="cancelarBateriaBtn">Cancelar batería</button>
+      </div>
+    </div>`;
+
+    bat.tests.forEach((t,i)=>{
+      const def = testPorId(t.testId) || t;
+      const r = t.resultado || {};
+      const hecho = Object.keys(r).length > 0;
+      html += `<div class="card"><h2>${escapeHtml(def.nombre)}</h2>
+        <div class="ex-meta" style="margin-bottom:10px;">
+          <span>${escapeHtml(def.patron||'—')}</span><span>${escapeHtml(def.complejo||'—')}</span><span>${escapeHtml(def.modo||'—')}</span>
+        </div>`;
+      if(!hecho){
+        html += `<div class="empty">Pendiente de que el atleta lo complete.</div></div>`;
+        return;
+      }
+      // Datos que envió el atleta
+      html += `<div class="tabla-comp-wrap"><table class="tabla-comp"><tbody>`;
+      (def.campos||[]).forEach(c=>{
+        if(r[c.id]===undefined || r[c.id]==='') return;
+        html += `<tr><td>${escapeHtml(c.label)}</td><td><b>${escapeHtml(String(r[c.id]))}</b></td></tr>`;
+      });
+      html += `</tbody></table></div>`;
+      // Estimación (siempre visible para el entrenador, la vea o no el atleta)
+      const est = estimacionDeTest(def, r, intake);
+      if(est){
+        html += `<div class="rd-zona rd-${est.nivel==='bueno'?'verde':(est.nivel==='medio'?'ambar':'rojo')}" style="margin-top:10px;">
+          <div><b>${est.titular ? escapeHtml(est.titular) : 'Lectura del test'}</b><span>${escapeHtml(est.texto)}</span></div>
+        </div>`;
+      }
+      // Vídeos que subió
+      if(Array.isArray(t.videos) && t.videos.length){
+        html += `<div class="video-row">${t.videos.map(v=>
+          `<button class="btn ghost small" data-playvideo="${escapeHtml(v.url)}|${escapeHtml(v.plano||'Vídeo')}">▶ ${escapeHtml(v.plano||'Vídeo')}</button>`).join('')}</div>`;
+      }
+      // Tus tres valoraciones
+      html += `<div class="block-title">Tu valoración</div>`;
+      TEST_VALORACIONES.forEach(val=>{
+        const actual = (t.valoracion||{})[val.id];
+        html += `<div class="q-item"><p>${val.label}<br><span style="font-size:11.5px;color:var(--muted);font-weight:400;">${val.ayuda}</span></p>
+          <div class="scale" data-valtest="${i}" data-valcampo="${val.id}">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${actual===n?'sel':''}">${n}</button>`).join('')}</div>
+          <div class="scale-labels"><span>1 · deficiente</span><span>5 · excelente</span></div></div>`;
+      });
+      html += `<div class="q-item"><p>Notas para el atleta</p>
+        <textarea class="test-nota-coach" data-testidx="${i}" style="min-height:52px;" placeholder="Qué corregir, en qué fijarse…">${escapeHtml(t.notaCoach||'')}</textarea></div>
+        <button class="btn small" data-guardarval="${i}">Guardar valoración</button>
+      </div>`;
+    });
+  } else {
+    // --- Composición de una batería nueva ---
+    const sel = state.testsSel || [];
+    html += `<div class="card"><h2>Enviar batería de tests</h2>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Elige qué tests quieres que haga. Le aparecerán como tarea pendiente, con instrucciones y la posibilidad de subir vídeo.</p>
+      <label class="row" style="gap:9px;font-size:13.5px;margin-bottom:14px;align-items:flex-start;">
+        <input type="checkbox" id="mostrarEstimCheck" ${state.testsMostrarEstim!==false?'checked':''} style="margin-top:3px;">
+        <span>Mostrarle las estimaciones de condición física<br>
+          <span style="font-size:11.5px;color:var(--muted);">Si lo desmarcas, el atleta solo ve tus notas y valoraciones. Útil con quien viene de una lesión o le afectaría verse comparado.</span></span>
+      </label>
+      <label class="field-label">Objetivo de la valoración</label>
+      <select id="objetivoValoracion" style="width:100%;margin-bottom:6px;">
+        ${OBJETIVOS_VALORACION.map(o=>`<option value="${o.id}" ${state.testsObjetivo===o.id?'selected':''}>${escapeHtml(o.label)}</option>`).join('')}
+      </select>
+      <p style="font-size:11.5px;color:var(--muted);margin-bottom:14px;" id="objetivoAyuda">${escapeHtml((OBJETIVOS_VALORACION.find(o=>o.id===(state.testsObjetivo||'rendimiento'))||OBJETIVOS_VALORACION[0]).ayuda)}</p>`;
+
+    const TIPOS_TEST = ['movilidad','fuerza','cardio','otro'];
+    const ETIQ_TIPO = { movilidad:'Movilidad y control', fuerza:'Fuerza', cardio:'Cardiorrespiratorio', otro:'Otros' };
+    TIPOS_TEST.forEach(tipo=>{
+      const grupo = catalogoCompleto().filter(t=>t.tipo===tipo);
+      if(!grupo.length) return;
+      html += `<div class="block-title">${ETIQ_TIPO[tipo]||tipo}</div>`;
+      grupo.forEach(t=>{
+        const marcado = sel.includes(t.id);
+        html += `<div class="lib-item ${marcado?'sel':''}" data-testpick="${t.id}">
+          <span class="li-check">${marcado?'✓':''}</span>
+          <span class="li-txt"><b>${escapeHtml(t.nombre||'(sin nombre)')}${t.propio?' <span class="mod-tag demo-badge" style="font-size:9px;">propio</span>':''}</b>
+            <span>${[t.patron,t.complejo,t.modo].filter(Boolean).map(escapeHtml).join(' · ')||'sin clasificar'}</span></span>
+          ${t.propio?`<button class="btn ghost small" data-editartest="${t.id}">✎</button>`:''}
+        </div>`;
+      });
+    });
+    html += `<div class="row" style="margin-top:12px;">
+      <button class="btn ghost small" id="crearTestBtn">+ Crear test propio</button>
+    </div>
+    <div class="lib-pie">
+      <span>${sel.length} test${sel.length===1?'':'s'} seleccionado${sel.length===1?'':'s'}</span>
+      <button class="btn" id="enviarBateriaBtn" ${sel.length?'':'disabled'}>Enviar al atleta</button>
+    </div></div>`;
+  }
+
+  // --- Evolución entre tandas ---
+  // Sólo tiene sentido si algún test se ha medido al menos dos veces.
+  const idsMedidos = new Set();
+  (historial||[]).forEach(h=>(h.tests||[]).forEach(t=>{ if(t.resultado && Object.keys(t.resultado).length) idsMedidos.add(t.testId); }));
+  if(bat) (bat.tests||[]).forEach(t=>{ if(t.resultado && Object.keys(t.resultado).length) idsMedidos.add(t.testId); });
+  let compHtml = '';
+  idsMedidos.forEach(id=>{
+    const def = testPorId(id);
+    if(!def) return;
+    const tandas = historicoDeTest(id, bat, historial);
+    compHtml += tplComparativaTest(def, tandas);
+  });
+  if(compHtml){
+    html += `<div class="block-title" style="margin-top:20px;">Evolución entre tandas</div>` + compHtml;
+  }
+
+  // --- Historial de baterías anteriores ---
+  if(historial.length){
+    html += `<div class="card"><h2>Baterías anteriores</h2>`;
+    historial.slice().reverse().forEach(h=>{
+      html += `<div class="entry"><div class="entry-top"><span>${h.fecha}</span><span>${h.tests.length} tests</span></div>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:4px;">${h.tests.map(t=>escapeHtml((testPorId(t.testId)||{}).nombre||t.testId)).join(' · ')}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
   return html;
 }
 
@@ -4999,6 +6098,7 @@ function tplGalItem(ex, secciones){
       <input type="text" class="gal-name" value="${escapeHtml(ex.name)}" placeholder="Nombre" style="flex:1;min-width:0;font-weight:600;">
       <button class="btn ghost small" data-galexdel="${ex.id}">✕</button>
     </div>
+    <textarea class="gal-desc" placeholder="Descripción / técnica&#10;Puedes usar varias líneas:&#10;1. Cat camel&#10;2. Zancada spiderman" style="width:100%;min-height:58px;margin-top:8px;white-space:pre-wrap;">${escapeHtml(ex.desc||'')}</textarea>
     <div class="ex-grid" style="margin-top:8px;">
       <div><label class="field-label">Series</label><input type="text" class="gal-series" value="${escapeHtml(ex.series||'')}"></div>
       <div><label class="field-label">Reps</label><input type="text" class="gal-reps" value="${escapeHtml(ex.reps||'')}"></div>
@@ -5403,6 +6503,8 @@ function bindGalItem(item){
     if(!ex) return;
     const seccionAntes = ex.section || '';
     ex.name = item.querySelector('.gal-name').value.trim();
+    const descEl = item.querySelector('.gal-desc');
+    if(descEl) ex.desc = descEl.value;     // sin trim: respetamos los saltos de línea
     ex.series = item.querySelector('.gal-series').value.trim();
     ex.reps = item.querySelector('.gal-reps').value.trim();
     ex.load = item.querySelector('.gal-load').value.trim();
@@ -5422,7 +6524,7 @@ function bindGalItem(item){
     }
   };
   let deb=null;
-  item.querySelectorAll('input, select').forEach(f=>{
+  item.querySelectorAll('input, select, textarea').forEach(f=>{
     f.addEventListener('input', ()=>{ clearTimeout(deb); deb=setTimeout(guardar, 600); });
     f.addEventListener('change', ()=>{ clearTimeout(deb); guardar(); });
   });
@@ -6048,6 +7150,313 @@ async function bindDynamicEvents(){
     const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
     if(ok){ state.openDays[dia]=true; renderKeepScroll(); }
     else toast('No se pudo guardar', true);
+  }));
+
+  // --- Fotos de progreso ---
+  const abrirFotos = document.getElementById('abrirFotosBtn');
+  if(abrirFotos) abrirFotos.addEventListener('click', ()=>{ state.verFotos = true; renderScrollTop(); });
+  const volverFotos = document.getElementById('volverPerfilFotosBtn');
+  if(volverFotos) volverFotos.addEventListener('click', ()=>{ state.verFotos = false; state.tomaEnCurso = null; renderScrollTop(); });
+  document.querySelectorAll('[data-tomasubir]').forEach(b=>b.addEventListener('click', async ()=>{
+    const plano = b.dataset.tomasubir;
+    const input = document.querySelector(`.toma-file[data-plano="${plano}"]`);
+    const f = input && input.files[0];
+    if(!f){ toast('Elige la foto primero', true); return; }
+    if(!(f.type||'').startsWith('image')){ toast('Tiene que ser una foto', true); return; }
+    b.textContent='Subiendo…'; b.disabled=true;
+    try{
+      const item = await subirArchivoGym(f);
+      if(!state.tomaEnCurso) state.tomaEnCurso = {};
+      // Conservamos fecha y peso que ya hubiera escrito
+      const fEl = document.getElementById('tomaFecha'), pEl = document.getElementById('tomaPeso');
+      if(fEl) state.tomaEnCurso.fecha = fEl.value;
+      if(pEl) state.tomaEnCurso.peso = pEl.value;
+      state.tomaEnCurso[plano] = { url:item.url, path:item.path };
+      toast(`${plano} subida`);
+      renderKeepScroll();
+    }catch(e){
+      toast('No se pudo subir: '+e.message, true);
+      b.textContent='Subir'; b.disabled=false;
+    }
+  }));
+  document.querySelectorAll('[data-tomaquitar]').forEach(b=>b.addEventListener('click', ()=>{
+    const plano = b.dataset.tomaquitar;
+    if(state.tomaEnCurso) delete state.tomaEnCurso[plano];
+    renderKeepScroll();
+  }));
+  const guardarToma = document.getElementById('guardarTomaBtn');
+  if(guardarToma) guardarToma.addEventListener('click', async ()=>{
+    const enCurso = state.tomaEnCurso || {};
+    if(!PLANOS_FOTO.every(pl=>enCurso[pl])){ toast('Faltan planos por subir', true); return; }
+    const fEl = document.getElementById('tomaFecha'), pEl = document.getElementById('tomaPeso');
+    const prog = await getProgreso(athleteId);
+    const toma = { id:uid(), fecha: (fEl && fEl.value) || todayISO(), peso: (pEl && pEl.value) || '' };
+    PLANOS_FOTO.forEach(pl=>{ toma[pl] = enCurso[pl]; });
+    prog.tomas.push(toma);
+    const ok = await saveProgreso(athleteId, prog);
+    toast(ok?'Toma guardada':'No se pudo guardar', !ok);
+    if(ok){ state.tomaEnCurso = null; renderScrollTop(); }
+  });
+  document.querySelectorAll('[data-tomaborrar]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(!confirm('¿Eliminar esta toma completa?')) return;
+    const prog = await getProgreso(athleteId);
+    prog.tomas = prog.tomas.filter(t=>t.id!==b.dataset.tomaborrar);
+    const ok = await saveProgreso(athleteId, prog);
+    toast(ok?'Toma eliminada':'No se pudo eliminar', !ok);
+    if(ok) renderKeepScroll();
+  }));
+
+  // --- Gym / Instalaciones ---
+  const abrirGym = document.getElementById('abrirGymBtn');
+  if(abrirGym) abrirGym.addEventListener('click', ()=>{ state.verGym = true; renderScrollTop(); });
+  const volverGym = document.getElementById('volverPerfilGymBtn');
+  if(volverGym) volverGym.addEventListener('click', ()=>{ state.verGym = false; renderScrollTop(); });
+  // Acordeón por CSS puro, sin redibujar (nada de saltos).
+  document.querySelectorAll('[data-toggle-gym]').forEach(h=>h.addEventListener('click', ()=>{
+    const acc = h.closest('.acc');
+    if(!acc) return;
+    const wasOpen = acc.classList.contains('open');
+    acc.parentElement.querySelectorAll(':scope > .acc.open').forEach(el=>{ if(el!==acc) el.classList.remove('open'); });
+    acc.classList.toggle('open', !wasOpen);
+    state.gymCarpetaAbierta = wasOpen ? null : h.dataset.toggleGym;
+  }));
+  const gymNuevaCarpeta = document.getElementById('gymNuevaCarpetaBtn');
+  if(gymNuevaCarpeta) gymNuevaCarpeta.addEventListener('click', async ()=>{
+    const nombre = prompt('Nombre de la subcarpeta (ej. Zona de cardio, Peso libre, Lo que evita):');
+    if(!nombre || !nombre.trim()) return;
+    const gym = await getGym(athleteId);
+    gym.carpetas.push({ id:'sc'+uid(), nombre:nombre.trim(), items:[] });
+    const ok = await saveGym(athleteId, gym);
+    toast(ok?'Subcarpeta creada':'No se pudo crear', !ok);
+    if(ok) renderKeepScroll();
+  });
+  document.querySelectorAll('.gym-nombre').forEach(inp=>{
+    let deb=null;
+    const guardar = async ()=>{
+      const gym = await getGym(athleteId);
+      const c = gym.carpetas.find(x=>x.id===inp.dataset.carpeta);
+      if(!c) return;
+      c.nombre = inp.value.trim() || 'Sin nombre';
+      const ok = await saveGym(athleteId, gym);
+      if(ok){
+        const head = document.querySelector(`[data-toggle-gym="${inp.dataset.carpeta}"] b`);
+        if(head) head.textContent = c.nombre;
+      } else toast('No se pudo guardar', true);
+    };
+    inp.addEventListener('input', ()=>{ clearTimeout(deb); deb=setTimeout(guardar, 700); });
+    inp.addEventListener('change', ()=>{ clearTimeout(deb); guardar(); });
+  });
+  document.querySelectorAll('[data-gymborrarcarpeta]').forEach(b=>b.addEventListener('click', async ()=>{
+    const gym = await getGym(athleteId);
+    const c = gym.carpetas.find(x=>x.id===b.dataset.gymborrarcarpeta);
+    if(!c) return;
+    if(!confirm(`¿Eliminar la subcarpeta "${c.nombre}"?${c.items.length?`\n\nSe perderán sus ${c.items.length} archivo(s).`:''}`)) return;
+    gym.carpetas = gym.carpetas.filter(x=>x.id!==c.id);
+    const ok = await saveGym(athleteId, gym);
+    toast(ok?'Subcarpeta eliminada':'No se pudo eliminar', !ok);
+    if(ok) renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-gymsubir]').forEach(b=>b.addEventListener('click', async ()=>{
+    const carpetaId = b.dataset.gymsubir;
+    const input = document.querySelector(`.gym-file[data-carpeta="${carpetaId}"]`);
+    const f = input && input.files[0];
+    if(!f){ toast('Elige una foto o vídeo primero', true); return; }
+    b.textContent='Subiendo…'; b.disabled=true;
+    try{
+      const item = await subirArchivoGym(f);
+      const gym = await getGym(athleteId);
+      const c = gym.carpetas.find(x=>x.id===carpetaId);
+      if(!c) throw new Error('carpeta no encontrada');
+      c.items.push(item);
+      const ok = await saveGym(athleteId, gym);
+      if(!ok) throw new Error('no se pudo guardar');
+      toast('Subido');
+      state.gymCarpetaAbierta = carpetaId;
+      renderKeepScroll();
+    }catch(e){
+      toast('No se pudo subir: '+e.message, true);
+      b.textContent='Subir'; b.disabled=false;
+    }
+  }));
+  document.querySelectorAll('[data-gymborrar]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [carpetaId, itemId] = b.dataset.gymborrar.split('|');
+    if(!confirm('¿Eliminar este archivo?')) return;
+    const gym = await getGym(athleteId);
+    const c = gym.carpetas.find(x=>x.id===carpetaId);
+    if(!c) return;
+    c.items = c.items.filter(i=>i.id!==itemId);
+    const ok = await saveGym(athleteId, gym);
+    toast(ok?'Eliminado':'No se pudo eliminar', !ok);
+    if(ok){ b.closest('.gym-item')?.remove(); }
+  }));
+  // Ver una foto a tamaño completo
+  document.querySelectorAll('[data-gymfoto]').forEach(img=>img.addEventListener('click', ()=>{
+    const [url, nombre] = img.dataset.gymfoto.split('|');
+    let back = document.getElementById('fotoBack');
+    if(back) back.remove();
+    back = document.createElement('div');
+    back.id='fotoBack'; back.className='modal-back';
+    back.innerHTML = `<div class="modal">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h2 style="font-family:'Fraunces',serif;font-size:16px;">${escapeHtml(nombre||'Foto')}</h2>
+        <button class="btn ghost small" id="cerrarFoto">Cerrar</button>
+      </div>
+      <img src="${escapeHtml(url)}" style="width:100%;border-radius:10px;display:block;">
+    </div>`;
+    document.body.appendChild(back);
+    document.getElementById('cerrarFoto').addEventListener('click', ()=>back.remove());
+    back.addEventListener('click', e=>{ if(e.target===back) back.remove(); });
+  }));
+
+  // --- Tests: pantalla del atleta ---
+  const abrirTests = document.getElementById('abrirTestsBtn');
+  if(abrirTests) abrirTests.addEventListener('click', ()=>{ state.verTests = true; renderScrollTop(); });
+  const volverPerfil = document.getElementById('volverPerfilBtn');
+  if(volverPerfil) volverPerfil.addEventListener('click', ()=>{ state.verTests = false; renderScrollTop(); });
+  // Acordeón de cada test: CSS puro, sin redibujar (nada de saltos).
+  document.querySelectorAll('[data-toggle-test]').forEach(h=>h.addEventListener('click', ()=>{
+    const acc = h.closest('.acc');
+    if(!acc) return;
+    const wasOpen = acc.classList.contains('open');
+    acc.parentElement.querySelectorAll(':scope > .acc.open').forEach(el=>{ if(el!==acc) el.classList.remove('open'); });
+    acc.classList.toggle('open', !wasOpen);
+    state.testAbierto = wasOpen ? null : parseInt(h.dataset.toggleTest,10);
+  }));
+  document.querySelectorAll('[data-guardartest]').forEach(b=>b.addEventListener('click', async ()=>{
+    const idx = parseInt(b.dataset.guardartest,10);
+    const bat = await getBateria(athleteId);
+    if(!bat || !bat.tests[idx]) return;
+    const def = testPorId(bat.tests[idx].testId);
+    const res = {};
+    let algo = false;
+    (def.campos||[]).forEach(c=>{
+      const el = document.querySelector(`.test-campo[data-testidx="${idx}"][data-campo="${c.id}"]`);
+      if(el && el.value !== ''){ res[c.id] = el.value; algo = true; }
+    });
+    if(!algo){ toast('Rellena al menos un dato antes de guardar', true); return; }
+    bat.tests[idx].resultado = res;
+    const ok = await saveBateria(athleteId, bat);
+    toast(ok?'Resultado guardado':'No se pudo guardar', !ok);
+    if(ok){ state.testAbierto = idx; renderKeepScroll(); }
+  }));
+  // Subida de vídeo del atleta para un test concreto
+  document.querySelectorAll('[data-testvidsubir]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [idxStr, plano] = b.dataset.testvidsubir.split('|');
+    const idx = parseInt(idxStr,10);
+    const input = document.querySelector(`.test-video-file[data-testidx="${idx}"][data-plano="${plano}"]`);
+    const f = input && input.files[0];
+    if(!f){ toast('Elige el archivo primero', true); return; }
+    b.textContent = 'Subiendo…'; b.disabled = true;
+    try{
+      const item = await subirVideo(f, `${plano}`);
+      const bat = await getBateria(athleteId);
+      if(!bat || !bat.tests[idx]) throw new Error('batería no encontrada');
+      if(!Array.isArray(bat.tests[idx].videos)) bat.tests[idx].videos = [];
+      bat.tests[idx].videos = bat.tests[idx].videos.filter(v=>v.plano!==plano);
+      bat.tests[idx].videos.push({ plano, url:item.url, path:item.path });
+      const ok = await saveBateria(athleteId, bat);
+      if(!ok) throw new Error('no se pudo guardar');
+      toast('Vídeo subido');
+      state.testAbierto = idx;
+      renderKeepScroll();
+    }catch(e){
+      toast('No se pudo subir: '+e.message, true);
+      b.textContent = 'Subir'; b.disabled = false;
+    }
+  }));
+  document.querySelectorAll('[data-testvidquitar]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [idxStr, plano] = b.dataset.testvidquitar.split('|');
+    const idx = parseInt(idxStr,10);
+    const bat = await getBateria(athleteId);
+    if(!bat || !bat.tests[idx]) return;
+    bat.tests[idx].videos = (bat.tests[idx].videos||[]).filter(v=>v.plano!==plano);
+    const ok = await saveBateria(athleteId, bat);
+    toast(ok?'Vídeo quitado':'No se pudo guardar', !ok);
+    if(ok){ state.testAbierto = idx; renderKeepScroll(); }
+  }));
+
+  // --- Tests: composición y revisión (entrenador) ---
+  document.querySelectorAll('[data-testpick]').forEach(el=>el.addEventListener('click', ()=>{
+    const id = el.dataset.testpick;
+    const sel = state.testsSel || [];
+    state.testsSel = sel.includes(id) ? sel.filter(x=>x!==id) : sel.concat(id);
+    renderKeepScroll();
+  }));
+  const objSel = document.getElementById('objetivoValoracion');
+  if(objSel) objSel.addEventListener('change', ()=>{
+    state.testsObjetivo = objSel.value;
+    const o = OBJETIVOS_VALORACION.find(x=>x.id===objSel.value);
+    const ayuda = document.getElementById('objetivoAyuda');
+    if(ayuda && o) ayuda.textContent = o.ayuda;
+  });
+  const crearTestBtn = document.getElementById('crearTestBtn');
+  if(crearTestBtn) crearTestBtn.addEventListener('click', ()=>abrirEditorTest(null));
+  document.querySelectorAll('[data-editartest]').forEach(b=>b.addEventListener('click', (ev)=>{
+    ev.stopPropagation();   // no marcar/desmarcar el test al pulsar el lápiz
+    abrirEditorTest(b.dataset.editartest);
+  }));
+  const estimCheck = document.getElementById('mostrarEstimCheck');
+  if(estimCheck) estimCheck.addEventListener('change', ()=>{ state.testsMostrarEstim = estimCheck.checked; });
+  const enviarBat = document.getElementById('enviarBateriaBtn');
+  if(enviarBat) enviarBat.addEventListener('click', async ()=>{
+    const sel = state.testsSel || [];
+    if(!sel.length){ toast('Elige al menos un test', true); return; }
+    const objetivo = state.testsObjetivo || 'rendimiento';
+    const bat = {
+      fecha: todayISO(),
+      mostrarEstimaciones: state.testsMostrarEstim !== false,
+      objetivo,
+      tests: sel.map(id=>({ testId:id, resultado:null, videos:[], valoracion:{}, notaCoach:'' }))
+    };
+    const ok = await saveBateria(athleteId, bat);
+    if(!ok){ toast('No se pudo enviar', true); return; }
+    // El objetivo decide si además le pedimos fotos de progreso.
+    const prog = await getProgreso(athleteId);
+    prog.objetivo = objetivo;
+    await saveProgreso(athleteId, prog);
+    toast(`Batería enviada · ${sel.length} test${sel.length===1?'':'s'}`);
+    state.testsSel = [];
+    renderScrollTop();
+  });
+  const cancelarBat = document.getElementById('cancelarBateriaBtn');
+  if(cancelarBat) cancelarBat.addEventListener('click', async ()=>{
+    if(!confirm('¿Cancelar la batería enviada?\n\nSe perderán los resultados que el atleta ya haya subido.')) return;
+    const ok = await safeSet('bateria-'+athleteId, JSON.stringify(null), true);
+    toast(ok?'Batería cancelada':'No se pudo cancelar', !ok);
+    if(ok) renderScrollTop();
+  });
+  const archivarBat = document.getElementById('archivarBateriaBtn');
+  if(archivarBat) archivarBat.addEventListener('click', async ()=>{
+    const bat = await getBateria(athleteId);
+    if(!bat) return;
+    const hist = await getHistorialTests(athleteId);
+    hist.push({ ...bat, cerrada: todayISO() });
+    const ok1 = await saveHistorialTests(athleteId, hist);
+    const ok2 = await safeSet('bateria-'+athleteId, JSON.stringify(null), true);
+    toast((ok1&&ok2) ? 'Batería archivada · podrás compararla con la siguiente' : 'No se pudo archivar', !(ok1&&ok2));
+    if(ok1&&ok2) renderScrollTop();
+  });
+  document.querySelectorAll('[data-valtest]').forEach(sc=>{
+    sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+      sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+    }));
+  });
+  document.querySelectorAll('[data-guardarval]').forEach(b=>b.addEventListener('click', async ()=>{
+    const idx = parseInt(b.dataset.guardarval,10);
+    const bat = await getBateria(athleteId);
+    if(!bat || !bat.tests[idx]) return;
+    const val = {};
+    TEST_VALORACIONES.forEach(v=>{
+      const sc = document.querySelector(`[data-valtest="${idx}"][data-valcampo="${v.id}"] button.sel`);
+      if(sc) val[v.id] = parseInt(sc.dataset.val,10);
+    });
+    bat.tests[idx].valoracion = val;
+    const nota = document.querySelector(`.test-nota-coach[data-testidx="${idx}"]`);
+    bat.tests[idx].notaCoach = nota ? nota.value.trim() : '';
+    const ok = await saveBateria(athleteId, bat);
+    toast(ok?'Valoración guardada':'No se pudo guardar', !ok);
+    if(ok){ b.textContent='Guardado ✓'; setTimeout(()=>{ b.textContent='Guardar valoración'; },1400); }
   }));
 
   // --- Galería (pantalla de gestión) ---
