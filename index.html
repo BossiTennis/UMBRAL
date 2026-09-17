@@ -257,6 +257,8 @@
   .wp-barra{height:6px;background:var(--panel3);border-radius:100px;overflow:hidden;margin:12px 0 14px;}
   .wp-barra i{display:block;height:100%;background:var(--gold);border-radius:100px;transition:width .35s ease;}
   .wp-item.wp-done .acc-head b{color:var(--gold);}
+  .wp-destacado{border:1px solid var(--gold);}
+  .wp-destacado:not(.wp-done) .acc-head b{color:var(--gold);}
   .wp-cuerpo{font-size:13.5px;line-height:1.75;}
   .wp-cuerpo b{color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.05em;}
   .wp-ok{font-size:12.5px;color:var(--gold);margin-top:12px;font-weight:600;}
@@ -522,6 +524,19 @@
 </style>
 </head>
 <body class="theme-light">
+<script>
+  // Aplicamos la preferencia guardada de este dispositivo ANTES de que se
+  // pinte nada más, para no ver un parpadeo de claro pasando a oscuro.
+  (function(){
+    try{
+      const guardado = localStorage.getItem('umbral-theme');
+      if(guardado === 'dark'){
+        document.body.classList.remove('theme-light');
+        document.body.classList.add('theme-dark');
+      }
+    }catch(e){}
+  })();
+</script>
 <div id="splash" class="splash">
   <svg class="splash-mark" viewBox="0 0 100 100" aria-hidden="true">
     <defs><clipPath id="splashU">
@@ -546,7 +561,7 @@
     <div class="row" style="gap:8px;">
       <span id="identityChip" class="identity-chip" style="display:none;"></span>
       <button class="btn ghost small" id="logoutBtn" style="display:none;">Salir</button>
-      <button class="theme-toggle" id="themeToggle">☾ Oscuro</button>
+      <button class="theme-toggle" id="themeToggle">…</button>
     </div>
   </header>
   <div id="noticeSlot"></div>
@@ -1126,6 +1141,11 @@ async function seedDemoAthlete(){
 }
 
 async function init(){
+  // El botón de tema debe reflejar el que ya se aplicó al cargar (ver el
+  // script inline justo tras <body>), no asumir que siempre se arranca en claro.
+  const tBtn = document.getElementById('themeToggle');
+  if(tBtn) tBtn.textContent = document.body.classList.contains('theme-dark') ? '☀ Claro' : '☾ Oscuro';
+
   // El enlace público del cuestionario abre la app en modo formulario.
   try{
     const params = new URLSearchParams(location.search);
@@ -1219,6 +1239,10 @@ document.getElementById('themeToggle').addEventListener('click', ()=>{
   document.body.classList.toggle('theme-dark', !isDark);
   document.body.classList.toggle('theme-light', isDark);
   document.getElementById('themeToggle').textContent = isDark ? '☀ Claro' : '☾ Oscuro';
+  // Preferencia de ESTE dispositivo: no viaja a la nube, no depende de con
+  // qué cuenta hayas entrado. Antes no se guardaba en ningún sitio y volvía
+  // siempre a claro al cerrar la app.
+  try{ localStorage.setItem('umbral-theme', isDark ? 'light' : 'dark'); }catch(e){}
   render();
 });
 
@@ -2308,6 +2332,51 @@ async function subirArchivoGym(file){
 // Lo primero que ve un atleta nuevo. Dos guías cortas (que enseñan a
 // autorregular, no solo a obedecer) y dos tareas de envío.
 const WELCOME_ITEMS = [
+  { id:'normativa', tipo:'guia', titulo:'Yo doy el 100% por ti, ayúdame haciendo lo siguiente', destacado:true,
+    resumen:'3 min · léela entera, es la que hace que todo funcione',
+    cuerpo:`Todo lo que ves en la app —la carga que calculo, cómo te programo la semana que viene, cómo detecto si algo no va bien— depende de unos pocos datos que solo tú me puedes dar. Sin ellos, trabajo a ciegas.
+
+**1 · Antes de entrenar, pulsa "Iniciar sesión"**
+No lo hagas al terminar, hazlo antes de empezar. Es lo que activa el cronómetro y permite calcular bien tu fatiga real de la sesión. Si entrenas sin pulsarlo, esa sesión no cuenta para nada de lo que calculo.
+
+Justo antes verás un mini test de 30 segundos (sueño, fatiga, estrés, ánimo). Tampoco es opcional: es lo que me dice si hoy tengo que ajustarte algo antes de que empieces.
+
+**2 · Durante la sesión, apunta cada ejercicio**
+Al acabar cada ejercicio: **kg, reps, RIR, RPE y qué series has hecho de verdad**. Son 8-12 veces por sesión. No es nada.
+
+No pasa nada si no completas una serie, si no llegas al rango de reps de arriba, o si un RPE que "debía" ser 9 solo te sale un 6. **Eso también hay que apuntarlo.** Es exactamente así como calculo tu fatiga real, cómo te programo mejor la semana siguiente, y cómo me adapto a tus tendencias. Yo te doy todo hecho; tú solo pones los números.
+
+Un dato "maquillado" para que quede bien no me ayuda a mí ni te ayuda a ti: me hace programarte peor.
+
+**3 · Rellena el diario de esa sesión**
+Sensaciones generales y cualquier nota que quieras añadir. Es lo que le da contexto a los números.
+
+**4 · Hábitos diarios, todos los días**
+Al menos los que yo te marco. Los tuyos propios, si has añadido alguno, son cosa tuya — pero los míos no son opcionales: son parte de cómo evalúo tu adherencia real, no solo lo que haces en la sesión.
+
+**5 · Cuestionario semanal, cada viernes**
+Con eso diseño tu semana siguiente. Si no lo rellenas, programo con menos información de la que debería.
+
+**6 · Vídeos, cuando te los pida**
+Si un ejercicio lleva la etiqueta de grabación, mándamelo. Es la forma de contrastar lo que declaras con lo que realmente pasa.
+
+Nada de esto es control por controlar. Es la diferencia entre una plantilla genérica y un plan que de verdad se adapta a ti.` },
+
+  { id:'descansos', tipo:'guia', titulo:'Cómo usar tus descansos entre series',
+    resumen:'1 min · el descanso también es entrenamiento',
+    cuerpo:`El descanso entre series no es tiempo muerto. Es la parte del entrenamiento donde tu cuerpo se prepara para rendir en la siguiente.
+
+**QUÉ HACER**
+Respira. Busca esa sensación de que el pulso baja y la respiración se calma. El objetivo es volver al 100% lo antes posible para la siguiente serie, no simplemente "que pase el tiempo".
+
+**QUÉ EVITAR**
+No es el momento de subir algo a Instagram, ni de engancharte a mirar el móvil. Una consulta rápida (ver la hora, responder algo urgente) no pasa nada. Lo que hay que evitar es **disociar**: meterte en el scroll y salir de ahí con el cuerpo frío y la cabeza en otro sitio.
+
+**POR QUÉ IMPORTA**
+Un descanso mal gestionado te llega a la siguiente serie peor de lo que deberías, y eso contamina el dato que luego yo interpreto: si tu RPE sube por no haber descansado bien y no por la carga en sí, te estaré programando con información distorsionada.
+
+Descansa para recuperarte. Es parte del trabajo, no una pausa del trabajo.` },
+
   { id:'guiaCarga', tipo:'guia', titulo:'Cómo ajustar carga y descanso',
     resumen:'2 min · lo más importante que vas a leer',
     cuerpo:`Lo que te programo es una guía, no una orden. Tú estás en la sesión y yo no: hay días que se rinde más y días que menos, y eso no es un fallo, es información.
@@ -4054,15 +4123,22 @@ async function tplQuestForm(athleteId, existing){
 // ---------- PROGRESO ----------
 // Evolución de un ejercicio concreto a lo largo del tiempo: carga movida, RPE
 // y series. Es lo que de verdad enseña si alguien está progresando.
+// Clave de agrupación insensible a mayúsculas y a espacios repetidos: "Hip
+// Thrust", "hip thrust" y "HIP THRUST " deben contar como el mismo ejercicio
+// para poder seguir su progresión, sin obligar a escribirlo siempre igual.
+function claveEjercicio(nombre){
+  return (nombre||'').trim().toLowerCase().replace(/\s+/g,' ');
+}
 function extraeSeries(entries){
-  const porEjercicio = new Map();
+  const porEjercicio = new Map();   // clave normalizada -> { nombre, datos }
   entries.forEach(e=>{
     (e.exercises||[]).forEach(ex=>{
       if(!ex.name) return;
-      const clave = ex.name.trim();
-      if(!porEjercicio.has(clave)) porEjercicio.set(clave, []);
+      const clave = claveEjercicio(ex.name);
+      if(!clave) return;
+      if(!porEjercicio.has(clave)) porEjercicio.set(clave, { nombre: ex.name.trim(), datos: [] });
       const kg = parseFloat(String(ex.loadApplied||'').replace(',','.').replace(/[^0-9.]/g,''));
-      porEjercicio.get(clave).push({
+      porEjercicio.get(clave).datos.push({
         fecha: e.date,
         carga: isNaN(kg) ? null : kg,
         rpe: (typeof ex.rpeApplied === 'number') ? ex.rpeApplied : null,
@@ -4071,7 +4147,7 @@ function extraeSeries(entries){
       });
     });
   });
-  porEjercicio.forEach(arr=>arr.sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha))));
+  porEjercicio.forEach(v=>v.datos.sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha))));
   return porEjercicio;
 }
 function miniGrafica(datos, campo, color){
@@ -4095,14 +4171,15 @@ function miniGrafica(datos, campo, color){
   </svg>`;
 }
 function tplMetricasEjercicio(entries){
-  const mapa = extraeSeries(entries);
-  const nombres = [...mapa.keys()].filter(n=>mapa.get(n).length >= 2).sort((a,b)=>a.localeCompare(b,'es'));
-  if(!nombres.length){
+  const mapa = extraeSeries(entries);   // clave normalizada -> {nombre, datos}
+  const claves = [...mapa.keys()].filter(k=>mapa.get(k).datos.length >= 2)
+    .sort((a,b)=>mapa.get(a).nombre.localeCompare(mapa.get(b).nombre,'es'));
+  if(!claves.length){
     return `<div class="card"><h2>Evolución por ejercicio</h2>
       <div class="empty">Hacen falta al menos dos sesiones con el mismo ejercicio para ver su progresión. Anota la carga usada y el RPE en cada sesión.</div></div>`;
   }
-  const sel = nombres.includes(state.ejercicioSel) ? state.ejercicioSel : nombres[0];
-  const datos = mapa.get(sel);
+  const sel = claves.includes(state.ejercicioSel) ? state.ejercicioSel : claves[0];
+  const datos = mapa.get(sel).datos;
   const cargas = datos.map(d=>d.carga).filter(v=>v!==null);
   const rpes = datos.map(d=>d.rpe).filter(v=>v!==null);
   const primera = cargas.length ? cargas[0] : null;
@@ -4117,7 +4194,7 @@ function tplMetricasEjercicio(entries){
   let html = `<div class="card"><h2>Evolución por ejercicio</h2>
     <label class="field-label">Ejercicio</label>
     <select id="ejercicioSelect" style="width:100%;margin-bottom:14px;">
-      ${nombres.map(n=>`<option value="${escapeHtml(n)}" ${n===sel?'selected':''}>${escapeHtml(n)} (${mapa.get(n).length})</option>`).join('')}
+      ${claves.map(k=>`<option value="${escapeHtml(k)}" ${k===sel?'selected':''}>${escapeHtml(mapa.get(k).nombre)} (${mapa.get(k).datos.length})</option>`).join('')}
     </select>
     <div class="kpi-row">
       <div class="kpi"><b>${datos.length}</b><span>Veces</span></div>
@@ -4256,8 +4333,6 @@ async function tplProgreso(athleteId){
       else if(intensidadPlan === null){ flagText = 'subida brusca'; acwrNota = 'La carga ha subido más rápido que tu adaptación. Sin microciclo activo no puedo saber si estaba previsto.'; }
       else { flagText = 'subida brusca'; acwrNota = 'La carga ha subido más rápido que tu adaptación. Asociado a más riesgo de lesión.'; }
     } else { flagText = 'zona óptima'; }
-  } else {
-    acwrNota = `Necesita 3 semanas de registro para ser fiable (llevas ${semanasConDatos} de las últimas 4).`;
   }
 
   const avgOverallRPE = (entries.reduce((a,e)=>a+e.overallRPE,0)/entries.length).toFixed(1);
@@ -5286,7 +5361,7 @@ function tplWelcomePack(w, compacto){
   WELCOME_ITEMS.forEach((item,i)=>{
     const hecho = w.hechos.includes(item.id);
     const abierto = state.wpAbierto === item.id;
-    html += `<div class="acc ${abierto?'open':''} wp-item ${hecho?'wp-done':''}" data-wpacc="${item.id}">
+    html += `<div class="acc ${abierto?'open':''} wp-item ${hecho?'wp-done':''} ${item.destacado?'wp-destacado':''}" data-wpacc="${item.id}">
       <div class="acc-head" data-toggle-wp="${item.id}">
         <b style="text-transform:none;">${hecho?'✓ ':''}${escapeHtml(item.titulo)}</b>
         <span class="chev"><span class="chev-arrow">▾</span></span>
