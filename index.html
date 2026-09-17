@@ -253,6 +253,21 @@
   .gym-del{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:11px;background:var(--panel);opacity:0.9;}
   .test-instr{background:var(--panel2);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.7;white-space:pre-wrap;}
   .tabla-comp-wrap{overflow-x:auto;}
+  .wp-card{border:1px solid var(--gold);}
+  .wp-barra{height:6px;background:var(--panel3);border-radius:100px;overflow:hidden;margin:12px 0 14px;}
+  .wp-barra i{display:block;height:100%;background:var(--gold);border-radius:100px;transition:width .35s ease;}
+  .wp-item.wp-done .acc-head b{color:var(--gold);}
+  .wp-cuerpo{font-size:13.5px;line-height:1.75;}
+  .wp-cuerpo b{color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.05em;}
+  .wp-ok{font-size:12.5px;color:var(--gold);margin-top:12px;font-weight:600;}
+  .wp-linea{display:flex;gap:9px;align-items:center;font-size:13px;padding:5px 0;color:var(--muted);}
+  .wp-linea.done{color:var(--ink);}
+  .wp-linea span{color:var(--gold);font-weight:700;width:14px;}
+  .grabar-badge{display:inline-block;background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold);border-radius:100px;font-size:11.5px;font-weight:600;padding:4px 11px;margin-top:8px;}
+  .micro-actual{border-left:3px solid var(--gold);background:var(--gold-dim);}
+  .micro-actual .micro-head b{color:var(--gold);}
+  .micro-flash{animation:microFlash 1.4s ease;}
+  @keyframes microFlash{0%,100%{box-shadow:none;}30%{box-shadow:0 0 0 3px var(--gold);}}
   .lead-nums{display:flex;gap:5px;flex-shrink:0;}
   .lead-num{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:700;min-width:30px;text-align:center;padding:3px 7px;border-radius:6px;}
   .lead-alta{background:var(--accent-dim);color:var(--accent);}
@@ -2289,6 +2304,87 @@ async function subirArchivoGym(file){
            nombre: file.name.replace(/\.[^.]+$/,'').slice(0,40), fecha: todayISO() };
 }
 
+// ---------- WELCOME PACK ----------
+// Lo primero que ve un atleta nuevo. Dos guías cortas (que enseñan a
+// autorregular, no solo a obedecer) y dos tareas de envío.
+const WELCOME_ITEMS = [
+  { id:'guiaCarga', tipo:'guia', titulo:'Cómo ajustar carga y descanso',
+    resumen:'2 min · lo más importante que vas a leer',
+    cuerpo:`Lo que te programo es una guía, no una orden. Tú estás en la sesión y yo no: hay días que se rinde más y días que menos, y eso no es un fallo, es información.
+
+**EL DESCANSO**
+El tiempo que ves escrito es orientativo. Lo que de verdad importa es que llegues a la siguiente serie capaz de rendir al 100%.
+
+Si necesitas 30 segundos más, tómalos. Si te ves listo antes, arranca. No estás haciendo trampa: me estás dando datos sobre cómo recuperas, y con eso ajusto mejor la próxima sesión.
+
+**LA CARGA**
+Te propongo un rango de kilos. Tú eliges, ESE DÍA CONCRETO, el peso con el que puedas alcanzar el rango de repeticiones marcado.
+
+El rango de repeticiones NO se negocia: es lo que busca la adaptación concreta que perseguimos. El peso sí. Un día dormiste mal y bajas 5 kg para llegar a las repeticiones: perfecto. Otro día vas sobrado y subes: perfecto también.
+
+**CUÁNDO SUBIR PESO**
+Si te acercas al límite superior del rango de repeticiones y te mantienes ahí, mándame un vídeo de la ejecución y lo decidimos juntos.
+
+Antes de subir, mantén esa carga y esas repeticiones **5-6 sesiones (1-2 microciclos)**. Suena lento y es a propósito: así confirmamos que es una mejora real y no un pico aislado o el efecto de haber descansado bien esa semana.
+
+**POR QUÉ TE CUENTO ESTO**
+Porque quiero que aprendas a leerte. Mi trabajo no es que dependas de mí, es que acabes sabiendo decidir en el momento — y que cuando me escribas, sepamos de qué estamos hablando.` },
+
+  { id:'guiaProteina', tipo:'guia', titulo:'Cuánta proteína necesitas',
+    resumen:'2 min · recuperación y composición corporal',
+    cuerpo:`**CUÁNTA**
+Entre **1,6 y 2 gramos por kilo de peso corporal al día**.
+
+Si pesas 70 kg, eso son 112-140 g diarios. Si pesas 60 kg, 96-120 g.
+
+Por debajo de 1,6 g/kg la recuperación se resiente y cuesta más mantener masa muscular. Por encima de 2 g/kg no hay beneficio añadido demostrado para la mayoría: no es que sea malo, es que no aporta más.
+
+**CÓMO REPARTIRLA**
+En **3-4 tomas** a lo largo del día, en vez de concentrarla en una sola comida. El cuerpo aprovecha mejor así.
+
+No hace falta cronometrar nada ni tomar el batido en los 30 minutos posteriores. Eso se ha exagerado mucho: lo que cuenta es el total del día.
+
+**DE DÓNDE**
+Carne, pescado, huevos, lácteos, legumbres, tofu. El suplemento en polvo es una comodidad, no una necesidad: úsalo si te facilita llegar al total, no porque creas que es mejor que la comida.
+
+**UN AVISO HONESTO**
+Esto es una orientación general para gente sana. Si tienes alguna condición renal, hepática o cualquier patología, consúltalo con tu médico antes de cambiar tu alimentación. Yo soy tu entrenador, no tu médico.` },
+
+  { id:'tests', tipo:'tarea', titulo:'Tests iniciales',
+    resumen:'Los verás en tu Perfil cuando te los envíe',
+    cuerpo:`Te mandaré una batería de tests de movilidad y fuerza para saber de dónde partimos.
+
+Aparecerán en tu **Perfil**, cada uno con instrucciones paso a paso y la posibilidad de subir el vídeo desde el móvil.
+
+No es un examen. Es la foto de partida: cuanto más honesto seas con los datos, mejor podré programarte.` },
+
+  { id:'gym', tipo:'tarea', titulo:'Fotos de tu gimnasio',
+    resumen:'Para saber con qué material contamos',
+    cuerpo:`En tu **Perfil** tienes una sección de Gym / Instalaciones.
+
+Sube fotos o vídeos de dónde entrenas: las instalaciones, las máquinas que tienes, las que más usas y las que evitas.
+
+Sin esto programo a ciegas. Con esto, cada ejercicio que te ponga vas a poder hacerlo de verdad.` }
+];
+
+async function getWelcome(athleteId){
+  const raw = await safeGet('welcome-'+athleteId, true);
+  try{
+    const o = raw ? JSON.parse(raw) : null;
+    if(o && typeof o==='object') return { hechos: Array.isArray(o.hechos)?o.hechos:[], cerrado:o.cerrado||null };
+  }catch(e){}
+  return { hechos:[], cerrado:null };
+}
+async function saveWelcome(athleteId, w){ return safeSet('welcome-'+athleteId, JSON.stringify(w), true); }
+function welcomeCompleto(w){ return WELCOME_ITEMS.every(i=>w.hechos.includes(i.id)); }
+
+// Da formato simple al cuerpo de las guías: **negrita** y saltos de línea.
+function formateaGuia(txt){
+  return escapeHtml(txt)
+    .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+    .replace(/\n/g, '<br>');
+}
+
 // ---------- CAPTACIÓN: CUESTIONARIO DE FILTRADO ----------
 // Dos puntuaciones distintas y deliberadamente separadas:
 //  · POTENCIAL: cuánto encaja como cliente rentable (objetivo, material,
@@ -2561,6 +2657,7 @@ async function saveBlockLib(lib){ return safeSet('block-library', JSON.stringify
 // Copia limpia de un ejercicio: sin identidad ni datos de ejecución.
 function plantillaDe(ex){
   return { name:ex.name||'', desc:ex.desc||'', section:ex.section||'', turno:'', grupoId:'', grupoTipo:'',
+    pideGrabacion: !!ex.pideGrabacion,
     load:ex.load||'', series:ex.series||'', reps:ex.reps||'', rest:ex.rest||'',
     rir:ex.rir||'', rpeTarget:ex.rpeTarget||'', timer:{...exTimer(ex)},
     videoUrl:ex.videoUrl||'', videoName:ex.videoName||'' };
@@ -2569,7 +2666,7 @@ function desdePlantilla(pl){
   return { ...plantillaDe(pl), id: uid() };
 }
 
-function blankExercise(){ return {id:uid(), name:'', desc:'', section:'', turno:'', grupoId:'', grupoTipo:'', load:'', series:3, reps:'', rest:'', rir:'', rpeTarget:'', timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}}; }
+function blankExercise(){ return {id:uid(), name:'', desc:'', section:'', turno:'', grupoId:'', grupoTipo:'', pideGrabacion:false, load:'', series:3, reps:'', rest:'', rir:'', rpeTarget:'', timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}}; }
 function exTimer(ex){
   const t = (ex && ex.timer) ? ex.timer : {};
   return { type:t.type||'none', work:+t.work||30, rest:+t.rest||15, rounds:+t.rounds||8,
@@ -2803,6 +2900,10 @@ async function tplRutinaAtleta(athleteId){
     : (off===-1 ? 'La semana pasada' : (off>0 ? `Dentro de ${off} semanas` : `Hace ${Math.abs(off)} semanas`)));
   const info = off===0 ? await currentMicro(athleteId) : await currentMicro(athleteId, semana);
   let html = '';
+  // El Welcome Pack va lo primero de todo mientras no esté completo: es lo que
+  // tiene que ver un atleta nuevo nada más entrar.
+  const wp = await getWelcome(athleteId);
+  if(!welcomeCompleto(wp) || state.wpRelectura) html += tplWelcomePack(wp, false);
   if(state.modoDemo){
     html += `<div class="card demo-intro">
       <span class="demo-tag">Modo demostración</span>
@@ -2874,6 +2975,7 @@ async function tplRutinaAtleta(athleteId){
             html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
               <div class="ex-meta"><span>Series x reps: <b>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</b></span>${ex.load?`<span>Carga: <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso: <b>${escapeHtml(ex.rest||'—')}</b></span><span>RIR: <b>${escapeHtml(ex.rir||'—')}</b></span><span>RPE objetivo: <b>${escapeHtml(ex.rpeTarget||'—')}</b></span></div>
               ${t.type!=='none'?`<div class="timer-badge">${TIMER_TYPE_LABELS[t.type]}</div>`:''}
+              ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
               ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:8px;">▶ Ver técnica</button>`:''}
             </div>`;
           });
@@ -3222,6 +3324,7 @@ function renderSessionOverlay(){
       ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
       <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div>
       <div class="set-box">${ex.setsDone.map((done,si)=>`<div class="set-chip ${done?'done':''}" data-exi="${i}" data-si="${si}">S${si+1}</div>`).join('')}</div>
+      ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
       <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px;">
         ${t.type!=='none'?`<button class="btn ghost small" data-extimer="${i}">▶ ${TIMER_TYPE_LABELS[t.type]}</button>`:''}
         ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}">▶ Ver técnica</button>`:''}
@@ -4635,6 +4738,10 @@ async function tplPerfilAtleta(athleteId){
     </button>`;
   }
 
+  // Welcome Pack completado: su resumen vive aquí.
+  const wpPerfil = await getWelcome(athleteId);
+  if(welcomeCompleto(wpPerfil)) html += tplWelcomePack(wpPerfil, true);
+
   // Banner de fotos de progreso: sólo si el objetivo lo justifica.
   const progPerfil = await getProgreso(athleteId);
   if(objetivoPideFotos(progPerfil.objetivo)){
@@ -5154,6 +5261,49 @@ async function tplGym(athleteId, esCoach){
   return html;
 }
 
+// ---------- WELCOME PACK: VISTA ----------
+function tplWelcomePack(w, compacto){
+  const hechos = w.hechos.length, total = WELCOME_ITEMS.length;
+  const pct = Math.round((hechos/total)*100);
+
+  if(compacto){
+    // Resumen que vive en Perfil una vez completado.
+    return `<div class="card"><h2>Welcome Pack</h2>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">Completado el ${w.cerrado||'—'}.</p>
+      ${WELCOME_ITEMS.map(i=>`<div class="wp-linea done"><span>✓</span>${escapeHtml(i.titulo)}</div>`).join('')}
+      <button class="btn ghost small" id="reabrirWelcomeBtn" style="margin-top:12px;">Volver a leer las guías</button>
+    </div>`;
+  }
+
+  let html = `<div class="card wp-card">
+    <div class="row" style="justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;">
+      <h2 style="margin:0;">Welcome Pack</h2>
+      <span class="chev-count">${hechos} de ${total}</span>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:8px;">Empieza por aquí. Las dos guías te llevan dos minutos cada una y te van a ahorrar muchas dudas más adelante.</p>
+    <div class="wp-barra"><i style="width:${pct}%;"></i></div>`;
+
+  WELCOME_ITEMS.forEach((item,i)=>{
+    const hecho = w.hechos.includes(item.id);
+    const abierto = state.wpAbierto === item.id;
+    html += `<div class="acc ${abierto?'open':''} wp-item ${hecho?'wp-done':''}" data-wpacc="${item.id}">
+      <div class="acc-head" data-toggle-wp="${item.id}">
+        <b style="text-transform:none;">${hecho?'✓ ':''}${escapeHtml(item.titulo)}</b>
+        <span class="chev"><span class="chev-arrow">▾</span></span>
+        <span class="chev-count">${escapeHtml(item.resumen)}</span>
+      </div>
+      <div class="acc-body">
+        <div class="wp-cuerpo">${formateaGuia(item.cuerpo)}</div>
+        ${hecho
+          ? `<div class="wp-ok">Marcado como ${item.tipo==='guia'?'leído':'entendido'}</div>`
+          : `<button class="btn" data-wphecho="${item.id}" style="margin-top:12px;">${item.tipo==='guia'?'Marcar como leída':'Entendido'}</button>`}
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
 // ---------- TESTS: PANTALLA DEL ATLETA ----------
 async function tplTestsAtleta(athleteId){
   await getTestsPropios();          // para que reconozca tus tests propios
@@ -5566,12 +5716,23 @@ async function paintStorageHealth(){
 }
 
 async function tplPeriodizacion(athleteId){
+  // El botón sólo aparece si alguna semana de algún macrociclo es la actual.
+
   const plan = await getPlan(athleteId);
   let html = `<div class="card"><div class="row" style="justify-content:space-between;align-items:center;">
     <h2 style="margin:0;">Periodización</h2>
     <button class="btn small" id="addMacroBtn">+ Macrociclo</button>
   </div>
-  <p style="font-size:12.5px;color:var(--muted);margin-top:8px;">La línea marca la intensidad de cada microciclo (1 descarga · 4 pico). Las barras de fondo son el volumen. Las marcas rojas son competiciones.</p></div>`;
+  <p style="font-size:12.5px;color:var(--muted);margin-top:8px;">La línea marca la intensidad de cada microciclo (1 descarga · 4 pico). Las barras de fondo son el volumen. Las marcas rojas son competiciones.</p>
+  ${(()=>{
+    // Sólo mostramos el botón si de verdad hay una semana en curso planificada.
+    const hay = plan.macros.some(mc=>mc.micros.some((m,i)=>{
+      const d = microDate(mc, i);
+      return d && lunesDe(fechaLocalISO(d)) === weekOfISO();
+    }));
+    return hay ? `<button class="btn ghost small" id="irSemanaActualBtn" style="margin-top:10px;">↓ Ir a la semana en curso</button>` : '';
+  })()}
+  </div>`;
   if(!plan.macros.length){
     html += `<div class="card"><div class="empty">Sin macrociclos todavía. Crea uno para empezar a planificar la temporada.</div></div>`;
     return html;
@@ -5641,8 +5802,11 @@ async function tplPeriodizacion(athleteId){
           <div class="block-title">Microciclos</div>
           ${macro.micros.map((m,i)=>{
             const d = microDate(macro, i);
-            return `<div class="micro-row">
-              <div class="micro-head"><b>Semana ${i+1}</b><span>${d?fmtShortDate(d):''}</span></div>
+            // Marcamos la semana en curso para poder saltar a ella y verla
+            // destacada al programar.
+            const esActual = d && lunesDe(fechaLocalISO(d)) === weekOfISO();
+            return `<div class="micro-row ${esActual?'micro-actual':''}" ${esActual?'id="microEnCurso"':''}>
+              <div class="micro-head"><b>Semana ${i+1}${esActual?' · en curso':''}</b><span>${d?fmtShortDate(d):''}</span></div>
               <div class="ex-grid" style="grid-template-columns:1fr 1fr;">
                 <div><label class="field-label">Intensidad</label>
                   <select class="micro-int" data-macro="${macro.id}" data-micro="${m.id}">
@@ -5862,6 +6026,11 @@ function exCardHtml(ex, blockKey, d, listaBloque){
             </div><div style="font-size:11.5px;color:var(--muted);margin-top:4px;">Cuenta atrás de ${Math.floor(t.seriesRestSec/60)}'${String(t.seriesRestSec%60).padStart(2,'0')} repetida ${t.seriesCount} veces.</div>` : ''}
           </div>
           <div class="video-row">
+            <label class="row" style="gap:7px;font-size:12.5px;width:100%;margin-bottom:6px;align-items:flex-start;">
+              <input type="checkbox" class="ex-grabacion" ${ex.pideGrabacion?'checked':''} style="margin-top:2px;">
+              <span>Pedir grabación de la ejecución<br>
+                <span style="font-size:11px;color:var(--muted);">Para contrastar el RPE y RIR que declara con lo que se ve, y valorar técnica.</span></span>
+            </label>
             ${ex.videoUrl
               ? `<span class="video-tag">▶ ${escapeHtml(ex.videoName||'Vídeo')}</span>
                  <button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Vídeo')}">Ver</button>
@@ -6156,12 +6325,24 @@ async function tplPerfilCoachPicker(){
   return html;
 }
 async function tplPerfilCoachBody(athleteId){
+  const wpCoach = await getWelcome(athleteId);
   const a = state.athletes.find(x=>x.id===athleteId);
   const raw = await safeGet('profile-'+athleteId, true);
   const p = raw ? JSON.parse(raw) : { estado:'Activo', tarifa:'', pagado:'Pendiente', notas:'' };
   const intakeRaw = await safeGet('intake-'+athleteId, true);
   const intake = intakeRaw ? JSON.parse(intakeRaw) : null;
-  let html = `<div class="card"><h2>Datos de acceso</h2>
+  // Estado del Welcome Pack: para saber sin preguntarle si ya te mandó los
+  // tests y las fotos del gimnasio.
+  let html = `<div class="card"><h2>Welcome Pack</h2>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">${welcomeCompleto(wpCoach)
+      ? `Completado el ${wpCoach.cerrado||'—'}.`
+      : `${wpCoach.hechos.length} de ${WELCOME_ITEMS.length} completados.`}</p>
+    ${WELCOME_ITEMS.map(i=>{
+      const hecho = wpCoach.hechos.includes(i.id);
+      return `<div class="wp-linea ${hecho?'done':''}"><span>${hecho?'✓':'○'}</span>${escapeHtml(i.titulo)}${hecho?'':' — pendiente'}</div>`;
+    }).join('')}
+  </div>
+  <div class="card"><h2>Datos de acceso</h2>
     <div class="row" style="flex-direction:column;align-items:stretch;gap:12px;">
       <div><label class="field-label">Nombre del atleta</label><input type="text" id="editAthName" value="${escapeHtml(a?a.name:'')}" style="width:100%;"></div>
       <div><label class="field-label">PIN de acceso</label><input type="text" id="editAthPin" value="${a?a.pin:''}" maxlength="6" inputmode="numeric" style="width:100%;font-family:'IBM Plex Mono',monospace;letter-spacing:0.2em;"></div>
@@ -6694,6 +6875,8 @@ function bindExerciseCard(card, athleteId){
         const turnoEl = card.querySelector('.ex-turno');
         // videoUrl/videoName se asignan desde el selector de vídeo, no desde un campo
         if(turnoEl) ex.turno = turnoEl.value;
+        const grabEl = card.querySelector('.ex-grabacion');
+        if(grabEl) ex.pideGrabacion = grabEl.checked;
         const grupoEl = card.querySelector('.ex-grupo');
         if(grupoEl){
           const v = grupoEl.value;
@@ -7627,6 +7810,36 @@ async function bindDynamicEvents(){
     else toast('No se pudo guardar', true);
   }));
 
+  // --- Welcome Pack ---
+  document.querySelectorAll('[data-toggle-wp]').forEach(h=>h.addEventListener('click', ()=>{
+    const acc = h.closest('.acc');
+    if(!acc) return;
+    const wasOpen = acc.classList.contains('open');
+    acc.parentElement.querySelectorAll(':scope > .acc.open').forEach(el=>{ if(el!==acc) el.classList.remove('open'); });
+    acc.classList.toggle('open', !wasOpen);
+    state.wpAbierto = wasOpen ? null : h.dataset.toggleWp;
+  }));
+  document.querySelectorAll('[data-wphecho]').forEach(b=>b.addEventListener('click', async ()=>{
+    const id = b.dataset.wphecho;
+    const w = await getWelcome(athleteId);
+    if(!w.hechos.includes(id)) w.hechos.push(id);
+    const completo = welcomeCompleto(w);
+    if(completo && !w.cerrado) w.cerrado = todayISO();
+    const ok = await saveWelcome(athleteId, w);
+    if(!ok){ toast('No se pudo guardar', true); return; }
+    if(completo){
+      toast('Welcome Pack completado · ya está todo listo');
+      state.wpAbierto = null;
+    }
+    renderKeepScroll();
+  }));
+  const reabrirWp = document.getElementById('reabrirWelcomeBtn');
+  if(reabrirWp) reabrirWp.addEventListener('click', ()=>{
+    state.wpRelectura = true;
+    state.tab = 'rutina';
+    renderScrollTop();
+  });
+
   // --- Fotos de progreso ---
   const abrirFotos = document.getElementById('abrirFotosBtn');
   if(abrirFotos) abrirFotos.addEventListener('click', ()=>{ state.verFotos = true; renderScrollTop(); });
@@ -7933,6 +8146,23 @@ async function bindDynamicEvents(){
     toast(ok?'Valoración guardada':'No se pudo guardar', !ok);
     if(ok){ b.textContent='Guardado ✓'; setTimeout(()=>{ b.textContent='Guardar valoración'; },1400); }
   }));
+
+  const irSemanaActual = document.getElementById('irSemanaActualBtn');
+  if(irSemanaActual) irSemanaActual.addEventListener('click', ()=>{
+    const el = document.getElementById('microEnCurso');
+    if(!el){ toast('No hay ninguna semana en curso planificada', true); return; }
+    // Abrimos el macrociclo que la contiene si estuviera plegado.
+    const acc = el.closest('.acc');
+    if(acc && !acc.classList.contains('open')){
+      acc.parentElement.querySelectorAll(':scope > .acc.open').forEach(x=>{ if(x!==acc) x.classList.remove('open'); });
+      acc.classList.add('open');
+    }
+    setTimeout(()=>{
+      if(typeof el.scrollIntoView === 'function') el.scrollIntoView({block:'center', behavior:'smooth'});
+      el.classList.add('micro-flash');
+      setTimeout(()=>el.classList.remove('micro-flash'), 1400);
+    }, 60);
+  });
 
   // --- Captación de leads ---
   const copiarEnlace = document.getElementById('copiarEnlaceBtn');
