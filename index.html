@@ -270,6 +270,7 @@
   .micro-actual .micro-head b{color:var(--gold);}
   .micro-flash{animation:microFlash 1.4s ease;}
   @keyframes microFlash{0%,100%{box-shadow:none;}30%{box-shadow:0 0 0 3px var(--gold);}}
+  .esf-media{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
   .lead-nums{display:flex;gap:5px;flex-shrink:0;}
   .lead-num{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:700;min-width:30px;text-align:center;padding:3px 7px;border-radius:6px;}
   .lead-alta{background:var(--accent-dim);color:var(--accent);}
@@ -3250,8 +3251,8 @@ async function tplRegistroManual(athleteId, source, selDay){
         <div class="ex-grid">
           <div><label class="field-label">Carga usada</label><input type="text" class="mn-load" value="${escapeHtml(ex.load||'')}" placeholder="80kg"></div>
           <div><label class="field-label">Series hechas</label><input type="number" class="mn-series" min="0" max="20" value="${ex.series||''}"></div>
-          <div><label class="field-label">RPE</label><input type="number" class="mn-rpe" min="1" max="10" placeholder="1-10"></div>
-          <div><label class="field-label">RIR</label><input type="text" class="mn-rir" value="${escapeHtml(ex.rir||'')}" placeholder="2"></div>
+          <div><label class="field-label">RPE</label><input type="text" inputmode="decimal" class="mn-rpe" placeholder="8 · 8-9 · 7,8,9"></div>
+          <div><label class="field-label">RIR</label><input type="text" inputmode="decimal" class="mn-rir" value="${escapeHtml(ex.rir||'')}" placeholder="2 · 1-2"></div>
           <div class="full"><label class="field-label">Nota</label><input type="text" class="mn-note" placeholder="Sensación, molestia, ajuste…"></div>
         </div>
       </div>`;
@@ -3374,7 +3375,7 @@ function renderSessionOverlay(){
               ${t2.type!=='none'?`<button class="btn ghost small" data-extimer="${i}" style="margin-top:6px;">▶ ${TIMER_TYPE_LABELS[t2.type]}</button>`:''}
               ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Técnica</button>`:''}
               <div class="ex-grid" style="margin-top:8px;">
-                <div><label class="field-label">RPE</label><input type="number" min="1" max="10" class="rpe-applied-input" data-exi="${i}" value="${ex.rpeApplied ?? ''}"></div>
+                <div><label class="field-label">RPE</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9"></div>
                 <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
                 <div class="full"><label class="field-label">Nota</label><textarea class="note-applied-input" data-exi="${i}" placeholder="Sensación, molestia…" style="min-height:34px;">${escapeHtml(ex.noteApplied||'')}</textarea></div>
               </div>
@@ -3399,8 +3400,9 @@ function renderSessionOverlay(){
         ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}">▶ Ver técnica</button>`:''}
       </div>
       <div class="ex-grid" style="margin-top:8px;">
-        <div><label class="field-label">RPE aplicado</label><input type="number" min="1" max="10" class="rpe-applied-input" data-exi="${i}" value="${ex.rpeApplied ?? ''}"></div>
+        <div><label class="field-label">RPE aplicado</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9"></div>
         <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
+        <div><label class="field-label">RIR aplicado</label><input type="text" inputmode="decimal" class="rir-applied-input" data-exi="${i}" value="${escapeHtml(ex.rirTexto || ex.rirApplied || '')}" placeholder="${escapeHtml(ex.rir||'2 · 1-2')}"></div>
         <div class="full"><label class="field-label">Nota para tu entrenador</label><textarea class="note-applied-input" data-exi="${i}" placeholder="Molestia, sensación, ajuste que hiciste…" style="min-height:38px;">${escapeHtml(ex.noteApplied||'')}</textarea></div>
       </div>
     </div>`;
@@ -3438,7 +3440,26 @@ function bindSessionOverlayEvents(){
     buzz(35); queueSessionSave();
     renderSessionOverlay();
   }));
-  document.querySelectorAll('.rpe-applied-input').forEach(inp=>inp.addEventListener('change', ()=>{ const i=parseInt(inp.dataset.exi,10); const v=parseInt(inp.value,10); session.exercises[i].rpeApplied=(v>=1&&v<=10)?v:null; queueSessionSave(); }));
+  document.querySelectorAll('.rir-applied-input').forEach(inp=>inp.addEventListener('change', ()=>{
+    const i = parseInt(inp.dataset.exi,10);
+    const p = parseEsfuerzo(inp.value);
+    session.exercises[i].rirTexto = inp.value.trim();
+    session.exercises[i].rirApplied = p ? p.media : null;
+    inp.style.borderColor = (inp.value.trim() && !p) ? 'var(--danger)' : '';
+    queueSessionSave();
+  }));
+  // Guardamos el texto tal cual lo escribe (para poder reeditarlo y para que
+  // tú veas "8-9" en vez de 8.5) y además la media, que es lo que usan los
+  // cálculos de carga.
+  document.querySelectorAll('.rpe-applied-input').forEach(inp=>inp.addEventListener('change', ()=>{
+    const i = parseInt(inp.dataset.exi,10);
+    const p = parseEsfuerzo(inp.value);
+    session.exercises[i].rpeTexto = inp.value.trim();
+    session.exercises[i].rpeApplied = (p && p.media>=1 && p.media<=10) ? p.media : null;
+    // Aviso discreto si escribió algo que no se entiende
+    inp.style.borderColor = (inp.value.trim() && !p) ? 'var(--danger)' : '';
+    queueSessionSave();
+  }));
   document.querySelectorAll('.load-applied-input').forEach(inp=>inp.addEventListener('change', ()=>{ const i=parseInt(inp.dataset.exi,10); session.exercises[i].loadApplied=inp.value.trim(); queueSessionSave(); }));
   document.querySelectorAll('.note-applied-input').forEach(inp=>{
     let deb=null;
@@ -3511,7 +3532,10 @@ function bindSurveyEvents(){
     const rpeBase = (session.avgExerciseRPE && session.avgExerciseRPE > 0) ? session.avgExerciseRPE : overallRPE;
     const cargaFinal = +(rpeBase * (session.elapsedSec/60)).toFixed(1);
     const record = { date: todayISO(), day: session.day, durationSeconds: session.elapsedSec,
-      exercises: session.exercises.map(e=>({name:e.name, section:e.section||'', rpeApplied:e.rpeApplied, loadPlanned:e.load||'', loadApplied:e.loadApplied||'', noteApplied:e.noteApplied||'', done:e.done})),
+      exercises: session.exercises.map(e=>({name:e.name, section:e.section||'',
+        rpeApplied:e.rpeApplied, rpeTexto:e.rpeTexto||'',
+        rirApplied:e.rirApplied ?? null, rirTexto:e.rirTexto||'',
+        loadPlanned:e.load||'', loadApplied:e.loadApplied||'', noteApplied:e.noteApplied||'', done:e.done})),
       avgExerciseRPE: session.avgExerciseRPE, fatigueScore: cargaFinal,
       cargaDesdeRPEGeneral: !(session.avgExerciseRPE > 0),
       tipoSesion: session.tipoSesion || '',
@@ -4126,6 +4150,41 @@ async function tplQuestForm(athleteId, existing){
 // Clave de agrupación insensible a mayúsculas y a espacios repetidos: "Hip
 // Thrust", "hip thrust" y "HIP THRUST " deben contar como el mismo ejercicio
 // para poder seguir su progresión, sin obligar a escribirlo siempre igual.
+// RPE y RIR admiten varias formas de escribirlos, porque en la práctica no
+// siempre hay un único número:
+//   "8"        → 8
+//   "8-9"      → 8.5   (rango: se toma el punto medio)
+//   "7,8,9"    → 8     (una por serie: se hace la media)
+//   "7 8 9"    → 8     (igual, separado por espacios)
+// Devuelve { media, valores, texto } o null si no hay nada aprovechable.
+function parseEsfuerzo(txt){
+  const bruto = String(txt == null ? '' : txt).trim();
+  if(!bruto) return null;
+  // "7,5" en España es un decimal, no dos series. Sólo cuando la coma separa
+  // un único par de dígitos sueltos la tratamos como decimal; "7,8,9" siguen
+  // siendo tres series.
+  const decimalSuelto = bruto.match(/^(\d+),(\d+)$/);
+  if(decimalSuelto){
+    const n = parseFloat(bruto.replace(',','.'));
+    if(!isNaN(n)) return { media: Math.round(n*10)/10, valores:[n], texto: bruto };
+  }
+  const partes = bruto.split(/[,;/\s]+/).filter(Boolean);
+  const valores = [];
+  partes.forEach(p=>{
+    const rango = p.match(/^(\d+(?:[.,]\d+)?)\s*[-–—]\s*(\d+(?:[.,]\d+)?)$/);
+    if(rango){
+      const a = parseFloat(rango[1].replace(',','.')), b = parseFloat(rango[2].replace(',','.'));
+      if(!isNaN(a) && !isNaN(b)) valores.push((a+b)/2);
+      return;
+    }
+    const n = parseFloat(p.replace(',','.'));
+    if(!isNaN(n)) valores.push(n);
+  });
+  if(!valores.length) return null;
+  const media = valores.reduce((a,b)=>a+b,0) / valores.length;
+  return { media: Math.round(media*10)/10, valores, texto: bruto };
+}
+
 function claveEjercicio(nombre){
   return (nombre||'').trim().toLowerCase().replace(/\s+/g,' ');
 }
@@ -6297,18 +6356,27 @@ async function tplDiarioLectura(athleteId){
     if(abierto && tieneDetalle){
       html += `<div class="diario-detalle">`;
       if(e.exercises && e.exercises.length){
-        html += `<table class="tabla-comp"><thead><tr><th>Ejercicio</th><th>Previsto</th><th>Hecho</th><th>RPE</th></tr></thead><tbody>`;
+        html += `<table class="tabla-comp"><thead><tr><th>Ejercicio</th><th>Previsto</th><th>Hecho</th><th>RPE</th><th>RIR</th></tr></thead><tbody>`;
         e.exercises.forEach(x=>{
           const prev = x.loadPlanned || '—';
           const hecho = x.loadApplied || '—';
           const difiere = x.loadPlanned && x.loadApplied && x.loadPlanned !== x.loadApplied;
+          // Si anotó varias series o un rango ("8-9", "7,8,9") mostramos lo que
+          // escribió y la media debajo: el detalle dice más que el promedio.
+          const esf = (texto, media)=>{
+            if(texto && String(texto).trim() && String(texto).trim() !== String(media)){
+              return `${escapeHtml(texto)}<br><span class="esf-media">media ${media}</span>`;
+            }
+            return (media!==null && media!==undefined) ? media : '—';
+          };
           html += `<tr>
             <td>${escapeHtml(x.name||'—')}</td>
             <td class="col-prev">${escapeHtml(prev)}</td>
             <td class="${difiere?'col-dif':''}">${escapeHtml(hecho)}</td>
-            <td>${x.rpeApplied!==null&&x.rpeApplied!==undefined?x.rpeApplied:'—'}</td>
+            <td>${esf(x.rpeTexto, x.rpeApplied)}</td>
+            <td>${esf(x.rirTexto, x.rirApplied)}</td>
           </tr>`;
-          if(x.noteApplied) html += `<tr class="fila-nota"><td colspan="4">💬 ${escapeHtml(x.noteApplied)}</td></tr>`;
+          if(x.noteApplied) html += `<tr class="fila-nota"><td colspan="5">💬 ${escapeHtml(x.noteApplied)}</td></tr>`;
         });
         html += `</tbody></table>`;
       }
@@ -9197,15 +9265,27 @@ async function bindDynamicEvents(){
       const rpes = [];
       card.querySelectorAll('[data-mnex]').forEach(fila=>{
         const nombre = fila.querySelector('div').textContent.trim();
-        const rpe = parseInt(fila.querySelector('.mn-rpe').value,10);
+        const rpeTxt = fila.querySelector('.mn-rpe').value.trim();
+        const pRpe = parseEsfuerzo(rpeTxt);
         const carga = fila.querySelector('.mn-load').value.trim();
         const series = fila.querySelector('.mn-series').value.trim();
-        const rir = fila.querySelector('.mn-rir').value.trim();
-        if(!isNaN(rpe) && rpe>=1 && rpe<=10) rpes.push(rpe);
+        const rirTxt = fila.querySelector('.mn-rir').value.trim();
+        const pRir = parseEsfuerzo(rirTxt);
+        if(pRpe && pRpe.media>=1 && pRpe.media<=10) rpes.push(pRpe.media);
         const nota = fila.querySelector('.mn-note') ? fila.querySelector('.mn-note').value.trim() : '';
-        ejercicios.push({ name:nombre, rpeApplied:(!isNaN(rpe)?rpe:null), loadApplied:carga,
-          seriesDone:series, rirApplied:rir, noteApplied:nota, done:true });
+        ejercicios.push({ name:nombre, rpeApplied:(pRpe?pRpe.media:null), rpeTexto:rpeTxt,
+          loadApplied:carga, seriesDone:series,
+          rirApplied:(pRir?pRir.media:null), rirTexto:rirTxt, noteApplied:nota, done:true });
       });
+      // El tipo de sesión hay que leerlo de la rutina de la SEMANA de esa
+      // fecha (puede ser pasada), no de una variable del ámbito de la vista:
+      // eso era justamente lo que rompía el guardado ("source is not defined").
+      let tipoDeEseDia = '';
+      try{
+        const rutinaEsaSemana = await getRoutine(athleteId, false, lunesDe(fecha));
+        tipoDeEseDia = (rutinaEsaSemana && rutinaEsaSemana.days && rutinaEsaSemana.days[dia] && rutinaEsaSemana.days[dia].tipo) || '';
+      }catch(e){ tipoDeEseDia = ''; }
+
       const avg = rpes.length ? +(rpes.reduce((a,b)=>a+b,0)/rpes.length).toFixed(1) : 0;
       const base = avg > 0 ? avg : overallRPE;
       const carga = +(base * mins).toFixed(1);
@@ -9217,7 +9297,7 @@ async function bindDynamicEvents(){
         descanso: val('descanso'), fatiga: val('fatiga'), calidad: val('calidad'),
         hidratacion: val('hidratacion'), satisfaccion: val('satisfaccion'),
         notes: card.querySelector('#mnNotes').value.trim(),
-        tipoSesion: (source && source.days && source.days[dia] && source.days[dia].tipo) || '',
+        tipoSesion: tipoDeEseDia,
         registroManual: true
       };
       const raw = await safeGet('journal-'+athleteId, true);
