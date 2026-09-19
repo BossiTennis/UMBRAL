@@ -461,6 +461,32 @@
   .section-tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--gold);background:var(--gold-dim);border-radius:100px;padding:3px 11px;margin:10px 0 6px;letter-spacing:0.04em;}
   .timer-badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-top:8px;}
   .timer-config{border-top:1px dashed var(--border);margin-top:10px;padding-top:10px;}
+  .dia-entreno > .acc-head{border-left:3px solid var(--accent);}
+  .dia-entreno > .acc-head b{color:var(--ink);}
+  .dia-descanso > .acc-head{border-left:3px solid transparent;}
+  .dia-descanso > .acc-head b{color:var(--muted);font-weight:500;}
+  .dia-descanso > .acc-head .chev-count{opacity:0.65;font-style:italic;}
+  .carga-sem{background:var(--panel2);border-radius:8px;padding:14px;margin-bottom:12px;}
+  .cs-cab{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:var(--muted);margin-bottom:12px;}
+  .cs-total{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;}
+  .cs-barras{display:flex;align-items:flex-end;gap:5px;height:118px;}
+  .cs-dia{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%;}
+  .cs-val{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--muted);height:12px;}
+  .cs-barra{width:100%;max-width:34px;background:var(--accent);border-radius:3px 3px 0 0;}
+  .cs-dia.vacio .cs-barra{background:var(--border);}
+  .cs-dia.hoy .cs-barra{background:var(--gold);}
+  .cs-lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--muted);}
+  .cs-dia.hoy .cs-lbl,.cs-dia.hoy .cs-num{color:var(--gold);}
+  .cs-num{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--muted);opacity:0.7;}
+  .cs-pie{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px;}
+  .q-num-mini{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);font-weight:400;}
+  .q-ayuda{display:block;font-size:11.5px;color:var(--muted);font-weight:400;margin-top:3px;line-height:1.5;}
+  .q-ops{display:flex;flex-direction:column;gap:6px;}
+  .q-op{background:var(--panel2);border:1px solid var(--border);color:var(--ink);font-family:'Manrope',sans-serif;font-size:13px;padding:10px 13px;border-radius:8px;cursor:pointer;text-align:left;line-height:1.4;}
+  .q-op.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600;}
+  .q-num{display:flex;align-items:center;gap:9px;}
+  .q-num input{width:110px;font-family:'IBM Plex Mono',monospace;font-size:16px;text-align:center;}
+  .q-num span{font-size:13px;color:var(--muted);}
   .q-cat{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;margin:12px 0 5px;}
   .q-config-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13.5px;}
   .athlete-list{display:flex;flex-direction:column;gap:8px;}
@@ -524,16 +550,18 @@
   .kpi span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;}
 </style>
 </head>
-<body class="theme-light">
+<body class="theme-dark">
 <script>
   // Aplicamos la preferencia guardada de este dispositivo ANTES de que se
   // pinte nada más, para no ver un parpadeo de claro pasando a oscuro.
   (function(){
     try{
+      // El tema por defecto es el oscuro; sólo cambiamos si el usuario eligió
+      // claro explícitamente alguna vez en este dispositivo.
       const guardado = localStorage.getItem('umbral-theme');
-      if(guardado === 'dark'){
-        document.body.classList.remove('theme-light');
-        document.body.classList.add('theme-dark');
+      if(guardado === 'light'){
+        document.body.classList.remove('theme-dark');
+        document.body.classList.add('theme-light');
       }
     }catch(e){}
   })();
@@ -810,32 +838,84 @@ const DAYS = ['lunes','martes','miércoles','jueves','viernes','sábado','doming
 const DAY_INDEX = { 1:'lunes',2:'martes',3:'miércoles',4:'jueves',5:'viernes',6:'sábado',0:'domingo' };
 const BLOCKS = [ {key:'calentamiento', label:'Calentamiento'}, {key:'principal', label:'Parte principal'}, {key:'vueltaCalma', label:'Vuelta a la calma'} ];
 
+// Cada pregunta usa el tipo que de verdad le corresponde:
+//   'opciones' → 5 respuestas con texto propio (no un 1-5 abstracto)
+//   'numero'   → una cifra real (horas, días…), con su unidad
+//   'text'     → respuesta libre
+// Las etiquetas describen SIEMPRE lo que significa cada punto, para que el
+// atleta no tenga que adivinar si un 4 es bueno o malo.
 const QUESTION_BANK = [
-  {id:'sleep_quality', cat:'Sueño y descanso', text:'Calidad del sueño esta semana', type:'scale', labels:['Muy mala','Excelente']},
-  {id:'sleep_hours', cat:'Sueño y descanso', text:'Horas medias de sueño por noche', type:'scale', labels:['Muy pocas','Suficientes']},
-  {id:'sleep_onset', cat:'Sueño y descanso', text:'Facilidad para conciliar el sueño', type:'scale', labels:['Muy difícil','Muy fácil']},
-  {id:'fatigue_accum', cat:'Recuperación y fatiga', text:'Fatiga general acumulada', type:'scale', labels:['Muy alta','Ninguna']},
-  {id:'doms', cat:'Recuperación y fatiga', text:'Dolor muscular (agujetas) esta semana', type:'scale', labels:['Mucho','Ninguno']},
-  {id:'recovery_between', cat:'Recuperación y fatiga', text:'Sensación de recuperación entre sesiones', type:'scale', labels:['Nula','Completa']},
-  {id:'nutrition_adherence', cat:'Nutrición e hidratación', text:'Adherencia a la alimentación planificada', type:'scale', labels:['Muy baja','Total']},
-  {id:'hydration_week', cat:'Nutrición e hidratación', text:'Hidratación general de la semana', type:'scale', labels:['Muy baja','Óptima']},
-  {id:'appetite', cat:'Nutrición e hidratación', text:'Apetito / relación con la comida', type:'scale', labels:['Muy alterado','Normal']},
-  {id:'motivation', cat:'Mente y motivación', text:'Motivación para entrenar', type:'scale', labels:['Muy baja','Muy alta']},
-  {id:'external_stress', cat:'Mente y motivación', text:'Estrés fuera del entrenamiento (trabajo/vida)', type:'scale', labels:['Muy alto','Ninguno']},
-  {id:'mood', cat:'Mente y motivación', text:'Estado de ánimo general', type:'scale', labels:['Muy bajo','Muy bueno']},
-  {id:'pain_unusual', cat:'Dolor y salud', text:'Molestias o dolor esta semana', type:'text'},
-  {id:'pain_area', cat:'Dolor y salud', text:'Zona corporal con molestias (si aplica)', type:'text'},
-  {id:'progress_feel', cat:'Rendimiento percibido', text:'Sensación de progreso esta semana', type:'scale', labels:['Ningún progreso','Mucho progreso']},
-  {id:'session_ease', cat:'Rendimiento percibido', text:'Facilidad de las sesiones vs. semanas anteriores', type:'scale', labels:['Mucho más difícil','Mucho más fácil']},
-  {id:'technique_conf', cat:'Rendimiento percibido', text:'Confianza en tu técnica/ejecución', type:'scale', labels:['Ninguna','Total']},
-  {id:'adherence_pct', cat:'Adherencia', text:'Sesiones completadas según lo planificado', type:'scale_dynamic'},
-  {id:'sessions_modified', cat:'Adherencia', text:'¿Modificaste o acortaste alguna sesión?', type:'scale', labels:['Todas','Ninguna']},
-  {id:'training_env', cat:'Contexto externo', text:'Calidad del entorno de entrenamiento', type:'scale', labels:['Muy deficiente','Excelente']},
-  {id:'active_rest', cat:'Contexto externo', text:'Descanso activo fuera de lo planificado', type:'scale', labels:['Ninguno','Mucho']},
-  {id:'running_feel', cat:'Específico Hyrox', text:'Sensaciones en la parte de carrera', type:'scale', labels:['Muy malas','Muy buenas']},
-  {id:'strength_feel', cat:'Específico Hyrox', text:'Sensaciones en fuerza/estaciones funcionales', type:'scale', labels:['Muy malas','Muy buenas']},
-  {id:'availability_next', cat:'Planificación', text:'Disponibilidad para la próxima semana (días y franjas)', type:'text'},
-  {id:'free_comment', cat:'Libre', text:'Algo más para la próxima llamada', type:'text'}
+  {id:'sleep_quality', cat:'Sueño y descanso', text:'¿Cómo has dormido esta semana?', type:'opciones',
+   opciones:['Fatal, me despertaba roto','Mal, poco reparador','Normal','Bien, descansaba','Muy bien, me levantaba fresco']},
+  {id:'sleep_hours', cat:'Sueño y descanso', text:'Horas de sueño por noche (media de la semana)', type:'numero',
+   unidad:'horas', min:3, max:14, paso:0.5, ayuda:'Aproximado, no hace falta que sea exacto.'},
+  {id:'sleep_onset', cat:'Sueño y descanso', text:'¿Cuánto tardas en dormirte?', type:'opciones',
+   opciones:['Más de una hora','30-60 minutos','15-30 minutos','5-15 minutos','Caigo enseguida']},
+  {id:'sleep_wakeups', cat:'Sueño y descanso', text:'Veces que te despiertas por la noche (media)', type:'numero',
+   unidad:'veces', min:0, max:10, paso:1},
+
+  {id:'fatigue_accum', cat:'Recuperación y fatiga', text:'¿Cómo de cansado te notas en general?', type:'opciones',
+   opciones:['Agotado, arrastro cansancio','Bastante cansado','Cansancio normal de entrenar','Bastante recuperado','Fresco, con energía de sobra']},
+  {id:'doms', cat:'Recuperación y fatiga', text:'Agujetas esta semana', type:'opciones',
+   opciones:['Muchas, me limitaban','Bastantes, molestas','Normales','Leves','Ninguna']},
+  {id:'recovery_between', cat:'Recuperación y fatiga', text:'¿Llegabas recuperado a la siguiente sesión?', type:'opciones',
+   opciones:['Nunca, siempre a medias','Pocas veces','A veces sí a veces no','Casi siempre','Siempre al 100%']},
+
+  {id:'nutrition_adherence', cat:'Nutrición e hidratación', text:'¿Has comido como habíamos planteado?', type:'opciones',
+   opciones:['Nada que ver','Bastante lejos','A medias','Bastante bien','Tal cual lo planteamos']},
+  {id:'hydration_week', cat:'Nutrición e hidratación', text:'Litros de agua al día (media aproximada)', type:'numero',
+   unidad:'litros', min:0.5, max:8, paso:0.5},
+  {id:'protein_ok', cat:'Nutrición e hidratación', text:'¿Has llegado a tu objetivo de proteína?', type:'opciones',
+   opciones:['Ningún día','Algún día suelto','Algo menos de la mitad','Casi todos los días','Todos los días']},
+  {id:'appetite', cat:'Nutrición e hidratación', text:'¿Cómo ha ido tu apetito?', type:'opciones',
+   opciones:['Muy alterado, sin hambre','Bastante bajo','Normal','Bastante hambre','Mucha hambre constante']},
+
+  {id:'motivation', cat:'Mente y motivación', text:'Ganas de entrenar esta semana', type:'opciones',
+   opciones:['Ninguna, me costaba ir','Pocas','Normales','Bastantes','Muchas, con ganas cada día']},
+  {id:'external_stress', cat:'Mente y motivación', text:'Estrés fuera del entrenamiento (trabajo, estudios, vida)', type:'opciones',
+   opciones:['Altísimo, me desborda','Alto','Normal','Bajo','Ninguno, semana tranquila']},
+  {id:'mood', cat:'Mente y motivación', text:'Estado de ánimo general', type:'opciones',
+   opciones:['Muy bajo','Bajo','Normal','Bueno','Muy bueno']},
+
+  {id:'pain_unusual', cat:'Dolor y salud', text:'¿Alguna molestia o dolor esta semana?', type:'text',
+   ayuda:'Si no ha habido nada, escribe "nada". Si ha habido algo, cuándo aparece y qué lo empeora.'},
+  {id:'pain_area', cat:'Dolor y salud', text:'¿En qué zona? (si aplica)', type:'text'},
+  {id:'pain_level', cat:'Dolor y salud', text:'Si hubo dolor, ¿cuánto?', type:'opciones',
+   opciones:['No hubo dolor','Leve, apenas lo noto','Molesto pero entrenable','Fuerte, condiciona el gesto','Me impidió entrenar']},
+
+  {id:'progress_feel', cat:'Rendimiento percibido', text:'¿Notas que estás progresando?', type:'opciones',
+   opciones:['Siento que voy a peor','No noto nada','Algo, poca cosa','Sí, se nota','Mucho, claramente mejor']},
+  {id:'session_ease', cat:'Rendimiento percibido', text:'Comparado con semanas anteriores, las sesiones se te han hecho…', type:'opciones',
+   opciones:['Mucho más duras','Algo más duras','Igual','Algo más llevaderas','Mucho más llevaderas']},
+  {id:'technique_conf', cat:'Rendimiento percibido', text:'¿Cómo de seguro te sientes con la técnica?', type:'opciones',
+   opciones:['Perdido, dudo mucho','Inseguro','Normal','Bastante seguro','Muy seguro']},
+
+  {id:'adherence_pct', cat:'Adherencia', text:'Sesiones completadas de las planificadas', type:'scale_dynamic'},
+  {id:'sessions_modified', cat:'Adherencia', text:'¿Has tenido que acortar o cambiar alguna sesión?', type:'opciones',
+   opciones:['Todas','La mayoría','Alguna','Una sola','Ninguna, todas completas']},
+  {id:'sessions_why', cat:'Adherencia', text:'Si cambiaste alguna, ¿por qué?', type:'text',
+   ayuda:'Tiempo, cansancio, material ocupado, molestias… Sin justificarte, solo para saberlo.'},
+
+  {id:'training_env', cat:'Contexto externo', text:'¿Qué tal el sitio donde entrenas?', type:'opciones',
+   opciones:['Muy mal, me falta material','Regular, con limitaciones','Normal','Bien','Perfecto, todo disponible']},
+  {id:'active_rest', cat:'Contexto externo', text:'Actividad extra fuera del plan (andar, bici, deporte…)', type:'opciones',
+   opciones:['Nada, sedentario','Poca','Algo','Bastante','Mucha, días muy activos']},
+  {id:'steps_avg', cat:'Contexto externo', text:'Pasos al día (media, si los mides)', type:'numero',
+   unidad:'pasos', min:0, max:40000, paso:500, ayuda:'Déjalo vacío si no lo mides.'},
+
+  {id:'running_feel', cat:'Específico Hyrox', text:'Sensaciones corriendo', type:'opciones',
+   opciones:['Muy malas','Malas','Normales','Buenas','Muy buenas']},
+  {id:'strength_feel', cat:'Específico Hyrox', text:'Sensaciones en fuerza y estaciones funcionales', type:'opciones',
+   opciones:['Muy malas','Malas','Normales','Buenas','Muy buenas']},
+
+  {id:'cycle_phase', cat:'Ciclo menstrual', text:'¿En qué punto del ciclo estás?', type:'opciones',
+   opciones:['Con la regla','Justo después','Mitad del ciclo','Días previos a la regla','No aplica / no lo sigo']},
+  {id:'cycle_impact', cat:'Ciclo menstrual', text:'¿Ha afectado a tu entrenamiento esta semana?', type:'opciones',
+   opciones:['Mucho, no pude entrenar igual','Bastante','Algo','Poco','Nada']},
+
+  {id:'availability_next', cat:'Planificación', text:'Disponibilidad para la próxima semana', type:'text',
+   ayuda:'Días y franjas horarias reales.'},
+  {id:'free_comment', cat:'Libre', text:'¿Algo más que quieras contarme?', type:'text'}
 ];
 const DEFAULT_ACTIVE = ['sleep_quality','fatigue_accum','motivation','pain_unusual','adherence_pct','availability_next','free_comment'];
 
@@ -1469,13 +1549,15 @@ function renderNav(){
     ];
     nav.innerHTML = items.map(it=>`<button data-navtab="${it.key}" class="${state.tab===it.key?'active':''}">${it.ic}${it.label}</button>`).join('');
   } else {
+    // Resumen, Tareas y Calendario van juntos en "Agenda": los tres responden
+    // a la misma pregunta ("¿qué tengo pendiente?") y separados obligaban a
+    // saltar entre pestañas para hacerse una idea. Con seis ítems el menú no
+    // cabía bien en móvil; con cuatro sí.
     const items = [
       {key:'atletas', ic:icPeople(), label:'Atletas'},
-      {key:'calendario', ic:icCalendar(), label:'Calendario'},
+      {key:'agenda', ic:icCalendar(), label:'Agenda'},
       {key:'galeria', ic:icPlayCircle(), label:'Galería'},
-      {key:'captacion', ic:icClipboard(), label:'Leads'},
-      {key:'tareas', ic:icTasks(), label:'Tareas'},
-      {key:'resumen', ic:icGrid(), label:'Resumen'}
+      {key:'captacion', ic:icClipboard(), label:'Leads'}
     ];
     nav.innerHTML = items.map(it=>`<button data-navtab="${it.key}" class="${state.tab===it.key?'active':''}">${it.ic}${it.label}</button>`).join('');
   }
@@ -1485,6 +1567,7 @@ function renderNav(){
 // ================= COACH SHELL =================
 function renderCoachShell(){
   if(state.tab==='atletas') return renderCoachAtletas();
+  if(state.tab==='agenda') return `<div id="tabContent" data-mode="agenda"></div>`;
   if(state.tab==='resumen') return `<div id="tabContent" data-mode="resumen"></div>`;
   if(state.tab==='calendario') return `<div id="tabContent" data-mode="calendario-coach"></div>`;
   if(state.tab==='galeria') return `<div id="tabContent" data-mode="galeria-coach"></div>`;
@@ -1725,6 +1808,7 @@ async function renderTabContent(){
   let html = '';
   try{
     if(mode==='galeria-coach') html = await tplGaleriaCoach();
+    if(mode==='agenda') html = await tplAgenda();
     if(mode==='captacion') html = await tplCaptacion();
     if(mode==='resumen') html = await tplResumen();
     else if(mode==='calendario-coach') html = await tplCalendarioCoach();
@@ -3019,7 +3103,10 @@ async function tplRutinaAtleta(athleteId){
     const totalEx = esPistaAt ? numDrillsAt : BLOCKS.reduce((a,b)=>a+routine.days[d][b.key].length,0);
     const lugarIco = esPistaAt ? '🎾 ' : '';
     const etiquetaCant = esPistaAt ? `${totalEx} drill${totalEx===1?'':'s'}` : `${totalEx} ejerc.`;
-    html += `<div class="acc ${open}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${lugarIco}${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${routine.days[d].tipo?escapeHtml(routine.days[d].tipo)+' · ':''}${etiquetaCant}</span></div><div class="acc-body">`;
+    // Los días con entrenamiento se distinguen a simple vista de los de
+    // descanso: de un vistazo se ve cómo queda repartida la semana.
+    const conEntreno = totalEx > 0 ? 'dia-entreno' : 'dia-descanso';
+    html += `<div class="acc ${open} ${conEntreno}" data-day="${d}"><div class="acc-head" data-toggle="${d}"><b>${lugarIco}${d}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${totalEx ? (routine.days[d].tipo?escapeHtml(routine.days[d].tipo)+' · ':'')+etiquetaCant : 'descanso'}</span></div><div class="acc-body">`;
     if(state.modoDemo && DEMO_GUIA[d]){
       html += `<div class="demo-nota">${DEMO_GUIA[d]}</div>`;
     }
@@ -3073,6 +3160,8 @@ async function tplRutinaAtleta(athleteId){
                   <span>RIR: <b>${escapeHtml(ex.rir||'—')}</b></span>
                   ${ex.rpeTarget?`<span>RPE: <b>${escapeHtml(ex.rpeTarget)}</b></span>`:''}
                 </div>
+                ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
+                ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:8px;">▶ Ver técnica</button>`:''}
               </div>
             </div>`).join('')}
         </div>`;
@@ -3273,6 +3362,12 @@ async function tplRegistroManual(athleteId, source, selDay){
   return html;
 }
 function mnScale5(key,label){
+  const et = SURVEY_ETIQUETAS[key];
+  if(et){
+    return `<div class="q-item"><p>${label}</p><div class="q-ops" data-mnscale="${key}">
+      ${et.map((t,i)=>`<button class="q-op" data-val="${i+1}">${escapeHtml(t)}</button>`).join('')}
+    </div></div>`;
+  }
   return `<div class="q-item"><p>${label}</p><div class="scale" data-mnscale="${key}">${[1,2,3,4,5].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div>
     <div class="scale-labels"><span>1 · deficiente</span><span>5 · excelente</span></div></div>`;
 }
@@ -3297,12 +3392,14 @@ function sessionPreviewHtml(routine, day, turno){
           <span class="combi-sub">${g.ejercicios[0].series||'—'} vueltas</span>
         </div>${g.ejercicios.map((ex,i)=>`<div class="combi-ex"><span class="combi-num">${i+1}</span>
           <div class="combi-det"><b>${escapeHtml(ex.name||'—')}</b>
-          <div class="ex-meta"><span>${escapeHtml(ex.reps||'—')} reps</span>${ex.load?`<span>${escapeHtml(ex.load)}</span>`:''}${ex.rir?`<span>RIR ${escapeHtml(ex.rir)}</span>`:''}</div></div></div>`).join('')}</div>`;
+          <div class="ex-meta"><span>${escapeHtml(ex.reps||'—')} reps</span>${ex.load?`<span>${escapeHtml(ex.load)}</span>`:''}${ex.rir?`<span>RIR ${escapeHtml(ex.rir)}</span>`:''}</div>
+          ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate</div>`:''}</div></div>`).join('')}</div>`;
         return;
       }
       g.ejercicios.forEach(ex=>{
       html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
         <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span><span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div>
+        ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
         ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Ver técnica</button>`:''}
         </div>`;
       });
@@ -3374,9 +3471,11 @@ function renderSessionOverlay(){
               <div class="ex-meta"><span>${escapeHtml(ex.reps||'—')} reps</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>RIR ${escapeHtml(ex.rir||'—')}</span></div>
               ${t2.type!=='none'?`<button class="btn ghost small" data-extimer="${i}" style="margin-top:6px;">▶ ${TIMER_TYPE_LABELS[t2.type]}</button>`:''}
               ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Técnica</button>`:''}
+              ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
               <div class="ex-grid" style="margin-top:8px;">
                 <div><label class="field-label">RPE</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9"></div>
                 <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
+                <div><label class="field-label">RIR</label><input type="text" inputmode="decimal" class="rir-applied-input" data-exi="${i}" value="${escapeHtml(ex.rirTexto || ex.rirApplied || '')}" placeholder="${escapeHtml(ex.rir||'2 · 1-2')}"></div>
                 <div class="full"><label class="field-label">Nota</label><textarea class="note-applied-input" data-exi="${i}" placeholder="Sensación, molestia…" style="min-height:34px;">${escapeHtml(ex.noteApplied||'')}</textarea></div>
               </div>
             </div>
@@ -3512,11 +3611,32 @@ function tplPostSurvey(){
     <button class="btn" id="saveSurvey">Guardar sesión en el diario</button>
   </div>`;
 }
+// Cada escala del diario dice qué significa cada punto, con palabras propias
+// de esa pregunta: "deficiente/excelente" no encaja para medir fatiga.
+const SURVEY_ETIQUETAS = {
+  descanso:     ['Nunca me recuperaba','Poco','Lo justo','Bastante bien','Llegaba entero a cada serie'],
+  fatiga:       ['Reventado','Muy cansado','Cansancio normal','Poco cansado','Como si no hubiera entrenado'],
+  calidad:      ['Muy mala, no salió nada','Floja','Normal','Buena','Muy buena, todo salió'],
+  hidratacion:  ['No bebí casi nada','Poco','Lo normal','Bien','Muy bien, bebí de sobra'],
+  satisfaccion: ['Nada satisfecho','Poco','Normal','Contento','Muy contento']
+};
 function surveyScale5(key,label){
+  const et = SURVEY_ETIQUETAS[key];
+  if(et){
+    return `<div class="q-item"><p>${label}</p><div class="q-ops" data-survey="${key}">
+      ${et.map((t,i)=>`<button class="q-op" data-val="${i+1}">${escapeHtml(t)}</button>`).join('')}
+    </div></div>`;
+  }
   return `<div class="q-item"><p>${label}</p><div class="scale" data-survey="${key}">${[1,2,3,4,5].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div>
     <div class="scale-labels"><span>1 · deficiente</span><span>5 · excelente</span></div></div>`;
 }
 function bindSurveyEvents(){
+  document.querySelectorAll('#surveyCard .q-ops').forEach(cont=>{
+    cont.querySelectorAll('.q-op').forEach(b=>b.addEventListener('click', ()=>{
+      cont.querySelectorAll('.q-op').forEach(x=>x.classList.remove('on','sel'));
+      b.classList.add('on','sel');   // 'sel' para que getVal siga encontrándolo
+    }));
+  });
   document.querySelectorAll('#surveyCard .scale').forEach(scale=>{
     scale.querySelectorAll('button').forEach(btn=>btn.addEventListener('click', ()=>{ scale.querySelectorAll('button').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }));
   });
@@ -4127,16 +4247,35 @@ async function tplQuestForm(athleteId, existing){
     const q = QUESTION_BANK.find(x=>x.id===qid); if(!q) return;
     const val = existing && existing.answers ? existing.answers[qid] : null;
     const note = existing && existing.notes ? existing.notes[qid] : '';
+    const ayuda = q.ayuda ? `<span class="q-ayuda">${escapeHtml(q.ayuda)}</span>` : '';
     if(q.type==='text'){
-      html += `<div class="q-item"><p>${q.text}</p><textarea data-qtext="${q.id}" style="min-height:44px;">${val?escapeHtml(val):''}</textarea></div>`;
+      html += `<div class="q-item"><p>${q.text}${ayuda}</p><textarea data-qtext="${q.id}" style="min-height:44px;">${val?escapeHtml(val):''}</textarea></div>`;
+    } else if(q.type==='numero'){
+      // Una cifra real con su unidad, no una escala abstracta.
+      html += `<div class="q-item"><p>${q.text}${ayuda}</p>
+        <div class="q-num">
+          <input type="number" data-qnum="${q.id}" value="${val!==null&&val!==undefined?escapeHtml(String(val)):''}"
+            min="${q.min ?? 0}" max="${q.max ?? 9999}" step="${q.paso ?? 1}" inputmode="decimal" placeholder="—">
+          <span>${escapeHtml(q.unidad||'')}</span>
+        </div>
+        <div class="q-note"><textarea data-qnote="${q.id}" placeholder="Notas (opcional)">${note?escapeHtml(note):''}</textarea></div></div>`;
     } else if(q.type==='scale_dynamic'){
-      html += `<div class="q-item"><p>${q.text}</p><div class="scale" data-qscale="${q.id}">`;
+      html += `<div class="q-item"><p>${q.text}${ayuda}</p><div class="scale" data-qscale="${q.id}">`;
       for(let n=1;n<=planned;n++) html += `<button data-val="${n}" class="${val===n?'sel':''}">${n}/${planned}</button>`;
       html += `</div></div>`;
+    } else if(q.type==='opciones'){
+      // Cada respuesta dice lo que significa: nada de adivinar si 4 es bueno.
+      html += `<div class="q-item"><p>${q.text}${ayuda}</p><div class="q-ops" data-qops="${q.id}">`;
+      q.opciones.forEach((op,idx)=>{
+        const n = idx+1;
+        html += `<button class="q-op ${val===n?'on':''}" data-val="${n}">${escapeHtml(op)}</button>`;
+      });
+      html += `</div><div class="q-note"><textarea data-qnote="${q.id}" placeholder="Notas (opcional)">${note?escapeHtml(note):''}</textarea></div></div>`;
     } else {
-      html += `<div class="q-item"><p>${q.text}</p><div class="scale" data-qscale="${q.id}">`;
+      // Compatibilidad con preguntas antiguas de escala 1-5.
+      html += `<div class="q-item"><p>${q.text}${ayuda}</p><div class="scale" data-qscale="${q.id}">`;
       for(let n=1;n<=5;n++) html += `<button data-val="${n}" class="${val===n?'sel':''}">${n}</button>`;
-      html += `</div><div class="scale-labels"><span>1 · ${q.labels[0]}</span><span>5 · ${q.labels[1]}</span></div>
+      html += `</div>${q.labels?`<div class="scale-labels"><span>1 · ${q.labels[0]}</span><span>5 · ${q.labels[1]}</span></div>`:''}
         <div class="q-note"><textarea data-qnote="${q.id}" placeholder="Notas adicionales (opcional)">${note?escapeHtml(note):''}</textarea></div></div>`;
     }
   });
@@ -4492,25 +4631,50 @@ async function tplProgreso(athleteId){
     html += `</div>`;
   }
 
+  // Carga por día de la ÚLTIMA SEMANA (lunes a domingo), con su fecha debajo.
+  // Ver "L 15 · M 16 · X 17…" hace evidente cómo fluctúa la intensidad, algo
+  // que una tira de 30 barras anónimas no conseguía transmitir.
+  const INI_SEM = ['L','M','X','J','V','S','D'];
+  const lunesActual = weekOfISO();
+  const diasSemana = [];
+  for(let k=0;k<7;k++){
+    const dte = new Date(lunesActual+'T00:00:00');
+    dte.setDate(dte.getDate()+k);
+    const iso = fechaLocalISO(dte);
+    const delDia = entries.filter(e=>e.date===iso);
+    diasSemana.push({
+      iso, inicial: INI_SEM[k], numero: dte.getDate(),
+      carga: delDia.reduce((a,e)=>a+(e.fatigueScore||0),0),
+      sesiones: delDia.length,
+      esHoy: iso === todayISO()
+    });
+  }
+  const maxDia = Math.max(...diasSemana.map(d=>d.carga), 1);
+  const totalSemana = diasSemana.reduce((a,d)=>a+d.carga,0);
+  html += `<div class="carga-sem">
+    <div class="cs-cab">
+      <span>Carga por día · esta semana</span>
+      <span class="cs-total">${totalSemana ? Math.round(totalSemana)+' total' : 'sin sesiones aún'}</span>
+    </div>
+    <div class="cs-barras">
+      ${diasSemana.map(d=>`
+        <div class="cs-dia ${d.esHoy?'hoy':''} ${d.carga?'':'vacio'}">
+          <span class="cs-val">${d.carga?Math.round(d.carga):''}</span>
+          <div class="cs-barra" style="height:${d.carga?Math.max(6,(d.carga/maxDia)*72):3}px;"></div>
+          <span class="cs-lbl">${d.inicial}</span>
+          <span class="cs-num">${d.numero}</span>
+        </div>`).join('')}
+    </div>
+    <p class="cs-pie">La altura es la carga de ese día (RPE × minutos). Los huecos son descanso, y también forman parte del plan.</p>
+  </div>`;
+
+  // Historial más largo, por si quiere ver la tendencia de fondo.
   const MAX_BARRAS = 30;
-  const recientes = entries.slice(-MAX_BARRAS);
-  const loads = recientes.map(e=>e.fatigueScore); const maxLoad = Math.max(...loads,1);
-  html += `<div style="background:var(--panel2);border-radius:8px;padding:14px;margin-bottom:12px;"><div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Carga de entrenamiento por sesión (sRPE)${entries.length>MAX_BARRAS?` · últimas ${MAX_BARRAS} de ${entries.length}`:''}</div>
-    <div style="display:flex;align-items:flex-end;gap:3px;height:80px;">${loads.map(l=>`<div style="flex:1;min-width:3px;background:var(--accent);border-radius:2px 2px 0 0;height:${Math.max(4,(l/maxLoad)*80)}px;"></div>`).join('')}</div></div>`;
-  const wellPoints = entries.map(wellnessOf).map((v,i)=>({v,i})).filter(p=>p.v!==null);
-  const w=560,h=110,pad=16;
-  if(wellPoints.length >= 2){
-    const denom = entries.length > 1 ? entries.length-1 : 1;
-    const pts = wellPoints.map(p=>{
-      const x = pad + (p.i/denom)*(w-2*pad);
-      const y = h-pad - ((p.v-1)/4)*(h-2*pad);
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    }).join(' ');
-    html += `<div style="background:var(--panel2);border-radius:8px;padding:14px;"><div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Bienestar compuesto (tendencia)</div>
-      <svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;"><polyline points="${pts}" style="fill:none;stroke:var(--accent);stroke-width:2.5;"/></svg></div>`;
-  } else {
-    html += `<div style="background:var(--panel2);border-radius:8px;padding:14px;"><div style="font-size:11px;color:var(--muted);">Bienestar compuesto</div>
-      <div class="empty">Hacen falta al menos dos sesiones con el diario completo.</div></div>`;
+  if(entries.length > 7){
+    const recientes = entries.slice(-MAX_BARRAS);
+    const loads = recientes.map(e=>e.fatigueScore); const maxLoad = Math.max(...loads,1);
+    html += `<div style="background:var(--panel2);border-radius:8px;padding:14px;margin-bottom:12px;"><div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Historial de carga · últimas ${Math.min(MAX_BARRAS, entries.length)} sesiones</div>
+      <div style="display:flex;align-items:flex-end;gap:3px;height:60px;">${loads.map(l=>`<div style="flex:1;min-width:3px;background:var(--accent);border-radius:2px 2px 0 0;height:${Math.max(3,(l/maxLoad)*60)}px;opacity:0.65;"></div>`).join('')}</div></div>`;
   }
   html += `</div>`;
   html += tplMetricasEjercicio(entries);
@@ -6446,7 +6610,13 @@ async function tplQuestConfigAndRead(athleteId){
       const val = r.answers ? r.answers[qid] : undefined; if(val===undefined || val==='') return;
       if(q.type==='text') html += `<div style="font-size:12.5px;color:var(--muted);margin-top:6px;">${q.text}: "${escapeHtml(val)}"</div>`;
       else {
-        html += `<div style="font-size:13px;margin-top:6px;"><span style="color:var(--muted);">${q.text}</span> — <b style="color:var(--accent);">${val}/5</b></div>`;
+        // Mostramos la respuesta en palabras: "Fatal, me despertaba roto" dice
+        // mucho más que "1/5" y ahorra tener que interpretar la escala.
+        let mostrado;
+        if(q.type==='numero') mostrado = `${val} ${escapeHtml(q.unidad||'')}`;
+        else if(q.type==='opciones' && q.opciones && q.opciones[val-1]) mostrado = `${escapeHtml(q.opciones[val-1])} <span class="q-num-mini">(${val}/5)</span>`;
+        else mostrado = `${val}/5`;
+        html += `<div style="font-size:13px;margin-top:6px;"><span style="color:var(--muted);">${q.text}</span> — <b style="color:var(--accent);">${mostrado}</b></div>`;
         const note = r.notes ? r.notes[qid] : '';
         if(note) html += `<div style="font-size:12px;color:var(--muted);margin-left:8px;">"${escapeHtml(note)}"</div>`;
       }
@@ -6917,6 +7087,21 @@ function tplGalItem(ex, secciones){
         : `<button class="btn ghost small" data-galpickvideo="${ex.id}">+ Vídeo de técnica</button>`}
     </div>
   </div>`;
+}
+
+// Agenda: Resumen, Tareas y Calendario en una sola pantalla con subpestañas.
+// Arranca en Resumen, que es la vista de "qué requiere mi atención hoy".
+async function tplAgenda(){
+  const sub = state.agendaSub || 'resumen';
+  let html = `<div class="sub-tabs">
+    <button data-agendasub="resumen" class="${sub==='resumen'?'active':''}">Resumen</button>
+    <button data-agendasub="tareas" class="${sub==='tareas'?'active':''}">Tareas</button>
+    <button data-agendasub="calendario" class="${sub==='calendario'?'active':''}">Calendario</button>
+  </div>`;
+  if(sub==='tareas') html += await tplTareas();
+  else if(sub==='calendario') html += await tplCalendarioCoach();
+  else html += await tplResumen();
+  return html;
 }
 
 async function tplResumen(){
@@ -8307,6 +8492,11 @@ async function bindDynamicEvents(){
     }, 60);
   });
 
+  document.querySelectorAll('[data-agendasub]').forEach(b=>b.addEventListener('click', ()=>{
+    state.agendaSub = b.dataset.agendasub;
+    renderScrollTop();
+  }));
+
   // --- Captación de leads ---
   const copiarEnlace = document.getElementById('copiarEnlaceBtn');
   if(copiarEnlace) copiarEnlace.addEventListener('click', ()=>{
@@ -9245,8 +9435,8 @@ async function bindDynamicEvents(){
   if(cancelManual) cancelManual.addEventListener('click', ()=>{ state.manualSession = false; state.manual=null; renderKeepScroll(); });
   document.querySelectorAll('[data-mnscale]').forEach(sc=>{
     sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
-      sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
-      b.classList.add('sel');
+      sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel','on'));
+      b.classList.add('sel','on');   // 'on' pinta el botón de opción
     }));
   });
   const saveManual = document.getElementById('saveManualBtn');
@@ -9349,6 +9539,12 @@ async function bindDynamicEvents(){
       saveQuestConfig.textContent = ok?'Guardado ✓':'Error'; setTimeout(()=>{ saveQuestConfig.textContent='Guardar selección'; },1400);
     }catch(e){ toast('Error al guardar: '+e.message, true); }
   });
+  document.querySelectorAll('[data-qops]').forEach(cont=>{
+    cont.querySelectorAll('.q-op').forEach(b=>b.addEventListener('click', ()=>{
+      cont.querySelectorAll('.q-op').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+    }));
+  });
   document.querySelectorAll('[data-qscale]').forEach(scale=>{
     scale.querySelectorAll('button').forEach(btn=>btn.addEventListener('click', ()=>{ scale.querySelectorAll('button').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }));
   });
@@ -9360,17 +9556,33 @@ async function bindDynamicEvents(){
       const athleteId = state.athleteAsId;
       const active = await getQuestConfig(athleteId);
       const answers = {}, notes = {}; let ok2 = true;
+      let faltaTexto = '';
       active.forEach(qid=>{
         const q = QUESTION_BANK.find(x=>x.id===qid); if(!q) return;
-        if(q.type==='text'){ const ta=document.querySelector(`[data-qtext="${qid}"]`); answers[qid]=ta?ta.value.trim():''; }
-        else {
-          const sc=document.querySelector(`[data-qscale="${qid}"]`); const sel=sc&&sc.querySelector('button.sel');
-          if(!sel){ ok2=false; return; }
+        const nota = ()=>{ const nt=document.querySelector(`[data-qnote="${qid}"]`); if(nt && nt.value.trim()) notes[qid]=nt.value.trim(); };
+        if(q.type==='text'){
+          const ta=document.querySelector(`[data-qtext="${qid}"]`);
+          answers[qid]=ta?ta.value.trim():'';
+        } else if(q.type==='numero'){
+          const inp=document.querySelector(`[data-qnum="${qid}"]`);
+          const v = inp ? parseFloat(String(inp.value).replace(',','.')) : NaN;
+          // Las numéricas pueden quedarse vacías (p. ej. pasos si no los mide).
+          answers[qid] = isNaN(v) ? '' : v;
+          nota();
+        } else if(q.type==='opciones'){
+          const cont=document.querySelector(`[data-qops="${qid}"]`);
+          const sel=cont && cont.querySelector('.q-op.on');
+          if(!sel){ ok2=false; if(!faltaTexto) faltaTexto=q.text; return; }
           answers[qid]=parseInt(sel.dataset.val,10);
-          const nt=document.querySelector(`[data-qnote="${qid}"]`); if(nt && nt.value.trim()) notes[qid]=nt.value.trim();
+          nota();
+        } else {
+          const sc=document.querySelector(`[data-qscale="${qid}"]`); const sel=sc&&sc.querySelector('button.sel');
+          if(!sel){ ok2=false; if(!faltaTexto) faltaTexto=q.text; return; }
+          answers[qid]=parseInt(sel.dataset.val,10);
+          nota();
         }
       });
-      if(!ok2){ toast('Responde todas las preguntas de escala antes de enviar', true); return; }
+      if(!ok2){ toast(`Te falta responder: ${faltaTexto.slice(0,48)}${faltaTexto.length>48?'…':''}`, true); return; }
       const date = document.getElementById('questDateInput').value || saturdayOfWeek();
       const wk = weekOfISO();
       const raw = await safeGet('quest-'+athleteId, true);
