@@ -466,6 +466,19 @@
   .dia-descanso > .acc-head{border-left:3px solid transparent;}
   .dia-descanso > .acc-head b{color:var(--muted);font-weight:500;}
   .dia-descanso > .acc-head .chev-count{opacity:0.65;font-style:italic;}
+  .crono-vueltas{max-height:280px;overflow-y:auto;margin-top:14px;}
+  .cv-fila{display:grid;grid-template-columns:44px 1fr 1fr;gap:8px;align-items:center;padding:8px 4px;border-bottom:1px dashed var(--border);font-family:'IBM Plex Mono',monospace;}
+  .cv-fila:first-child{color:var(--gold);font-weight:700;}
+  .cv-num{font-size:11px;color:var(--muted);}
+  .cv-parcial{font-size:14px;}
+  .cv-acum{font-size:12px;color:var(--muted);text-align:right;}
+  .link-detalle{background:none;border:none;color:var(--accent);font-family:'Manrope',sans-serif;font-size:12px;font-weight:600;cursor:pointer;padding:6px 0;text-align:left;}
+  .series-detalle{margin-bottom:6px;}
+  .sd-fila{display:grid;grid-template-columns:26px 1fr 1fr 1fr;gap:6px;align-items:center;margin-bottom:6px;}
+  .sd-fila input{width:100%;padding:6px 5px;font-size:12.5px;text-align:center;}
+  .sd-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);font-weight:700;}
+  .sd-nota{font-size:11px;color:var(--muted);margin-top:2px;}
+  .sd-calc{font-weight:400;color:var(--gold);font-size:10px;}
   .carga-sem{background:var(--panel2);border-radius:8px;padding:14px;margin-bottom:12px;}
   .cs-cab{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:var(--muted);margin-bottom:12px;}
   .cs-total{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;}
@@ -3419,7 +3432,14 @@ function flattenExercises(routine, day, turno){
   BLOCKS.forEach(b=>{
     (routine.days[day][b.key]||[])
       .filter(ex=> turno===undefined || turno===null || (ex.turno||'')===turno)
-      .forEach(ex=>{ list.push({ ...ex, block:b.key, blockLabel:b.label, setsDone: Array(parseInt(ex.series)||1).fill(false), done:false, rpeApplied:null }); });
+      .forEach(ex=>{
+        const n = parseInt(ex.series)||1;
+        list.push({ ...ex, block:b.key, blockLabel:b.label, setsDone: Array(n).fill(false),
+          // Detalle opcional por serie: reps, RPE y RIR de CADA serie. Vive
+          // aparte del campo único de arriba; si no se usa, no molesta.
+          setsData: Array(n).fill(null).map(()=>({reps:'', rpe:'', rir:''})),
+          verDetalle:false, done:false, rpeApplied:null });
+      });
   });
   return list;
 }
@@ -3428,6 +3448,39 @@ async function mountSessionOverlay(athleteId){
   if(!overlay){ overlay = document.createElement('div'); overlay.id='sessionOverlay'; overlay.className='session-overlay'; document.body.appendChild(overlay); }
   renderSessionOverlay();
 }
+// Detalle opcional por serie: un enlace para desplegarlo, y si está abierto,
+// una fila compacta (reps · RPE · RIR) por cada serie. Plegado por defecto
+// para no sobrecargar al que solo quiere anotar un número para todo el
+// ejercicio; quien lo abra ve exactamente sus series, ni una más.
+function tplDetalleSeries(ex, i){
+  const n = ex.setsData.length;
+  let html = `<button class="link-detalle" data-verdetalle="${i}">${ex.verDetalle?'▾ Ocultar detalle por serie':'▸ Anotar cada serie por separado'}</button>`;
+  if(ex.verDetalle){
+    html += `<div class="series-detalle">`;
+    for(let si=0; si<n; si++){
+      const sd = ex.setsData[si] || {reps:'',rpe:'',rir:''};
+      html += `<div class="sd-fila">
+        <span class="sd-num">S${si+1}</span>
+        <input type="number" inputmode="numeric" class="sd-reps" data-exi="${i}" data-si="${si}" value="${escapeHtml(sd.reps||'')}" placeholder="reps">
+        <input type="text" inputmode="decimal" class="sd-rpe" data-exi="${i}" data-si="${si}" value="${escapeHtml(sd.rpe||'')}" placeholder="RPE">
+        <input type="text" inputmode="decimal" class="sd-rir" data-exi="${i}" data-si="${si}" value="${escapeHtml(sd.rir||'')}" placeholder="RIR">
+      </div>`;
+    }
+    html += `<p class="sd-nota">Se calcula la media sola; no hace falta que rellenes las tres columnas de cada fila.</p></div>`;
+  }
+  return html;
+}
+// Recalcula la media de RPE/RIR de un ejercicio a partir de lo que haya en el
+// detalle por serie, y actualiza el campo único para que quede coherente.
+function recalculaDesdeDetalle(ex){
+  const rpes = ex.setsData.map(s=>parseFloat(String(s.rpe).replace(',','.'))).filter(v=>!isNaN(v));
+  const rirs = ex.setsData.map(s=>parseFloat(String(s.rir).replace(',','.'))).filter(v=>!isNaN(v));
+  if(rpes.length){ ex.rpeApplied = Math.round((rpes.reduce((a,b)=>a+b,0)/rpes.length)*10)/10; ex.rpeTexto = rpes.join(','); }
+  if(rirs.length){ ex.rirApplied = Math.round((rirs.reduce((a,b)=>a+b,0)/rirs.length)*10)/10; ex.rirTexto = rirs.join(','); }
+  const reps = ex.setsData.map(s=>s.reps).filter(v=>v!==''&&v!=null);
+  if(reps.length) ex.seriesDone = reps.join(',');
+}
+
 function renderSessionOverlay(){
   const overlay = document.getElementById('sessionOverlay');
   if(!overlay || !session) return;
@@ -3472,10 +3525,11 @@ function renderSessionOverlay(){
               ${t2.type!=='none'?`<button class="btn ghost small" data-extimer="${i}" style="margin-top:6px;">▶ ${TIMER_TYPE_LABELS[t2.type]}</button>`:''}
               ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Técnica</button>`:''}
               ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
+              ${tplDetalleSeries(ex, i)}
               <div class="ex-grid" style="margin-top:8px;">
-                <div><label class="field-label">RPE</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9"></div>
+                <div><label class="field-label">RPE ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9" ${ex.verDetalle?'readonly':''}></div>
                 <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
-                <div><label class="field-label">RIR</label><input type="text" inputmode="decimal" class="rir-applied-input" data-exi="${i}" value="${escapeHtml(ex.rirTexto || ex.rirApplied || '')}" placeholder="${escapeHtml(ex.rir||'2 · 1-2')}"></div>
+                <div><label class="field-label">RIR ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rir-applied-input" data-exi="${i}" value="${escapeHtml(ex.rirTexto || ex.rirApplied || '')}" placeholder="${escapeHtml(ex.rir||'2 · 1-2')}" ${ex.verDetalle?'readonly':''}></div>
                 <div class="full"><label class="field-label">Nota</label><textarea class="note-applied-input" data-exi="${i}" placeholder="Sensación, molestia…" style="min-height:34px;">${escapeHtml(ex.noteApplied||'')}</textarea></div>
               </div>
             </div>
@@ -3493,15 +3547,16 @@ function renderSessionOverlay(){
       ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
       <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div>
       <div class="set-box">${ex.setsDone.map((done,si)=>`<div class="set-chip ${done?'done':''}" data-exi="${i}" data-si="${si}">S${si+1}</div>`).join('')}</div>
+      ${tplDetalleSeries(ex, i)}
       ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
       <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px;">
         ${t.type!=='none'?`<button class="btn ghost small" data-extimer="${i}">▶ ${TIMER_TYPE_LABELS[t.type]}</button>`:''}
         ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}">▶ Ver técnica</button>`:''}
       </div>
       <div class="ex-grid" style="margin-top:8px;">
-        <div><label class="field-label">RPE aplicado</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9"></div>
+        <div><label class="field-label">RPE aplicado ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9" ${ex.verDetalle?'readonly':''}></div>
         <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
-        <div><label class="field-label">RIR aplicado</label><input type="text" inputmode="decimal" class="rir-applied-input" data-exi="${i}" value="${escapeHtml(ex.rirTexto || ex.rirApplied || '')}" placeholder="${escapeHtml(ex.rir||'2 · 1-2')}"></div>
+        <div><label class="field-label">RIR aplicado ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rir-applied-input" data-exi="${i}" value="${escapeHtml(ex.rirTexto || ex.rirApplied || '')}" placeholder="${escapeHtml(ex.rir||'2 · 1-2')}" ${ex.verDetalle?'readonly':''}></div>
         <div class="full"><label class="field-label">Nota para tu entrenador</label><textarea class="note-applied-input" data-exi="${i}" placeholder="Molestia, sensación, ajuste que hiciste…" style="min-height:38px;">${escapeHtml(ex.noteApplied||'')}</textarea></div>
       </div>
     </div>`;
@@ -3547,6 +3602,29 @@ function bindSessionOverlayEvents(){
     inp.style.borderColor = (inp.value.trim() && !p) ? 'var(--danger)' : '';
     queueSessionSave();
   }));
+  // Detalle por serie: plegar/desplegar, y los tres campos de cada fila.
+  document.querySelectorAll('[data-verdetalle]').forEach(b=>b.addEventListener('click', ()=>{
+    const i = parseInt(b.dataset.verdetalle,10);
+    session.exercises[i].verDetalle = !session.exercises[i].verDetalle;
+    renderSessionOverlay();
+  }));
+  const guardaFilaSerie = (inp, campo)=>{
+    const i = parseInt(inp.dataset.exi,10), si = parseInt(inp.dataset.si,10);
+    const ex = session.exercises[i];
+    if(!ex.setsData[si]) ex.setsData[si] = {reps:'',rpe:'',rir:''};
+    ex.setsData[si][campo] = inp.value.trim();
+    recalculaDesdeDetalle(ex);
+    queueSessionSave();
+    // Sólo repintamos los campos calculados (RPE/RIR/reps arriba), no toda la
+    // tarjeta: perdería el foco justo mientras se está rellenando la fila.
+    const cardRpe = document.querySelector(`.rpe-applied-input[data-exi="${i}"]`);
+    const cardRir = document.querySelector(`.rir-applied-input[data-exi="${i}"]`);
+    if(cardRpe) cardRpe.value = ex.rpeTexto || (ex.rpeApplied ?? '');
+    if(cardRir) cardRir.value = ex.rirTexto || (ex.rirApplied ?? '');
+  };
+  document.querySelectorAll('.sd-reps').forEach(inp=>inp.addEventListener('change', ()=>guardaFilaSerie(inp,'reps')));
+  document.querySelectorAll('.sd-rpe').forEach(inp=>inp.addEventListener('change', ()=>guardaFilaSerie(inp,'rpe')));
+  document.querySelectorAll('.sd-rir').forEach(inp=>inp.addEventListener('change', ()=>guardaFilaSerie(inp,'rir')));
   // Guardamos el texto tal cual lo escribe (para poder reeditarlo y para que
   // tú veas "8-9" en vez de 8.5) y además la media, que es lo que usan los
   // cálculos de carga.
@@ -3655,7 +3733,10 @@ function bindSurveyEvents(){
       exercises: session.exercises.map(e=>({name:e.name, section:e.section||'',
         rpeApplied:e.rpeApplied, rpeTexto:e.rpeTexto||'',
         rirApplied:e.rirApplied ?? null, rirTexto:e.rirTexto||'',
-        loadPlanned:e.load||'', loadApplied:e.loadApplied||'', noteApplied:e.noteApplied||'', done:e.done})),
+        loadPlanned:e.load||'', loadApplied:e.loadApplied||'', noteApplied:e.noteApplied||'', done:e.done,
+        // Sólo se guarda si el atleta llegó a rellenar alguna fila; si no usó
+        // el detalle por serie, esto queda vacío y no añade ruido al diario.
+        setsData: (e.setsData||[]).some(sd=>sd.reps||sd.rpe||sd.rir) ? e.setsData : undefined})),
       avgExerciseRPE: session.avgExerciseRPE, fatigueScore: cargaFinal,
       cargaDesdeRPEGeneral: !(session.avgExerciseRPE > 0),
       tipoSesion: session.tipoSesion || '',
@@ -3692,7 +3773,11 @@ function openTimer(preset){
   timerModal = { mode:null, work:30, rest:15, rounds:8, sets:1, setRest:60, prep:10,
     phase:'idle', remaining:30, round:1, setNum:1, running:false,
     emomRounds:10, emomLen:60, amrapMin:12, amrapRemaining:12*60, amrapLaps:0, running2:false,
-    seriesRestSec:180, seriesCount:5, seriesRound:1, seriesRemaining:180, seriesRunning:false };
+    seriesRestSec:180, seriesCount:5, seriesRound:1, seriesRemaining:180, seriesRunning:false,
+    // Cronómetro con vueltas: cuenta hacia arriba desde cero, sin límite.
+    // cronoInicio guarda el instante real de arranque (reloj de pared), para
+    // que sobreviva a cambiar de app igual que el resto de temporizadores.
+    cronoRunning:false, cronoInicio:null, cronoAcum:0, cronoVueltas:[] };
   if(preset && preset.type && preset.type!=='none'){
     timerModal.mode = preset.type;
     timerModal.work = preset.work; timerModal.rest = preset.rest; timerModal.rounds = preset.rounds;
@@ -3710,7 +3795,8 @@ const TIMER_INFO = {
   intervalos: { title:'Intervalos / Tabata', desc:'Alterna trabajo y descanso en rondas fijas. Elige un Tabata predefinido o ajusta tus propios tiempos — ideal para series cortas de alta intensidad.' },
   emom: { title:'EMOM', desc:'"Every Minute On the Minute": empiezas una tarea concreta al inicio de cada minuto (o duración que fijes) y descansas lo que sobre. Bueno para trabajo cíclico con recuperación variable.' },
   amrap: { title:'AMRAP', desc:'"As Many Rounds As Possible": cuenta atrás una duración total mientras acumulas vueltas completas a tu ritmo — tú marcas cada vuelta con el botón.' },
-  series: { title:'Descanso por series', desc:'Cuenta atrás de descanso que se repite tras cada serie (por ejemplo 3 minutos, 5 veces). Pensado para trabajo de fuerza con pausas largas y constantes.' }
+  series: { title:'Descanso por series', desc:'Cuenta atrás de descanso que se repite tras cada serie (por ejemplo 3 minutos, 5 veces). Pensado para trabajo de fuerza con pausas largas y constantes.' },
+  cronometro: { title:'Cronómetro con vueltas', desc:'Cuenta hacia arriba sin límite y vas marcando cada vuelta según avanzas: cada km de carrera, cada ronda de un circuito. Guarda el parcial y el acumulado de cada una — ideal para medir un simulacro de Hyrox.' }
 };
 function renderTimerModal(){
   let back = document.getElementById('timerModalBack');
@@ -3757,13 +3843,29 @@ function renderTimerModal(){
       <div class="interval-display ${t.running2?'work':'idle'}"><span class="phase">${t.running2?'EN CURSO':'LISTO'}</span>${fmtTime(t.amrapRemaining)}</div>
       <div class="amrap-count">${t.amrapLaps} vueltas</div>
       <div class="row" style="justify-content:center;"><button class="btn" id="amrapStartBtn">${t.running2?'Pausar':'Iniciar'}</button><button class="btn ghost" id="amrapLapBtn">+1 vuelta</button><button class="btn ghost" id="amrapResetBtn">Reiniciar</button></div>`;
-  } else {
+  } else if(t.mode==='series'){
     html += `<div class="timer-fields" style="grid-template-columns:1fr 1fr;">
         <div><label class="field-label">Descanso (s)</label><input type="number" id="serRest" value="${t.seriesRestSec}"></div>
         <div><label class="field-label">Nº de series</label><input type="number" id="serCount" value="${t.seriesCount}"></div>
       </div>
       <div class="interval-display ${t.seriesRunning?'rest':'idle'}" id="serDisplay"><span class="phase">${t.seriesRunning?'DESCANSO':'LISTO'}</span>${fmtTime(t.seriesRemaining)}<span class="round">Serie ${t.seriesRound} de ${t.seriesCount}</span></div>
       <div class="row" style="justify-content:center;"><button class="btn" id="serStartBtn">${t.seriesRunning?'Pausar':'Iniciar descanso'}</button><button class="btn ghost" id="serNextBtn">Serie completada</button><button class="btn ghost" id="serResetBtn">Reiniciar</button></div>`;
+  } else {
+    // Cronómetro con vueltas: cuenta hacia arriba, sin duración fijada de
+    // antemano. Pensado para un circuito de hasta 8 ejercicios o un
+    // simulacro de Hyrox: cada vuelta guarda su parcial y su acumulado.
+    const enCurso = t.cronoRunning ? (t.cronoAcum + (Date.now() - t.cronoInicio)/1000) : t.cronoAcum;
+    html += `<div class="interval-display ${t.cronoRunning?'work':'idle'}" id="cronoDisplay"><span class="phase">${t.cronoRunning?'EN MARCHA':(t.cronoAcum>0?'PAUSADO':'LISTO')}</span>${fmtTime(Math.floor(enCurso))}</div>
+      <div class="row" style="justify-content:center;">
+        <button class="btn" id="cronoStartBtn">${t.cronoRunning?'Pausar':(t.cronoAcum>0?'Reanudar':'Iniciar')}</button>
+        <button class="btn ghost" id="cronoLapBtn" ${t.cronoRunning?'':'disabled'}>Marcar vuelta</button>
+        <button class="btn ghost" id="cronoResetBtn">Reiniciar</button>
+      </div>
+      <div class="crono-vueltas">
+        ${t.cronoVueltas.length ? t.cronoVueltas.slice().reverse().map(v=>`
+          <div class="cv-fila"><span class="cv-num">V${v.n}</span><span class="cv-parcial">${fmtTime(v.parcial)}</span><span class="cv-acum">${fmtTime(v.acumulado)}</span></div>`).join('')
+          : '<div class="empty" style="padding:10px 0;">Sin vueltas todavía. Pulsa "Iniciar" y luego "Marcar vuelta" al terminar cada ejercicio o cada km.</div>'}
+      </div>`;
   }
   html += `</div>`;
   back.innerHTML = html;
@@ -3772,7 +3874,7 @@ function renderTimerModal(){
 function bindTimerModalEvents(){
   document.getElementById('closeTimerBtn').addEventListener('click', closeTimer);
   const backBtn = document.getElementById('backTimerBtn');
-  if(backBtn) backBtn.addEventListener('click', ()=>{ clearInterval(engineInterval); timerModal.running=false; timerModal.running2=false; timerModal.mode=null; renderTimerModal(); });
+  if(backBtn) backBtn.addEventListener('click', ()=>{ clearInterval(engineInterval); timerModal.running=false; timerModal.running2=false; timerModal.cronoRunning=false; timerModal.mode=null; renderTimerModal(); });
   if(timerModal.mode==='intervalos'){
     document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click', ()=>{
       const [w,r]=b.dataset.preset.split('|').map(Number);
@@ -3913,7 +4015,7 @@ function bindTimerModalEvents(){
       clearInterval(engineInterval); timerModal.running2=false; timerModal.amrapLaps=0;
       timerModal.amrapRemaining=(parseInt(document.getElementById('amrapMin').value,10)||12)*60; renderTimerModal();
     });
-  } else {
+  } else if(timerModal.mode==='series'){
     function tickSeries(){
       const T = timerModal;
       if(!T || !T.seriesRunning) return;
@@ -3949,6 +4051,51 @@ function bindTimerModalEvents(){
     document.getElementById('serResetBtn').addEventListener('click', ()=>{
       clearInterval(engineInterval); timerModal.seriesRunning=false; timerModal.seriesRound=1;
       timerModal.seriesRemaining=parseInt(document.getElementById('serRest').value,10)||180; renderTimerModal();
+    });
+  } else if(timerModal.mode==='cronometro'){
+    // Un cronómetro real no necesita recuperar fases perdidas al volver de
+    // segundo plano: el tiempo transcurrido = acumulado + (ahora - inicio),
+    // así que siempre es exacto, esté o no la pantalla encendida mientras
+    // tanto. El intervalo de aquí es sólo para refrescar el número en
+    // pantalla, no para calcularlo.
+    function tickCrono(){
+      const T = timerModal;
+      const disp = document.getElementById('cronoDisplay');
+      if(!disp || !T.cronoRunning) return;
+      const transcurrido = T.cronoAcum + (Date.now() - T.cronoInicio)/1000;
+      disp.innerHTML = `<span class="phase">EN MARCHA</span>${fmtTime(Math.floor(transcurrido))}`;
+    }
+    document.getElementById('cronoStartBtn').addEventListener('click', ()=>{
+      const T = timerModal;
+      if(!T.cronoRunning){
+        T.cronoRunning = true;
+        T.cronoInicio = Date.now();
+        T._tick = tickCrono;
+        clearInterval(engineInterval);
+        engineInterval = setInterval(tickCrono, 250);
+      } else {
+        T.cronoAcum += (Date.now() - T.cronoInicio)/1000;
+        T.cronoRunning = false;
+        clearInterval(engineInterval);
+      }
+      renderTimerModal();
+    });
+    document.getElementById('cronoLapBtn').addEventListener('click', ()=>{
+      const T = timerModal;
+      if(!T.cronoRunning) return;
+      // Redondeamos a segundos enteros AQUÍ, al guardar la vuelta: si se deja
+      // el decimal en el dato guardado, fmtTime lo arrastra tal cual y saca
+      // cosas como "00:5.806" en vez de "00:06".
+      const acumulado = Math.round(T.cronoAcum + (Date.now() - T.cronoInicio)/1000);
+      const anterior = T.cronoVueltas.length ? T.cronoVueltas[T.cronoVueltas.length-1].acumulado : 0;
+      T.cronoVueltas.push({ n: T.cronoVueltas.length+1, parcial: acumulado - anterior, acumulado });
+      ensureAudio(); CUE.rest();   // pitido corto de confirmación, sin interrumpir la marcha
+      renderTimerModal();
+    });
+    document.getElementById('cronoResetBtn').addEventListener('click', ()=>{
+      clearInterval(engineInterval);
+      timerModal.cronoRunning=false; timerModal.cronoInicio=null; timerModal.cronoAcum=0; timerModal.cronoVueltas=[];
+      renderTimerModal();
     });
   }
 }
@@ -6540,6 +6687,10 @@ async function tplDiarioLectura(athleteId){
             <td>${esf(x.rpeTexto, x.rpeApplied)}</td>
             <td>${esf(x.rirTexto, x.rirApplied)}</td>
           </tr>`;
+          if(Array.isArray(x.setsData) && x.setsData.length){
+            const filas = x.setsData.map((sd,si)=>`S${si+1}: ${sd.reps||'—'} reps${sd.rpe?` · RPE ${escapeHtml(sd.rpe)}`:''}${sd.rir?` · RIR ${escapeHtml(sd.rir)}`:''}`).join('  ·  ');
+            html += `<tr class="fila-nota"><td colspan="5">📋 ${filas}</td></tr>`;
+          }
           if(x.noteApplied) html += `<tr class="fila-nota"><td colspan="5">💬 ${escapeHtml(x.noteApplied)}</td></tr>`;
         });
         html += `</tbody></table>`;
