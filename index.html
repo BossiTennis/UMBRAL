@@ -288,6 +288,27 @@
   .f-opciones{display:flex;gap:7px;flex-wrap:wrap;}
   .f-op{background:var(--panel2);border:1px solid var(--border);color:var(--ink);font-family:'Manrope',sans-serif;font-size:13px;padding:9px 14px;border-radius:100px;cursor:pointer;text-align:left;}
   .f-op.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600;}
+  .multi-prog{margin-bottom:12px;}
+  .mp-barra{height:6px;background:var(--panel3);border-radius:100px;overflow:hidden;margin-bottom:8px;}
+  .mp-barra i{display:block;height:100%;background:var(--accent);border-radius:100px;transition:width .3s ease;}
+  .multi-prog p{font-size:12px;color:var(--muted);}
+  .multi-lista{max-height:260px;overflow-y:auto;}
+  .ml-fila{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;padding:7px 2px;border-bottom:1px dashed var(--border);font-size:12.5px;}
+  .ml-ic{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);text-align:center;}
+  .ml-fila.ok .ml-ic{color:var(--accent);}
+  .ml-fila.error .ml-ic{color:var(--danger);}
+  .ml-fila.error .ml-peso{color:var(--danger);font-size:11px;}
+  .ml-fila.subiendo .ml-ic{color:var(--gold);}
+  .ml-nombre{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .ml-peso{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+  .multi-video{width:100%;max-height:230px;border-radius:10px;background:#000;display:block;}
+  .multi-orig{font-size:11px;color:var(--muted);margin-top:6px;}
+  .gal-secs{display:flex;gap:5px;flex-wrap:wrap;}
+  .gs-chip{background:var(--panel);border:1px solid var(--border);color:var(--muted);font-family:'Manrope',sans-serif;font-size:11.5px;padding:5px 10px;border-radius:100px;cursor:pointer;}
+  .gs-chip.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600;}
+  .sec-nota{position:relative;background:var(--panel3);border-radius:8px;padding:11px 12px;margin-bottom:12px;}
+  .sec-nota textarea{width:100%;font-size:12.5px;line-height:1.6;white-space:pre-wrap;}
+  .nota-punto{color:var(--gold);font-size:10px;vertical-align:super;}
   .gal-item{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 13px;margin-bottom:10px;position:relative;}
   .drill-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative;}
   .jug-picker{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
@@ -2806,6 +2827,27 @@ async function getSecciones(){
 }
 async function saveSecciones(lista){ return safeSet('galeria-secciones', JSON.stringify(lista), true); }
 
+// Notas por sección: un bloc de texto libre asociado a cada sección de la
+// galería, para lo que no es un ejercicio en sí — pesos oficiales de
+// competición, estándares, recordatorios de material.
+// Un ejercicio puede estar en varias secciones a la vez: un press banca sirve
+// para fuerza, hipertrofia y potencia. Guardamos siempre un array en
+// `sections`, pero seguimos leyendo el `section` antiguo de una sola sección
+// para no perder nada de lo ya guardado.
+function seccionesDe(ex){
+  if(Array.isArray(ex.sections)) return ex.sections.filter(Boolean);
+  if(ex.section) return [ex.section];
+  return [];
+}
+function mismaSeccion(ex, sec){ return seccionesDe(ex).includes(sec); }
+
+async function getNotasSeccion(){
+  const raw = await safeGet('galeria-notas', true);
+  try{ const o = raw ? JSON.parse(raw) : null; return (o && typeof o==='object') ? o : {}; }
+  catch(e){ return {}; }
+}
+async function saveNotasSeccion(obj){ return safeSet('galeria-notas', JSON.stringify(obj), true); }
+
 // Guardas un ejercicio una vez y lo reutilizas en cualquier atleta, semana o
 // día. Los bloques son grupos completos (un circuito, un calentamiento tipo).
 async function getExLib(){
@@ -2823,7 +2865,11 @@ async function saveBlockLib(lib){ return safeSet('block-library', JSON.stringify
 
 // Copia limpia de un ejercicio: sin identidad ni datos de ejecución.
 function plantillaDe(ex){
-  return { name:ex.name||'', desc:ex.desc||'', section:ex.section||'', turno:'', grupoId:'', grupoTipo:'',
+  // En una rutina cada ejercicio va bajo UNA sección (es su sitio dentro del
+  // día), aunque en la galería pueda estar clasificado en varias. Tomamos la
+  // primera como sección de trabajo; luego se puede cambiar en el día.
+  const secs = (typeof seccionesDe === 'function') ? seccionesDe(ex) : (ex.section ? [ex.section] : []);
+  return { name:ex.name||'', desc:ex.desc||'', section: secs[0] || '', turno:'', grupoId:'', grupoTipo:'',
     pideGrabacion: !!ex.pideGrabacion,
     load:ex.load||'', series:ex.series||'', reps:ex.reps||'', rest:ex.rest||'',
     rir:ex.rir||'', rpeTarget:ex.rpeTarget||'', timer:{...exTimer(ex)},
@@ -7162,16 +7208,20 @@ async function tplCaptacion(){
 async function tplGaleriaCoach(){
   const lib = await getExLib();
   const secciones = await getSecciones();
+  const notas = await getNotasSeccion();
   const q = (state.galFiltro||'').toLowerCase().trim();
-  const filtrados = lib.filter(e=>!q || (e.name+' '+(e.section||'')).toLowerCase().includes(q));
+  const filtrados = lib.filter(e=>!q || (e.name+' '+seccionesDe(e).join(' ')).toLowerCase().includes(q));
 
-  // Agrupar por sección maestra, en su orden; lo sin encajar va al final.
+  // Agrupar por sección maestra. Un mismo ejercicio puede aparecer en varias
+  // secciones a la vez (press banca en fuerza, hipertrofia y potencia): es la
+  // misma ficha, mostrada donde corresponde.
   const grupos = new Map();
   secciones.forEach(sec=>grupos.set(sec, []));
   const sinSeccion = [];
   filtrados.forEach(e=>{
-    const sec = e.section && secciones.includes(e.section) ? e.section : null;
-    if(sec) grupos.get(sec).push(e); else sinSeccion.push(e);
+    const suyas = seccionesDe(e).filter(x=>secciones.includes(x));
+    if(suyas.length) suyas.forEach(sec=>grupos.get(sec).push(e));
+    else sinSeccion.push(e);
   });
   grupos.forEach(arr=>arr.sort((a,b)=>a.name.localeCompare(b.name,'es')));
   sinSeccion.sort((a,b)=>a.name.localeCompare(b.name,'es'));
@@ -7182,6 +7232,7 @@ async function tplGaleriaCoach(){
     <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:6px;">
       <button class="btn ghost small" id="galNuevoBtn">+ Nuevo ejercicio</button>
       <button class="btn ghost small" id="galNuevaSeccionBtn">+ Nueva sección</button>
+      <button class="btn ghost small" id="galSubirVariosBtn">⇈ Subir varios vídeos</button>
     </div>
   </div>`;
 
@@ -7189,7 +7240,7 @@ async function tplGaleriaCoach(){
     const items = grupos.get(sec) || [];
     if(q && !items.length) return;   // buscando: no mostrar secciones vacías
     const abierta = state.galSeccionAbierta === sec;
-    html += tplGalSeccionAcc(sec, items, secciones, abierta);
+    html += tplGalSeccionAcc(sec, items, secciones, abierta, notas[sec]);
   });
   if(sinSeccion.length || (!q && !secciones.length)){
     const abierta = state.galSeccionAbierta === '__sin__';
@@ -7201,10 +7252,16 @@ async function tplGaleriaCoach(){
   return html;
 }
 
-function tplGalSeccionAcc(sec, items, secciones, abierta){
+function tplGalSeccionAcc(sec, items, secciones, abierta, nota){
+  const tieneNota = nota && nota.trim();
   return `<div class="acc ${abierta?'open':''}" data-galsec="${escapeHtml(sec)}">
-    <div class="acc-head" data-toggle-gal="${escapeHtml(sec)}"><b>${escapeHtml(sec)}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${items.length}</span></div>
+    <div class="acc-head" data-toggle-gal="${escapeHtml(sec)}"><b>${escapeHtml(sec)}${tieneNota?' <span class="nota-punto">●</span>':''}</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${items.length}</span></div>
     <div class="acc-body">
+      <div class="sec-nota">
+        <label class="field-label">Notas de la sección</label>
+        <textarea class="gal-nota-sec" data-notasec="${escapeHtml(sec)}" placeholder="Pesos oficiales, estándares, material necesario…&#10;Ej: Sled push 102 kg · Sled pull 78 kg · Wall ball 4 kg a 2,70 m" style="min-height:${tieneNota?'92px':'52px'};">${escapeHtml(nota||'')}</textarea>
+        <span class="save-flag" data-flagsec="${escapeHtml(sec)}">Guardado ✓</span>
+      </div>
       <div class="gal-lista">${items.length ? items.map(e=>tplGalItem(e, secciones)).join('') : '<div class="empty">Sin ejercicios en esta sección.</div>'}</div>
       <button class="btn ghost small" data-galnuevoen="${escapeHtml(sec)}" style="margin-top:8px;">+ Añadir aquí</button>
       <button class="btn ghost small" data-galborrarseccion="${escapeHtml(sec)}" style="margin-top:8px;">Eliminar sección</button>
@@ -7223,11 +7280,10 @@ function tplGalItem(ex, secciones){
       <div><label class="field-label">Series</label><input type="text" class="gal-series" value="${escapeHtml(ex.series||'')}"></div>
       <div><label class="field-label">Reps</label><input type="text" class="gal-reps" value="${escapeHtml(ex.reps||'')}"></div>
       <div><label class="field-label">Carga</label><input type="text" class="gal-load" value="${escapeHtml(ex.load||'')}"></div>
-      <div><label class="field-label">Sección</label>
-        <select class="gal-section">
-          <option value="">Sin sección</option>
-          ${secciones.map(s=>`<option value="${escapeHtml(s)}" ${ex.section===s?'selected':''}>${escapeHtml(s)}</option>`).join('')}
-        </select>
+      <div class="full"><label class="field-label">Secciones <span style="font-weight:400;text-transform:none;letter-spacing:0;">— puedes marcar varias</span></label>
+        <div class="gal-secs">
+          ${secciones.map(sec=>`<button type="button" class="gs-chip ${mismaSeccion(ex,sec)?'on':''}" data-galsecpick="${ex.id}|${escapeHtml(sec)}">${escapeHtml(sec)}</button>`).join('')}
+        </div>
       </div>
     </div>
     <div class="video-row">
@@ -7464,7 +7520,10 @@ function bindExerciseCard(card, athleteId){
       if(lib.some(x=>x.name.toLowerCase() === encontrado.name.trim().toLowerCase())){
         if(!confirm(`Ya tienes "${encontrado.name}" en la galería.\n\n¿Guardar otra versión?`)) return;
       }
-      lib.push({ id: uid(), ...plantillaDe(encontrado) });
+      const base = plantillaDe(encontrado);
+      // En la galería la clasificación es múltiple: guardamos la sección de
+      // origen como primera etiqueta, y desde la galería se añaden más.
+      lib.push({ id: uid(), ...base, sections: base.section ? [base.section] : [], section: undefined });
       const ok = await saveExLib(lib);
       toast(ok ? `"${encontrado.name}" guardado en la galería` : 'No se pudo guardar', !ok);
     });
@@ -7603,7 +7662,7 @@ function bindGalSeccionAcc(acc){
   const addBtn = acc.querySelector('[data-galnuevoen]');
   if(addBtn) addBtn.addEventListener('click', async ()=>{
     const sec = addBtn.dataset.galnuevoen;
-    const nuevo = { id: uid(), name:'', desc:'', section:sec, load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
+    const nuevo = { id: uid(), name:'', desc:'', sections:[sec], load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
       timer:{type:'none'}, videoUrl:'', videoName:'' };
     const lib = await getExLib();
     lib.push(nuevo);
@@ -7619,10 +7678,10 @@ function bindGalSeccionAcc(acc){
     const secciones = (await getSecciones()).filter(s=>s!==sec);
     const ok = await saveSecciones(secciones);
     if(!ok){ toast('No se pudo eliminar', true); return; }
-    (async ()=>{ const lib = await getExLib(); lib.forEach(e=>{ if(e.section===sec) e.section=''; }); await saveExLib(lib); })();
+    (async ()=>{ const lib = await getExLib(); lib.forEach(e=>{ const q = seccionesDe(e).filter(x=>x!==sec); e.sections = q; delete e.section; }); await saveExLib(lib); })();
     const sinSecBody = document.querySelector('[data-galsec="__sin__"] .gal-lista');
     acc.querySelectorAll('.gal-item').forEach(item=>{
-      const sel = item.querySelector('.gal-section'); if(sel) sel.value = '';
+      
       if(sinSecBody) sinSecBody.appendChild(item);
     });
     acc.remove();
@@ -7638,27 +7697,17 @@ function bindGalItem(item){
     const lib = await getExLib();
     const ex = lib.find(x=>x.id===item.dataset.galid);
     if(!ex) return;
-    const seccionAntes = ex.section || '';
     ex.name = item.querySelector('.gal-name').value.trim();
     const descEl = item.querySelector('.gal-desc');
     if(descEl) ex.desc = descEl.value;     // sin trim: respetamos los saltos de línea
     ex.series = item.querySelector('.gal-series').value.trim();
     ex.reps = item.querySelector('.gal-reps').value.trim();
     ex.load = item.querySelector('.gal-load').value.trim();
-    ex.section = item.querySelector('.gal-section').value;
+    // Las secciones se guardan al pulsar cada chip, no aquí.
     const ok = await saveExLib(lib);
     const flag = item.querySelector('.save-flag');
     if(ok && flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
     if(!ok){ toast('No se pudo guardar', true); return; }
-    if(ex.section !== seccionAntes){
-      const claveDestino = ex.section || '__sin__';
-      const destino = document.querySelector(`[data-galsec="${CSS.escape(claveDestino)}"] .gal-lista`);
-      if(destino){
-        const vacio = destino.querySelector('.empty'); if(vacio) vacio.remove();
-        destino.appendChild(item);
-      }
-      actualizaContadoresGal();
-    }
   };
   let deb=null;
   item.querySelectorAll('input, select, textarea').forEach(f=>{
@@ -7691,6 +7740,146 @@ function bindGalItem(item){
     toast(ok?'Eliminado':'No se pudo eliminar', !ok);
     if(ok){ item.remove(); actualizaContadoresGal(); }
   });
+}
+
+// Subida múltiple con cola de renombrado: eliges varios vídeos de golpe, se
+// suben uno tras otro, y luego los vas nombrando pasando al siguiente sin
+// tener que abrir y cerrar el diálogo por cada uno.
+async function abrirSubidaMultiple(){
+  let back = document.getElementById('multiBack');
+  if(back) back.remove();
+  back = document.createElement('div');
+  back.id = 'multiBack'; back.className = 'modal-back';
+  document.body.appendChild(back);
+
+  // cola: [{file, estado:'pendiente'|'subiendo'|'ok'|'error', item, nombre, error}]
+  let cola = [];
+  let idx = 0;          // cuál estamos nombrando
+  let subiendo = false;
+
+  const cerrar = ()=>{ back.remove(); renderKeepScroll(); };
+
+  const pintar = ()=>{
+    const subidos = cola.filter(c=>c.estado==='ok').length;
+    const fallidos = cola.filter(c=>c.estado==='error').length;
+    let html = `<div class="modal">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h2 style="font-family:'Fraunces',serif;font-size:17px;">Subir varios vídeos</h2>
+        <button class="btn ghost small" id="cerrarMulti">Cerrar</button>
+      </div>`;
+
+    if(!cola.length){
+      html += `<p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:14px;">
+        Elige todos los vídeos de una vez. Se suben en fila y después los vas nombrando uno a uno, sin salir de aquí.
+        Máximo ${MAX_VIDEO_MB} MB por vídeo.</p>
+        <input type="file" id="multiFiles" accept="video/*" multiple style="width:100%;font-size:12.5px;margin-bottom:12px;">
+        <button class="btn" id="multiEmpezar" style="width:100%;">Subir todos</button>`;
+    } else if(subiendo){
+      html += `<div class="multi-prog">
+        <div class="mp-barra"><i style="width:${Math.round((subidos+fallidos)/cola.length*100)}%;"></i></div>
+        <p>${subidos+fallidos} de ${cola.length} procesados${fallidos?` · ${fallidos} con error`:''}</p>
+      </div>
+      <div class="multi-lista">
+        ${cola.map(c=>`<div class="ml-fila ${c.estado}">
+          <span class="ml-ic">${c.estado==='ok'?'✓':(c.estado==='error'?'✕':(c.estado==='subiendo'?'⋯':'·'))}</span>
+          <span class="ml-nombre">${escapeHtml(c.file.name)}</span>
+          <span class="ml-peso">${(c.file.size/(1024*1024)).toFixed(1)} MB</span>
+        </div>`).join('')}
+      </div>`;
+    } else {
+      // Fase de renombrado
+      const okItems = cola.filter(c=>c.estado==='ok');
+      if(!okItems.length){
+        html += `<div class="empty">No se pudo subir ningún vídeo.</div>
+          ${fallidos?`<div class="multi-lista">${cola.filter(c=>c.estado==='error').map(c=>`<div class="ml-fila error"><span class="ml-ic">✕</span><span class="ml-nombre">${escapeHtml(c.file.name)}</span><span class="ml-peso">${escapeHtml(c.error||'')}</span></div>`).join('')}</div>`:''}
+          <button class="btn ghost" id="multiReset" style="width:100%;margin-top:12px;">Probar de nuevo</button>`;
+      } else {
+        const actual = okItems[idx];
+        html += `<div class="multi-prog"><p>Nombrando ${idx+1} de ${okItems.length}${fallidos?` · ${fallidos} no se subieron`:''}</p></div>`;
+        if(actual){
+          html += `<video class="multi-video" src="${escapeHtml(actual.item.url)}" controls playsinline preload="metadata"></video>
+            <label class="field-label" style="margin-top:12px;">Nombre del ejercicio</label>
+            <input type="text" id="multiNombre" value="${escapeHtml(actual.nombre||'')}" placeholder="Ej. Sled push" style="width:100%;font-size:15px;">
+            <p class="multi-orig">Archivo: ${escapeHtml(actual.file.name)}</p>
+            <div class="row" style="gap:8px;margin-top:14px;">
+              ${idx>0?`<button class="btn ghost" id="multiPrev">← Anterior</button>`:''}
+              <button class="btn" id="multiNext" style="flex:1;">${idx < okItems.length-1 ? 'Guardar y siguiente →' : 'Guardar y terminar'}</button>
+            </div>`;
+        }
+      }
+    }
+    html += `</div>`;
+    back.innerHTML = html;
+    bindMulti();
+  };
+
+  const subirTodos = async ()=>{
+    subiendo = true;
+    pintar();
+    for(const c of cola){
+      c.estado = 'subiendo';
+      pintar();
+      try{
+        c.item = await subirVideo(c.file, c.nombre);
+        c.estado = 'ok';
+      }catch(e){
+        c.estado = 'error';
+        c.error = e.message || 'error';
+      }
+      pintar();
+    }
+    subiendo = false;
+    idx = 0;
+    pintar();
+  };
+
+  function bindMulti(){
+    const cerrarBtn = document.getElementById('cerrarMulti');
+    if(cerrarBtn) cerrarBtn.addEventListener('click', cerrar);
+    back.addEventListener('click', e=>{ if(e.target===back && !subiendo) cerrar(); });
+
+    const empezar = document.getElementById('multiEmpezar');
+    if(empezar) empezar.addEventListener('click', ()=>{
+      const inp = document.getElementById('multiFiles');
+      const files = inp && inp.files ? [...inp.files] : [];
+      if(!files.length){ toast('Elige al menos un vídeo', true); return; }
+      const grandes = files.filter(f=>f.size/(1024*1024) > MAX_VIDEO_MB);
+      if(grandes.length){
+        toast(`${grandes.length} vídeo(s) superan ${MAX_VIDEO_MB} MB y se omitirán`, true);
+      }
+      cola = files.filter(f=>f.size/(1024*1024) <= MAX_VIDEO_MB)
+        .map(f=>({ file:f, estado:'pendiente', item:null, nombre: f.name.replace(/\.[^.]+$/,'').slice(0,40), error:null }));
+      if(!cola.length){ toast('Ningún vídeo cabe dentro del límite', true); return; }
+      subirTodos();
+    });
+
+    const reset = document.getElementById('multiReset');
+    if(reset) reset.addEventListener('click', ()=>{ cola = []; idx = 0; pintar(); });
+
+    const nombreInp = document.getElementById('multiNombre');
+    const okItems = cola.filter(c=>c.estado==='ok');
+    const guardarNombre = async ()=>{
+      const actual = okItems[idx];
+      if(!actual || !nombreInp) return;
+      const nuevo = nombreInp.value.trim();
+      if(nuevo && nuevo !== actual.item.name){
+        actual.item.name = nuevo;
+        const lib = await getVideoLib();
+        const v = lib.find(x=>x.id===actual.item.id);
+        if(v){ v.name = nuevo; await saveVideoLib(lib); }
+      }
+    };
+    const next = document.getElementById('multiNext');
+    if(next) next.addEventListener('click', async ()=>{
+      await guardarNombre();
+      if(idx < okItems.length-1){ idx++; pintar(); }
+      else { toast(`${okItems.length} vídeo(s) en la galería`); cerrar(); }
+    });
+    const prev = document.getElementById('multiPrev');
+    if(prev) prev.addEventListener('click', async ()=>{ await guardarNombre(); idx--; pintar(); });
+    if(nombreInp) setTimeout(()=>nombreInp.focus(), 60);
+  }
+  pintar();
 }
 
 async function abrirGaleriaVideoParaItem(exLibId){
@@ -7889,8 +8078,8 @@ async function abrirGaleriaEjercicios(dia, bloque, athleteId){
     const q = (state.libFiltro||'').toLowerCase().trim();
     const secciones = await getSecciones();
     const filtrados = lib
-      .filter(e=>!q || (e.name+' '+(e.section||'')).toLowerCase().includes(q))
-      .filter(e=>!state.libSeccion || e.section===state.libSeccion)
+      .filter(e=>!q || (e.name+' '+seccionesDe(e).join(' ')).toLowerCase().includes(q))
+      .filter(e=>!state.libSeccion || mismaSeccion(e, state.libSeccion))
       .sort((a,b)=>a.name.localeCompare(b.name,'es'));
     // Agrupadas por inicial, como una agenda
     const porLetra = new Map();
@@ -8733,7 +8922,7 @@ async function bindDynamicEvents(){
   // se inserta, mueve o borra directamente el nodo del DOM que corresponde.
   const galNuevoBtn = document.getElementById('galNuevoBtn');
   if(galNuevoBtn) galNuevoBtn.addEventListener('click', async ()=>{
-    const nuevo = { id: uid(), name:'', desc:'', section:'', load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
+    const nuevo = { id: uid(), name:'', desc:'', sections:[], load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
       timer:{type:'none'}, videoUrl:'', videoName:'' };
     const lib = await getExLib();
     lib.push(nuevo);
@@ -8743,7 +8932,7 @@ async function bindDynamicEvents(){
   });
   document.querySelectorAll('[data-galnuevoen]').forEach(b=>b.addEventListener('click', async ()=>{
     const sec = b.dataset.galnuevoen;
-    const nuevo = { id: uid(), name:'', desc:'', section:sec, load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
+    const nuevo = { id: uid(), name:'', desc:'', sections:[sec], load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'',
       timer:{type:'none'}, videoUrl:'', videoName:'' };
     const lib = await getExLib();
     lib.push(nuevo);
@@ -8783,13 +8972,13 @@ async function bindDynamicEvents(){
     // sin sección en la próxima carga) como visualmente ahora mismo.
     (async ()=>{
       const lib = await getExLib();
-      lib.forEach(e=>{ if(e.section===sec) e.section=''; });
+      lib.forEach(e=>{ const q = seccionesDe(e).filter(x=>x!==sec); e.sections = q; delete e.section; });
       await saveExLib(lib);
     })();
     if(accSec){
       const sinSecBody = document.querySelector('[data-galsec="__sin__"] .gal-lista');
       accSec.querySelectorAll('.gal-item').forEach(item=>{
-        const sel = item.querySelector('.gal-section'); if(sel) sel.value = '';
+        
         if(sinSecBody) sinSecBody.appendChild(item);
       });
       accSec.remove();
@@ -8799,6 +8988,47 @@ async function bindDynamicEvents(){
   }));
   // (el borrado, el vídeo y el autoguardado de cada ficha ya quedan
   // conectados por bindGalItem, más abajo — nada que enlazar aquí)
+  const subirVarios = document.getElementById('galSubirVariosBtn');
+  if(subirVarios) subirVarios.addEventListener('click', ()=>abrirSubidaMultiple());
+
+  // Secciones múltiples: cada chip marca o desmarca una sección. Como el
+  // mismo ejercicio puede salir en varias listas a la vez, repintamos la
+  // pantalla para que aparezca (o desaparezca) donde toque.
+  document.querySelectorAll('[data-galsecpick]').forEach(b=>b.addEventListener('click', async (ev)=>{
+    ev.stopPropagation();
+    const [exId, sec] = b.dataset.galsecpick.split('|');
+    const lib = await getExLib();
+    const ex = lib.find(x=>x.id===exId);
+    if(!ex) return;
+    const actuales = seccionesDe(ex);
+    const nuevas = actuales.includes(sec) ? actuales.filter(x=>x!==sec) : actuales.concat(sec);
+    ex.sections = nuevas;
+    delete ex.section;          // migramos definitivamente al array
+    const ok = await saveExLib(lib);
+    if(!ok){ toast('No se pudo guardar', true); return; }
+    b.classList.toggle('on', nuevas.includes(sec));
+    // Repintamos con un respiro, para que se vea el chip marcarse antes.
+    clearTimeout(window._galSecTimer);
+    window._galSecTimer = setTimeout(()=>renderKeepScroll(), 450);
+  }));
+
+  // Notas de sección: autoguardado con retardo, igual que las fichas.
+  document.querySelectorAll('.gal-nota-sec').forEach(ta=>{
+    let deb=null;
+    const guardar = async ()=>{
+      const sec = ta.dataset.notasec;
+      const notas = await getNotasSeccion();
+      if(ta.value.trim()) notas[sec] = ta.value;
+      else delete notas[sec];
+      const ok = await saveNotasSeccion(notas);
+      const flag = ta.parentElement.querySelector('.save-flag');
+      if(ok && flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
+      if(!ok) toast('No se pudo guardar la nota', true);
+    };
+    ta.addEventListener('input', ()=>{ clearTimeout(deb); deb=setTimeout(guardar, 800); });
+    ta.addEventListener('blur', ()=>{ clearTimeout(deb); guardar(); });
+  });
+
   // Cada ficha de la galería se autoguarda con la misma función, tanto las
   // que había al pintar la pantalla como las que se insertan después.
   document.querySelectorAll('.gal-item').forEach(item=>bindGalItem(item));
