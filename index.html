@@ -495,10 +495,17 @@
   .cv-acum{font-size:12px;color:var(--muted);text-align:right;}
   .link-detalle{background:none;border:none;color:var(--accent);font-family:'Manrope',sans-serif;font-size:12px;font-weight:600;cursor:pointer;padding:6px 0;text-align:left;}
   .series-detalle{margin-bottom:6px;}
-  .sd-fila{display:grid;grid-template-columns:26px 1fr 1fr 1fr;gap:6px;align-items:center;margin-bottom:6px;}
+  .sd-fila{display:grid;grid-template-columns:26px 1fr 1fr 1fr 1fr;gap:6px;align-items:center;margin-bottom:6px;}
+  .sd-cab{color:var(--muted);font-size:9.5px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;text-align:center;}
+  .sd-cab span:first-child{visibility:hidden;}
   .sd-fila input{width:100%;padding:6px 5px;font-size:12.5px;text-align:center;}
   .sd-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);font-weight:700;}
   .sd-nota{font-size:11px;color:var(--muted);margin-top:2px;}
+  .sd-patron{font-size:12px;font-weight:600;padding:8px 11px;border-radius:8px;margin-top:8px;}
+  .sd-patron-lineal{background:var(--panel3);color:var(--muted);}
+  .sd-patron-ascendente{background:var(--accent-dim);color:var(--accent);}
+  .sd-patron-descendente{background:var(--gold-dim);color:var(--gold);}
+  .sd-patron-oscilante{background:var(--panel3);color:var(--danger);}
   .sd-calc{font-weight:400;color:var(--gold);font-size:10px;}
   .carga-sem{background:var(--panel2);border-radius:8px;padding:14px;margin-bottom:12px;}
   .cs-cab{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:var(--muted);margin-bottom:12px;}
@@ -2418,7 +2425,14 @@ async function getGym(athleteId){
     const o = raw ? JSON.parse(raw) : null;
     if(o && Array.isArray(o.carpetas)) return o;
   }catch(e){}
-  return { carpetas: SUBCARPETAS_DEFECTO.map(n=>({ id:'sc'+uid(), nombre:n, items:[] })) };
+  // Antes de devolver las subcarpetas por defecto, las GUARDAMOS: si no, cada
+  // llamada a getGym() genera IDs aleatorios nuevos, y la pantalla queda con
+  // un ID distinto al que existe cuando el atleta pulsa "Subir" — por eso
+  // fallaba con "carpeta no encontrada" en cualquier atleta que aún no tuviera
+  // nada guardado. Una vez persistidas, ya son estables para siempre.
+  const inicial = { carpetas: SUBCARPETAS_DEFECTO.map(n=>({ id:'sc'+uid(), nombre:n, items:[] })) };
+  await saveGym(athleteId, inicial);
+  return inicial;
 }
 async function saveGym(athleteId, gym){ return safeSet('gym-'+athleteId, JSON.stringify(gym), true); }
 
@@ -3483,7 +3497,7 @@ function flattenExercises(routine, day, turno){
         list.push({ ...ex, block:b.key, blockLabel:b.label, setsDone: Array(n).fill(false),
           // Detalle opcional por serie: reps, RPE y RIR de CADA serie. Vive
           // aparte del campo único de arriba; si no se usa, no molesta.
-          setsData: Array(n).fill(null).map(()=>({reps:'', rpe:'', rir:''})),
+          setsData: Array(n).fill(null).map(()=>({reps:'', rpe:'', rir:'', kg:''})),
           verDetalle:false, done:false, rpeApplied:null });
       });
   });
@@ -3502,22 +3516,43 @@ function tplDetalleSeries(ex, i){
   const n = ex.setsData.length;
   let html = `<button class="link-detalle" data-verdetalle="${i}">${ex.verDetalle?'▾ Ocultar detalle por serie':'▸ Anotar cada serie por separado'}</button>`;
   if(ex.verDetalle){
-    html += `<div class="series-detalle">`;
+    html += `<div class="series-detalle" data-exidet="${i}">
+      <div class="sd-fila sd-cab"><span></span><span>kg</span><span>reps</span><span>RPE</span><span>RIR</span></div>`;
     for(let si=0; si<n; si++){
-      const sd = ex.setsData[si] || {reps:'',rpe:'',rir:''};
+      const sd = ex.setsData[si] || {reps:'',rpe:'',rir:'',kg:''};
       html += `<div class="sd-fila">
         <span class="sd-num">S${si+1}</span>
+        <input type="text" inputmode="decimal" class="sd-kg" data-exi="${i}" data-si="${si}" value="${escapeHtml(sd.kg||'')}" placeholder="kg">
         <input type="number" inputmode="numeric" class="sd-reps" data-exi="${i}" data-si="${si}" value="${escapeHtml(sd.reps||'')}" placeholder="reps">
         <input type="text" inputmode="decimal" class="sd-rpe" data-exi="${i}" data-si="${si}" value="${escapeHtml(sd.rpe||'')}" placeholder="RPE">
         <input type="text" inputmode="decimal" class="sd-rir" data-exi="${i}" data-si="${si}" value="${escapeHtml(sd.rir||'')}" placeholder="RIR">
       </div>`;
     }
-    html += `<p class="sd-nota">Se calcula la media sola; no hace falta que rellenes las tres columnas de cada fila.</p></div>`;
+    const patron = patronCarga(ex.setsData);
+    if(patron) html += `<div class="sd-patron sd-patron-${patron.tipo}">${escapeHtml(patron.texto)}</div>`;
+    html += `<p class="sd-nota">Se calcula la media sola; no hace falta que rellenes las cuatro columnas de cada fila.</p></div>`;
   }
   return html;
 }
 // Recalcula la media de RPE/RIR de un ejercicio a partir de lo que haya en el
 // detalle por serie, y actualiza el campo único para que quede coherente.
+// Clasifica cómo varió la carga externa entre series: lineal (misma carga
+// todo el ejercicio), ascendente (va subiendo), descendente (dropset) u
+// oscilante (sube y baja sin una dirección clara). Necesita al menos 2 pesos
+// anotados; si sólo hay uno, o ninguno, no se puede clasificar.
+function patronCarga(setsData){
+  const kgs = (setsData||[]).map(s=>parseFloat(String(s.kg).replace(',','.'))).filter(v=>!isNaN(v));
+  if(kgs.length < 2) return null;
+  const diffs = [];
+  for(let i=1;i<kgs.length;i++) diffs.push(kgs[i]-kgs[i-1]);
+  const sube = diffs.some(d=>d>0), baja = diffs.some(d=>d<0);
+  let tipo, texto;
+  if(!sube && !baja){ tipo='lineal'; texto='Misma carga en todas las series'; }
+  else if(sube && !baja){ tipo='ascendente'; texto=`Carga ascendente: ${kgs[0]} → ${kgs[kgs.length-1]} kg`; }
+  else if(baja && !sube){ tipo='descendente'; texto=`Carga descendente: ${kgs[0]} → ${kgs[kgs.length-1]} kg`; }
+  else { tipo='oscilante'; texto='Carga oscilante, sin una dirección clara'; }
+  return { tipo, texto, kgs };
+}
 function recalculaDesdeDetalle(ex){
   const rpes = ex.setsData.map(s=>parseFloat(String(s.rpe).replace(',','.'))).filter(v=>!isNaN(v));
   const rirs = ex.setsData.map(s=>parseFloat(String(s.rir).replace(',','.'))).filter(v=>!isNaN(v));
@@ -3525,6 +3560,11 @@ function recalculaDesdeDetalle(ex){
   if(rirs.length){ ex.rirApplied = Math.round((rirs.reduce((a,b)=>a+b,0)/rirs.length)*10)/10; ex.rirTexto = rirs.join(','); }
   const reps = ex.setsData.map(s=>s.reps).filter(v=>v!==''&&v!=null);
   if(reps.length) ex.seriesDone = reps.join(',');
+  // Carga: reflejamos el kg de cada serie tal cual (sirve de historial), y
+  // guardamos el patrón detectado para que quede junto al resto de datos.
+  const kgsTexto = ex.setsData.map(s=>s.kg).filter(v=>v!==''&&v!=null);
+  if(kgsTexto.length){ ex.loadApplied = kgsTexto.join(','); }
+  ex.patronCarga = patronCarga(ex.setsData);
 }
 
 function renderSessionOverlay(){
@@ -3574,7 +3614,7 @@ function renderSessionOverlay(){
               ${tplDetalleSeries(ex, i)}
               <div class="ex-grid" style="margin-top:8px;">
                 <div><label class="field-label">RPE ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9" ${ex.verDetalle?'readonly':''}></div>
-                <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
+                <div><label class="field-label">Carga usada ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}" ${ex.verDetalle?'readonly':''}></div>
                 <div><label class="field-label">RIR ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rir-applied-input" data-exi="${i}" value="${escapeHtml(ex.rirTexto || ex.rirApplied || '')}" placeholder="${escapeHtml(ex.rir||'2 · 1-2')}" ${ex.verDetalle?'readonly':''}></div>
                 <div class="full"><label class="field-label">Nota</label><textarea class="note-applied-input" data-exi="${i}" placeholder="Sensación, molestia…" style="min-height:34px;">${escapeHtml(ex.noteApplied||'')}</textarea></div>
               </div>
@@ -3601,7 +3641,7 @@ function renderSessionOverlay(){
       </div>
       <div class="ex-grid" style="margin-top:8px;">
         <div><label class="field-label">RPE aplicado ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9" ${ex.verDetalle?'readonly':''}></div>
-        <div><label class="field-label">Carga usada</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}"></div>
+        <div><label class="field-label">Carga usada ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}" ${ex.verDetalle?'readonly':''}></div>
         <div><label class="field-label">RIR aplicado ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rir-applied-input" data-exi="${i}" value="${escapeHtml(ex.rirTexto || ex.rirApplied || '')}" placeholder="${escapeHtml(ex.rir||'2 · 1-2')}" ${ex.verDetalle?'readonly':''}></div>
         <div class="full"><label class="field-label">Nota para tu entrenador</label><textarea class="note-applied-input" data-exi="${i}" placeholder="Molestia, sensación, ajuste que hiciste…" style="min-height:38px;">${escapeHtml(ex.noteApplied||'')}</textarea></div>
       </div>
@@ -3657,17 +3697,36 @@ function bindSessionOverlayEvents(){
   const guardaFilaSerie = (inp, campo)=>{
     const i = parseInt(inp.dataset.exi,10), si = parseInt(inp.dataset.si,10);
     const ex = session.exercises[i];
-    if(!ex.setsData[si]) ex.setsData[si] = {reps:'',rpe:'',rir:''};
+    if(!ex.setsData[si]) ex.setsData[si] = {reps:'',rpe:'',rir:'',kg:''};
     ex.setsData[si][campo] = inp.value.trim();
     recalculaDesdeDetalle(ex);
     queueSessionSave();
-    // Sólo repintamos los campos calculados (RPE/RIR/reps arriba), no toda la
-    // tarjeta: perdería el foco justo mientras se está rellenando la fila.
+    // Sólo repintamos los campos calculados (RPE/RIR/reps/carga arriba) y la
+    // línea de patrón, no toda la tarjeta: perdería el foco justo mientras se
+    // está rellenando la fila.
     const cardRpe = document.querySelector(`.rpe-applied-input[data-exi="${i}"]`);
     const cardRir = document.querySelector(`.rir-applied-input[data-exi="${i}"]`);
+    const cardCarga = document.querySelector(`.load-applied-input[data-exi="${i}"]`);
     if(cardRpe) cardRpe.value = ex.rpeTexto || (ex.rpeApplied ?? '');
     if(cardRir) cardRir.value = ex.rirTexto || (ex.rirApplied ?? '');
+    if(cardCarga && campo==='kg') cardCarga.value = ex.loadApplied || '';
+    const contDet = document.querySelector(`.series-detalle[data-exidet="${i}"]`);
+    if(contDet && campo==='kg'){
+      let patronEl = contDet.querySelector('.sd-patron');
+      if(ex.patronCarga){
+        const html = escapeHtml(ex.patronCarga.texto);
+        const clase = 'sd-patron sd-patron-'+ex.patronCarga.tipo;
+        if(patronEl){ patronEl.className = clase; patronEl.textContent = ex.patronCarga.texto; }
+        else {
+          patronEl = document.createElement('div');
+          patronEl.className = clase; patronEl.textContent = ex.patronCarga.texto;
+          const nota = contDet.querySelector('.sd-nota');
+          contDet.insertBefore(patronEl, nota);
+        }
+      } else if(patronEl){ patronEl.remove(); }
+    }
   };
+  document.querySelectorAll('.sd-kg').forEach(inp=>inp.addEventListener('change', ()=>guardaFilaSerie(inp,'kg')));
   document.querySelectorAll('.sd-reps').forEach(inp=>inp.addEventListener('change', ()=>guardaFilaSerie(inp,'reps')));
   document.querySelectorAll('.sd-rpe').forEach(inp=>inp.addEventListener('change', ()=>guardaFilaSerie(inp,'rpe')));
   document.querySelectorAll('.sd-rir').forEach(inp=>inp.addEventListener('change', ()=>guardaFilaSerie(inp,'rir')));
@@ -3782,7 +3841,8 @@ function bindSurveyEvents(){
         loadPlanned:e.load||'', loadApplied:e.loadApplied||'', noteApplied:e.noteApplied||'', done:e.done,
         // Sólo se guarda si el atleta llegó a rellenar alguna fila; si no usó
         // el detalle por serie, esto queda vacío y no añade ruido al diario.
-        setsData: (e.setsData||[]).some(sd=>sd.reps||sd.rpe||sd.rir) ? e.setsData : undefined})),
+        setsData: (e.setsData||[]).some(sd=>sd.reps||sd.rpe||sd.rir||sd.kg) ? e.setsData : undefined,
+        patronCarga: e.patronCarga || null})),
       avgExerciseRPE: session.avgExerciseRPE, fatigueScore: cargaFinal,
       cargaDesdeRPEGeneral: !(session.avgExerciseRPE > 0),
       tipoSesion: session.tipoSesion || '',
@@ -4824,41 +4884,45 @@ async function tplProgreso(athleteId){
     html += `</div>`;
   }
 
-  // Carga por día de la ÚLTIMA SEMANA (lunes a domingo), con su fecha debajo.
-  // Ver "L 15 · M 16 · X 17…" hace evidente cómo fluctúa la intensidad, algo
-  // que una tira de 30 barras anónimas no conseguía transmitir.
-  const INI_SEM = ['L','M','X','J','V','S','D'];
-  const lunesActual = weekOfISO();
-  const diasSemana = [];
-  for(let k=0;k<7;k++){
-    const dte = new Date(lunesActual+'T00:00:00');
-    dte.setDate(dte.getDate()+k);
-    const iso = fechaLocalISO(dte);
-    const delDia = entries.filter(e=>e.date===iso);
-    diasSemana.push({
-      iso, inicial: INI_SEM[k], numero: dte.getDate(),
-      carga: delDia.reduce((a,e)=>a+(e.fatigueScore||0),0),
-      sesiones: delDia.length,
-      esHoy: iso === todayISO()
+  // Carga SEMANA A SEMANA (no día a día): cada barra es una semana natural
+  // completa (lunes a domingo), con la fecha de su lunes debajo. Muestra la
+  // tendencia real de varias semanas en vez de sólo los últimos 7 días, y sin
+  // marcar qué día de la semana es cada cosa — lo que importa aquí es el
+  // total semanal, no el reparto por día.
+  const NUM_SEMANAS = 8;
+  const semanaActualLunes = weekOfISO();
+  const semanas = [];
+  for(let k=NUM_SEMANAS-1; k>=0; k--){
+    const lunesK = new Date(semanaActualLunes+'T00:00:00');
+    lunesK.setDate(lunesK.getDate() - k*7);
+    const lunesIso = fechaLocalISO(lunesK);
+    const domingoK = new Date(lunesK); domingoK.setDate(domingoK.getDate()+6);
+    const domingoIso = fechaLocalISO(domingoK);
+    const deEsaSemana = entries.filter(e=>e.date>=lunesIso && e.date<=domingoIso);
+    semanas.push({
+      lunesIso,
+      etiqueta: `${lunesK.getDate()}/${lunesK.getMonth()+1}`,
+      carga: deEsaSemana.reduce((a,e)=>a+(e.fatigueScore||0),0),
+      sesiones: deEsaSemana.length,
+      esActual: lunesIso === semanaActualLunes
     });
   }
-  const maxDia = Math.max(...diasSemana.map(d=>d.carga), 1);
-  const totalSemana = diasSemana.reduce((a,d)=>a+d.carga,0);
+  const maxSemana = Math.max(...semanas.map(s=>s.carga), 1);
+  const conDatos = semanas.filter(s=>s.carga>0).length;
   html += `<div class="carga-sem">
     <div class="cs-cab">
-      <span>Carga por día · esta semana</span>
-      <span class="cs-total">${totalSemana ? Math.round(totalSemana)+' total' : 'sin sesiones aún'}</span>
+      <span>Carga por semana · últimas ${NUM_SEMANAS}</span>
+      <span class="cs-total">${conDatos ? `${conDatos} semana${conDatos===1?'':'s'} con datos` : 'sin sesiones aún'}</span>
     </div>
     <div class="cs-barras">
-      ${diasSemana.map(d=>`
-        <div class="cs-dia ${d.esHoy?'hoy':''} ${d.carga?'':'vacio'}">
-          <span class="cs-val">${d.carga?Math.round(d.carga):''}</span>
-          <div class="cs-barra" style="height:${d.carga?Math.max(6,(d.carga/maxDia)*72):3}px;"></div>
-          <span class="cs-lbl">${d.inicial}</span>
-          <span class="cs-num">${d.numero}</span>
+      ${semanas.map(s=>`
+        <div class="cs-dia ${s.esActual?'hoy':''} ${s.carga?'':'vacio'}">
+          <span class="cs-val">${s.carga?Math.round(s.carga):''}</span>
+          <div class="cs-barra" style="height:${s.carga?Math.max(6,(s.carga/maxSemana)*72):3}px;"></div>
+          <span class="cs-lbl">${escapeHtml(s.etiqueta)}</span>
         </div>`).join('')}
     </div>
-    <p class="cs-pie">La altura es la carga de ese día (RPE × minutos). Los huecos son descanso, y también forman parte del plan.</p>
+    <p class="cs-pie">Cada barra es una semana completa (lunes a domingo), con la fecha de su lunes debajo. La altura es la carga total de esa semana (RPE × minutos sumado de todas las sesiones).</p>
   </div>`;
 
   // Historial más largo, por si quiere ver la tendencia de fondo.
@@ -6734,8 +6798,11 @@ async function tplDiarioLectura(athleteId){
             <td>${esf(x.rirTexto, x.rirApplied)}</td>
           </tr>`;
           if(Array.isArray(x.setsData) && x.setsData.length){
-            const filas = x.setsData.map((sd,si)=>`S${si+1}: ${sd.reps||'—'} reps${sd.rpe?` · RPE ${escapeHtml(sd.rpe)}`:''}${sd.rir?` · RIR ${escapeHtml(sd.rir)}`:''}`).join('  ·  ');
+            const filas = x.setsData.map((sd,si)=>`S${si+1}: ${sd.kg?`${escapeHtml(sd.kg)}kg`:'—'} × ${sd.reps||'—'}${sd.rpe?` · RPE ${escapeHtml(sd.rpe)}`:''}${sd.rir?` · RIR ${escapeHtml(sd.rir)}`:''}`).join('  ·  ');
             html += `<tr class="fila-nota"><td colspan="5">📋 ${filas}</td></tr>`;
+          }
+          if(x.patronCarga){
+            html += `<tr class="fila-nota"><td colspan="5"><span class="sd-patron sd-patron-${x.patronCarga.tipo}" style="display:inline-block;">${escapeHtml(x.patronCarga.texto)}</span></td></tr>`;
           }
           if(x.noteApplied) html += `<tr class="fila-nota"><td colspan="5">💬 ${escapeHtml(x.noteApplied)}</td></tr>`;
         });
