@@ -494,6 +494,11 @@
   .dia-descanso > .acc-head .chev-count{opacity:0.65;font-style:italic;}
   .crono-vueltas{max-height:280px;overflow-y:auto;margin-top:14px;}
   .cv-fila{display:grid;grid-template-columns:44px 1fr 1fr;gap:8px;align-items:center;padding:8px 4px;border-bottom:1px dashed var(--border);font-family:'IBM Plex Mono',monospace;}
+  .cv-sensacion{padding:0 4px 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .cv-sens-label{font-size:10.5px;color:var(--muted);}
+  .cv-sens-botones{display:flex;gap:4px;}
+  .cv-sens-botones button{width:24px;height:24px;border-radius:5px;border:1px solid var(--border);background:var(--panel);color:var(--muted);font-size:11px;cursor:pointer;}
+  .cv-sens-marcada{font-size:10.5px;color:var(--accent);font-weight:600;}
   .cv-fila:first-child{color:var(--gold);font-weight:700;}
   .cv-num{font-size:11px;color:var(--muted);}
   .cv-parcial{font-size:14px;}
@@ -2455,6 +2460,58 @@ const PLANTILLAS_BATERIA = {
   }
 };
 
+// Guías nutricionales listas para mandar cuando decidas — igual que la de
+// proteína, con la misma voz: números concretos, criterio de calidad,
+// aviso honesto al final. Contenido propio a partir de tus apuntes del
+// máster, no textos de terceros.
+const PLANTILLAS_GUIA = {
+  carbohidratos: {
+    titulo: 'Cómo elegir tus carbohidratos',
+    cuerpo: `**CUÁNDO**
+Como referencia general: unos **30 g netos cada 3 horas** a lo largo del día.
+
+Después de entrenar, **30-60 g netos cuanto antes** — es cuando mejor los aprovecha el cuerpo para recuperar el glucógeno gastado.
+
+Si el entreno pasa de **90 minutos a intensidad alta**, tiene sentido tomar algo durante: una bebida con azúcares y electrolitos (agua de coco es un buen ejemplo natural).
+
+**DE DÓNDE**
+Busca que el ingrediente sea uno solo: pan de espelta o centeno integral, arroz integral, avena, boniato, quinoa. Cuantos menos ingredientes lleve la etiqueta, mejor suele ser la elección.
+
+**QUÉ EVITAR**
+Harinas refinadas, azúcar añadido, y grasas hidrogenadas (suelen aparecer en bollería y panes industriales baratos).
+
+**UN AVISO HONESTO**
+Estas cifras son un punto de partida, no una receta fija — tu volumen de entrenamiento real manda más que cualquier número de una tabla. Y si tienes alguna condición médica (diabetes, por ejemplo), coméntaselo a tu médico antes de cambiar nada.` },
+  grasas: {
+    titulo: 'Grasas de calidad',
+    cuerpo: `**CUÁNTO**
+Como referencia, unas **5 raciones al día**: un chorrito de aceite de oliva virgen extra, un puñado de frutos secos, pescado azul un par de veces por semana.
+
+**CALIDAD, NO SOLO CANTIDAD**
+En el aceite de oliva: que ponga **virgen extra**, de primera prensada en frío, y en envase de cristal oscuro o lata — no en botella de plástico transparente, se oxida antes.
+
+En los frutos secos: **tostados, sin sal añadida, sin aceites**. Con piel si es posible, se conservan mejor.
+
+**QUÉ EVITAR**
+Grasas trans o hidrogenadas — están en frituras industriales, bollería, y en aceites muy refinados. Es lo único de este grupo que sí conviene minimizar de verdad.
+
+**UN DETALLE PRÁCTICO**
+Evita tomar mucha grasa justo antes o después de entrenar: ralentiza la digestión y compite con los carbohidratos que sí quieres que lleguen rápido en ese momento. Repártela mejor en el resto de comidas del día.` },
+  hidratacion: {
+    titulo: 'Cuánta agua necesitas',
+    cuerpo: `**CUÁNTO**
+Como referencia: **1 litro por cada 20 kg de peso corporal al día**, contando también el agua que viene de fruta y verdura.
+
+**EN ENTRENOS LARGOS O CON CALOR**
+Una bebida isotónica casera: agua con un 6% de carbohidratos (6 g por cada 100 ml) y electrolitos — sodio, potasio, magnesio y calcio. El agua de coco es un ejemplo natural que ya viene con esa combinación.
+
+**LA SEÑAL LLEGA TARDE**
+Cuando ya notas sed, llevas un rato por detrás. En sesiones largas o con calor, bebe antes de necesitarlo, no cuando ya te lo pide el cuerpo.
+
+**UN AVISO HONESTO**
+Esto es una referencia general — con más calor, más sudoración o más volumen de entreno, la cantidad real sube. Escucha también el color de la orina como guía rápida: cuanto más clara, mejor hidratado vas.` }
+};
+
 // 1RM estimado. Brzycki y Epley coinciden casi exactamente en el rango 1-6;
 // en 6 repeticiones Brzycki es algo más conservador, que es lo que interesa
 // para programar cargas. Promediamos ambas para no heredar el sesgo de una.
@@ -2530,6 +2587,17 @@ async function getAsimetria(athleteId){
   catch(e){ return []; }
 }
 async function saveAsimetria(athleteId, lista){ return safeSet('asimetria-'+athleteId, JSON.stringify(lista), true); }
+
+// Simulacros de Hyrox: el cronómetro con vueltas ya mide tiempos por tramo;
+// esto añade la sensación en el momento (1-5) de cada tramo, para poder
+// cruzar después "dónde fui más lento" con "dónde peor me sentí" — no
+// siempre coinciden, y ahí está el dato útil.
+async function getHyroxSimulacros(athleteId){
+  const raw = await safeGet('hyrox-simulacros-'+athleteId, true);
+  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
+  catch(e){ return []; }
+}
+async function saveHyroxSimulacros(athleteId, lista){ return safeSet('hyrox-simulacros-'+athleteId, JSON.stringify(lista), true); }
 
 // Cerca del fallo: RIR 2 o menos, o RPE 8 o más si no hay RIR. Por debajo de
 // eso, la serie no representa bien la capacidad máxima y el 1RM estimado
@@ -4661,9 +4729,15 @@ function renderTimerModal(){
       </div>
       <div class="crono-vueltas">
         ${t.cronoVueltas.length ? t.cronoVueltas.slice().reverse().map(v=>`
-          <div class="cv-fila"><span class="cv-num">V${v.n}</span><span class="cv-parcial">${fmtTime(v.parcial)}</span><span class="cv-acum">${fmtTime(v.acumulado)}</span></div>`).join('')
+          <div class="cv-fila"><span class="cv-num">V${v.n}</span><span class="cv-parcial">${fmtTime(v.parcial)}</span><span class="cv-acum">${fmtTime(v.acumulado)}</span></div>
+          <div class="cv-sensacion">
+            ${v.sensacion
+              ? `<span class="cv-sens-marcada">Sensación: ${v.sensacion}/5</span>`
+              : `<span class="cv-sens-label">¿Cómo la has sentido?</span><span class="cv-sens-botones">${[1,2,3,4,5].map(n=>`<button data-sensvuelta="${v.n}" data-val="${n}">${n}</button>`).join('')}</span>`}
+          </div>`).join('')
           : '<div class="empty" style="padding:10px 0;">Sin vueltas todavía. Pulsa "Iniciar" y luego "Marcar vuelta" al terminar cada ejercicio o cada km.</div>'}
-      </div>`;
+      </div>
+      ${t.cronoVueltas.length ? `<div class="row" style="margin-top:12px;"><input type="text" id="cronoNombreSim" placeholder="Nombre del simulacro (ej. Hyrox completo)" style="flex:1;min-width:0;"><button class="btn" id="guardarSimulacroBtn">Guardar</button></div>` : ''}`;
   }
   html += `</div>`;
   back.innerHTML = html;
@@ -4886,7 +4960,7 @@ function bindTimerModalEvents(){
       // cosas como "00:5.806" en vez de "00:06".
       const acumulado = Math.round(T.cronoAcum + (Date.now() - T.cronoInicio)/1000);
       const anterior = T.cronoVueltas.length ? T.cronoVueltas[T.cronoVueltas.length-1].acumulado : 0;
-      T.cronoVueltas.push({ n: T.cronoVueltas.length+1, parcial: acumulado - anterior, acumulado });
+      T.cronoVueltas.push({ n: T.cronoVueltas.length+1, parcial: acumulado - anterior, acumulado, sensacion:null });
       ensureAudio(); CUE.rest();   // pitido corto de confirmación, sin interrumpir la marcha
       renderTimerModal();
     });
@@ -4894,6 +4968,23 @@ function bindTimerModalEvents(){
       clearInterval(engineInterval);
       timerModal.cronoRunning=false; timerModal.cronoInicio=null; timerModal.cronoAcum=0; timerModal.cronoVueltas=[];
       renderTimerModal();
+    });
+    document.querySelectorAll('[data-sensvuelta]').forEach(b=>b.addEventListener('click', ()=>{
+      const n = parseInt(b.dataset.sensvuelta,10), val = parseInt(b.dataset.val,10);
+      const v = timerModal.cronoVueltas.find(x=>x.n===n);
+      if(v) v.sensacion = val;
+      renderTimerModal();
+    }));
+    const guardarSim = document.getElementById('guardarSimulacroBtn');
+    if(guardarSim) guardarSim.addEventListener('click', async ()=>{
+      const athleteId = state.athleteAsId || state.selectedId;
+      const nombre = (document.getElementById('cronoNombreSim').value || '').trim() || 'Simulacro';
+      const lista = await getHyroxSimulacros(athleteId);
+      lista.push({ id:uid(), fecha:todayISO(), nombre, vueltas: timerModal.cronoVueltas.slice(),
+        tiempoTotal: timerModal.cronoVueltas.length ? timerModal.cronoVueltas[timerModal.cronoVueltas.length-1].acumulado : 0 });
+      const ok = await saveHyroxSimulacros(athleteId, lista);
+      toast(ok ? 'Simulacro guardado' : 'No se pudo guardar', !ok);
+      if(ok) closeTimer();
     });
   }
 }
@@ -5443,6 +5534,25 @@ async function tplAsimetria(athleteId){
   return html;
 }
 
+// Simulacros de Hyrox: tiempo por tramo cruzado con la sensación de cada
+// uno, para ver de un vistazo si los tramos más lentos coinciden con los
+// que peor se sintieron — o no, que también es información.
+async function tplHyroxSimulacros(athleteId){
+  const lista = await getHyroxSimulacros(athleteId);
+  if(!lista.length) return '';
+  const recientes = lista.slice().reverse().slice(0,3);
+  let html = `<div class="card"><h2>Simulacros de Hyrox</h2>`;
+  recientes.forEach(s=>{
+    html += `<div class="entry"><div class="entry-top"><span>${escapeHtml(s.nombre)}</span><span>${s.fecha} · ${fmtTime(s.tiempoTotal)}</span></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+        ${s.vueltas.map(v=>`<span class="serie-chip" style="${v.sensacion&&v.sensacion<=2?'border-color:var(--danger);color:var(--danger);':''}" title="Parcial ${fmtTime(v.parcial)}">V${v.n} ${fmtTime(v.parcial)}${v.sensacion?` · ${v.sensacion}/5`:''}</span>`).join('')}
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
 function tplMetricasEjercicio(entries){
   const mapa = extraeSeries(entries);   // clave normalizada -> {nombre, datos}
   const claves = [...mapa.keys()].filter(k=>mapa.get(k).datos.length >= 2)
@@ -5760,6 +5870,7 @@ async function tplProgreso(athleteId){
   html += tplVolumenPatron(vp);
   html += await tplRmContinuo(athleteId);
   html += await tplAsimetria(athleteId);
+  html += await tplHyroxSimulacros(athleteId);
   html += tplMetricasEjercicio(entries);
   if(TENIS_ACTIVO) html += tplMetricasDrills(entries);
   return html;
@@ -8016,6 +8127,9 @@ async function tplTareasCoach(athleteId){
   const tareas = await getTareas(athleteId);
   let html = `<div class="card"><h2>Tareas para este atleta</h2>
     <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Le aparece como banner en su Rutina hasta que la marque como hecha.</p>
+    <div class="block-title">Guías nutricionales listas para mandar</div>
+    ${Object.entries(PLANTILLAS_GUIA).map(([key,g])=>`<button class="btn ghost small" data-plantillaguia="${key}" style="margin-bottom:8px;margin-right:8px;">📄 ${escapeHtml(g.titulo)}</button>`).join('')}
+    <p style="font-size:11px;color:var(--muted);margin-bottom:14px;">Rellena el título y el cuerpo; puedes editarlo antes de enviar.</p>
     <div class="row" style="flex-direction:column;align-items:stretch;gap:10px;">
       <select id="tareaTipoNueva" style="width:100%;">
         <option value="tarea">Tarea (algo que hacer o enviar)</option>
@@ -9686,6 +9800,18 @@ async function bindDynamicEvents(){
       notaEl.textContent = 'Le aparecerá una escala de 12 preguntas cortas (nada que escribir tú aquí abajo) y verás su puntuación en cuanto la complete.';
     }
   });
+  document.querySelectorAll('[data-plantillaguia]').forEach(b=>b.addEventListener('click', ()=>{
+    const g = PLANTILLAS_GUIA[b.dataset.plantillaguia];
+    if(!g) return;
+    const tipoSel = document.getElementById('tareaTipoNueva');
+    const tituloEl = document.getElementById('tareaTituloNueva');
+    const cuerpoEl = document.getElementById('tareaCuerpoNueva');
+    tipoSel.value = 'guia';
+    tipoSel.dispatchEvent(new Event('change', {bubbles:true}));
+    tituloEl.value = g.titulo;
+    cuerpoEl.value = g.cuerpo;
+    tituloEl.scrollIntoView({behavior:'smooth', block:'center'});
+  }));
   const enviarTareaBtn = document.getElementById('enviarTareaBtn');
   if(enviarTareaBtn) enviarTareaBtn.addEventListener('click', async ()=>{
     const titulo = document.getElementById('tareaTituloNueva').value.trim();
