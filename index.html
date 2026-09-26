@@ -241,6 +241,12 @@
   .drill-preview summary{font-size:12px;color:var(--accent);cursor:pointer;font-weight:600;}
   .drill-preview[open] summary{margin-bottom:10px;}
   .pista-wrap{margin:10px 0;}
+  .pista-editable-wrap{margin:10px 0;}
+  .pista-editable{cursor:pointer;touch-action:manipulation;}
+  .pista-hint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px;min-height:14px;}
+  .jug-panel{background:var(--panel3);border:1px solid var(--accent);border-radius:8px;padding:12px;margin-top:10px;}
+  .jug-panel-cab{display:flex;justify-content:space-between;align-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:14px;}
+  .jug-panel button.btn.ghost.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
   .comp-fotos{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
   .comp-fotos figure{margin:0;background:var(--panel2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
   .comp-fotos img{width:100%;height:180px;object-fit:cover;display:block;cursor:pointer;}
@@ -2258,15 +2264,20 @@ const TESTS_CATALOGO = [
   {
     id:'glenohumeral', nombre:'Movilidad glenohumeral (manos a la espalda)', tipo:'movilidad',
     patron:'Tracción vertical', complejo:'Glenohumeral', segmento:'Tren superior', modo:'Sin peso',
-    instrucciones:'1. De pie, lleva una mano por encima del hombro hacia la espalda y la otra por debajo, desde la cintura.\n2. Intenta que los dedos de ambas manos se toquen.\n3. Mide en centímetros la distancia entre las puntas de los dedos (0 si se tocan, negativo si se solapan).\n4. Repite cambiando qué brazo va arriba. Graba de espaldas.',
+    instrucciones:'1. De pie, lleva una mano por encima del hombro hacia la espalda y la otra por debajo, desde la cintura.\n2. Intenta que los dedos de ambas manos se toquen.\n3. Mide en centímetros la distancia entre las puntas de los dedos (0 si se tocan, negativo si se solapan).\n4. Dos intentos con el brazo IZQUIERDO arriba, y dos intentos con el brazo DERECHO arriba. Graba de espaldas.',
     pideVideo:true, planos:['Posterior'],
     campos:[
-      {id:'cmDerArriba', label:'Distancia con brazo DERECHO arriba (cm)', tipo:'number'},
-      {id:'cmIzqArriba', label:'Distancia con brazo IZQUIERDO arriba (cm)', tipo:'number'}
+      {id:'izq1', label:'Brazo izquierdo arriba — intento 1 (cm)', tipo:'number'},
+      {id:'izq2', label:'Brazo izquierdo arriba — intento 2 (cm)', tipo:'number'},
+      {id:'der1', label:'Brazo derecho arriba — intento 1 (cm)', tipo:'number'},
+      {id:'der2', label:'Brazo derecho arriba — intento 2 (cm)', tipo:'number'}
     ],
     estima:(v)=>{
-      const d = parseFloat(v.cmDerArriba), i = parseFloat(v.cmIzqArriba);
-      if(isNaN(d) || isNaN(i)) return null;
+      const izq1=parseFloat(v.izq1), izq2=parseFloat(v.izq2), der1=parseFloat(v.der1), der2=parseFloat(v.der2);
+      if([izq1,izq2,der1,der2].some(isNaN)) return null;
+      // El mejor de los dos intentos es el que menos distancia deja (más
+      // negativo = mejor, se solapan más los dedos).
+      const i = Math.min(izq1,izq2), d = Math.min(der1,der2);
       const peor = Math.max(d,i), asim = Math.abs(d-i);
       let nivel, texto;
       if(peor <= 0){ nivel='bueno'; texto='Las manos se tocan o se solapan por ambos lados. Movilidad de hombro muy buena para trabajo por encima de la cabeza.'; }
@@ -2299,7 +2310,7 @@ const TESTS_CATALOGO = [
   {
     id:'rm6_sentadilla', nombre:'Test 6RM · Sentadilla', tipo:'fuerza',
     patron:'Sentadilla', complejo:'Global', segmento:'Tren inferior', modo:'Peso libre',
-    instrucciones:'1. Calienta progresivamente con series de aproximación.\n2. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n3. Si te salen 8, súbelo y descansa 3-5 min antes de reintentar.\n4. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n5. Graba la serie de perfil.\nSeguridad: usa barras de seguridad o un ayudante. Ante cualquier duda técnica, para.',
+    instrucciones:'1. Calienta progresivamente con series de aproximación.\n2. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n3. Si te salen 8, súbelo y descansa 3-4 min antes de reintentar.\n4. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n5. Graba la serie de perfil.\nSeguridad: usa barras de seguridad o un ayudante. Ante cualquier duda técnica, para.',
     pideVideo:true, planos:['Lateral'],
     campos:[
       {id:'peso', label:'Peso utilizado (kg)', tipo:'number'},
@@ -2312,7 +2323,7 @@ const TESTS_CATALOGO = [
   {
     id:'rm6_banca', nombre:'Test 6RM · Press de banca', tipo:'fuerza',
     patron:'Empuje horizontal', complejo:'Glenohumeral', segmento:'Tren superior', modo:'Peso libre',
-    instrucciones:'1. Calienta progresivamente con series de aproximación.\n2. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n3. Si te salen 8, súbelo y descansa 3-5 min antes de reintentar.\n4. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n5. Graba la serie de perfil.\nSeguridad: imprescindible un ayudante o pinzas de seguridad.',
+    instrucciones:'1. Calienta progresivamente con series de aproximación.\n2. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n3. Si te salen 8, súbelo y descansa 3-4 min antes de reintentar.\n4. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n5. Graba la serie de perfil.\nSeguridad: imprescindible un ayudante o pinzas de seguridad.',
     pideVideo:true, planos:['Lateral'],
     campos:[
       {id:'peso', label:'Peso utilizado (kg)', tipo:'number'},
@@ -2325,7 +2336,7 @@ const TESTS_CATALOGO = [
   {
     id:'rm6_muerto', nombre:'Test 6RM · Peso muerto', tipo:'fuerza',
     patron:'Bisagra de cadera', complejo:'Columna lumbar', segmento:'Tren inferior', modo:'Peso libre',
-    instrucciones:'1. Calienta progresivamente con series de aproximación.\n2. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n3. Si te salen 8, súbelo y descansa 3-5 min antes de reintentar.\n4. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n5. Graba la serie de perfil.\nSeguridad: para en cuanto la espalda pierda la posición, aunque te queden repeticiones.',
+    instrucciones:'1. Calienta progresivamente con series de aproximación.\n2. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n3. Si te salen 8, súbelo y descansa 3-4 min antes de reintentar.\n4. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n5. Graba la serie de perfil.\nSeguridad: para en cuanto la espalda pierda la posición, aunque te queden repeticiones.',
     pideVideo:true, planos:['Lateral'],
     campos:[
       {id:'peso', label:'Peso utilizado (kg)', tipo:'number'},
@@ -2338,7 +2349,7 @@ const TESTS_CATALOGO = [
   {
     id:'rm6_muerto_hex', nombre:'Test 6RM · Peso muerto barra hexagonal', tipo:'fuerza',
     patron:'Bisagra de cadera', complejo:'Columna lumbar', segmento:'Tren inferior', modo:'Peso libre',
-    instrucciones:'1. Colócate DENTRO de la barra hexagonal, con las asas a los lados del cuerpo.\n2. Torso más vertical que en el peso muerto convencional — es normal y buscado, no fuerces una postura como la de barra recta.\n3. Calienta progresivamente con series de aproximación.\n4. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n5. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n6. Graba la serie de perfil.\nSeguridad: para en cuanto la espalda pierda la posición, aunque te queden repeticiones.',
+    instrucciones:'1. Colócate DENTRO de la barra hexagonal, con las asas a los lados del cuerpo.\n2. Torso más vertical que en el peso muerto convencional — es normal y buscado, no fuerces una postura como la de barra recta.\n3. Calienta progresivamente con series de aproximación.\n4. Busca un peso con el que puedas hacer 6 repeticiones limpias y NO más.\n5. Si te salen 8, súbelo y descansa 3-4 min antes de reintentar.\n6. Anota el peso, las repeticiones reales, tu RPE y tu RIR.\n7. Graba la serie de perfil.\nSeguridad: para en cuanto la espalda pierda la posición, aunque te queden repeticiones.',
     pideVideo:true, planos:['Lateral'],
     campos:[
       {id:'peso', label:'Peso utilizado (kg)', tipo:'number'},
@@ -2351,8 +2362,8 @@ const TESTS_CATALOGO = [
   {
     id:'sprint_12m', nombre:'Sprint 12 m (media pista)', tipo:'potencia',
     patron:'Marcha/Carrera', complejo:'Global', segmento:'Tren inferior', modo:'Sin peso',
-    instrucciones:'1. Marca 12 metros con conos (el ancho de media pista de tenis).\n2. Sal desde parado, sin balanceo previo.\n3. Cronometra dos intentos, con 2 minutos de descanso completo entre ellos.\n4. Anota el mejor de los dos.\nGraba de perfil si puedes, ayuda a revisar la técnica de salida.',
-    pideVideo:false,
+    instrucciones:'1. Ya en pista: sal desde la línea de fondo y corre hasta la red (12 m), sin balanceo previo.\n2. Dos intentos, descansando 1\'30"-2\'30" entre ellos.\n3. Grábate para poder medir bien el tiempo.\n4. Anota el mejor de los dos.',
+    pideVideo:true, planos:['Lateral'],
     campos:[
       {id:'intento1', label:'Intento 1 (segundos)', tipo:'number'},
       {id:'intento2', label:'Intento 2 (segundos)', tipo:'number'}
@@ -2361,18 +2372,18 @@ const TESTS_CATALOGO = [
   {
     id:'sprint_23m', nombre:'Sprint 23 m (pista completa)', tipo:'potencia',
     patron:'Marcha/Carrera', complejo:'Global', segmento:'Tren inferior', modo:'Sin peso',
-    instrucciones:'1. Marca 23 metros con conos (el largo de la pista de tenis).\n2. Sal desde parado, sin balanceo previo.\n3. Cronometra dos intentos, con 2 minutos de descanso completo entre ellos.\n4. Anota el mejor de los dos.',
-    pideVideo:false,
+    instrucciones:'1. Ya en pista: sal desde la línea de fondo y corre hasta el final de la pista (23 m), sin balanceo previo.\n2. Dos intentos, descansando 1\'30"-2\'30" entre ellos.\n3. Grábate para poder medir bien el tiempo.\n4. Anota el mejor de los dos.',
+    pideVideo:true, planos:['Lateral'],
     campos:[
       {id:'intento1', label:'Intento 1 (segundos)', tipo:'number'},
       {id:'intento2', label:'Intento 2 (segundos)', tipo:'number'}
     ]
   },
   {
-    id:'t_test_agilidad', nombre:'T-Test de agilidad', tipo:'potencia',
-    patron:'Global', complejo:'Global', segmento:'Cuerpo completo', modo:'Material propio',
-    instrucciones:'1. Monta el T-Test con 4 conos: uno de salida, uno a 9,14 m al frente, y dos a 4,57 m a cada lado del central formando una T.\n2. Sprint al frente al cono central, desplazamiento lateral a un cono exterior, lateral al otro cono exterior cruzando por el centro, lateral de vuelta al centro, y carrera hacia atrás hasta la salida.\n3. Sin cruzar los pies en los desplazamientos laterales.\n4. Cronometra dos intentos, con 2 minutos de descanso completo entre ellos.',
-    pideVideo:false,
+    id:'t_test_agilidad', nombre:'T-Test de agilidad (en pista)', tipo:'potencia',
+    patron:'Global', complejo:'Global', segmento:'Cuerpo completo', modo:'Sin peso',
+    instrucciones:'1. Sal desde el centro de la línea de fondo.\n2. Corre hasta la línea de media pista (línea de saque).\n3. Con pasos laterales, ve hasta la primera línea del pasillo izquierdo.\n4. Con pasos laterales, cruza hasta la línea del pasillo derecho.\n5. Con pasos laterales, vuelve al centro de los cuadros de saque.\n6. De espaldas (marcha atrás), llega hasta la línea de fondo — ahí acaba el test.\n7. Sin cruzar los pies en los desplazamientos laterales.\n8. Dos intentos, con 1-2 minutos de descanso entre ellos. Grábate para medir bien el tiempo.',
+    pideVideo:true, planos:['Cenital'],
     campos:[
       {id:'intento1', label:'Intento 1 (segundos)', tipo:'number'},
       {id:'intento2', label:'Intento 2 (segundos)', tipo:'number'}
@@ -2381,7 +2392,7 @@ const TESTS_CATALOGO = [
   {
     id:'esfuerzo_hr_recovery', nombre:'Prueba de esfuerzo · recuperación de FC', tipo:'cardio',
     patron:'Global', complejo:'Global', segmento:'Cardiorrespiratorio', modo:'Sin peso',
-    instrucciones:'1. Mide tu frecuencia cardíaca en reposo, antes de empezar.\n2. Realiza 4 rondas de 20 segundos de sentadilla con salto al máximo esfuerzo + 10 segundos de descanso.\n3. Mide tu FC justo al terminar la última ronda.\n4. Mide tu FC de nuevo pasado 1 minuto.\n5. Mide tu FC de nuevo pasado 3 minutos.\nUsa un pulsómetro o cuenta pulsaciones 15 segundos y multiplica por 4.',
+    instrucciones:'1. Mide tu frecuencia cardíaca en reposo, antes de empezar.\n2. Haz un Tabata de sentadilla con salto: 25 segundos de trabajo al máximo esfuerzo + 5 segundos de descanso, 8 rondas.\n3. Mide tu FC justo al terminar la última ronda.\n4. Mide tu FC de nuevo pasado 1 minuto.\n5. Mide tu FC de nuevo pasado 2 minutos más.\nUsa un pulsómetro o cuenta pulsaciones 15 segundos y multiplica por 4. Un solo intento.',
     pideVideo:false,
     campos:[
       {id:'fcAntes', label:'FC en reposo, antes (ppm)', tipo:'number'},
@@ -2405,23 +2416,21 @@ const TESTS_CATALOGO = [
   {
     id:'vertical_jump', nombre:'Vertical Jump (CMJ)', tipo:'potencia',
     patron:'Sentadilla', complejo:'Global', segmento:'Tren inferior', modo:'Sin peso',
-    instrucciones:'1. De pie junto a una pared, marca hasta dónde llegas con el brazo estirado (esa es tu referencia).\n2. Salta lo más alto que puedas con contramovimiento (flexiona y salta en el mismo gesto, sin pausa), tocando o marcando lo más alto que alcances.\n3. Resta tu marca de referencia a la marca del salto: esa diferencia son los centímetros saltados.\n4. 3 intentos, con 1 minuto de descanso entre cada uno. Anota los tres.',
-    pideVideo:false,
+    instrucciones:'1. De pie junto a una pared, marca hasta dónde llegas con el brazo estirado (esa es tu referencia).\n2. Salta lo más alto que puedas con contramovimiento (flexiona y salta en el mismo gesto, sin pausa), tocando o marcando lo más alto que alcances.\n3. Resta tu marca de referencia a la marca del salto: esa diferencia son los centímetros saltados.\n4. Grábate, o mejor si tienes alguna forma de medirlo directamente.\n5. Dos intentos, descansando 1-2 minutos entre ellos. Anota los dos.',
+    pideVideo:true, planos:['Lateral'],
     campos:[
       {id:'intento1', label:'Intento 1 (cm)', tipo:'number'},
-      {id:'intento2', label:'Intento 2 (cm)', tipo:'number'},
-      {id:'intento3', label:'Intento 3 (cm)', tipo:'number'}
+      {id:'intento2', label:'Intento 2 (cm)', tipo:'number'}
     ]
   },
   {
     id:'broad_jump', nombre:'Broad Jump (salto horizontal)', tipo:'potencia',
     patron:'Sentadilla', complejo:'Global', segmento:'Tren inferior', modo:'Sin peso',
-    instrucciones:'1. De pie, pies juntos, detrás de una línea de salida.\n2. Salta lo más lejos que puedas con ambos pies a la vez, con contramovimiento de brazos.\n3. Mide desde la línea de salida hasta el talón más retrasado en la caída.\n4. 3 intentos, con 1 minuto de descanso entre cada uno. Anota los tres.',
-    pideVideo:false,
+    instrucciones:'1. De pie, pies juntos, detrás de una línea de salida.\n2. Salta lo más lejos que puedas con ambos pies a la vez, con contramovimiento de brazos.\n3. Mide desde la línea de salida hasta el talón más retrasado en la caída.\n4. Grábate, o mejor si tienes alguna forma de medirlo directamente.\n5. Dos intentos, descansando 1-2 minutos entre ellos. Anota los dos.',
+    pideVideo:true, planos:['Lateral'],
     campos:[
       {id:'intento1', label:'Intento 1 (cm)', tipo:'number'},
-      {id:'intento2', label:'Intento 2 (cm)', tipo:'number'},
-      {id:'intento3', label:'Intento 3 (cm)', tipo:'number'}
+      {id:'intento2', label:'Intento 2 (cm)', tipo:'number'}
     ]
   },
   {
@@ -2456,7 +2465,7 @@ const PLANTILLAS_BATERIA = {
     ids: ['glenohumeral','ohsq','dorsiflexion','thomas',
           'sprint_12m','sprint_23m','t_test_agilidad','esfuerzo_hr_recovery',
           'vertical_jump','broad_jump','rm6_sentadilla','rm6_muerto_hex'],
-    nota: 'Viernes en pista: movilidad (glenohumeral, OHSQ con banda o raqueta, dorsiflexión, Thomas) + activación general + sprints 12/23 m (2 intentos, 2\' descanso) + T-Test (2 intentos, 2\' descanso) + prueba de esfuerzo (4×20"/10" SQ salto, FC antes/justo al acabar/1\'/3\').\nSábado en gym: fotos del gym (+ máquinas que le gusten y no) + activación + Vertical Jump y Broad Jump (3 intentos, 1\' descanso) + 6RM sentadilla + 6RM peso muerto barra hexagonal.\nDomingo: analiza resultados y mándaselos por audio o videollamada. La semana entrante, empieza a entrenar.'
+    nota: 'Viernes en pista: movilidad (glenohumeral 2 intentos/lado, OHSQ con banda o raqueta, dorsiflexión, Thomas) + activación general + sprints 12/23 m (2 intentos, 1\'30"-2\'30" descanso, grabar) + T-Test con líneas de pista (2 intentos, 1-2\' descanso, grabar) + prueba de esfuerzo (Tabata SQ salto 25"/5", FC antes/justo al acabar/1\'/3\').\nSábado en gym: fotos del gym (+ máquinas que le gusten y no) + activación + Vertical Jump y Broad Jump (2 intentos, 1-2\' descanso, grabar) + 6RM sentadilla + 6RM peso muerto barra hexagonal.\nDomingo: analiza resultados y mándaselos por audio o videollamada. La semana entrante, empieza a entrenar.'
   }
 };
 
@@ -3233,8 +3242,10 @@ const ZONAS_PISTA = {
   verde:  { nombre:'Verde · Volea',   desc:'Dentro de la línea de saque' }
 };
 function blankDrill(){
+  // Sin jugadores por defecto: con la pista táctil, se colocan tocando
+  // dónde están de verdad, no rellenando huecos invisibles de antemano.
   return { id:'d'+uid(), nombre:'', objetivo:'', fronton:false, duracion:'', intentos:'',
-    puntuacion:'', series:'', jugadores:[ blankJugadorDrill(1), blankJugadorDrill(2) ] };
+    puntuacion:'', series:'', jugadores:[] };
 }
 function blankJugadorDrill(n){
   // 'lado' resuelve la ambigüedad de en qué mitad física de la pista se coloca
@@ -3558,6 +3569,51 @@ function yMitad(zona, esMio){
   return esMio ? 260 + (260-medio) + 20 : medio + 20;   // +20 de margen superior
 }
 
+// Inversa de yMitad: a partir de una coordenada Y tocada en la pista (mismo
+// viewBox 260×540 que usa tplPistaSVG), calcula en qué mitad y qué zona cayó
+// el toque. Se deriva directamente de la fórmula de arriba para que tocar
+// la pista y dibujarla coincidan siempre.
+function zonaDeToque(ySvg){
+  const esMio = ySvg > 270;
+  const medio = esMio ? (540 - ySvg) : (ySvg - 20);
+  let zona = BANDA_ZONAS.find(b => medio >= b.y0 && medio <= b.y1);
+  if(!zona) zona = medio < BANDA_ZONAS[3].y0 ? BANDA_ZONAS[3] : BANDA_ZONAS[0];
+  return { esMio, zona: zona.zona };
+}
+// Convierte un evento de clic/toque en coordenadas del viewBox del SVG,
+// para que dé igual el tamaño real en pantalla.
+function puntoSVG(evt, svgEl){
+  const pt = svgEl.createSVGPoint();
+  pt.x = evt.clientX; pt.y = evt.clientY;
+  const ctm = svgEl.getScreenCTM();
+  if(!ctm) return null;
+  const t = pt.matrixTransform(ctm.inverse());
+  return { x:t.x, y:t.y };
+}
+// Posiciones de cada jugador en el diagrama — se usa tanto para dibujar como
+// para saber, al tocar, si el toque cayó cerca de un jugador ya colocado.
+function calculaPosicionesJugadores(jugadores){
+  const porCelda = {};
+  jugadores.forEach(j=>{
+    const esMio = (j.lado||'mio') !== 'contrario';
+    const clave = esMio+'|'+(j.zonaOrigen||'azul');
+    if(!porCelda[clave]) porCelda[clave] = [];
+    porCelda[clave].push(j.numero);
+  });
+  const posiciones = {};
+  jugadores.forEach(j=>{
+    const esMio = (j.lado||'mio') !== 'contrario';
+    const clave = esMio+'|'+(j.zonaOrigen||'azul');
+    const lista = porCelda[clave];
+    const idx = lista.indexOf(j.numero);
+    const n = lista.length;
+    const x = 130 + (idx - (n-1)/2) * 42;
+    const y = yMitad(j.zonaOrigen||'azul', esMio);
+    posiciones[j.numero] = {x, y, esMio};
+  });
+  return posiciones;
+}
+
 function tplPistaSVG(dr){
   const W = 260, H = 540;
   const jugadores = dr.jugadores || [];
@@ -3584,24 +3640,7 @@ function tplPistaSVG(dr){
 
   // Jugadores: posición según su lado y zona de origen, repartidos en X si
   // coinciden varios en la misma banda para no solaparse.
-  const porCelda = {};
-  const posiciones = {};
-  jugadores.forEach(j=>{
-    const esMio = (j.lado||'mio') !== 'contrario';
-    const clave = esMio+'|'+(j.zonaOrigen||'azul');
-    if(!porCelda[clave]) porCelda[clave] = [];
-    porCelda[clave].push(j.numero);
-  });
-  jugadores.forEach(j=>{
-    const esMio = (j.lado||'mio') !== 'contrario';
-    const clave = esMio+'|'+(j.zonaOrigen||'azul');
-    const lista = porCelda[clave];
-    const idx = lista.indexOf(j.numero);
-    const n = lista.length;
-    const x = 130 + (idx - (n-1)/2) * 42;
-    const y = yMitad(j.zonaOrigen||'azul', esMio);
-    posiciones[j.numero] = {x, y, esMio};
-  });
+  const posiciones = calculaPosicionesJugadores(jugadores);
 
   // Flechas: sólo quien dirige y tiene zona de destino definida.
   let idxFlecha = 0;
@@ -6410,8 +6449,8 @@ function comparaValor(antes, ahora, mayorMejor){
 // Campos cuyo progreso tiene sentido comparar numéricamente, por test.
 const CAMPOS_COMPARABLES = {
   dorsiflexion: [{ id:'cmDer', label:'Tobillo derecho', unidad:'cm' }, { id:'cmIzq', label:'Tobillo izquierdo', unidad:'cm' }],
-  glenohumeral: [{ id:'cmDerArriba', label:'Brazo derecho arriba', unidad:'cm', mayorMejor:false },
-                 { id:'cmIzqArriba', label:'Brazo izquierdo arriba', unidad:'cm', mayorMejor:false }],
+  glenohumeral: [{ id:'izqMejor', label:'Brazo izquierdo arriba (mejor de 2)', unidad:'cm', mayorMejor:false },
+                 { id:'derMejor', label:'Brazo derecho arriba (mejor de 2)', unidad:'cm', mayorMejor:false }],
   rm6_sentadilla: [{ id:'peso', label:'Peso movido', unidad:'kg' }],
   rm6_banca:      [{ id:'peso', label:'Peso movido', unidad:'kg' }],
   rm6_muerto:     [{ id:'peso', label:'Peso movido', unidad:'kg' }]
@@ -7558,12 +7597,56 @@ function normalizaHistorial(hist){
 // sin reconstruir la pantalla entera, que hacía saltar el scroll al principio.
 // Tarjeta de edición de un drill de pista. Sin dibujo todavía: por ahora es
 // texto estructurado, con todos los campos que el atleta necesitará leer.
+// Pista táctil: toca una zona vacía para colocar un jugador, tócalo para
+// seleccionarlo, y con uno seleccionado toca otra zona para marcar su
+// trayectoria (eso lo convierte en "dirige" automáticamente). Sustituye al
+// formulario de zona/lado que había antes.
+function tplPistaEditable(dr, seleccionado){
+  const W = 260, H = 540;
+  const jugadores = dr.jugadores || [];
+  const posiciones = calculaPosicionesJugadores(jugadores);
+  // Reutilizamos el dibujo de fondo (pista + bandas) generando el SVG de
+  // lectura y luego insertando encima las capas táctiles.
+  let base = tplPistaSVG(dr);
+  // Extraemos sólo el contenido interior del <svg>…</svg> para reinyectarlo
+  // con las capas de toque añadidas, sin duplicar el fondo.
+  const interior = base.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+  let capaToque = `<rect x="15" y="20" width="230" height="500" fill="transparent" class="pista-tap-area"/>`;
+  jugadores.forEach(j=>{
+    const p = posiciones[j.numero];
+    const sel = seleccionado === j.numero;
+    capaToque += `<circle cx="${p.x}" cy="${p.y}" r="17" fill="${sel?'rgba(201,162,39,0.35)':'transparent'}" stroke="${sel?'#C9A227':'transparent'}" stroke-width="2.5" data-jugtoque="${j.numero}"/>`;
+  });
+  const hint = jugadores.length===0 ? 'Toca la pista para colocar al primer jugador'
+    : seleccionado ? `J${seleccionado} seleccionado — toca otra zona para marcar hacia dónde juega`
+    : 'Toca un jugador para seleccionarlo, o una zona vacía para añadir otro';
+  return `<div class="pista-editable-wrap">
+    <svg class="pista-svg pista-editable" viewBox="0 0 ${W} ${H}" style="width:100%;max-width:280px;display:block;margin:0 auto;">${interior}${capaToque}</svg>
+    <p class="pista-hint">${hint}</p>
+  </div>`;
+}
+
+// Panel del jugador seleccionado: rol, bolas objetivo si dirige, y quitar/
+// eliminar. Vive debajo de la pista, sólo mientras haya alguien elegido.
+function tplPanelJugadorSel(dr, numero){
+  const j = dr.jugadores.find(x=>x.numero===numero);
+  if(!j) return '';
+  return `<div class="jug-panel">
+    <div class="jug-panel-cab">Jugador ${numero} <button class="btn ghost small" data-jugcerrar="1">Cerrar</button></div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px;">
+      <button class="btn ghost small ${j.rol==='dirige'?'on':''}" data-jugrol="${numero}" data-rol="dirige">Dirige</button>
+      <button class="btn ghost small ${j.rol!=='dirige'?'on':''}" data-jugrol="${numero}" data-rol="consistente">Consistente</button>
+    </div>
+    ${j.rol==='dirige'?`<div style="margin-top:8px;"><label class="field-label">Bolas objetivo</label><input type="text" class="jug-bolas-sel" data-jugnum="${numero}" value="${escapeHtml(j.bolasObjetivo||'')}" placeholder="ej. 8" style="width:100%;"></div>`:''}
+    ${j.zonaDestino?`<button class="btn ghost small" data-jugquitardestino="${numero}" style="margin-top:8px;">Quitar trayectoria (apunta a ${escapeHtml(ZONAS_PISTA[j.zonaDestino]?.nombre||j.zonaDestino)})</button>`:''}
+    <button class="btn ghost small" data-jugeliminar="${numero}" style="margin-top:8px;color:var(--danger);">Eliminar jugador</button>
+  </div>`;
+}
+
 function drillCardHtml(dr, d){
-  const jugCheckeados = new Set(dr.jugadores.map(j=>j.numero));
-  const hayJugadoresConfig = dr.jugadores.length > 0;
+  const sel = (state.pizarraSel && state.pizarraSel.drillId===dr.id) ? state.pizarraSel.numero : null;
   return `<div class="drill-card" data-drillid="${dr.id}" data-day="${d}">
     <span class="save-flag" data-flagfor="${dr.id}">Guardado ✓</span>
-    ${hayJugadoresConfig?`<details class="drill-preview"><summary>Vista previa de la pista</summary>${tplPistaSVG(dr)}</details>`:''}
     <input type="text" class="drill-nombre" placeholder="Nombre del drill" value="${escapeHtml(dr.nombre)}" style="width:100%;font-weight:700;font-family:'Fraunces',serif;font-size:15px;margin-bottom:8px;">
     <div class="ex-grid">
       <div class="full"><label class="field-label">Objetivo</label>
@@ -7578,41 +7661,9 @@ function drillCardHtml(dr, d){
       <div><label class="field-label">Puntuación objetivo</label><input type="text" class="drill-puntuacion" value="${escapeHtml(dr.puntuacion)}" placeholder="ej. 7 de 10"></div>
       <div class="full"><label class="row" style="gap:8px;font-size:13px;"><input type="checkbox" class="drill-fronton" ${dr.fronton?'checked':''}> Modo frontón (1 vs pared)</label></div>
     </div>
-    <div class="block-title">Jugadores (1-6)</div>
-    <div class="jug-picker">
-      ${[1,2,3,4,5,6].map(n=>`<button class="jp ${jugCheckeados.has(n)?'on':''}" data-drilljug="${n}">J${n}</button>`).join('')}
-    </div>
-    ${dr.jugadores.sort((a,b)=>a.numero-b.numero).map(j=>`
-      <div class="jug-fila" data-jugnum="${j.numero}">
-        <div class="jug-cab">Jugador ${j.numero}</div>
-        <div class="ex-grid">
-          <div><label class="field-label">Rol</label>
-            <select class="jug-rol">
-              <option value="dirige" ${j.rol==='dirige'?'selected':''}>Dirige</option>
-              <option value="consistente" ${j.rol==='consistente'?'selected':''}>Consistente</option>
-            </select>
-          </div>
-          <div><label class="field-label">Lado de pista</label>
-            <select class="jug-lado">
-              <option value="mio" ${(j.lado||'mio')==='mio'?'selected':''}>Mi lado</option>
-              <option value="contrario" ${j.lado==='contrario'?'selected':''}>Lado contrario</option>
-            </select>
-          </div>
-          ${j.rol==='dirige'?`<div><label class="field-label">Bolas objetivo</label><input type="text" class="jug-bolas" value="${escapeHtml(j.bolasObjetivo)}" placeholder="ej. 8"></div>`:'<div></div>'}
-          <div><label class="field-label">Juega desde</label>
-            <select class="jug-origen">
-              <option value="">Sin definir</option>
-              ${Object.keys(ZONAS_PISTA).map(z=>`<option value="${z}" ${j.zonaOrigen===z?'selected':''}>${ZONAS_PISTA[z].nombre}</option>`).join('')}
-            </select>
-          </div>
-          <div><label class="field-label">Apunta a</label>
-            <select class="jug-destino">
-              <option value="">Sin definir</option>
-              ${Object.keys(ZONAS_PISTA).map(z=>`<option value="${z}" ${j.zonaDestino===z?'selected':''}>${ZONAS_PISTA[z].nombre}</option>`).join('')}
-            </select>
-          </div>
-        </div>
-      </div>`).join('')}
+    <div class="block-title">Pista</div>
+    ${tplPistaEditable(dr, sel)}
+    ${sel ? tplPanelJugadorSel(dr, sel) : ''}
     <div class="row" style="margin-top:10px;">
       <button class="btn ghost small drill-move" data-dir="up">↑</button>
       <button class="btn ghost small drill-move" data-dir="down">↓</button>
@@ -10213,6 +10264,14 @@ async function bindDynamicEvents(){
       if(el && el.value !== ''){ res[c.id] = el.value; algo = true; }
     });
     if(!algo){ toast('Rellena al menos un dato antes de guardar', true); return; }
+    // Glenohumeral guarda 2 intentos por lado; la comparación entre
+    // baterías necesita un valor único por lado, así que derivamos el mejor
+    // (más negativo/solapado) de cada uno al guardar.
+    if(bat.tests[idx].testId === 'glenohumeral'){
+      const i1=parseFloat(res.izq1), i2=parseFloat(res.izq2), d1=parseFloat(res.der1), d2=parseFloat(res.der2);
+      if(!isNaN(i1) && !isNaN(i2)) res.izqMejor = Math.min(i1,i2);
+      if(!isNaN(d1) && !isNaN(d2)) res.derMejor = Math.min(d1,d2);
+    }
     bat.tests[idx].resultado = res;
     const ok = await saveBateria(athleteId, bat);
     toast(ok?'Resultado guardado':'No se pudo guardar', !ok);
@@ -10612,25 +10671,6 @@ async function bindDynamicEvents(){
     if(ok){ card.remove(); }
     else toast('No se pudo eliminar', true);
   }));
-  // Selección de jugadores 1-6: añade o quita su fila de configuración.
-  document.querySelectorAll('[data-drilljug]').forEach(b=>b.addEventListener('click', async ()=>{
-    const card = b.closest('.drill-card');
-    const dia = card.dataset.day, id = card.dataset.drillid;
-    const n = parseInt(b.dataset.drilljug,10);
-    const draft = await getRoutine(athleteId, true, state.planWeek);
-    const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
-    if(!dr) return;
-    const ya = dr.jugadores.find(j=>j.numero===n);
-    if(ya) dr.jugadores = dr.jugadores.filter(j=>j.numero!==n);
-    else dr.jugadores.push(blankJugadorDrill(n));
-    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
-    if(ok){
-      const nuevaHtml = drillCardHtml(dr, dia);
-      card.insertAdjacentHTML('afterend', nuevaHtml);
-      card.remove();
-      renderKeepScroll();  // los checks de jugador cambian la forma de la tarjeta
-    } else toast('No se pudo guardar', true);
-  }));
   // Reordenar drills dentro del día
   document.querySelectorAll('.drill-move').forEach(b=>b.addEventListener('click', async ()=>{
     const card = b.closest('.drill-card');
@@ -10646,7 +10686,106 @@ async function bindDynamicEvents(){
     if(ok) renderKeepScroll();
     else toast('No se pudo reordenar', true);
   }));
-  // Autoguardado del resto de campos de cada drill
+  // Pista táctil: toca para colocar, seleccionar o marcar trayectoria.
+  // Un solo clic en el SVG entero; miramos si cayó sobre un jugador ya
+  // puesto (círculo con data-jugtoque) o sobre pista vacía.
+  document.querySelectorAll('.pista-editable').forEach(svg=>svg.addEventListener('click', async (evt)=>{
+    const card = svg.closest('.drill-card');
+    const dia = card.dataset.day, id = card.dataset.drillid;
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
+    if(!dr) return;
+    const punto = puntoSVG(evt, svg);
+    if(!punto) return;
+    const circuloTocado = evt.target.closest('[data-jugtoque]');
+    const numTocado = circuloTocado ? parseInt(circuloTocado.dataset.jugtoque,10) : null;
+    const selActual = (state.pizarraSel && state.pizarraSel.drillId===id) ? state.pizarraSel.numero : null;
+
+    if(numTocado){
+      // Tocar un círculo SIEMPRE selecciona/deselecciona a ese jugador — nunca
+      // se interpreta como "destino", aunque hubiera otro seleccionado antes.
+      // Si no, seleccionar a un segundo jugador para editarlo era imposible
+      // sin cerrar antes al primero.
+      state.pizarraSel = (selActual===numTocado) ? null : { drillId:id, numero:numTocado };
+      const nuevaHtml = drillCardHtml(dr, dia);
+      card.insertAdjacentHTML('afterend', nuevaHtml); card.remove(); bindDynamicEvents();
+      return;
+    }
+    if(selActual){
+      // Toque en pista VACÍA con alguien seleccionado: marca su trayectoria.
+      const { zona } = zonaDeToque(punto.y);
+      const j = dr.jugadores.find(x=>x.numero===selActual);
+      if(j){ j.zonaDestino = zona; j.rol = 'dirige'; }
+      state.pizarraSel = null;
+      await saveRoutine(athleteId, true, draft, state.planWeek);
+      const nuevaHtml = drillCardHtml(dr, dia);
+      card.insertAdjacentHTML('afterend', nuevaHtml); card.remove(); bindDynamicEvents();
+      return;
+    }
+    // Toque en pista vacía sin nadie seleccionado: añade un jugador nuevo,
+    // hasta 6. El número lo decide el propio hueco libre más bajo.
+    if(dr.jugadores.length >= 6){ toast('Máximo 6 jugadores en un drill', true); return; }
+    const usados = new Set(dr.jugadores.map(j=>j.numero));
+    let nuevoNum = 1; while(usados.has(nuevoNum)) nuevoNum++;
+    const { esMio, zona } = zonaDeToque(punto.y);
+    dr.jugadores.push({ numero:nuevoNum, rol:'consistente', lado: esMio?'mio':'contrario', zonaOrigen:zona, zonaDestino:'', bolasObjetivo:'' });
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    if(ok){
+      const nuevaHtml = drillCardHtml(dr, dia);
+      card.insertAdjacentHTML('afterend', nuevaHtml); card.remove(); bindDynamicEvents();
+    } else toast('No se pudo guardar', true);
+  }));
+  document.querySelectorAll('[data-jugcerrar]').forEach(b=>b.addEventListener('click', ()=>{ state.pizarraSel = null; renderKeepScroll(); }));
+  document.querySelectorAll('[data-jugrol]').forEach(b=>b.addEventListener('click', async ()=>{
+    const card = b.closest('.drill-card');
+    const dia = card.dataset.day, id = card.dataset.drillid;
+    const num = parseInt(b.dataset.jugrol,10), rol = b.dataset.rol;
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
+    const j = dr && dr.jugadores.find(x=>x.numero===num);
+    if(!j) return;
+    j.rol = rol;
+    await saveRoutine(athleteId, true, draft, state.planWeek);
+    const nuevaHtml = drillCardHtml(dr, dia);
+    card.insertAdjacentHTML('afterend', nuevaHtml); card.remove(); bindDynamicEvents();
+  }));
+  document.querySelectorAll('[data-jugquitardestino]').forEach(b=>b.addEventListener('click', async ()=>{
+    const card = b.closest('.drill-card');
+    const dia = card.dataset.day, id = card.dataset.drillid;
+    const num = parseInt(b.dataset.jugquitardestino,10);
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
+    const j = dr && dr.jugadores.find(x=>x.numero===num);
+    if(!j) return;
+    j.zonaDestino = '';
+    await saveRoutine(athleteId, true, draft, state.planWeek);
+    const nuevaHtml = drillCardHtml(dr, dia);
+    card.insertAdjacentHTML('afterend', nuevaHtml); card.remove(); bindDynamicEvents();
+  }));
+  document.querySelectorAll('[data-jugeliminar]').forEach(b=>b.addEventListener('click', async ()=>{
+    const card = b.closest('.drill-card');
+    const dia = card.dataset.day, id = card.dataset.drillid;
+    const num = parseInt(b.dataset.jugeliminar,10);
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
+    if(!dr) return;
+    dr.jugadores = dr.jugadores.filter(x=>x.numero!==num);
+    state.pizarraSel = null;
+    await saveRoutine(athleteId, true, draft, state.planWeek);
+    const nuevaHtml = drillCardHtml(dr, dia);
+    card.insertAdjacentHTML('afterend', nuevaHtml); card.remove(); bindDynamicEvents();
+  }));
+  document.querySelectorAll('.jug-bolas-sel').forEach(inp=>inp.addEventListener('change', async ()=>{
+    const card = inp.closest('.drill-card');
+    const dia = card.dataset.day, id = card.dataset.drillid;
+    const num = parseInt(inp.dataset.jugnum,10);
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
+    const j = dr && dr.jugadores.find(x=>x.numero===num);
+    if(j){ j.bolasObjetivo = inp.value.trim(); await saveRoutine(athleteId, true, draft, state.planWeek); }
+  }));
+  // Autoguardado del resto de campos de cada drill (nivel drill, no jugador:
+  // eso ya se guarda al tocar la pista o el panel del jugador seleccionado).
   document.querySelectorAll('.drill-card').forEach(card=>{
     const dia = card.dataset.day, id = card.dataset.drillid;
     const guardar = async ()=>{
@@ -10660,33 +10799,14 @@ async function bindDynamicEvents(){
       dr.series = card.querySelector('.drill-series').value.trim();
       dr.puntuacion = card.querySelector('.drill-puntuacion').value.trim();
       dr.fronton = card.querySelector('.drill-fronton').checked;
-      let rehacerVista = false;
-      card.querySelectorAll('.jug-fila').forEach(fila=>{
-        const num = parseInt(fila.dataset.jugnum,10);
-        const j = dr.jugadores.find(x=>x.numero===num);
-        if(!j) return;
-        const nuevoRol = fila.querySelector('.jug-rol').value;
-        if(nuevoRol !== j.rol) rehacerVista = true;   // aparece/desaparece «bolas objetivo»
-        j.rol = nuevoRol;
-        const ladoEl = fila.querySelector('.jug-lado'); if(ladoEl) j.lado = ladoEl.value;
-        j.zonaOrigen = fila.querySelector('.jug-origen').value;
-        j.zonaDestino = fila.querySelector('.jug-destino').value;
-        const bolasInput = fila.querySelector('.jug-bolas');
-        if(bolasInput) j.bolasObjetivo = bolasInput.value.trim();
-      });
       const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
       const flag = card.querySelector('.save-flag');
       if(ok && flag){ flag.classList.add('show'); setTimeout(()=>flag.classList.remove('show'),1200); }
       if(!ok) toast('No se pudo guardar', true);
-      if(ok && rehacerVista){
-        const nuevaHtml = drillCardHtml(dr, dia);
-        card.insertAdjacentHTML('afterend', nuevaHtml);
-        card.remove();
-        bindDynamicEvents();
-      }
     };
     let deb=null;
-    card.querySelectorAll('input,select,textarea').forEach(f=>{
+    ['.drill-nombre','.drill-objetivo','.drill-duracion','.drill-intentos','.drill-series','.drill-puntuacion','.drill-fronton'].forEach(sel=>{
+      const f = card.querySelector(sel); if(!f) return;
       f.addEventListener('change', ()=>{ clearTimeout(deb); deb=setTimeout(guardar, 100); });
     });
   });
