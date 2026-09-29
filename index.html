@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#1B2A49">
+<meta name="theme-color" content="#0E1622">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Umbral">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=marca2">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=marca2">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=marca3">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=marca3">
 <title>Umbral — Seguimiento de atletas</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -589,6 +589,9 @@
   .rd-rojo .rd-num{color:var(--danger);}
   .rd-detalle{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
   .rd-detalle b{color:var(--ink);}
+  .rd-explica{background:var(--panel3);border-radius:8px;padding:10px 12px;margin-top:10px;}
+  .rd-explica b{display:block;font-size:12px;color:var(--accent);margin-bottom:4px;}
+  .rd-explica p{font-size:12px;color:var(--ink);line-height:1.6;}
   .rc-cabecera{display:flex;align-items:center;gap:13px;background:var(--panel2);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
   .rc-cabecera b{display:block;font-family:'Fraunces',serif;font-size:15px;font-weight:600;margin-bottom:3px;}
   .rc-cabecera span{font-size:12.5px;color:var(--muted);line-height:1.5;}
@@ -1923,7 +1926,14 @@ async function renderTabContent(){
       if(state.tab==='rutina') html = await tplRutinaAtleta(athleteId);
       else if(state.tab==='diario') html = await tplSesionEntry(athleteId);
       else if(state.tab==='calendario') html = await tplCalendarioAtleta(athleteId);
-      else if(state.tab==='progreso') html = await tplProgreso(athleteId);
+      else if(state.tab==='progreso'){
+        const sub = state.progresoSub || 'progreso';
+        html = `<div class="sub-tabs">
+          <button data-progresosub="progreso" class="${sub==='progreso'?'active':''}">Progreso</button>
+          <button data-progresosub="diario" class="${sub==='diario'?'active':''}">Diario</button>
+        </div>`;
+        html += sub==='diario' ? await tplDiarioLectura(athleteId, false) : await tplProgreso(athleteId);
+      }
       else if(state.tab==='perfil'){
         if(state.verTests) html = await tplTestsAtleta(athleteId);
         else if(state.verGym) html = await tplGym(athleteId, false);
@@ -2601,6 +2611,24 @@ async function saveAsimetria(athleteId, lista){ return safeSet('asimetria-'+athl
 // esto añade la sensación en el momento (1-5) de cada tramo, para poder
 // cruzar después "dónde fui más lento" con "dónde peor me sentí" — no
 // siempre coinciden, y ahí está el dato útil.
+// ---------- JUEGOS DE REACCIÓN ----------
+// Go/no-go: aparecen estímulos al azar (colores, flechas o números) a
+// intervalos irregulares para que no se pueda anticipar, y sólo hay que
+// reaccionar cuando aparece el objetivo elegido — no a cualquier estímulo.
+// Mide tiempo de reacción real, y también aciertos/fallos (si reacciona a
+// lo que no tocaba, o se le escapa el objetivo).
+const REACCION_ESTIMULOS = {
+  colores: ['🔴 Rojo','🟢 Verde','🔵 Azul','🟡 Amarillo'],
+  flechas: ['⬆️ Arriba','⬇️ Abajo','⬅️ Izquierda','➡️ Derecha'],
+  numeros: ['1','2','3','4','5','6','7','8','9']
+};
+async function getReaccion(athleteId){
+  const raw = await safeGet('reaccion-'+athleteId, true);
+  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
+  catch(e){ return []; }
+}
+async function saveReaccion(athleteId, lista){ return safeSet('reaccion-'+athleteId, JSON.stringify(lista), true); }
+
 async function getHyroxSimulacros(athleteId){
   const raw = await safeGet('hyrox-simulacros-'+athleteId, true);
   try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
@@ -3173,8 +3201,9 @@ function tplTareasBanner(tareas){
       </div>
       <div class="acc-body">
         ${t.tipo==='poms' ? tplPomsForm(t) : (t.tipo==='hrv' ? `<div class="wp-cuerpo">${formateaGuia(t.cuerpo||'Te llevará 30 segundos, con el dedo tapando la cámara trasera del móvil.')}</div>
-        <button class="btn" data-medirhrv="${t.id}" style="margin-top:12px;width:100%;">📷 Medir ahora</button>` : `<div class="wp-cuerpo">${formateaGuia(t.cuerpo||'')}</div>
-        <button class="btn" data-tareahecha="${t.id}" style="margin-top:12px;">${t.tipo==='guia'?'Marcar como leída':'Ya lo he hecho / enviado'}</button>`)}
+        <button class="btn" data-medirhrv="${t.id}" style="margin-top:12px;width:100%;">📷 Medir ahora</button>` : (t.tipo==='juego' ? `<div class="wp-cuerpo">${formateaGuia(t.cuerpo||'Reacciona lo más rápido que puedas cuando toque.')}</div>
+        <button class="btn" data-jugarreaccion="${t.id}" style="margin-top:12px;width:100%;">🎮 Jugar</button>` : `<div class="wp-cuerpo">${formateaGuia(t.cuerpo||'')}</div>
+        <button class="btn" data-tareahecha="${t.id}" style="margin-top:12px;">${t.tipo==='guia'?'Marcar como leída':'Ya lo he hecho / enviado'}</button>`))}
       </div>
     </div>`;
   });
@@ -3385,19 +3414,44 @@ function faseCiclo(ciclo, fechaISO){
   return { diaCiclo, fase, duracionCiclo:dur };
 }
 
+// ---------- TEXTOS EDUCATIVOS (editables) ----------
+// El contenido por defecto que redacté a partir de tu TFM y tus apuntes del
+// máster. Vive aquí como valor de fábrica, pero se guarda fusionado con lo
+// que edites — si no tocas un texto, sigue mostrando este; si lo editas, se
+// guarda tu versión y ya no se pisa aunque yo cambie el valor por defecto.
+const TEXTOS_EDUCATIVOS_DEFECTO = {
+  rd_sueno: { titulo:'Calidad del sueño', cuerpo:'Con menos de 6-7 horas de sueño de calidad, el riesgo de lesión se multiplica por 1,7 si se mantiene 2 semanas seguidas, y el rendimiento cae de forma medible. El sueño profundo es cuando más hormona de crecimiento se libera — la que repara el tejido que rompiste entrenando — y el sueño REM es cuando el cerebro consolida los gestos técnicos practicados. Dormir mal no es solo "estar cansado": es entrenar sin terminar de guardar lo aprendido el día anterior.\n\nQué ayuda hoy: luz cálida y sin pantallas la última hora, magnesio en la cena (almendras, plátano, chocolate negro), y si puedes, acuéstate 30-60 min antes esta noche.' },
+  rd_fatiga: { titulo:'Fatiga muscular', cuerpo:'Las agujetas y la pesadez muscular son microrroturas reales en el tejido conectivo, no solo una sensación. Entrenar encima de una fatiga alta sin que el cuerpo haya terminado de reparar no suma estímulo — compite con la propia reparación, y eso es lo que lleva a la lesión por sobreuso.\n\nQué ayuda: proteína repartida a lo largo del día (no solo post-entreno), movimiento suave en vez de reposo total, y si la fatiga viene con mal sueño acumulado, ese es probablemente el origen real.' },
+  rd_estres: { titulo:'Estrés percibido', cuerpo:'El estrés mantenido activa el eje hormonal que sube el cortisol, y el cortisol alto interfiere directamente con el sueño profundo y con la síntesis de las hormonas que reparan tejido. El estrés de fuera de la pista no se queda fuera — quita rendimiento en la pista, aunque hayas entrenado y dormido "bien" en apariencia.\n\nQué ayuda: 5 minutos de respiración lenta antes de calentar, y hoy es buen día para priorizar técnica sobre buscar un máximo.' },
+  rd_animo: { titulo:'Ánimo y motivación', cuerpo:'El ánimo bajo casi nunca es solo "cabeza" — está ligado a dopamina y serotonina, que a su vez dependen de dormir bien, no tener déficit de hierro o magnesio, y no arrastrar estrés crónico. Si el ánimo baja varios días seguidos, merece la pena mirar el sueño y la alimentación antes de asumir que es "falta de ganas".\n\nQué ayuda: exposición a luz solar 10-15 min, y entrenar hoy con objetivos pequeños y concretos en vez de uno grande.' },
+  ciclo_menstrual_entreno: { titulo:'Menstrual — entrenamiento', cuerpo:'Fase de descarga. Prioriza movilidad, técnica y trabajo aeróbico muy suave. No es el momento de buscar máximos — el sistema neuroendocrino está en mínimos estrogénicos.' },
+  ciclo_menstrual_nutricion: { titulo:'Menstrual — nutrición', cuerpo:'Pierdes hierro con el sangrado, así que esta semana conviene reforzarlo. Para el hierro no hemo (vegetal), acompáñalo siempre de vitamina C — se absorbe 2-3 veces mejor así. Si prefieres una fuente animal, mejillones o almejas son mucho más ricos en hierro que la carne roja, y encajan mejor con una base natural y el cuidado de la microbiota.\n\n🍽️ Lentejas con pimiento rojo y un chorro de limón\n🍽️ Tostada de pan integral con hummus y tomate\n🍽️ Ensalada de espinacas, fresas y semillas de calabaza\n\nEvita té o café justo con la comida principal — el tanino reduce la absorción del hierro; mejor una hora antes o después.' },
+  ciclo_folicular_entreno: { titulo:'Folicular — entrenamiento', cuerpo:'Ventana de rendimiento: pico estrogénico, mejor fuerza neuromuscular y mejor sensibilidad a la insulina. Buen momento para sobrecarga progresiva, intensidad y volumen altos — aprovecha para los tests o los pesos más exigentes.' },
+  ciclo_folicular_nutricion: { titulo:'Folicular — nutrición', cuerpo:'Tu cuerpo tira mejor de carbohidratos ahora — no los recortes si tienes sesiones exigentes, es cuando mejor los aprovechas.\n\n🍽️ Bowl de arroz integral, pollo y verduras salteadas\n🍽️ Boniato asado con garbanzos y tahini\n🍽️ Porridge de avena con fruta y frutos secos antes de entrenar fuerte' },
+  ciclo_ovulatoria_entreno: { titulo:'Ovulatoria — entrenamiento', cuerpo:'Sueles rendir más en fuerza, pero también hay más laxitud ligamentosa (más riesgo en la rodilla). Cuida la técnica en ejercicios de máxima carga, especialmente aterrizajes y cambios de dirección.' },
+  ciclo_ovulatoria_nutricion: { titulo:'Ovulatoria — nutrición', cuerpo:'Sin cambios especiales respecto a la fase folicular — sigue aprovechando bien los carbohidratos.\n\n🍽️ Las mismas opciones de la fase folicular funcionan igual de bien aquí.' },
+  ciclo_lutea_entreno: { titulo:'Lútea — entrenamiento', cuerpo:'Es normal fatigarte antes y notar la intensidad más dura de lo habitual — no es que rindas peor por hacer algo mal, es la progesterona subiendo. Baja algo el volumen si lo necesitas y autorregula por sensaciones más que por el papel.' },
+  ciclo_lutea_nutricion: { titulo:'Lútea — nutrición', cuerpo:'Tu temperatura corporal sube un poco: cuida más la hidratación. También cuesta más retener proteína, así que no la bajes ahora — repártela en 4 tomas si puedes.\n\n🍽️ Salmón al horno con quinoa y brócoli\n🍽️ Tortilla de dos huevos con espinacas y queso feta\n🍽️ Yogur griego con nueces y miel de media tarde, para sostener el ánimo sin picotear ultraprocesados' }
+};
+async function getTextosEducativos(){
+  const raw = await safeGet('textos-educativos', true);
+  try{ const o = raw ? JSON.parse(raw) : {}; return (o && typeof o==='object') ? o : {}; }
+  catch(e){ return {}; }
+}
+async function saveTextosEducativos(obj){ return safeSet('textos-educativos', JSON.stringify(obj), true); }
+// Fusiona lo editado con el valor de fábrica: si el coach nunca tocó esta
+// clave, sale el texto por defecto; si la editó, sale la suya.
+function textoEducativo(overrides, clave){
+  const base = TEXTOS_EDUCATIVOS_DEFECTO[clave];
+  const editado = overrides && overrides[clave];
+  return { titulo: (editado&&editado.titulo) || base.titulo, cuerpo: (editado&&editado.cuerpo) || base.cuerpo };
+}
+
 const FASES_CICLO = {
-  menstrual: { label:'Menstrual', color:'danger',
-    entreno:'Fase de descarga. Prioriza movilidad, técnica y trabajo aeróbico muy suave. No es el momento de buscar máximos.',
-    nutricion:'Cuida el hierro (carnes rojas, legumbres) y el magnesio — el cacao puro puede ayudar con el dolor menstrual. Hidratación como siempre.' },
-  folicular: { label:'Folicular', color:'accent',
-    entreno:'Ventana de rendimiento: mejor tolerancia a la intensidad, mejor recuperación y sensibilidad a la insulina. Buen momento para fuerza, hipertrofia e intervalos de alta intensidad.',
-    nutricion:'Tu cuerpo tira mejor de carbohidratos ahora — no los recortes si tienes sesiones exigentes.' },
-  ovulatoria: { label:'Ovulatoria', color:'gold',
-    entreno:'Aquí sueles rendir más en fuerza, pero también hay más laxitud en ligamentos (más riesgo en la rodilla). Cuida la técnica en ejercicios de máxima carga.',
-    nutricion:'Sin cambios especiales — sigue las pautas de la fase folicular.' },
-  lutea: { label:'Lútea', color:'muted',
-    entreno:'Es normal fatigarte antes y notar la intensidad más dura de lo habitual — no es que rindas peor por hacer algo mal. Baja algo el volumen si lo necesitas y autorregula por sensaciones.',
-    nutricion:'Tu temperatura corporal sube un poco: cuida más la hidratación. También te cuesta más retener proteína, así que no bajes su ingesta ahora.' }
+  menstrual:  { label:'Menstrual',  color:'danger' },
+  folicular:  { label:'Folicular',  color:'accent' },
+  ovulatoria: { label:'Ovulatoria', color:'gold' },
+  lutea:      { label:'Lútea',      color:'muted' }
 };
 
 
@@ -3844,10 +3898,16 @@ async function tplRutinaAtleta(athleteId){
 
 // ---------- SESIÓN (athlete) ----------
 // Test rápido que aparece antes de la sesión si hoy no se ha hecho.
-function tplReadiness(dia){
+async function tplReadiness(dia){
   const total = totalReadiness(dia);
   const z = zonaReadiness(total);
   if(dia && total !== null && !state.readinessEditar){
+    const overrides = await getTextosEducativos();
+    // Sólo se explica lo que sale flojo (≤2/5): con todo bien, no hace falta
+    // enseñar nada más — la educación entra cuando de verdad aporta.
+    const explicaciones = READINESS_ITEMS
+      .filter(i => dia[i.id] <= 2)
+      .map(i => textoEducativo(overrides, 'rd_'+i.id));
     return `<div class="card">
       <h2>Cómo llegas hoy</h2>
       <div class="rd-zona rd-${z.clave}">
@@ -3855,6 +3915,7 @@ function tplReadiness(dia){
         <div><b>${z.titulo}</b><span>${z.texto}</span></div>
       </div>
       <div class="rd-detalle">${READINESS_ITEMS.map(i=>`<span>${i.label}: <b>${dia[i.id]}</b></span>`).join('')}</div>
+      ${explicaciones.map(t=>`<div class="rd-explica"><b>${escapeHtml(t.titulo)}</b><p>${formateaGuia(t.cuerpo)}</p></div>`).join('')}
       <button class="btn ghost small" id="rdEditar" style="margin-top:12px;">Volver a responder</button>
     </div>`;
   }
@@ -3890,7 +3951,7 @@ async function tplSesionEntry(athleteId){
   const paused = await findPausedSession(athleteId);
   const rdLog = await getReadiness(athleteId);
   const rdHoy = readinessDeHoy(rdLog);
-  let html = tplReadiness(rdHoy);
+  let html = await tplReadiness(rdHoy);
   if(paused){
     const hechos = paused.exercises.filter(e=>e.done).length;
     const hace = Math.round((Date.now()-(paused.savedAt||Date.now()))/60000);
@@ -4573,6 +4634,7 @@ function renderHrvModal(){
       <div style="font-family:'IBM Plex Mono',monospace;font-size:48px;color:var(--accent);">${seg}</div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:8px;">No sueltes el dedo de la cámara…</p>
       <div class="mp-barra" style="margin-top:16px;"><i style="width:${Math.min(100,((performance.now()-c.inicioMs)/HRV_DURACION_MS)*100)}%;"></i></div>
+      <p class="hrv-contador" style="font-size:11px;color:var(--muted);margin-top:10px;">Muestras leídas: ${c.muestras.length}</p>
     </div>`;
   } else if(c.paso === 'resultado'){
     if(c.calidad === 'buena'){
@@ -4582,10 +4644,16 @@ function renderHrvModal(){
     } else {
       const motivo = c.calidad==='insuficiente' ? 'No se detectaron suficientes latidos — puede que el dedo se moviera o no tapara bien la cámara.' : 'La señal no parece fiable (posible movimiento o mala colocación del dedo).';
       html += `<div class="rd-zona rd-rojo"><div><b>No ha salido una medición fiable</b><span>${motivo}</span></div></div>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px;">Diagnóstico: ${c.muestras.length} muestras leídas${c.ultimoError?` · ${escapeHtml(c.ultimoError)}`:''}.</p>
         <button class="btn" id="hrvReintentarBtn" style="width:100%;margin-top:14px;">Volver a intentarlo</button>`;
     }
   }
-  html += `<video id="hrvVideo" playsinline muted style="display:none;"></video><canvas id="hrvCanvas" width="24" height="24" style="display:none;"></canvas></div>`;
+  // OJO: nada de display:none aquí — en varios navegadores móviles (sobre
+  // todo Safari/iOS) un <video> con display:none deja de decodificar
+  // fotogramas por completo, y ctx.drawImage() no da ningún error, solo deja
+  // de tener nada que pintar. Lo sacamos de la vista con posición absoluta y
+  // tamaño 1×1 en su lugar, que sí mantiene la decodificación activa.
+  html += `<video id="hrvVideo" playsinline muted style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"></video><canvas id="hrvCanvas" width="24" height="24" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"></canvas></div>`;
   back.innerHTML = html;
   bindHrvModal();
 }
@@ -4610,6 +4678,17 @@ async function iniciarCapturaHrv(){
   const video = document.getElementById('hrvVideo');
   video.srcObject = c.stream;
   await video.play();
+  // Esperamos a que el vídeo tenga de verdad un fotograma listo — en algunos
+  // móviles play() resuelve antes de que haya imagen real que leer. Sin esto,
+  // el bucle de abajo podía arrancar sobre un vídeo con 0×0, y ctx.drawImage
+  // no lanza error pero tampoco pinta nada: fallo silencioso total.
+  if(video.readyState < 2){
+    await new Promise(res=>{
+      const listo = ()=>{ video.removeEventListener('loadeddata', listo); res(); };
+      video.addEventListener('loadeddata', listo);
+      setTimeout(res, 2000); // por si el evento no llega, no bloqueamos para siempre
+    });
+  }
   // Intento de encender el flash — sólo funciona en Android; en iPhone la
   // llamada simplemente no tiene efecto y seguimos sin él.
   try{
@@ -4620,6 +4699,7 @@ async function iniciarCapturaHrv(){
 
   c.paso = 'capturando';
   c.inicioMs = performance.now();
+  c.ultimoError = null;
   renderHrvModal();
   const canvas = document.getElementById('hrvCanvas');
   const ctx = canvas.getContext('2d');
@@ -4627,19 +4707,29 @@ async function iniciarCapturaHrv(){
     if(!hrvCap) return; // se cerró el modal a media captura
     const transcurrido = performance.now() - c.inicioMs;
     try{
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const datos = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-      let sumaRojo = 0;
-      for(let i=0;i<datos.length;i+=4) sumaRojo += datos[i];
-      c.muestras.push(sumaRojo/(datos.length/4));
-      c.timestamps.push(transcurrido);
-    }catch(e){ /* algún fotograma puede fallar, se ignora y sigue */ }
-    // Repintamos sólo el número y la barra, no todo el modal.
-    const seg = Math.max(0, Math.ceil((HRV_DURACION_MS - transcurrido)/1000));
-    const numEl = document.querySelector('#hrvModalBack .modal > div > div:first-child');
-    if(numEl) numEl.textContent = seg;
-    const barra = document.querySelector('#hrvModalBack .mp-barra i');
-    if(barra) barra.style.width = Math.min(100,(transcurrido/HRV_DURACION_MS)*100)+'%';
+      if(video.videoWidth > 0){
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const datos = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+        let sumaRojo = 0;
+        for(let i=0;i<datos.length;i+=4) sumaRojo += datos[i];
+        c.muestras.push(sumaRojo/(datos.length/4));
+        c.timestamps.push(transcurrido);
+      } else if(!c.ultimoError){
+        c.ultimoError = 'El vídeo no llegó a dar ningún fotograma (videoWidth siempre 0).';
+      }
+    }catch(e){ c.ultimoError = e.message; }
+    // Sólo tocamos el DOM del contador si seguimos en la pantalla de captura:
+    // un último fotograma que llegue justo después de pasar a "resultado" no
+    // debe pisar esa pantalla con el número del cronómetro.
+    if(c.paso === 'capturando'){
+      const seg = Math.max(0, Math.ceil((HRV_DURACION_MS - transcurrido)/1000));
+      const numEl = document.querySelector('#hrvModalBack .modal > div:nth-child(2) > div:first-child');
+      if(numEl) numEl.textContent = seg;
+      const barra = document.querySelector('#hrvModalBack .mp-barra i');
+      if(barra) barra.style.width = Math.min(100,(transcurrido/HRV_DURACION_MS)*100)+'%';
+      const contador = document.querySelector('#hrvModalBack .hrv-contador');
+      if(contador) contador.textContent = `Muestras leídas: ${c.muestras.length}`;
+    }
     if(transcurrido < HRV_DURACION_MS){ c.raf = requestAnimationFrame(loop); }
     else { finalizaCapturaHrv(); }
   };
@@ -4671,6 +4761,123 @@ async function guardarResultadoHrv(){
   cerrarHrv();
   if(!okH){ toast('No se pudo guardar', true); return; }
   toast('HRV guardado');
+  renderKeepScroll();
+}
+
+// ---------- JUEGO DE REACCIÓN: modal ----------
+let reaccionCap = null;
+const REACCION_RONDAS = 15;
+function abrirReaccion(tareaId, cfg){
+  reaccionCap = { paso:'instrucciones', tareaId, cfg, ronda:0, aciertos:[], fallos:0, falsasAlarmas:0,
+    estimuloActual:null, esObjetivo:false, tActivo:null, timeoutId:null };
+  renderReaccionModal();
+}
+function cerrarReaccion(){
+  if(reaccionCap && reaccionCap.timeoutId) clearTimeout(reaccionCap.timeoutId);
+  reaccionCap = null;
+  const b = document.getElementById('reaccionModalBack'); if(b) b.remove();
+}
+function renderReaccionModal(){
+  let back = document.getElementById('reaccionModalBack');
+  if(!back){ back = document.createElement('div'); back.id='reaccionModalBack'; back.className='modal-back'; document.body.appendChild(back); }
+  const c = reaccionCap, cfg = c.cfg;
+  let html = `<div class="modal"><div class="row" style="justify-content:space-between;"><h2 style="font-family:'Fraunces',serif;">Juego de reacción</h2><button class="btn ghost small" id="reaccionCerrarBtn">Cerrar</button></div>`;
+  if(c.paso === 'instrucciones'){
+    html += `<div style="padding:6px 0;">
+      ${cfg.instruccion ? `<p style="font-size:13px;line-height:1.7;margin-bottom:12px;">${formateaGuia(cfg.instruccion)}</p>` : ''}
+      <p style="font-size:13px;line-height:1.7;">Reacciona lo más rápido que puedas <b>solo</b> cuando aparezca: <span style="color:var(--accent);font-weight:700;">${escapeHtml(cfg.objetivo)}</span></p>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:8px;">Si tocas con cualquier otro estímulo, cuenta como fallo — igual que si se te escapa el objetivo.</p>
+    </div>
+    <button class="btn" id="reaccionEmpezarBtn" style="width:100%;margin-top:8px;">Empezar</button>`;
+  } else if(c.paso === 'preparando'){
+    html += `<div style="text-align:center;padding:40px 0;"><div style="font-family:'IBM Plex Mono',monospace;font-size:56px;color:var(--accent);">${c.cuenta}</div></div>`;
+  } else if(c.paso === 'jugando'){
+    html += `<div style="text-align:center;padding:10px 0;">
+      <p style="font-size:11px;color:var(--muted);">Ronda ${c.ronda} de ${REACCION_RONDAS} · objetivo: ${escapeHtml(cfg.objetivo)}</p>
+      <button id="reaccionEstimuloBtn" style="width:100%;min-height:180px;border-radius:14px;border:none;background:var(--panel3);font-size:56px;margin-top:12px;cursor:pointer;">${escapeHtml(c.estimuloActual||'')}</button>
+    </div>`;
+  } else if(c.paso === 'resultado'){
+    const nAciertos = c.aciertos.length;
+    const media = nAciertos ? Math.round(c.aciertos.reduce((a,b)=>a+b,0)/nAciertos) : null;
+    if(media){
+      html += `<div class="rd-zona rd-verde"><div><b>Tiempo de reacción medio: ${media} ms</b>
+        <span>${nAciertos} acierto${nAciertos===1?'':'s'} · ${c.fallos} objetivo${c.fallos===1?'':'s'} sin reaccionar · ${c.falsasAlarmas} falsa${c.falsasAlarmas===1?'':'s'} alarma${c.falsasAlarmas===1?'':'s'}</span></div></div>
+        <button class="btn" id="reaccionGuardarBtn" style="width:100%;margin-top:14px;">Guardar</button>`;
+    } else {
+      html += `<div class="rd-zona rd-rojo"><div><b>No se registró ningún acierto</b><span>Puede que el objetivo apareciera poco o que no diera tiempo a reaccionar. Prueba de nuevo.</span></div></div>
+        <button class="btn" id="reaccionReintentarBtn" style="width:100%;margin-top:14px;">Volver a intentarlo</button>`;
+    }
+  }
+  html += `</div>`;
+  back.innerHTML = html;
+  bindReaccionModal();
+}
+function bindReaccionModal(){
+  const c = reaccionCap;
+  document.getElementById('reaccionCerrarBtn').addEventListener('click', cerrarReaccion);
+  const empezar = document.getElementById('reaccionEmpezarBtn');
+  if(empezar) empezar.addEventListener('click', ()=>{
+    c.paso='preparando'; c.cuenta=3; renderReaccionModal();
+    const tick = ()=>{
+      c.cuenta--;
+      if(c.cuenta<=0){ c.paso='jugando'; c.ronda=0; renderReaccionModal(); siguienteEstimulo(); }
+      else { renderReaccionModal(); c.timeoutId=setTimeout(tick,700); }
+    };
+    c.timeoutId=setTimeout(tick,700);
+  });
+  const reintentar = document.getElementById('reaccionReintentarBtn');
+  if(reintentar) reintentar.addEventListener('click', ()=>{ c.paso='instrucciones'; c.aciertos=[]; c.fallos=0; c.falsasAlarmas=0; renderReaccionModal(); });
+  const guardar = document.getElementById('reaccionGuardarBtn');
+  if(guardar) guardar.addEventListener('click', guardarResultadoReaccion);
+  const btnEstimulo = document.getElementById('reaccionEstimuloBtn');
+  if(btnEstimulo) btnEstimulo.addEventListener('click', ()=>{
+    if(!c.tActivo) return; // fuera de ventana (ya pasó o aún no hay estímulo)
+    const rt = performance.now() - c.tActivo;
+    if(c.esObjetivo) c.aciertos.push(Math.round(rt));
+    else c.falsasAlarmas++;
+    c.tActivo = null;
+    clearTimeout(c.timeoutId);
+    siguienteEstimulo();
+  });
+}
+function siguienteEstimulo(){
+  const c = reaccionCap;
+  if(!c || c.paso!=='jugando') return;
+  c.ronda++;
+  if(c.ronda > REACCION_RONDAS){ c.paso='resultado'; renderReaccionModal(); return; }
+  // 40% de probabilidad de que sea el objetivo; el resto, otro estímulo del
+  // mismo grupo — así no se puede anticipar cuándo toca reaccionar.
+  const lista = REACCION_ESTIMULOS[c.cfg.tipo];
+  const esObjetivo = Math.random() < 0.4;
+  c.estimuloActual = esObjetivo ? c.cfg.objetivo : lista.filter(x=>x!==c.cfg.objetivo)[Math.floor(Math.random()*(lista.length-1))];
+  c.esObjetivo = esObjetivo;
+  renderReaccionModal();
+  c.tActivo = performance.now();
+  const ventanaMs = 1200;
+  c.timeoutId = setTimeout(()=>{
+    if(c.esObjetivo) c.fallos++; // el objetivo apareció y no se reaccionó a tiempo
+    c.tActivo = null;
+    // Pausa irregular antes del siguiente, para que no se pueda anticipar el ritmo.
+    c.timeoutId = setTimeout(siguienteEstimulo, 500 + Math.random()*1200);
+  }, ventanaMs);
+}
+async function guardarResultadoReaccion(){
+  const c = reaccionCap;
+  const athleteId = state.athleteAsId;
+  const nAciertos = c.aciertos.length;
+  const media = Math.round(c.aciertos.reduce((a,b)=>a+b,0)/nAciertos);
+  const historial = await getReaccion(athleteId);
+  historial.push({ fecha: todayISO(), tipo:c.cfg.tipo, objetivo:c.cfg.objetivo, mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas });
+  const okH = await saveReaccion(athleteId, historial);
+  if(c.tareaId){
+    const tareas = await getTareas(athleteId);
+    const t = tareas.find(x=>x.id===c.tareaId);
+    if(t){ t.hecho = true; t.fechaHecho = todayISO(); t.resultado = { mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas }; }
+    await saveTareas(athleteId, tareas);
+  }
+  cerrarReaccion();
+  if(!okH){ toast('No se pudo guardar', true); return; }
+  toast('Guardado');
   renderKeepScroll();
 }
 
@@ -6407,7 +6614,7 @@ async function tplAthleteDetail(athleteId){
   </div>`;
   if(state.athleteSubTab==='planificacion') html += await tplPlanificacionCoach(athleteId);
   else if(state.athleteSubTab==='periodizacion') html += await tplPeriodizacion(athleteId);
-  else if(state.athleteSubTab==='diario') html += await tplDiarioLectura(athleteId);
+  else if(state.athleteSubTab==='diario') html += await tplDiarioLectura(athleteId, true);
   else if(state.athleteSubTab==='progreso') html += await tplProgreso(athleteId);
   else if(state.athleteSubTab==='habitos') html += await tplHabitosCoach(athleteId);
   else if(state.athleteSubTab==='tests') html += await tplTestsCoach(athleteId);
@@ -6866,10 +7073,13 @@ async function tplCiclo(athleteId, esCoach){
     html += `<div class="card"><div class="rd-zona rd-ambar"><div><b>Anticonceptivo combinado</b><span>Con este método el ciclo natural está suprimido, así que no tiene sentido programar por fase. Mejor autorregular según cómo te sientas día a día.</span></div></div></div>`;
   } else if(info){
     const f = FASES_CICLO[info.fase];
+    const overrides = await getTextosEducativos();
+    const tEnt = textoEducativo(overrides, 'ciclo_'+info.fase+'_entreno');
+    const tNut = textoEducativo(overrides, 'ciclo_'+info.fase+'_nutricion');
     html += `<div class="card"><div class="rd-zona rd-${f.color==='danger'?'rojo':(f.color==='gold'?'ambar':'verde')}">
       <div><b>Fase ${f.label} · día ${info.diaCiclo} de ${info.duracionCiclo}</b>
-      <span><b>Entrenamiento:</b> ${escapeHtml(f.entreno)}</span>
-      <span style="display:block;margin-top:6px;"><b>Nutrición:</b> ${escapeHtml(f.nutricion)}</span></div>
+      <span><b>Entrenamiento:</b> ${formateaGuia(tEnt.cuerpo)}</span>
+      <span style="display:block;margin-top:6px;"><b>Nutrición:</b> ${formateaGuia(tNut.cuerpo)}</span></div>
     </div></div>`;
   } else if(!esCoach){
     html += `<div class="card"><div class="empty">Registra la fecha de tu última regla para empezar a ver tu fase.</div></div>`;
@@ -7160,15 +7370,37 @@ async function tplTestsCoach(athleteId){
       <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Enviada el ${bat.fecha}. ${bat.mostrarEstimaciones ? 'El atleta <b>sí</b> ve las estimaciones de condición física.' : 'El atleta <b>no</b> ve las estimaciones: los resultados quedan sólo para ti.'}</p>
       <div class="row" style="gap:8px;flex-wrap:wrap;">
         ${completa ? `<button class="btn small" id="archivarBateriaBtn">Archivar y cerrar batería</button>` : ''}
+        <button class="btn ghost small" id="anadirTestBtn">+ Añadir test</button>
         <button class="btn ghost small" id="cancelarBateriaBtn">Cancelar batería</button>
       </div>
     </div>`;
+    if(state.anadirTestOpen){
+      const yaEnBat = new Set(bat.tests.map(t=>t.testId));
+      const selNuevo = state.testsAnadirSel || [];
+      html += `<div class="card"><h2>Añadir test a la batería</h2>`;
+      ['movilidad','fuerza','potencia','cardio','otro'].forEach(tipo=>{
+        const grupo = catalogoCompleto().filter(t=>t.tipo===tipo && !yaEnBat.has(t.id));
+        if(!grupo.length) return;
+        html += `<div class="block-title">${{movilidad:'Movilidad y control',fuerza:'Fuerza',potencia:'Velocidad, agilidad y potencia',cardio:'Cardiorrespiratorio',otro:'Otros'}[tipo]}</div>`;
+        grupo.forEach(t=>{
+          const marcado = selNuevo.includes(t.id);
+          html += `<div class="lib-item ${marcado?'sel':''}" data-testpickadd="${t.id}">
+            <span class="li-check">${marcado?'✓':''}</span>
+            <span class="li-txt"><b>${escapeHtml(t.nombre||'(sin nombre)')}</b><span>${[t.patron,t.complejo,t.modo].filter(Boolean).map(escapeHtml).join(' · ')||'sin clasificar'}</span></span>
+          </div>`;
+        });
+      });
+      html += `<div class="row" style="margin-top:10px;gap:8px;">
+        <button class="btn" id="confirmarAnadirTestBtn" ${selNuevo.length?'':'disabled'}>Añadir ${selNuevo.length||''}</button>
+        <button class="btn ghost" id="cancelarAnadirTestBtn">Cancelar</button>
+      </div></div>`;
+    }
 
     bat.tests.forEach((t,i)=>{
       const def = testPorId(t.testId) || t;
       const r = t.resultado || {};
       const hecho = Object.keys(r).length > 0;
-      html += `<div class="card"><h2>${escapeHtml(def.nombre)}</h2>
+      html += `<div class="card"><div class="row" style="justify-content:space-between;"><h2>${escapeHtml(def.nombre)}</h2><button class="btn ghost small" data-quitartest="${i}">Quitar</button></div>
         <div class="ex-meta" style="margin-bottom:10px;">
           <span>${escapeHtml(def.patron||'—')}</span><span>${escapeHtml(def.complejo||'—')}</span><span>${escapeHtml(def.modo||'—')}</span>
         </div>`;
@@ -7932,7 +8164,8 @@ async function tplPlanificacionCoach(athleteId){
   DAYS.forEach(d=>{ html += cuerpoDia(d, draft, athleteId, esTenisOMixto); });
   return html;
 }
-async function tplDiarioLectura(athleteId){
+async function tplDiarioLectura(athleteId, esCoach){
+  if(esCoach === undefined) esCoach = true; // compatibilidad con la única llamada previa (vista del entrenador)
   const raw = await safeGet('journal-'+athleteId, true);
   const entries = raw ? JSON.parse(raw) : [];
   let html = `<div class="card"><h2>Diario de entrenamiento</h2>`;
@@ -8030,7 +8263,7 @@ async function tplDiarioLectura(athleteId){
         <button class="btn small" data-saveentry="${idx}">Guardar cambios</button>
         <button class="btn ghost small" data-cancelentry="1">Cancelar</button>
       </div>`;
-    } else {
+    } else if(esCoach){
       html += `<div class="row" style="margin-top:8px;">
         <button class="btn ghost small" data-editentry="${idx}">Corregir</button>
         <button class="btn ghost small" data-delentry="${idx}">Eliminar</button>
@@ -8110,9 +8343,11 @@ async function tplPerfilCoachBody(athleteId){
       html += `<p style="font-size:13px;color:var(--muted);">Anticonceptivo combinado: ciclo natural suprimido. Programa por sensaciones/RPE en vez de por fase.</p>`;
     } else {
       const f = FASES_CICLO[faseC.fase];
+      const overridesC = await getTextosEducativos();
+      const tEntC = textoEducativo(overridesC, 'ciclo_'+faseC.fase+'_entreno');
       html += `<div class="rd-zona rd-${f.color==='danger'?'rojo':(f.color==='gold'?'ambar':'verde')}">
         <div><b>Fase ${f.label} · día ${faseC.diaCiclo} de ${faseC.duracionCiclo}</b>
-        <span>${escapeHtml(f.entreno)}</span></div>
+        <span>${formateaGuia(tEntC.cuerpo)}</span></div>
       </div>`;
     }
     if(cicloC.condicion) html += `<p style="font-size:12px;color:var(--muted);margin-top:8px;">Condición registrada: ${escapeHtml(cicloC.condicion)}</p>`;
@@ -8187,7 +8422,18 @@ async function tplTareasCoach(athleteId){
         <option value="guia">Guía (algo que leer)</option>
         <option value="poms">Test de estado de ánimo (POMS)</option>
         <option value="hrv">Medir HRV (cámara del móvil)</option>
+        <option value="juego">Juego de reacción (colores/flechas/números)</option>
       </select>
+      <div id="juegoConfig" style="display:none;">
+        <label class="field-label">Tipo de estímulo</label>
+        <select id="juegoTipo" style="width:100%;margin-bottom:8px;">
+          <option value="colores">Colores</option>
+          <option value="flechas">Flechas</option>
+          <option value="numeros">Números</option>
+        </select>
+        <label class="field-label">Objetivo (a qué debe reaccionar)</label>
+        <select id="juegoObjetivo" style="width:100%;margin-bottom:8px;"></select>
+      </div>
       <input type="text" id="tareaTituloNueva" placeholder="Título (ej. Mide tu HRV esta semana)" value="" style="width:100%;">
       <textarea id="tareaCuerpoNueva" placeholder="Instrucciones completas. Puedes usar **negrita** y varias líneas." style="min-height:80px;width:100%;"></textarea>
       <p id="tareaPomsNota" style="display:none;font-size:11.5px;color:var(--muted);">Le aparecerá una escala de 12 preguntas cortas (nada que escribir tú aquí abajo) y verás su puntuación en cuanto la complete.</p>
@@ -8203,6 +8449,7 @@ async function tplTareasCoach(athleteId){
         <div style="font-size:12px;color:var(--muted);margin-top:4px;">Enviada el ${t.fecha}</div>
         ${t.tipo==='poms' && t.resultado ? `<div style="font-size:12px;margin-top:6px;">TMD ${t.resultado.tmd}${t.resultado.tmd<=5?' · buen estado general':(t.resultado.tmd>=25?' · varias señales negativas a la vez':'')} · ${POMS_DIMS.map(d=>`${POMS_DIM_LABEL[d]} ${t.resultado.porDim[d]}`).join(' · ')}</div>` : ''}
         ${t.tipo==='hrv' && t.resultado ? `<div style="font-size:12px;margin-top:6px;">FC ${t.resultado.hr} ppm · RMSSD ${t.resultado.rmssd} ms</div>` : ''}
+        ${t.tipo==='juego' && t.resultado ? `<div style="font-size:12px;margin-top:6px;">RT medio ${t.resultado.mediaMs} ms · ${t.resultado.aciertos} aciertos · ${t.resultado.fallos} fallos · ${t.resultado.falsasAlarmas} falsas alarmas</div>` : ''}
         <button class="btn ghost small" data-tareaborrar="${t.id}" style="margin-top:8px;">Eliminar</button>
       </div>`;
     });
@@ -8645,10 +8892,45 @@ async function tplAgenda(){
     <button data-agendasub="resumen" class="${sub==='resumen'?'active':''}">Resumen</button>
     <button data-agendasub="tareas" class="${sub==='tareas'?'active':''}">Tareas</button>
     <button data-agendasub="calendario" class="${sub==='calendario'?'active':''}">Calendario</button>
+    <button data-agendasub="textos" class="${sub==='textos'?'active':''}">Textos</button>
   </div>`;
   if(sub==='tareas') html += await tplTareas();
   else if(sub==='calendario') html += await tplCalendarioCoach();
+  else if(sub==='textos') html += await tplTextosEducativos();
   else html += await tplResumen();
+  return html;
+}
+
+// Pantalla de edición: todos los textos educativos agrupados por sección,
+// con el valor por defecto precargado si no se ha editado nunca. Cada uno
+// se guarda por separado, para no perder cambios de otros al guardar uno.
+async function tplTextosEducativos(){
+  const overrides = await getTextosEducativos();
+  const grupos = [
+    { titulo:'Check-in pre-entreno', claves:['rd_sueno','rd_fatiga','rd_estres','rd_animo'] },
+    { titulo:'Ciclo menstrual', claves:['ciclo_menstrual_entreno','ciclo_menstrual_nutricion','ciclo_folicular_entreno','ciclo_folicular_nutricion','ciclo_ovulatoria_entreno','ciclo_ovulatoria_nutricion','ciclo_lutea_entreno','ciclo_lutea_nutricion'] }
+  ];
+  let html = `<div class="card"><h2>Textos educativos</h2>
+    <p style="font-size:12px;color:var(--muted);">Lo que ve el atleta junto a cada valor. Puedes editar cualquiera; si no tocas uno, se queda el texto de partida.</p>
+  </div>`;
+  grupos.forEach(g=>{
+    html += `<div class="card"><h2 style="font-size:15px;">${g.titulo}</h2>`;
+    g.claves.forEach(clave=>{
+      const t = textoEducativo(overrides, clave);
+      const editado = !!(overrides[clave] && overrides[clave].cuerpo);
+      html += `<div class="acc ${state.openDays['txt-'+clave]?'open':''}" data-day="txt-${clave}">
+        <div class="acc-head" data-toggle="txt-${clave}"><b style="text-transform:none;">${escapeHtml(t.titulo)}</b>${editado?' <span style="color:var(--accent);font-size:10px;">· editado</span>':''}<span class="chev"><span class="chev-arrow">▾</span></span></div>
+        <div class="acc-body">
+          <textarea class="texto-edit-area" data-clave="${clave}" style="min-height:140px;width:100%;">${escapeHtml(t.cuerpo)}</textarea>
+          <div class="row" style="gap:8px;margin-top:8px;">
+            <button class="btn small" data-guardartexto="${clave}">Guardar</button>
+            ${editado?`<button class="btn ghost small" data-restaurartexto="${clave}">Restaurar original</button>`:''}
+          </div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
   return html;
 }
 
@@ -9772,6 +10054,24 @@ async function bindDynamicEvents(){
     Object.keys(state.openDays).forEach(k=>{ state.openDays[k] = false; });
     state.openDays[d] = !wasOpen;
   }));
+  document.querySelectorAll('[data-guardartexto]').forEach(b=>b.addEventListener('click', async ()=>{
+    const clave = b.dataset.guardartexto;
+    const area = document.querySelector(`.texto-edit-area[data-clave="${clave}"]`);
+    const overrides = await getTextosEducativos();
+    if(!overrides[clave]) overrides[clave] = {};
+    overrides[clave].cuerpo = area.value;
+    const ok = await saveTextosEducativos(overrides);
+    toast(ok?'Guardado':'No se pudo guardar', !ok);
+    if(ok) renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-restaurartexto]').forEach(b=>b.addEventListener('click', async ()=>{
+    const clave = b.dataset.restaurartexto;
+    const overrides = await getTextosEducativos();
+    delete overrides[clave];
+    const ok = await saveTextosEducativos(overrides);
+    toast(ok?'Restaurado':'No se pudo restaurar', !ok);
+    if(ok) renderKeepScroll();
+  }));
 
   // --- Copiar / intercambiar / vaciar días de la planificación ---
   // Los ejercicios se clonan con identificadores nuevos: si compartieran id,
@@ -9835,22 +10135,38 @@ async function bindDynamicEvents(){
   }));
 
   const tareaTipoSel = document.getElementById('tareaTipoNueva');
+  const pobJuegoObjetivo = ()=>{
+    const tipoSel = document.getElementById('juegoTipo');
+    const objSel = document.getElementById('juegoObjetivo');
+    if(!tipoSel || !objSel) return;
+    const lista = REACCION_ESTIMULOS[tipoSel.value] || [];
+    objSel.innerHTML = lista.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+  };
   if(tareaTipoSel) tareaTipoSel.addEventListener('change', ()=>{
     const esPoms = tareaTipoSel.value === 'poms';
+    const esJuego = tareaTipoSel.value === 'juego';
     const cuerpoEl = document.getElementById('tareaCuerpoNueva');
     const notaEl = document.getElementById('tareaPomsNota');
     const tituloEl = document.getElementById('tareaTituloNueva');
+    const juegoConfigEl = document.getElementById('juegoConfig');
     if(cuerpoEl) cuerpoEl.style.display = esPoms ? 'none' : '';
     if(notaEl) notaEl.style.display = esPoms ? '' : 'none';
+    if(juegoConfigEl) juegoConfigEl.style.display = esJuego ? '' : 'none';
     if(esPoms && tituloEl && !tituloEl.value.trim()) tituloEl.value = 'Test de estado de ánimo';
     if(tareaTipoSel.value === 'hrv'){
       if(cuerpoEl) cuerpoEl.style.display = 'none';
       if(notaEl){ notaEl.style.display = ''; notaEl.textContent = 'Le aparecerá un botón para medir con la cámara del móvil, 30 segundos. Nunca se guarda vídeo, sólo el resultado.'; }
       if(tituloEl && !tituloEl.value.trim()) tituloEl.value = 'Mide tu HRV';
+    } else if(esJuego){
+      if(cuerpoEl){ cuerpoEl.style.display = ''; cuerpoEl.placeholder = 'Instrucciones para este input concreto (opcional) — ej. "Toca solo cuando veas rojo, ignora los demás colores"'; }
+      pobJuegoObjetivo();
+      if(tituloEl && !tituloEl.value.trim()) tituloEl.value = 'Juego de reacción';
     } else if(notaEl && tareaTipoSel.value==='poms') {
       notaEl.textContent = 'Le aparecerá una escala de 12 preguntas cortas (nada que escribir tú aquí abajo) y verás su puntuación en cuanto la complete.';
     }
   });
+  const juegoTipoSel = document.getElementById('juegoTipo');
+  if(juegoTipoSel) juegoTipoSel.addEventListener('change', pobJuegoObjetivo);
   document.querySelectorAll('[data-plantillaguia]').forEach(b=>b.addEventListener('click', ()=>{
     const g = PLANTILLAS_GUIA[b.dataset.plantillaguia];
     if(!g) return;
@@ -9871,9 +10187,17 @@ async function bindDynamicEvents(){
     if(!titulo){ toast('Ponle un título a la tarea', true); return; }
     const athleteId = state.selectedId;
     const tareas = await getTareas(athleteId);
-    tareas.push({ id: uid(), tipo, titulo,
-      resumen: tipo==='guia' ? 'Léela cuando puedas' : (tipo==='poms' ? '12 preguntas cortas, 1 minuto' : (tipo==='hrv' ? 'Medición con la cámara, 30 segundos' : 'Tarea pendiente')),
-      cuerpo, fecha: todayISO(), hecho:false, fechaHecho:null, resultado:null });
+    const nueva = { id: uid(), tipo, titulo,
+      resumen: tipo==='guia' ? 'Léela cuando puedas' : (tipo==='poms' ? '12 preguntas cortas, 1 minuto' : (tipo==='hrv' ? 'Medición con la cámara, 30 segundos' : (tipo==='juego' ? 'Juego de reacción, 2 minutos' : 'Tarea pendiente'))),
+      cuerpo, fecha: todayISO(), hecho:false, fechaHecho:null, resultado:null };
+    if(tipo==='juego'){
+      nueva.juegoCfg = {
+        tipo: document.getElementById('juegoTipo').value,
+        objetivo: document.getElementById('juegoObjetivo').value,
+        instruccion: cuerpo
+      };
+    }
+    tareas.push(nueva);
     const ok = await saveTareas(athleteId, tareas);
     toast(ok?'Tarea enviada':'No se pudo enviar', !ok);
     if(ok) renderKeepScroll();
@@ -9941,6 +10265,13 @@ async function bindDynamicEvents(){
   }));
   document.querySelectorAll('[data-medirhrv]').forEach(b=>b.addEventListener('click', ()=>{
     abrirHrv(b.dataset.medirhrv);
+  }));
+  document.querySelectorAll('[data-jugarreaccion]').forEach(b=>b.addEventListener('click', async ()=>{
+    const tareaId = b.dataset.jugarreaccion;
+    const tareas = await getTareas(state.athleteAsId);
+    const t = tareas.find(x=>x.id===tareaId);
+    if(!t || !t.juegoCfg) return;
+    abrirReaccion(tareaId, t.juegoCfg);
   }));
 
   // --- Welcome Pack ---
@@ -10342,6 +10673,47 @@ async function bindDynamicEvents(){
   }));
   const estimCheck = document.getElementById('mostrarEstimCheck');
   if(estimCheck) estimCheck.addEventListener('change', ()=>{ state.testsMostrarEstim = estimCheck.checked; });
+  document.querySelectorAll('[data-quitartest]').forEach(b=>b.addEventListener('click', async ()=>{
+    const i = parseInt(b.dataset.quitartest,10);
+    const bat = await getBateria(athleteId);
+    if(!bat) return;
+    const t = bat.tests[i];
+    const tieneResultado = t && t.resultado && Object.keys(t.resultado).length;
+    if(tieneResultado && !confirm('Este test ya tiene resultado del atleta. ¿Quitarlo igualmente? Se perderá ese dato.')) return;
+    bat.tests.splice(i,1);
+    const ok = await saveBateria(athleteId, bat);
+    toast(ok?'Test quitado':'No se pudo quitar', !ok);
+    if(ok) renderKeepScroll();
+  }));
+  const anadirTestBtn = document.getElementById('anadirTestBtn');
+  if(anadirTestBtn) anadirTestBtn.addEventListener('click', ()=>{
+    state.anadirTestOpen = true; state.testsAnadirSel = [];
+    renderKeepScroll();
+  });
+  const cancelarAnadirTestBtn = document.getElementById('cancelarAnadirTestBtn');
+  if(cancelarAnadirTestBtn) cancelarAnadirTestBtn.addEventListener('click', ()=>{
+    state.anadirTestOpen = false; state.testsAnadirSel = [];
+    renderKeepScroll();
+  });
+  document.querySelectorAll('[data-testpickadd]').forEach(el=>el.addEventListener('click', ()=>{
+    const id = el.dataset.testpickadd;
+    const sel = state.testsAnadirSel || (state.testsAnadirSel = []);
+    const idx = sel.indexOf(id);
+    if(idx>=0) sel.splice(idx,1); else sel.push(id);
+    renderKeepScroll();
+  }));
+  const confirmarAnadirTestBtn = document.getElementById('confirmarAnadirTestBtn');
+  if(confirmarAnadirTestBtn) confirmarAnadirTestBtn.addEventListener('click', async ()=>{
+    const nuevos = state.testsAnadirSel || [];
+    if(!nuevos.length) return;
+    const bat = await getBateria(athleteId);
+    if(!bat) return;
+    nuevos.forEach(id=>bat.tests.push({ testId:id, resultado:null, videos:[], valoracion:{}, notaCoach:'' }));
+    const ok = await saveBateria(athleteId, bat);
+    toast(ok?`${nuevos.length} test(s) añadido(s)`:'No se pudo guardar', !ok);
+    state.anadirTestOpen = false; state.testsAnadirSel = [];
+    if(ok) renderKeepScroll();
+  });
   const enviarBat = document.getElementById('enviarBateriaBtn');
   if(enviarBat) enviarBat.addEventListener('click', async ()=>{
     const sel = state.testsSel || [];
@@ -10438,6 +10810,10 @@ async function bindDynamicEvents(){
   document.querySelectorAll('[data-agendasub]').forEach(b=>b.addEventListener('click', ()=>{
     state.agendaSub = b.dataset.agendasub;
     renderScrollTop();
+  }));
+  document.querySelectorAll('[data-progresosub]').forEach(b=>b.addEventListener('click', ()=>{
+    state.progresoSub = b.dataset.progresosub;
+    renderTabScrollTop();
   }));
 
   // --- Captación de leads ---
