@@ -509,6 +509,20 @@
   .cv-num{font-size:11px;color:var(--muted);}
   .cv-parcial{font-size:14px;}
   .cv-acum{font-size:12px;color:var(--muted);text-align:right;}
+  .variante-box{margin-top:8px;}
+  .variante-campos{background:var(--panel3);border-radius:8px;padding:10px;margin-top:6px;}
+  .variante-lectura{background:var(--gold-dim);border-radius:8px;padding:8px 10px;margin-top:8px;}
+  .variante-lectura summary{font-size:12px;color:var(--gold);font-weight:600;cursor:pointer;}
+  .variante-lectura b{display:block;font-size:13px;margin-top:6px;}
+  .variante-lectura p{font-size:12px;color:var(--muted);margin-top:3px;}
+  .juego-box{margin-top:10px;}
+  .juego-campos{background:var(--panel3);border-radius:8px;padding:12px;margin-top:8px;}
+  .juego-imagenes{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);}
+  .juego-img-list{display:flex;flex-wrap:wrap;gap:8px;}
+  .juego-img-item{position:relative;width:60px;}
+  .juego-img-item img{width:60px;height:60px;object-fit:cover;border-radius:6px;}
+  .juego-img-item span{display:block;font-size:9px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .juego-img-item button{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:100px;border:none;background:var(--danger);color:#fff;font-size:10px;cursor:pointer;line-height:1;}
   .link-detalle{background:none;border:none;color:var(--accent);font-family:'Manrope',sans-serif;font-size:12px;font-weight:600;cursor:pointer;padding:6px 0;text-align:left;}
   .series-detalle{margin-bottom:6px;}
   .sd-fila{display:grid;grid-template-columns:26px 1fr 1fr 1fr 1fr;gap:6px;align-items:center;margin-bottom:6px;}
@@ -2620,8 +2634,28 @@ async function saveAsimetria(athleteId, lista){ return safeSet('asimetria-'+athl
 const REACCION_ESTIMULOS = {
   colores: ['🔴 Rojo','🟢 Verde','🔵 Azul','🟡 Amarillo'],
   flechas: ['⬆️ Arriba','⬇️ Abajo','⬅️ Izquierda','➡️ Derecha'],
-  numeros: ['1','2','3','4','5','6','7','8','9']
+  numeros: ['1','2','3','4','5','6','7','8','9'],
+  letras: ['A','B','C','D','E','F','G','H'],
+  formas: ['⬤ Círculo','▲ Triángulo','■ Cuadrado','◆ Diamante','⬟ Pentágono','★ Estrella']
 };
+const REACCION_TIPO_LABEL = { colores:'Colores', flechas:'Flechas', numeros:'Números', letras:'Letras', formas:'Formas', imagenes:'Imágenes propias' };
+// Junta en una sola lista los estímulos de todas las categorías elegidas,
+// incluidas las imágenes propias (identificables porque son una URL). Así
+// un mismo juego puede mezclar, por ejemplo, colores y formas a la vez.
+function listaEstimulos(cfg){
+  const tipos = cfg.tipos || (cfg.tipo ? [cfg.tipo] : []);
+  let lista = [];
+  tipos.forEach(t=>{
+    if(t==='imagenes') lista = lista.concat((cfg.imagenes||[]).map(im=>im.url));
+    else lista = lista.concat(REACCION_ESTIMULOS[t]||[]);
+  });
+  return lista;
+}
+function esImagenEstimulo(v){ return typeof v==='string' && (v.startsWith('http')||v.startsWith('data:image')); }
+function nombreEstimulo(cfg, v){
+  if(esImagenEstimulo(v)){ const im=(cfg.imagenes||[]).find(x=>x.url===v); return im?im.nombre:'imagen'; }
+  return v;
+}
 async function getReaccion(athleteId){
   const raw = await safeGet('reaccion-'+athleteId, true);
   try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
@@ -3153,7 +3187,24 @@ function hrvCalcula(picos){
   let sumaDif2 = 0;
   for(let i=1;i<ibis.length;i++) sumaDif2 += (ibis[i]-ibis[i-1])**2;
   const rmssd = Math.round(Math.sqrt(sumaDif2/(ibis.length-1)));
-  return { hr, rmssd, nLatidos: picos.length };
+  // Stress Index de Baevsky: SI = (AMo×100)/(2·Mo·MxDMn). Mo = mediana de los
+  // RR en segundos; AMo = % de RR en el bin de 50ms más frecuente; MxDMn =
+  // rango máx-mín en segundos. Cuanto más alto, ritmo más rígido (más
+  // tensión simpática); cuanto más bajo, más margen de adaptación. Con
+  // cámara los valores absolutos salen más altos que con ECG clínico — lo
+  // que importa aquí es cómo cambia en la misma persona con el tiempo, no
+  // compararlo con un rango de referencia fijo.
+  const ibisSeg = ibis.map(v=>v/1000);
+  const ordenados = [...ibisSeg].sort((a,b)=>a-b);
+  const mid = Math.floor(ordenados.length/2);
+  const Mo = ordenados.length%2 ? ordenados[mid] : (ordenados[mid-1]+ordenados[mid])/2;
+  const bins = {};
+  ibisSeg.forEach(v=>{ const b = Math.round(v/0.05); bins[b] = (bins[b]||0)+1; });
+  const maxBin = Math.max(...Object.values(bins));
+  const AMo = (maxBin/ibisSeg.length)*100;
+  const MxDMn = Math.max(...ibisSeg) - Math.min(...ibisSeg);
+  const stressIndex = MxDMn>0 ? Math.round(AMo/(2*Mo*MxDMn)) : null;
+  return { hr, rmssd, stressIndex, nLatidos: picos.length };
 }
 function hrvCalidad(r){
   if(!r) return 'insuficiente';
@@ -3420,6 +3471,15 @@ function faseCiclo(ciclo, fechaISO){
 // que edites — si no tocas un texto, sigue mostrando este; si lo editas, se
 // guarda tu versión y ya no se pisa aunque yo cambie el valor por defecto.
 const TEXTOS_EDUCATIVOS_DEFECTO = {
+  gloss_rpe: { titulo:'RPE', cuerpo:'Esfuerzo percibido, de 1 a 10. El 10 es el máximo posible (no podrías hacer ni una repetición más); el 7 significa que, en teoría, te quedarían unas 3 repeticiones en la recámara. Es una escala subjetiva, pero es la más rápida de anotar serie a serie.' },
+  gloss_rir: { titulo:'RIR', cuerpo:'Repeticiones en reserva: cuántas más podrías haber hecho antes de fallar. RIR 2 significa que paraste con 2 repeticiones de margen. Es el reverso del RPE — RPE 8 y RIR 2 describen lo mismo desde dos ángulos distintos.' },
+  gloss_series: { titulo:'Series y repeticiones', cuerpo:'Una serie es un bloque de repeticiones seguidas sin parar; el descanso separa una serie de la siguiente. "4 series de 8" significa 4 bloques de 8 repeticiones, con descanso entre cada uno.' },
+  gloss_tempo: { titulo:'Tempo', cuerpo:'El ritmo de cada repetición, en 4 números (ej. 3-1-2-0): el primero es la fase excéntrica (bajar o alargar el músculo), el segundo la pausa abajo, el tercero la fase concéntrica (subir o acortar), el cuarto la pausa arriba — todo en segundos. Un tempo lento en la excéntrica (ej. 4-0-1-0) aumenta el control y el daño muscular controlado; uno explosivo en la concéntrica (ej. 3-0-X-0, la "X" significa "lo más rápido posible") entrena potencia.' },
+  gloss_superserie: { titulo:'Superserie, triserie y circuito', cuerpo:'Una superserie son 2 ejercicios seguidos sin descanso entre ellos, y luego sí se descansa. Una triserie es lo mismo pero con 3 ejercicios. Un circuito son varios ejercicios (normalmente 4 o más) encadenados en fila, repitiendo la vuelta completa varias veces. Se usan para ahorrar tiempo o para acumular fatiga de una forma concreta — no todo el volumen tiene que hacerse en series sueltas.' },
+  gloss_patron: { titulo:'Patrón de movimiento', cuerpo:'La categoría de movimiento a la que pertenece un ejercicio (empuje horizontal, tracción vertical, sentadilla, bisagra de cadera…), más allá de qué músculo trabaja. Sirve para vigilar que no acumules mucho de un patrón mientras descuidas su opuesto — por ejemplo, mucho empuje y poca tracción es una combinación que suele acabar en el hombro.' },
+  gloss_unilateral: { titulo:'Ejercicio unilateral', cuerpo:'Se trabaja un lado del cuerpo a la vez (una pierna, un brazo). Permite comparar la fuerza de un lado contra el otro y detectar asimetrías antes de que se conviertan en una molestia.' },
+  gloss_1rm: { titulo:'1RM (una repetición máxima)', cuerpo:'El peso máximo con el que podrías hacer una sola repetición completa. Rara vez se testea de forma literal (es exigente y algo arriesgado) — normalmente se estima a partir de una serie de varias repeticiones cercana al fallo, con una fórmula matemática validada.' },
+
   rd_sueno: { titulo:'Calidad del sueño', cuerpo:'Con menos de 6-7 horas de sueño de calidad, el riesgo de lesión se multiplica por 1,7 si se mantiene 2 semanas seguidas, y el rendimiento cae de forma medible. El sueño profundo es cuando más hormona de crecimiento se libera — la que repara el tejido que rompiste entrenando — y el sueño REM es cuando el cerebro consolida los gestos técnicos practicados. Dormir mal no es solo "estar cansado": es entrenar sin terminar de guardar lo aprendido el día anterior.\n\nQué ayuda hoy: luz cálida y sin pantallas la última hora, magnesio en la cena (almendras, plátano, chocolate negro), y si puedes, acuéstate 30-60 min antes esta noche.' },
   rd_fatiga: { titulo:'Fatiga muscular', cuerpo:'Las agujetas y la pesadez muscular son microrroturas reales en el tejido conectivo, no solo una sensación. Entrenar encima de una fatiga alta sin que el cuerpo haya terminado de reparar no suma estímulo — compite con la propia reparación, y eso es lo que lleva a la lesión por sobreuso.\n\nQué ayuda: proteína repartida a lo largo del día (no solo post-entreno), movimiento suave en vez de reposo total, y si la fatiga viene con mal sueño acumulado, ese es probablemente el origen real.' },
   rd_estres: { titulo:'Estrés percibido', cuerpo:'El estrés mantenido activa el eje hormonal que sube el cortisol, y el cortisol alto interfiere directamente con el sueño profundo y con la síntesis de las hormonas que reparan tejido. El estrés de fuera de la pista no se queda fuera — quita rendimiento en la pista, aunque hayas entrenado y dormido "bien" en apariencia.\n\nQué ayuda: 5 minutos de respiración lenta antes de calentar, y hoy es buen día para priorizar técnica sobre buscar un máximo.' },
@@ -3503,14 +3563,16 @@ function plantillaDe(ex){
   return { name:ex.name||'', desc:ex.desc||'', section: secs[0] || '', turno:'', grupoId:'', grupoTipo:'',
     pideGrabacion: !!ex.pideGrabacion, lift: ex.lift||'', unilateral: !!ex.unilateral,
     load:ex.load||'', series:ex.series||'', reps:ex.reps||'', rest:ex.rest||'',
-    rir:ex.rir||'', rpeTarget:ex.rpeTarget||'', timer:{...exTimer(ex)},
-    videoUrl:ex.videoUrl||'', videoName:ex.videoName||'' };
+    rir:ex.rir||'', rpeTarget:ex.rpeTarget||'', tempo:ex.tempo||'', timer:{...exTimer(ex)},
+    videoUrl:ex.videoUrl||'', videoName:ex.videoName||'',
+    variante: ex.variante ? {...ex.variante} : null,
+    juegoCfg: ex.juegoCfg ? JSON.parse(JSON.stringify(ex.juegoCfg)) : null };
 }
 function desdePlantilla(pl){
   return { ...plantillaDe(pl), id: uid() };
 }
 
-function blankExercise(){ return {id:uid(), name:'', desc:'', section:'', turno:'', grupoId:'', grupoTipo:'', pideGrabacion:false, load:'', series:3, reps:'', rest:'', rir:'', rpeTarget:'', timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}}; }
+function blankExercise(){ return {id:uid(), name:'', desc:'', section:'', turno:'', grupoId:'', grupoTipo:'', pideGrabacion:false, load:'', series:3, reps:'', rest:'', rir:'', rpeTarget:'', tempo:'', juegoCfg:null, timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}}; }
 function exTimer(ex){
   const t = (ex && ex.timer) ? ex.timer : {};
   return { type:t.type||'none', work:+t.work||30, rest:+t.rest||15, rounds:+t.rounds||8,
@@ -3852,10 +3914,11 @@ async function tplRutinaAtleta(athleteId){
           g.ejercicios.forEach(ex=>{
             const t = exTimer(ex);
             html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
-              <div class="ex-meta"><span>Series x reps: <b>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</b></span>${ex.load?`<span>Carga: <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso: <b>${escapeHtml(ex.rest||'—')}</b></span><span>RIR: <b>${escapeHtml(ex.rir||'—')}</b></span><span>RPE objetivo: <b>${escapeHtml(ex.rpeTarget||'—')}</b></span></div>
+              <div class="ex-meta"><span>Series x reps: <b>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</b></span>${ex.load?`<span>Carga: <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso: <b>${escapeHtml(ex.rest||'—')}</b></span><span>RIR: <b>${escapeHtml(ex.rir||'—')}</b></span><span>RPE objetivo: <b>${escapeHtml(ex.rpeTarget||'—')}</b></span>${ex.tempo?`<span>Tempo: <b>${escapeHtml(ex.tempo)}</b></span>`:''}</div>
               ${t.type!=='none'?`<div class="timer-badge">${TIMER_TYPE_LABELS[t.type]}</div>`:''}
               ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
               ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:8px;">▶ Ver técnica</button>`:''}
+              ${tplVarianteBadge(ex)}
             </div>`;
           });
           return;
@@ -3881,9 +3944,11 @@ async function tplRutinaAtleta(athleteId){
                   ${ex.load?`<span>Carga: <b>${escapeHtml(ex.load)}</b></span>`:''}
                   <span>RIR: <b>${escapeHtml(ex.rir||'—')}</b></span>
                   ${ex.rpeTarget?`<span>RPE: <b>${escapeHtml(ex.rpeTarget)}</b></span>`:''}
+                  ${ex.tempo?`<span>Tempo: <b>${escapeHtml(ex.tempo)}</b></span>`:''}
                 </div>
                 ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
                 ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:8px;">▶ Ver técnica</button>`:''}
+                ${tplVarianteBadge(ex)}
               </div>
             </div>`).join('')}
         </div>`;
@@ -3932,6 +3997,24 @@ async function tplReadiness(dia){
   return html;
 }
 
+const GLOSARIO_CLAVES = ['gloss_rpe','gloss_rir','gloss_series','gloss_tempo','gloss_superserie','gloss_patron','gloss_unilateral','gloss_1rm'];
+// Guía de conceptos en la propia pestaña Sesión: para contrastar sobre la
+// marcha qué significa cada parámetro, sin salir de donde se está
+// entrenando. Plegada por defecto para no ocupar sitio si no hace falta.
+async function tplGlosarioSesion(){
+  const overrides = await getTextosEducativos();
+  const abierto = state.openDays['glosario-sesion'];
+  let html = `<div class="card"><div class="acc ${abierto?'open':''}" data-day="glosario-sesion">
+    <div class="acc-head" data-toggle="glosario-sesion"><b style="text-transform:none;">❓ Qué significa cada cosa</b><span class="chev"><span class="chev-arrow">▾</span></span></div>
+    <div class="acc-body">`;
+  GLOSARIO_CLAVES.forEach(clave=>{
+    const t = textoEducativo(overrides, clave);
+    html += `<div style="margin-bottom:12px;"><b style="font-size:13px;color:var(--accent);">${escapeHtml(t.titulo)}</b><p style="font-size:12.5px;color:var(--ink);line-height:1.6;margin-top:3px;">${formateaGuia(t.cuerpo)}</p></div>`;
+  });
+  html += `</div></div></div>`;
+  return html;
+}
+
 async function tplSesionEntry(athleteId){
   const routine = await getRoutine(athleteId, false);
   const histRaw = await safeGet('routine-history-'+athleteId, true);
@@ -3952,6 +4035,7 @@ async function tplSesionEntry(athleteId){
   const rdLog = await getReadiness(athleteId);
   const rdHoy = readinessDeHoy(rdLog);
   let html = await tplReadiness(rdHoy);
+  html += await tplGlosarioSesion();
   if(paused){
     const hechos = paused.exercises.filter(e=>e.done).length;
     const hace = Math.round((Date.now()-(paused.savedAt||Date.now()))/60000);
@@ -4065,7 +4149,7 @@ async function tplRegistroManual(athleteId, source, selDay){
       if(ex.blockLabel !== ultimoBloque){ html += `<div class="block-title">${ex.blockLabel}</div>`; ultimoBloque = ex.blockLabel; }
       html += `<div class="ex-card" data-mnex="${i}">
         <div style="font-family:'Fraunces',serif;font-weight:600;font-size:15px;margin-bottom:2px;">${escapeHtml(ex.name)}</div>
-        <div class="ex-meta" style="margin-bottom:8px;"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>previsto ${escapeHtml(ex.load)}</span>`:''}${ex.rpeTarget?`<span>RPE obj. ${escapeHtml(ex.rpeTarget)}</span>`:''}</div>
+        <div class="ex-meta" style="margin-bottom:8px;"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>previsto ${escapeHtml(ex.load)}</span>`:''}${ex.rpeTarget?`<span>RPE obj. ${escapeHtml(ex.rpeTarget)}</span>`:''}${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
         <div class="ex-grid">
           <div><label class="field-label">Carga usada</label><input type="text" class="mn-load" value="${escapeHtml(ex.load||'')}" placeholder="80kg"></div>
           <div><label class="field-label">Series hechas</label><input type="number" class="mn-series" min="0" max="20" value="${ex.series||''}"></div>
@@ -4121,15 +4205,17 @@ function sessionPreviewHtml(routine, day, turno){
           <span class="combi-sub">${g.ejercicios[0].series||'—'} vueltas</span>
         </div>${g.ejercicios.map((ex,i)=>`<div class="combi-ex"><span class="combi-num">${i+1}</span>
           <div class="combi-det"><b>${escapeHtml(ex.name||'—')}</b>
-          <div class="ex-meta"><span>${escapeHtml(ex.reps||'—')} reps</span>${ex.load?`<span>${escapeHtml(ex.load)}</span>`:''}${ex.rir?`<span>RIR ${escapeHtml(ex.rir)}</span>`:''}</div>
-          ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate</div>`:''}</div></div>`).join('')}</div>`;
+          <div class="ex-meta"><span>${escapeHtml(ex.reps||'—')} reps</span>${ex.load?`<span>${escapeHtml(ex.load)}</span>`:''}${ex.rir?`<span>RIR ${escapeHtml(ex.rir)}</span>`:''}${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
+          ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate</div>`:''}
+          ${tplVarianteBadge(ex)}</div></div>`).join('')}</div>`;
         return;
       }
       g.ejercicios.forEach(ex=>{
       html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
-        <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span><span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div>
+        <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span><span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span>${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
         ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
         ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Ver técnica</button>`:''}
+        ${tplVarianteBadge(ex)}
         </div>`;
       });
     });
@@ -4168,6 +4254,68 @@ async function mountSessionOverlay(athleteId){
 // una fila compacta (reps · RPE · RIR) por cada serie. Plegado por defecto
 // para no sobrecargar al que solo quiere anotar un número para todo el
 // ejercicio; quien lo abra ve exactamente sus series, ni una más.
+// Aviso de variante: visible en cualquier sitio donde se muestre el
+// ejercicio (rutina, vista previa, sesión en vivo), para que el atleta sepa
+// de antemano que existe una alternativa si hoy no puede hacer el principal.
+function tplVarianteBadge(ex){
+  if(!ex.variante || !ex.variante.nombre) return '';
+  return `<details class="variante-lectura"><summary>🔄 Si no puedes hacer este, alternativa disponible</summary>
+    <b>${escapeHtml(ex.variante.nombre)}</b>${ex.variante.desc?`<p>${escapeHtml(ex.variante.desc)}</p>`:''}
+  </details>`;
+}
+
+// Configuración del juego de reacción cuando un ejercicio normal de la
+// galería se marca como tal — así se manda, se edita y se añade a una
+// rutina exactamente igual que cualquier otro ejercicio (con su propio
+// nombre, descanso y rondas, en vez de ser una tarea suelta aparte).
+function tplJuegoConfig(ex){
+  const cfg = ex.juegoCfg || {activo:false, modo:'reaccion', tipos:[], objetivos:[], imagenes:[], rondas:15, ventanaMs:1200, duracionMin:1200, duracionMax:2800};
+  const modo = cfg.modo || 'reaccion';
+  let html = `<div class="juego-box">
+    <label class="row" style="gap:8px;font-size:13px;"><input type="checkbox" class="ex-esjuego" ${cfg.activo?'checked':''}> 🎮 Es un juego (sustituye el registro de series en sesión)</label>`;
+  if(cfg.activo){
+    html += `<div class="juego-campos" data-juegoex="${ex.id}">
+      <label class="field-label">Tipo de juego</label>
+      <div class="gal-secs" style="margin-bottom:10px;">
+        <button type="button" class="gs-chip ${modo==='reaccion'?'on':''}" data-juegomodopick="reaccion">⚡ Reacción (estímulos)</button>
+        <button type="button" class="gs-chip ${modo==='cronometraje'?'on':''}" data-juegomodopick="cronometraje">🎯 Cronometraje (acierta el momento)</button>
+      </div>`;
+    if(modo==='cronometraje'){
+      html += `<p style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Un círculo se va vaciando a un ritmo que cambia cada ronda; hay que tocar justo cuando se vacíe del todo. Entrena anticipar el momento exacto, no solo reaccionar rápido — justo lo que hace falta para conectar un golpe a tiempo.</p>
+      <div class="ex-grid">
+        <div><label class="field-label">Duración mínima (ms)</label><input type="number" class="ex-juego-dmin" value="${cfg.duracionMin||1200}"></div>
+        <div><label class="field-label">Duración máxima (ms)</label><input type="number" class="ex-juego-dmax" value="${cfg.duracionMax||2800}"></div>
+        <div><label class="field-label">Rondas</label><input type="number" class="ex-juego-rondas" value="${cfg.rondas||10}"></div>
+      </div>`;
+    } else {
+      html += `<label class="field-label">Tipos de estímulo (puedes combinar varios)</label>
+      <div class="gal-secs" style="margin-bottom:10px;">
+        ${Object.keys(REACCION_TIPO_LABEL).map(t=>`<button type="button" class="gs-chip ${cfg.tipos.includes(t)?'on':''}" data-juegotipopick="${t}">${REACCION_TIPO_LABEL[t]}</button>`).join('')}
+      </div>
+      ${cfg.tipos.includes('imagenes') ? `<div class="juego-imagenes">
+        <label class="field-label">Imágenes propias</label>
+        <div class="row" style="gap:8px;margin-bottom:8px;">
+          <input type="file" accept="image/*" multiple class="juego-img-file" style="flex:1;min-width:0;font-size:12px;">
+          <button class="btn small" data-subirimgjuego="${ex.id}">Subir</button>
+        </div>
+        <div class="juego-img-list">${(cfg.imagenes||[]).map(im=>`
+          <div class="juego-img-item"><img src="${escapeHtml(im.url)}"><span>${escapeHtml(im.nombre)}</span><button type="button" data-quitarimgjuego="${ex.id}|${im.url}">✕</button></div>`).join('') || '<span style="font-size:11.5px;color:var(--muted);">Ninguna todavía.</span>'}</div>
+      </div>` : ''}
+      <label class="field-label" style="margin-top:8px;">Objetivos — reacciona solo a estos</label>
+      <div class="gal-secs" style="margin-bottom:10px;">
+        ${listaEstimulos(cfg).map(v=>`<button type="button" class="gs-chip ${cfg.objetivos.includes(v)?'on':''}" data-juegoobjpick="${escapeHtml(v)}">${esImagenEstimulo(v)?`<img src="${escapeHtml(v)}" style="height:18px;vertical-align:middle;">`:escapeHtml(v)}</button>`).join('') || '<span style="font-size:11.5px;color:var(--muted);">Elige antes al menos un tipo de estímulo.</span>'}
+      </div>
+      <div class="ex-grid">
+        <div><label class="field-label">Rondas</label><input type="number" class="ex-juego-rondas" value="${cfg.rondas||15}"></div>
+        <div><label class="field-label">Ventana de respuesta (ms)</label><input type="number" class="ex-juego-ventana" value="${cfg.ventanaMs||1200}"></div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
 function tplDetalleSeries(ex, i){
   const n = ex.setsData.length;
   let html = `<button class="link-detalle" data-verdetalle="${i}">${ex.verDetalle?'▾ Ocultar detalle por serie':'▸ Anotar cada serie por separado'}</button>`;
@@ -4271,6 +4419,7 @@ function renderSessionOverlay(){
               <div class="ex-meta"><span>${escapeHtml(ex.reps||'—')} reps</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>RIR ${escapeHtml(ex.rir||'—')}</span></div>
               ${t2.type!=='none'?`<button class="btn ghost small" data-extimer="${i}" style="margin-top:6px;">▶ ${TIMER_TYPE_LABELS[t2.type]}</button>`:''}
               ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Técnica</button>`:''}
+              ${tplVarianteBadge(ex)}
               ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
               ${tplDetalleSeries(ex, i)}
               <div class="ex-grid" style="margin-top:8px;">
@@ -4289,16 +4438,29 @@ function renderSessionOverlay(){
     g.ejercicios.forEach(exg=>{
     const ex = exg; const i = exg._i;
     const t = exTimer(ex);
+    if(ex.juegoCfg && ex.juegoCfg.activo){
+      html += `<div class="ex-view-card ${ex.done?'done':''}" data-exi="${i}">
+        <h4>${escapeHtml(ex.name)} 🎮</h4>
+        ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+        ${ex.juegoResultado ? (ex.juegoCfg.modo==='cronometraje'
+            ? `<div class="ex-meta"><span>Error medio <b>${ex.juegoResultado.mediaMs} ms</b></span><span>${ex.juegoResultado.aciertos} a tiempo</span><span>${ex.juegoResultado.fallos} fallos</span></div>`
+            : `<div class="ex-meta"><span>RT medio <b>${ex.juegoResultado.mediaMs} ms</b></span><span>${ex.juegoResultado.aciertos} aciertos</span><span>${ex.juegoResultado.fallos} fallos</span><span>${ex.juegoResultado.falsasAlarmas} falsas alarmas</span></div>`)
+          : ''}
+        <button class="btn" data-jugarejercicio="${i}" style="width:100%;margin-top:10px;">${ex.juegoResultado?'🎮 Jugar de nuevo':'🎮 Jugar'}</button>
+      </div>`;
+      return;
+    }
     html += `<div class="ex-view-card ${ex.done?'done':''}" data-exi="${i}">
       <h4 data-strike="${i}" style="cursor:pointer;">${escapeHtml(ex.name)}</h4>
       ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
-      <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span></div>
+      <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span>${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
       <div class="set-box">${ex.setsDone.map((done,si)=>`<div class="set-chip ${done?'done':''}" data-exi="${i}" data-si="${si}">S${si+1}</div>`).join('')}</div>
       ${tplDetalleSeries(ex, i)}
       ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
       <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px;">
         ${t.type!=='none'?`<button class="btn ghost small" data-extimer="${i}">▶ ${TIMER_TYPE_LABELS[t.type]}</button>`:''}
         ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}">▶ Ver técnica</button>`:''}
+        ${tplVarianteBadge(ex)}
       </div>
       <div class="ex-grid" style="margin-top:8px;">
         <div><label class="field-label">RPE aplicado ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9" ${ex.verDetalle?'readonly':''}></div>
@@ -4429,6 +4591,12 @@ function bindSessionOverlayEvents(){
   document.querySelectorAll('[data-extimer]').forEach(b=>b.addEventListener('click', ()=>{
     const i = parseInt(b.dataset.extimer,10);
     openTimer(exTimer(session.exercises[i]));
+  }));
+  document.querySelectorAll('[data-jugarejercicio]').forEach(b=>b.addEventListener('click', ()=>{
+    const i = parseInt(b.dataset.jugarejercicio,10);
+    const ex = session.exercises[i];
+    if((ex.juegoCfg.modo||'reaccion')==='cronometraje') abrirCronometraje(null, { ...ex.juegoCfg, instruccion: ex.desc }, ex.id);
+    else abrirReaccion(null, { ...ex.juegoCfg, instruccion: ex.desc }, ex.id);
   }));
   const cancelSessionBtn = document.getElementById('cancelSessionBtn');
   if(cancelSessionBtn) cancelSessionBtn.addEventListener('click', async ()=>{
@@ -4639,6 +4807,7 @@ function renderHrvModal(){
   } else if(c.paso === 'resultado'){
     if(c.calidad === 'buena'){
       html += `<div class="rd-zona rd-verde"><div><b>FC ${c.resultado.hr} ppm · RMSSD ${c.resultado.rmssd} ms</b>
+        <span>Stress Index: ${c.resultado.stressIndex ?? '—'}${c.resultado.stressIndex ? ' · lo que importa es cómo cambia en ti con el tiempo, no un valor absoluto' : ''}</span>
         <span>Captura válida, con ${c.resultado.nLatidos} latidos detectados.</span></div></div>
         <button class="btn" id="hrvGuardarBtn" style="width:100%;margin-top:14px;">Guardar</button>`;
     } else {
@@ -4750,12 +4919,12 @@ async function guardarResultadoHrv(){
   const c = hrvCap;
   const athleteId = state.athleteAsId;
   const historial = await getHrv(athleteId);
-  historial.push({ fecha: todayISO(), hr:c.resultado.hr, rmssd:c.resultado.rmssd });
+  historial.push({ fecha: todayISO(), hr:c.resultado.hr, rmssd:c.resultado.rmssd, stressIndex:c.resultado.stressIndex });
   const okH = await saveHrv(athleteId, historial);
   if(c.tareaId){
     const tareas = await getTareas(athleteId);
     const t = tareas.find(x=>x.id===c.tareaId);
-    if(t){ t.hecho = true; t.fechaHecho = todayISO(); t.resultado = { hr:c.resultado.hr, rmssd:c.resultado.rmssd }; }
+    if(t){ t.hecho = true; t.fechaHecho = todayISO(); t.resultado = { hr:c.resultado.hr, rmssd:c.resultado.rmssd, stressIndex:c.resultado.stressIndex }; }
     await saveTareas(athleteId, tareas);
   }
   cerrarHrv();
@@ -4766,9 +4935,10 @@ async function guardarResultadoHrv(){
 
 // ---------- JUEGO DE REACCIÓN: modal ----------
 let reaccionCap = null;
+let cronoJuegoCap = null;
 const REACCION_RONDAS = 15;
-function abrirReaccion(tareaId, cfg){
-  reaccionCap = { paso:'instrucciones', tareaId, cfg, ronda:0, aciertos:[], fallos:0, falsasAlarmas:0,
+function abrirReaccion(tareaId, cfg, exId){
+  reaccionCap = { paso:'instrucciones', tareaId, exId, cfg, ronda:0, aciertos:[], fallos:0, falsasAlarmas:0,
     estimuloActual:null, esObjetivo:false, tActivo:null, timeoutId:null };
   renderReaccionModal();
 }
@@ -4781,20 +4951,23 @@ function renderReaccionModal(){
   let back = document.getElementById('reaccionModalBack');
   if(!back){ back = document.createElement('div'); back.id='reaccionModalBack'; back.className='modal-back'; document.body.appendChild(back); }
   const c = reaccionCap, cfg = c.cfg;
+  const rondas = cfg.rondas || REACCION_RONDAS;
+  const objetivosTxt = (cfg.objetivos||[]).map(o=>nombreEstimulo(cfg,o)).join(', ');
   let html = `<div class="modal"><div class="row" style="justify-content:space-between;"><h2 style="font-family:'Fraunces',serif;">Juego de reacción</h2><button class="btn ghost small" id="reaccionCerrarBtn">Cerrar</button></div>`;
   if(c.paso === 'instrucciones'){
     html += `<div style="padding:6px 0;">
       ${cfg.instruccion ? `<p style="font-size:13px;line-height:1.7;margin-bottom:12px;">${formateaGuia(cfg.instruccion)}</p>` : ''}
-      <p style="font-size:13px;line-height:1.7;">Reacciona lo más rápido que puedas <b>solo</b> cuando aparezca: <span style="color:var(--accent);font-weight:700;">${escapeHtml(cfg.objetivo)}</span></p>
+      <p style="font-size:13px;line-height:1.7;">Reacciona lo más rápido que puedas <b>solo</b> cuando aparezca: <span style="color:var(--accent);font-weight:700;">${escapeHtml(objetivosTxt)}</span></p>
       <p style="font-size:11.5px;color:var(--muted);margin-top:8px;">Si tocas con cualquier otro estímulo, cuenta como fallo — igual que si se te escapa el objetivo.</p>
     </div>
     <button class="btn" id="reaccionEmpezarBtn" style="width:100%;margin-top:8px;">Empezar</button>`;
   } else if(c.paso === 'preparando'){
     html += `<div style="text-align:center;padding:40px 0;"><div style="font-family:'IBM Plex Mono',monospace;font-size:56px;color:var(--accent);">${c.cuenta}</div></div>`;
   } else if(c.paso === 'jugando'){
+    const esImg = esImagenEstimulo(c.estimuloActual);
     html += `<div style="text-align:center;padding:10px 0;">
-      <p style="font-size:11px;color:var(--muted);">Ronda ${c.ronda} de ${REACCION_RONDAS} · objetivo: ${escapeHtml(cfg.objetivo)}</p>
-      <button id="reaccionEstimuloBtn" style="width:100%;min-height:180px;border-radius:14px;border:none;background:var(--panel3);font-size:56px;margin-top:12px;cursor:pointer;">${escapeHtml(c.estimuloActual||'')}</button>
+      <p style="font-size:11px;color:var(--muted);">Ronda ${c.ronda} de ${rondas} · objetivo: ${escapeHtml(objetivosTxt)}</p>
+      <button id="reaccionEstimuloBtn" style="width:100%;min-height:180px;border-radius:14px;border:none;background:var(--panel3);${esImg?'padding:10px;':'font-size:56px;'}margin-top:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;">${esImg?`<img src="${escapeHtml(c.estimuloActual)}" style="max-width:100%;max-height:160px;border-radius:8px;object-fit:contain;">`:escapeHtml(c.estimuloActual||'')}</button>
     </div>`;
   } else if(c.paso === 'resultado'){
     const nAciertos = c.aciertos.length;
@@ -4843,17 +5016,22 @@ function bindReaccionModal(){
 function siguienteEstimulo(){
   const c = reaccionCap;
   if(!c || c.paso!=='jugando') return;
+  const rondas = c.cfg.rondas || REACCION_RONDAS;
   c.ronda++;
-  if(c.ronda > REACCION_RONDAS){ c.paso='resultado'; renderReaccionModal(); return; }
-  // 40% de probabilidad de que sea el objetivo; el resto, otro estímulo del
-  // mismo grupo — así no se puede anticipar cuándo toca reaccionar.
-  const lista = REACCION_ESTIMULOS[c.cfg.tipo];
-  const esObjetivo = Math.random() < 0.4;
-  c.estimuloActual = esObjetivo ? c.cfg.objetivo : lista.filter(x=>x!==c.cfg.objetivo)[Math.floor(Math.random()*(lista.length-1))];
+  if(c.ronda > rondas){ c.paso='resultado'; renderReaccionModal(); return; }
+  // 40% de probabilidad de que sea uno de los objetivos; el resto, otro
+  // estímulo de la lista combinada — así no se puede anticipar.
+  const lista = listaEstimulos(c.cfg);
+  const objetivos = c.cfg.objetivos || [];
+  const esObjetivo = Math.random() < 0.4 && objetivos.length>0;
+  const distractores = lista.filter(x=>!objetivos.includes(x));
+  c.estimuloActual = esObjetivo
+    ? objetivos[Math.floor(Math.random()*objetivos.length)]
+    : (distractores.length ? distractores[Math.floor(Math.random()*distractores.length)] : lista[Math.floor(Math.random()*lista.length)]);
   c.esObjetivo = esObjetivo;
   renderReaccionModal();
   c.tActivo = performance.now();
-  const ventanaMs = 1200;
+  const ventanaMs = c.cfg.ventanaMs || 1200;
   c.timeoutId = setTimeout(()=>{
     if(c.esObjetivo) c.fallos++; // el objetivo apareció y no se reaccionó a tiempo
     c.tActivo = null;
@@ -4867,7 +5045,7 @@ async function guardarResultadoReaccion(){
   const nAciertos = c.aciertos.length;
   const media = Math.round(c.aciertos.reduce((a,b)=>a+b,0)/nAciertos);
   const historial = await getReaccion(athleteId);
-  historial.push({ fecha: todayISO(), tipo:c.cfg.tipo, objetivo:c.cfg.objetivo, mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas });
+  historial.push({ fecha: todayISO(), tipos:c.cfg.tipos||[c.cfg.tipo], objetivos:c.cfg.objetivos, mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas });
   const okH = await saveReaccion(athleteId, historial);
   if(c.tareaId){
     const tareas = await getTareas(athleteId);
@@ -4875,10 +5053,165 @@ async function guardarResultadoReaccion(){
     if(t){ t.hecho = true; t.fechaHecho = todayISO(); t.resultado = { mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas }; }
     await saveTareas(athleteId, tareas);
   }
+  if(c.exId && typeof session !== 'undefined' && session){
+    const ex = session.exercises.find(e=>e.id===c.exId);
+    if(ex){ ex.juegoResultado = { mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas }; ex.done = true; }
+  }
   cerrarReaccion();
   if(!okH){ toast('No se pudo guardar', true); return; }
   toast('Guardado');
-  renderKeepScroll();
+  if(c.exId && typeof session !== 'undefined' && session) renderSessionOverlay();
+  else renderKeepScroll();
+}
+
+// ---------- JUEGO DE CRONOMETRAJE ----------
+// En vez de reaccionar rápido a algo impredecible, aquí hay que ANTICIPAR:
+// un círculo se vacía a un ritmo que cambia cada ronda (para que no se
+// pueda contar mentalmente) y hay que tocar justo cuando llega a cero. Mide
+// el error en milisegundos — negativo si se adelanta, positivo si llega
+// tarde — que es exactamente la habilidad de sincronizar un golpe a tiempo,
+// no solo de reaccionar rápido ante un estímulo.
+async function getCronometraje(athleteId){
+  const raw = await safeGet('cronometraje-'+athleteId, true);
+  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
+  catch(e){ return []; }
+}
+async function saveCronometraje(athleteId, lista){ return safeSet('cronometraje-'+athleteId, JSON.stringify(lista), true); }
+
+function abrirCronometraje(tareaId, cfg, exId){
+  cronoJuegoCap = { paso:'instrucciones', tareaId, exId, cfg, ronda:0, errores:[], fallos:0,
+    rondas: cfg.rondas||10, duracionMin: cfg.duracionMin||1200, duracionMax: cfg.duracionMax||2800,
+    duracionActual:null, tInicio:null, timeoutId:null, animId:null };
+  renderCronometrajeModal();
+}
+function cerrarCronometraje(){
+  if(cronoJuegoCap){
+    if(cronoJuegoCap.timeoutId) clearTimeout(cronoJuegoCap.timeoutId);
+    if(cronoJuegoCap.animId) cancelAnimationFrame(cronoJuegoCap.animId);
+  }
+  cronoJuegoCap = null;
+  const b = document.getElementById('cronoJuegoModalBack'); if(b) b.remove();
+}
+function renderCronometrajeModal(){
+  let back = document.getElementById('cronoJuegoModalBack');
+  if(!back){ back = document.createElement('div'); back.id='cronoJuegoModalBack'; back.className='modal-back'; document.body.appendChild(back); }
+  const c = cronoJuegoCap;
+  let html = `<div class="modal"><div class="row" style="justify-content:space-between;"><h2 style="font-family:'Fraunces',serif;">Cronometraje</h2><button class="btn ghost small" id="cronoJuegoCerrarBtn">Cerrar</button></div>`;
+  if(c.paso === 'instrucciones'){
+    html += `<div style="padding:6px 0;">
+      ${c.cfg.instruccion ? `<p style="font-size:13px;line-height:1.7;margin-bottom:12px;">${formateaGuia(c.cfg.instruccion)}</p>` : ''}
+      <p style="font-size:13px;line-height:1.7;">El círculo se va vaciando — toca justo cuando llegue a cero. El ritmo cambia cada ronda para que no puedas contarlo de memoria.</p>
+    </div>
+    <button class="btn" id="cronoJuegoEmpezarBtn" style="width:100%;margin-top:8px;">Empezar</button>`;
+  } else if(c.paso === 'preparando'){
+    html += `<div style="text-align:center;padding:40px 0;"><div style="font-family:'IBM Plex Mono',monospace;font-size:56px;color:var(--accent);">${c.cuenta}</div></div>`;
+  } else if(c.paso === 'jugando'){
+    html += `<div style="text-align:center;padding:10px 0;">
+      <p style="font-size:11px;color:var(--muted);">Ronda ${c.ronda} de ${c.rondas}</p>
+      <button id="cronoJuegoBtn" style="width:100%;padding:20px 0;border:none;background:transparent;cursor:pointer;">
+        <svg viewBox="0 0 120 120" style="width:180px;height:180px;margin:0 auto;display:block;">
+          <circle cx="60" cy="60" r="52" fill="none" stroke="var(--panel3)" stroke-width="10"/>
+          <circle id="cronoAnillo" cx="60" cy="60" r="52" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="${2*Math.PI*52}" stroke-dashoffset="0"/>
+        </svg>
+      </button>
+    </div>`;
+  } else if(c.paso === 'resultado'){
+    const n = c.errores.length;
+    if(n){
+      const media = Math.round(c.errores.reduce((a,b)=>a+Math.abs(b),0)/n);
+      const sesgo = Math.round(c.errores.reduce((a,b)=>a+b,0)/n);
+      const tendencia = Math.abs(sesgo)<30 ? 'sin sesgo claro' : (sesgo<0 ? `tiendes a adelantarte ~${Math.abs(sesgo)} ms` : `tiendes a llegar tarde ~${sesgo} ms`);
+      html += `<div class="rd-zona rd-verde"><div><b>Error medio: ${media} ms</b>
+        <span>${n} de ${c.rondas} rondas acertadas a tiempo · ${tendencia}</span></div></div>
+        <button class="btn" id="cronoJuegoGuardarBtn" style="width:100%;margin-top:14px;">Guardar</button>`;
+    } else {
+      html += `<div class="rd-zona rd-rojo"><div><b>No se registró ningún toque a tiempo</b><span>Prueba de nuevo, tocando en cuanto el círculo llegue a cero.</span></div></div>
+        <button class="btn" id="cronoJuegoReintentarBtn" style="width:100%;margin-top:14px;">Volver a intentarlo</button>`;
+    }
+  }
+  html += `</div>`;
+  back.innerHTML = html;
+  bindCronometrajeModal();
+}
+function bindCronometrajeModal(){
+  const c = cronoJuegoCap;
+  document.getElementById('cronoJuegoCerrarBtn').addEventListener('click', cerrarCronometraje);
+  const empezar = document.getElementById('cronoJuegoEmpezarBtn');
+  if(empezar) empezar.addEventListener('click', ()=>{
+    c.paso='preparando'; c.cuenta=3; renderCronometrajeModal();
+    const tick = ()=>{
+      c.cuenta--;
+      if(c.cuenta<=0){ c.paso='jugando'; c.ronda=0; renderCronometrajeModal(); siguienteRondaCrono(); }
+      else { renderCronometrajeModal(); c.timeoutId=setTimeout(tick,700); }
+    };
+    c.timeoutId=setTimeout(tick,700);
+  });
+  const reintentar = document.getElementById('cronoJuegoReintentarBtn');
+  if(reintentar) reintentar.addEventListener('click', ()=>{ c.paso='instrucciones'; c.errores=[]; c.fallos=0; renderCronometrajeModal(); });
+  const guardar = document.getElementById('cronoJuegoGuardarBtn');
+  if(guardar) guardar.addEventListener('click', guardarResultadoCronometraje);
+  const btn = document.getElementById('cronoJuegoBtn');
+  if(btn) btn.addEventListener('click', ()=>{
+    if(!c.tInicio) return;
+    const error = Math.round((performance.now() - c.tInicio) - c.duracionActual);
+    c.errores.push(error);
+    c.tInicio = null;
+    clearTimeout(c.timeoutId);
+    if(c.animId) cancelAnimationFrame(c.animId);
+    siguienteRondaCrono();
+  });
+}
+function siguienteRondaCrono(){
+  const c = cronoJuegoCap;
+  if(!c || c.paso!=='jugando') return;
+  c.ronda++;
+  if(c.ronda > c.rondas){ c.paso='resultado'; renderCronometrajeModal(); return; }
+  c.duracionActual = c.duracionMin + Math.random()*(c.duracionMax-c.duracionMin);
+  c.tInicio = performance.now();
+  renderCronometrajeModal();
+  const anillo = document.getElementById('cronoAnillo');
+  const circ = 2*Math.PI*52;
+  const pintar = ()=>{
+    if(!cronoJuegoCap || cronoJuegoCap.paso!=='jugando' || cronoJuegoCap.tInicio!==c.tInicio) return;
+    const transcurrido = performance.now() - c.tInicio;
+    const frac = Math.min(1, transcurrido / c.duracionActual);
+    if(anillo) anillo.setAttribute('stroke-dashoffset', String(circ*frac));
+    if(frac < 1) c.animId = requestAnimationFrame(pintar);
+  };
+  c.animId = requestAnimationFrame(pintar);
+  // Margen de gracia tras el final para poder tocar incluso justo después del
+  // cero exacto; pasado ese margen sin toque, cuenta como fallo.
+  c.timeoutId = setTimeout(()=>{
+    c.fallos++;
+    c.tInicio = null;
+    if(c.animId) cancelAnimationFrame(c.animId);
+    c.timeoutId = setTimeout(siguienteRondaCrono, 400);
+  }, c.duracionActual + 900);
+}
+async function guardarResultadoCronometraje(){
+  const c = cronoJuegoCap;
+  const athleteId = state.athleteAsId;
+  const n = c.errores.length;
+  const media = Math.round(c.errores.reduce((a,b)=>a+Math.abs(b),0)/n);
+  const sesgo = Math.round(c.errores.reduce((a,b)=>a+b,0)/n);
+  const historial = await getCronometraje(athleteId);
+  historial.push({ fecha: todayISO(), mediaMs:media, sesgoMs:sesgo, aciertos:n, fallos:c.fallos });
+  const okH = await saveCronometraje(athleteId, historial);
+  if(c.tareaId){
+    const tareas = await getTareas(athleteId);
+    const t = tareas.find(x=>x.id===c.tareaId);
+    if(t){ t.hecho = true; t.fechaHecho = todayISO(); t.resultado = { mediaMs:media, sesgoMs:sesgo, aciertos:n, fallos:c.fallos }; }
+    await saveTareas(athleteId, tareas);
+  }
+  if(c.exId && typeof session !== 'undefined' && session){
+    const ex = session.exercises.find(e=>e.id===c.exId);
+    if(ex){ ex.juegoResultado = { mediaMs:media, sesgoMs:sesgo, aciertos:n, fallos:c.fallos }; ex.done = true; }
+  }
+  cerrarCronometraje();
+  if(!okH){ toast('No se pudo guardar', true); return; }
+  toast('Guardado');
+  if(c.exId && typeof session !== 'undefined' && session) renderSessionOverlay();
+  else renderKeepScroll();
 }
 
 function openTimer(preset){
@@ -7959,6 +8292,7 @@ function exCardHtml(ex, blockKey, d, listaBloque){
             <div><label class="field-label">Descanso</label><input type="text" class="ex-rest" value="${escapeHtml(ex.rest||'')}"></div>
             <div><label class="field-label">RIR objetivo</label><input type="text" class="ex-rir" value="${escapeHtml(ex.rir||'')}"></div>
             <div><label class="field-label">RPE a aplicar</label><input type="text" class="ex-rpetarget" value="${escapeHtml(ex.rpeTarget||'')}"></div>
+            <div><label class="field-label">Tempo</label><input type="text" class="ex-tempo" value="${escapeHtml(ex.tempo||'')}" placeholder="3-1-2-0"></div>
           </div>
           <div class="timer-config">
             <label class="field-label">Temporizador para el atleta</label>
@@ -7996,6 +8330,18 @@ function exCardHtml(ex, blockKey, d, listaBloque){
                  <button class="btn ghost small" data-unlinkvideo="${ex.id}">Quitar</button>`
               : `<button class="btn ghost small" data-pickvideo="${ex.id}">+ Vídeo de técnica</button>`}
           </div>
+          <div class="variante-box">
+            <button type="button" class="link-detalle" data-togglevariante="${ex.id}">${ex.variante?'▾ Variante configurada':'▸ Añadir ejercicio variante (por si no se puede hacer el principal)'}</button>
+            ${state.varianteAbierta===ex.id ? `<div class="variante-campos">
+              <input type="text" class="ex-var-nombre" value="${escapeHtml(ex.variante?.nombre||'')}" placeholder="Nombre de la variante (ej. Sentadilla goblet)" style="width:100%;margin-bottom:6px;">
+              <textarea class="ex-var-desc" placeholder="Por qué es alternativa / técnica" style="min-height:44px;width:100%;">${escapeHtml(ex.variante?.desc||'')}</textarea>
+              <div class="row" style="margin-top:6px;gap:8px;">
+                <button class="btn ghost small" data-guardarvariante="${ex.id}">Guardar variante</button>
+                ${ex.variante ? `<button class="btn ghost small" data-quitarvariante="${ex.id}" style="color:var(--danger);">Quitar variante</button>` : ''}
+              </div>
+            </div>` : ''}
+          </div>
+          ${tplJuegoConfig(ex)}
           <div class="row" style="margin-top:8px;">
             <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="up" title="Subir">↑</button>
             <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="down" title="Bajar">↓</button>
@@ -8448,7 +8794,7 @@ async function tplTareasCoach(athleteId){
         <div class="entry-top"><span>${escapeHtml(t.titulo)}</span><span>${t.hecho?'✓ '+t.fechaHecho:'pendiente'}</span></div>
         <div style="font-size:12px;color:var(--muted);margin-top:4px;">Enviada el ${t.fecha}</div>
         ${t.tipo==='poms' && t.resultado ? `<div style="font-size:12px;margin-top:6px;">TMD ${t.resultado.tmd}${t.resultado.tmd<=5?' · buen estado general':(t.resultado.tmd>=25?' · varias señales negativas a la vez':'')} · ${POMS_DIMS.map(d=>`${POMS_DIM_LABEL[d]} ${t.resultado.porDim[d]}`).join(' · ')}</div>` : ''}
-        ${t.tipo==='hrv' && t.resultado ? `<div style="font-size:12px;margin-top:6px;">FC ${t.resultado.hr} ppm · RMSSD ${t.resultado.rmssd} ms</div>` : ''}
+        ${t.tipo==='hrv' && t.resultado ? `<div style="font-size:12px;margin-top:6px;">FC ${t.resultado.hr} ppm · RMSSD ${t.resultado.rmssd} ms${t.resultado.stressIndex?` · Stress Index ${t.resultado.stressIndex}`:''}</div>` : ''}
         ${t.tipo==='juego' && t.resultado ? `<div style="font-size:12px;margin-top:6px;">RT medio ${t.resultado.mediaMs} ms · ${t.resultado.aciertos} aciertos · ${t.resultado.fallos} fallos · ${t.resultado.falsasAlarmas} falsas alarmas</div>` : ''}
         <button class="btn ghost small" data-tareaborrar="${t.id}" style="margin-top:8px;">Eliminar</button>
       </div>`;
@@ -8908,6 +9254,7 @@ async function tplTextosEducativos(){
   const overrides = await getTextosEducativos();
   const grupos = [
     { titulo:'Check-in pre-entreno', claves:['rd_sueno','rd_fatiga','rd_estres','rd_animo'] },
+    { titulo:'Glosario (pestaña Sesión)', claves: GLOSARIO_CLAVES },
     { titulo:'Ciclo menstrual', claves:['ciclo_menstrual_entreno','ciclo_menstrual_nutricion','ciclo_folicular_entreno','ciclo_folicular_nutricion','ciclo_ovulatoria_entreno','ciclo_ovulatoria_nutricion','ciclo_lutea_entreno','ciclo_lutea_nutricion'] }
   ];
   let html = `<div class="card"><h2>Textos educativos</h2>
@@ -9017,7 +9364,132 @@ function bindMoveEx(btn, athleteId){
   });
 }
 
+// Botones del bloque "juego de reacción" dentro de una tarjeta de ejercicio.
+// Función aparte (no sólo en el barrido global) porque esta tarjeta se
+// puede redibujar sola, sin pasar por el resto de la pantalla — y en ese
+// caso hay que volver a enlazar estos botones también, o se quedan sin
+// función después del primer repintado.
+function bindJuegoBotones(root, athleteId){
+  const rehacerTarjeta = async (card, exId)=>{
+    if(!card.parentNode) return; // ya la reemplazó otro cambio en curso; esa versión es la más reciente
+    const d = card.dataset.day, blockKey = card.dataset.block;
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const ex = draft.days[d][blockKey].find(x=>x.id===exId);
+    if(!ex) return;
+    if(!card.parentNode) return; // comprobación de nuevo: pudo cambiar mientras esperábamos el draft
+    const nuevaHtml = exCardHtml(ex, blockKey, d);
+    card.insertAdjacentHTML('afterend', nuevaHtml);
+    const reemplazo = card.nextElementSibling;
+    card.remove();
+    if(reemplazo) bindExerciseCard(reemplazo, athleteId);
+  };
+  root.querySelectorAll('.ex-esjuego').forEach(cb=>{
+    if(cb.dataset.boundJuego) return; cb.dataset.boundJuego='1';
+    cb.addEventListener('change', async ()=>{
+      const card = cb.closest('.ex-card');
+      const exId = card.dataset.exid;
+      const draft = await getRoutine(athleteId, true, state.planWeek);
+      let hallado = null;
+      DAYS.forEach(d=>BLOCKS.forEach(bl=>{ const ex = draft.days[d][bl.key].find(x=>x.id===exId); if(ex) hallado = ex; }));
+      if(!hallado) return;
+      if(!hallado.juegoCfg) hallado.juegoCfg = {activo:false, modo:'reaccion', tipos:[], objetivos:[], imagenes:[], rondas:15, ventanaMs:1200, duracionMin:1200, duracionMax:2800};
+      hallado.juegoCfg.activo = cb.checked;
+      await saveRoutine(athleteId, true, draft, state.planWeek);
+      await rehacerTarjeta(card, exId);
+    });
+  });
+  root.querySelectorAll('[data-juegomodopick]').forEach(b=>{
+    if(b.dataset.boundJuego) return; b.dataset.boundJuego='1';
+    b.addEventListener('click', async ()=>{
+      const card = b.closest('.ex-card');
+      const exId = b.closest('[data-juegoex]').dataset.juegoex;
+      const modo = b.dataset.juegomodopick;
+      const draft = await getRoutine(athleteId, true, state.planWeek);
+      let hallado = null;
+      DAYS.forEach(d=>BLOCKS.forEach(bl=>{ const ex = draft.days[d][bl.key].find(x=>x.id===exId); if(ex) hallado = ex; }));
+      if(!hallado || !hallado.juegoCfg) return;
+      hallado.juegoCfg.modo = modo;
+      await saveRoutine(athleteId, true, draft, state.planWeek);
+      await rehacerTarjeta(card, exId);
+    });
+  });
+  root.querySelectorAll('[data-juegotipopick]').forEach(b=>{
+    if(b.dataset.boundJuego) return; b.dataset.boundJuego='1';
+    b.addEventListener('click', async ()=>{
+      const card = b.closest('.ex-card');
+      const exId = b.closest('[data-juegoex]').dataset.juegoex;
+      const tipo = b.dataset.juegotipopick;
+      const draft = await getRoutine(athleteId, true, state.planWeek);
+      let hallado = null;
+      DAYS.forEach(d=>BLOCKS.forEach(bl=>{ const ex = draft.days[d][bl.key].find(x=>x.id===exId); if(ex) hallado = ex; }));
+      if(!hallado || !hallado.juegoCfg) return;
+      const i = hallado.juegoCfg.tipos.indexOf(tipo);
+      if(i>=0) hallado.juegoCfg.tipos.splice(i,1); else hallado.juegoCfg.tipos.push(tipo);
+      const listaVigente = listaEstimulos(hallado.juegoCfg);
+      hallado.juegoCfg.objetivos = hallado.juegoCfg.objetivos.filter(o=>listaVigente.includes(o));
+      await saveRoutine(athleteId, true, draft, state.planWeek);
+      await rehacerTarjeta(card, exId);
+    });
+  });
+  root.querySelectorAll('[data-juegoobjpick]').forEach(b=>{
+    if(b.dataset.boundJuego) return; b.dataset.boundJuego='1';
+    b.addEventListener('click', async ()=>{
+      const card = b.closest('.ex-card');
+      const exId = b.closest('[data-juegoex]').dataset.juegoex;
+      const valor = b.dataset.juegoobjpick;
+      const draft = await getRoutine(athleteId, true, state.planWeek);
+      let hallado = null;
+      DAYS.forEach(d=>BLOCKS.forEach(bl=>{ const ex = draft.days[d][bl.key].find(x=>x.id===exId); if(ex) hallado = ex; }));
+      if(!hallado || !hallado.juegoCfg) return;
+      const i = hallado.juegoCfg.objetivos.indexOf(valor);
+      if(i>=0) hallado.juegoCfg.objetivos.splice(i,1); else hallado.juegoCfg.objetivos.push(valor);
+      await saveRoutine(athleteId, true, draft, state.planWeek);
+      await rehacerTarjeta(card, exId);
+    });
+  });
+  root.querySelectorAll('[data-subirimgjuego]').forEach(b=>{
+    if(b.dataset.boundJuego) return; b.dataset.boundJuego='1';
+    b.addEventListener('click', async ()=>{
+      const card = b.closest('.ex-card');
+      const exId = b.dataset.subirimgjuego;
+      const contImg = b.closest('.juego-imagenes');
+      const fileInput = contImg.querySelector('.juego-img-file');
+      const files = [...(fileInput.files||[])];
+      if(!files.length){ toast('Elige al menos una imagen', true); return; }
+      b.disabled = true; b.textContent = 'Subiendo…';
+      const draft = await getRoutine(athleteId, true, state.planWeek);
+      let hallado = null;
+      DAYS.forEach(d=>BLOCKS.forEach(bl=>{ const ex = draft.days[d][bl.key].find(x=>x.id===exId); if(ex) hallado = ex; }));
+      if(!hallado || !hallado.juegoCfg){ b.disabled=false; b.textContent='Subir'; return; }
+      let subidas = 0, errores = 0;
+      for(const f of files){
+        try{ const r = await subirArchivoGym(f); hallado.juegoCfg.imagenes.push({ url:r.url, nombre:r.nombre }); subidas++; }
+        catch(e){ errores++; }
+      }
+      const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+      toast(errores ? `${subidas} subida(s), ${errores} fallaron` : `${subidas} imagen(es) subida(s)`, !!errores);
+      if(ok) await rehacerTarjeta(card, exId);
+    });
+  });
+  root.querySelectorAll('[data-quitarimgjuego]').forEach(b=>{
+    if(b.dataset.boundJuego) return; b.dataset.boundJuego='1';
+    b.addEventListener('click', async ()=>{
+      const card = b.closest('.ex-card');
+      const [exId, url] = b.dataset.quitarimgjuego.split('|');
+      const draft = await getRoutine(athleteId, true, state.planWeek);
+      let hallado = null;
+      DAYS.forEach(d=>BLOCKS.forEach(bl=>{ const ex = draft.days[d][bl.key].find(x=>x.id===exId); if(ex) hallado = ex; }));
+      if(!hallado || !hallado.juegoCfg) return;
+      hallado.juegoCfg.imagenes = hallado.juegoCfg.imagenes.filter(im=>im.url!==url);
+      hallado.juegoCfg.objetivos = hallado.juegoCfg.objetivos.filter(o=>o!==url);
+      await saveRoutine(athleteId, true, draft, state.planWeek);
+      await rehacerTarjeta(card, exId);
+    });
+  });
+}
+
 function bindExerciseCard(card, athleteId){
+    bindJuegoBotones(card, athleteId);
 
     const fields = card.querySelectorAll('input, textarea, select');
     const commit = async ()=>{
@@ -9025,6 +9497,7 @@ function bindExerciseCard(card, athleteId){
       const d = card.dataset.day, blockKey = card.dataset.block, exId = card.dataset.exid;
       const draft = await getRoutine(athleteId, true);
       const ex = draft.days[d][blockKey].find(x=>x.id===exId);
+      let rehacerVista = false;
       if(ex){
         const grupoPrevio = ex.grupoId || '';
         ex.name = card.querySelector('.ex-name').value.trim();
@@ -9052,6 +9525,22 @@ function bindExerciseCard(card, athleteId){
         ex.rest = card.querySelector('.ex-rest').value.trim();
         ex.rir = card.querySelector('.ex-rir').value.trim();
         ex.rpeTarget = card.querySelector('.ex-rpetarget').value.trim();
+        ex.tempo = card.querySelector('.ex-tempo').value.trim();
+        const rondasEl = card.querySelector('.ex-juego-rondas');
+        const ventanaEl = card.querySelector('.ex-juego-ventana');
+        if(rondasEl && ex.juegoCfg){ ex.juegoCfg.rondas = parseInt(rondasEl.value,10) || 15; }
+        if(ventanaEl && ex.juegoCfg){ ex.juegoCfg.ventanaMs = parseInt(ventanaEl.value,10) || 1200; }
+        const dminEl = card.querySelector('.ex-juego-dmin');
+        const dmaxEl = card.querySelector('.ex-juego-dmax');
+        if(dminEl && ex.juegoCfg){ ex.juegoCfg.duracionMin = parseInt(dminEl.value,10) || 1200; }
+        if(dmaxEl && ex.juegoCfg){ ex.juegoCfg.duracionMax = parseInt(dmaxEl.value,10) || 2800; }
+        const esjuegoEl = card.querySelector('.ex-esjuego');
+        if(esjuegoEl){
+          if(!ex.juegoCfg) ex.juegoCfg = {activo:false, tipos:[], objetivos:[], imagenes:[], rondas:15, ventanaMs:1200};
+          const cambioForma = esjuegoEl.checked !== ex.juegoCfg.activo;
+          ex.juegoCfg.activo = esjuegoEl.checked;
+          if(cambioForma) rehacerVista = true; // aparece/desaparece todo el bloque de configuración
+        }
         const prevType = exTimer(ex).type;
         const t = exTimer(ex);
         const typeEl = card.querySelector('.ex-timer-type');
@@ -9083,7 +9572,7 @@ function bindExerciseCard(card, athleteId){
           actualizaSelectsGrupo(card, draft.days[d][blockKey]);
           return;
         }
-        if(t.type !== prevType){
+        if((t.type !== prevType || rehacerVista) && card.parentNode){
           const nuevaHtml = exCardHtml(ex, blockKey, d);
           card.insertAdjacentHTML('afterend', nuevaHtml);
           const reemplazo = card.nextElementSibling;
@@ -11322,6 +11811,42 @@ async function bindDynamicEvents(){
     toast(ok?'Vídeo quitado':'No se pudo guardar', !ok);
     renderKeepScroll();
   }));
+  document.querySelectorAll('[data-togglevariante]').forEach(b=>b.addEventListener('click', ()=>{
+    const exId = b.dataset.togglevariante;
+    state.varianteAbierta = state.varianteAbierta===exId ? null : exId;
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-guardarvariante]').forEach(b=>b.addEventListener('click', async ()=>{
+    const exId = b.dataset.guardarvariante;
+    const box = b.closest('.variante-box');
+    const nombre = box.querySelector('.ex-var-nombre').value.trim();
+    const desc = box.querySelector('.ex-var-desc').value.trim();
+    if(!nombre){ toast('Ponle un nombre a la variante', true); return; }
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    let hallado = null;
+    DAYS.forEach(d=>BLOCKS.forEach(bl=>{
+      const ex = draft.days[d][bl.key].find(x=>x.id===exId);
+      if(ex) hallado = ex;
+    }));
+    if(!hallado){ toast('No se encontró el ejercicio', true); return; }
+    hallado.variante = { nombre, desc };
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    toast(ok?'Variante guardada':'No se pudo guardar', !ok);
+    if(ok) renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-quitarvariante]').forEach(b=>b.addEventListener('click', async ()=>{
+    const exId = b.dataset.quitarvariante;
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    DAYS.forEach(d=>BLOCKS.forEach(bl=>{
+      const ex = draft.days[d][bl.key].find(x=>x.id===exId);
+      if(ex) ex.variante = null;
+    }));
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    toast(ok?'Variante quitada':'No se pudo guardar', !ok);
+    state.varianteAbierta = null;
+    if(ok) renderKeepScroll();
+  }));
+  bindJuegoBotones(document, athleteId);
   document.querySelectorAll('[data-playvideo]').forEach(b=>b.addEventListener('click', ()=>{
     const [url, nombre] = b.dataset.playvideo.split('|');
     abrirVideo(url, nombre);
