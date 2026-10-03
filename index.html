@@ -4379,6 +4379,12 @@ function recalculaDesdeDetalle(ex){
 function renderSessionOverlay(){
   const overlay = document.getElementById('sessionOverlay');
   if(!overlay || !session) return;
+  // El overlay tiene su propio scroll interno (overflow-y:auto), separado del
+  // de la ventana. Sustituir su innerHTML lo resetea a 0 SIEMPRE — y esto se
+  // repinta en cada toque dentro de la sesión (marcar serie, RPE, detalle,
+  // volver de un timer o de un juego...), así que sin esto cualquier acción
+  // te devolvía de golpe al principio de la lista de ejercicios.
+  const yOverlay = overlay.scrollTop;
   let html = `<div class="session-topbar"><h2>${session.day.charAt(0).toUpperCase()+session.day.slice(1)}</h2><button class="btn ghost small" id="exitFullscreen">Cerrar</button></div>
     <div class="stopwatch" id="stopwatchDisplay">${fmtTime(session.elapsedSec)}</div>
     <div class="row" style="justify-content:center;margin-bottom:16px;"><button class="btn ghost" id="openTimerModal">Abrir timer (Tabata / EMOM / AMRAP)</button></div>`;
@@ -4475,6 +4481,8 @@ function renderSessionOverlay(){
   if(session.showSurvey) html += tplPostSurvey();
   overlay.innerHTML = html;
   bindSessionOverlayEvents();
+  overlay.scrollTop = yOverlay;
+  requestAnimationFrame(()=>{ overlay.scrollTop = yOverlay; });
 }
 function bindSessionOverlayEvents(){
   const exitBtn = document.getElementById('exitFullscreen');
@@ -4966,7 +4974,7 @@ function renderReaccionModal(){
   } else if(c.paso === 'jugando'){
     const esImg = esImagenEstimulo(c.estimuloActual);
     html += `<div style="text-align:center;padding:10px 0;">
-      <p style="font-size:11px;color:var(--muted);">Ronda ${c.ronda} de ${rondas} · objetivo: ${escapeHtml(objetivosTxt)}</p>
+      <p id="reaccionRondaTxt" style="font-size:11px;color:var(--muted);">Ronda ${c.ronda} de ${rondas} · objetivo: ${escapeHtml(objetivosTxt)}</p>
       <button id="reaccionEstimuloBtn" style="width:100%;min-height:180px;border-radius:14px;border:none;background:var(--panel3);${esImg?'padding:10px;':'font-size:56px;'}margin-top:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;">${esImg?`<img src="${escapeHtml(c.estimuloActual)}" style="max-width:100%;max-height:160px;border-radius:8px;object-fit:contain;">`:escapeHtml(c.estimuloActual||'')}</button>
     </div>`;
   } else if(c.paso === 'resultado'){
@@ -5013,6 +5021,22 @@ function bindReaccionModal(){
     siguienteEstimulo();
   });
 }
+// Pinta solo el contador de ronda y el botón de estímulo, sin reconstruir el
+// modal entero (cabecera, botón Cerrar...) en cada ronda — eso es lo que se
+// sentía como parpadeo cada 1-2 segundos durante toda la partida.
+function actualizaRondaReaccion(){
+  const c = reaccionCap, cfg = c.cfg;
+  const rondas = cfg.rondas || REACCION_RONDAS;
+  const objetivosTxt = (cfg.objetivos||[]).map(o=>nombreEstimulo(cfg,o)).join(', ');
+  const txtEl = document.getElementById('reaccionRondaTxt');
+  if(txtEl) txtEl.textContent = `Ronda ${c.ronda} de ${rondas} · objetivo: ${objetivosTxt}`;
+  const btn = document.getElementById('reaccionEstimuloBtn');
+  if(!btn) return false; // el modal no está en la pantalla de juego todavía; hace falta el render completo
+  const esImg = esImagenEstimulo(c.estimuloActual);
+  btn.style.cssText = `width:100%;min-height:180px;border-radius:14px;border:none;background:var(--panel3);${esImg?'padding:10px;':'font-size:56px;'}margin-top:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;`;
+  btn.innerHTML = esImg?`<img src="${escapeHtml(c.estimuloActual)}" style="max-width:100%;max-height:160px;border-radius:8px;object-fit:contain;">`:escapeHtml(c.estimuloActual||'');
+  return true;
+}
 function siguienteEstimulo(){
   const c = reaccionCap;
   if(!c || c.paso!=='jugando') return;
@@ -5029,7 +5053,7 @@ function siguienteEstimulo(){
     ? objetivos[Math.floor(Math.random()*objetivos.length)]
     : (distractores.length ? distractores[Math.floor(Math.random()*distractores.length)] : lista[Math.floor(Math.random()*lista.length)]);
   c.esObjetivo = esObjetivo;
-  renderReaccionModal();
+  if(!actualizaRondaReaccion()) renderReaccionModal();
   c.tActivo = performance.now();
   const ventanaMs = c.cfg.ventanaMs || 1200;
   c.timeoutId = setTimeout(()=>{
@@ -5107,7 +5131,7 @@ function renderCronometrajeModal(){
     html += `<div style="text-align:center;padding:40px 0;"><div style="font-family:'IBM Plex Mono',monospace;font-size:56px;color:var(--accent);">${c.cuenta}</div></div>`;
   } else if(c.paso === 'jugando'){
     html += `<div style="text-align:center;padding:10px 0;">
-      <p style="font-size:11px;color:var(--muted);">Ronda ${c.ronda} de ${c.rondas}</p>
+      <p id="cronoJuegoRondaTxt" style="font-size:11px;color:var(--muted);">Ronda ${c.ronda} de ${c.rondas}</p>
       <button id="cronoJuegoBtn" style="width:100%;padding:20px 0;border:none;background:transparent;cursor:pointer;">
         <svg viewBox="0 0 120 120" style="width:180px;height:180px;margin:0 auto;display:block;">
           <circle cx="60" cy="60" r="52" fill="none" stroke="var(--panel3)" stroke-width="10"/>
@@ -5168,7 +5192,13 @@ function siguienteRondaCrono(){
   if(c.ronda > c.rondas){ c.paso='resultado'; renderCronometrajeModal(); return; }
   c.duracionActual = c.duracionMin + Math.random()*(c.duracionMax-c.duracionMin);
   c.tInicio = performance.now();
-  renderCronometrajeModal();
+  // Igual que en el juego de reacción: si el anillo ya está en pantalla, solo
+  // actualizamos el contador de ronda y reiniciamos el trazo — reconstruir
+  // el modal entero en cada ronda se sentía como un parpadeo constante.
+  const txtEl = document.getElementById('cronoJuegoRondaTxt');
+  const anilloYaPresente = document.getElementById('cronoAnillo');
+  if(txtEl && anilloYaPresente){ txtEl.textContent = `Ronda ${c.ronda} de ${c.rondas}`; anilloYaPresente.setAttribute('stroke-dashoffset','0'); }
+  else renderCronometrajeModal();
   const anillo = document.getElementById('cronoAnillo');
   const circ = 2*Math.PI*52;
   const pintar = ()=>{
