@@ -603,6 +603,53 @@
   .rd-rojo .rd-num{color:var(--danger);}
   .rd-detalle{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
   .rd-detalle b{color:var(--ink);}
+  .q-ciclo{margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);}
+  .q-ciclo-nota{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+  .tend-n{font-weight:400;font-size:10px;color:var(--muted);}
+  .tabla-comp td.tend-peor{color:var(--danger);font-weight:700;}
+  .tabla-comp td.tend-mejor{color:var(--accent);font-weight:700;}
+  .ciclo-metodo{margin-top:14px;background:var(--panel3);border-radius:8px;padding:10px 12px;}
+  .ciclo-metodo summary{font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;}
+  .ciclo-metodo p{font-size:12px;line-height:1.7;margin-top:8px;}
+  .q-req{color:var(--danger);font-weight:700;}
+  .q-check{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;cursor:pointer;}
+  .q-check input{margin-top:3px;flex-shrink:0;width:18px;height:18px;}
+  .q-falta{outline:2px solid var(--danger);outline-offset:4px;border-radius:6px;}
+  .q-progreso{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--accent);margin-bottom:12px;}
+  .al-menor{border-left:3px solid var(--muted);background:var(--panel2);border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:12.5px;line-height:1.6;}
+  .al-menor b{display:block;font-size:13px;margin-bottom:2px;}
+  .al-menor.rojo{border-left-color:var(--danger);}
+  .al-menor.ambar{border-left-color:var(--warn);}
+  .al-menor.info{border-left-color:var(--accent);}
+  .nutri-card{padding:14px 16px;}
+  .nutri-rac{font-size:12px;color:var(--muted);margin:2px 0 6px;}
+  .nutri-nota{font-size:12.5px;line-height:1.6;margin-top:6px;}
+  .mom-tag{display:inline-block;font-size:10.5px;font-family:'IBM Plex Mono',monospace;background:var(--accent-dim);color:var(--accent);padding:3px 9px;border-radius:100px;margin:0 4px 4px 0;}
+  .nutri-aviso{margin-top:10px;background:var(--panel3);border-radius:8px;padding:10px 12px;}
+  .nutri-aviso summary{font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;}
+  .nutri-aviso p{font-size:12px;line-height:1.7;margin-top:8px;}
+  .ex-tipo-chips .gs-chip{font-size:12px;}
+  .tipo-tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent);margin:2px 0 4px;letter-spacing:0.04em;}
+  .run-objetivo{font-size:12.5px;line-height:1.55;margin:6px 0;color:var(--ink);}
+  .run-card h4{font-size:15.5px;}
+  .nutri-rank{font-size:12px;color:var(--accent);font-weight:600;margin:4px 0;}
+  .nutri-consejos p{line-height:1.7;}
+  .cont-sec{padding:0;}
+  .cont-sec>summary{cursor:pointer;padding:14px 16px;list-style:none;}
+  .cont-sec>summary::-webkit-details-marker{display:none;}
+  .cont-sec>summary::after{content:'▾';float:right;color:var(--accent);}
+  .cont-sec[open]>summary::after{content:'▴';}
+  .cont-sec>*:not(summary){margin-left:16px;margin-right:16px;}
+  .cont-sec>*:last-child{margin-bottom:16px;}
+  .cont-ayuda{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+  .cont-fila{display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--border);flex-wrap:wrap;}
+  .cont-aud{display:flex;gap:5px;align-items:center;font-size:11.5px;white-space:nowrap;color:var(--muted);}
+  .cont-txt{flex:1;min-width:150px;}
+  .cont-label{width:100%;font-size:12.5px;padding:6px 8px;}
+  .cont-meta{display:block;font-size:10.5px;color:var(--muted);margin-top:2px;}
+  .cont-candado{font-size:13px;}
+  .cont-lock .cont-label{opacity:.85;}
+  .cont-nueva{background:var(--panel2);border-radius:8px;padding:12px;margin-top:12px;}
   .rd-explica{background:var(--panel3);border-radius:8px;padding:10px 12px;margin-top:10px;}
   .rd-explica b{display:block;font-size:12px;color:var(--accent);margin-bottom:4px;}
   .rd-explica p{font-size:12px;color:var(--ink);line-height:1.6;}
@@ -997,6 +1044,7 @@ const QUESTION_BANK = [
    ayuda:'Días y franjas horarias reales.'},
   {id:'free_comment', cat:'Libre', text:'¿Algo más que quieras contarme?', type:'text'}
 ];
+const QUESTION_BANK_BASE = JSON.parse(JSON.stringify(QUESTION_BANK));
 const DEFAULT_ACTIVE = ['sleep_quality','fatigue_accum','motivation','pain_unusual','adherence_pct','availability_next','free_comment'];
 
 const INTAKE_FIELDS = [
@@ -1029,6 +1077,590 @@ const INTAKE_FIELDS = [
   {id:'nutricionCiclo', label:'¿Cómo te afecta tu ciclo a la alimentación, el apetito o la hidratación?', type:'textarea',
     group:'Salud femenina', condicion:{campo:'genero', valor:'Mujer'}}
 ];
+
+// ---------- CUESTIONARIO INICIAL PARA MENORES ----------
+// Versión para familias: lo rellena el padre, la madre o el tutor (con el
+// menor si hace falta). Empieza por la autorización, porque en España los
+// datos de un menor de 14 años solo se pueden tratar con el consentimiento de
+// quien ostenta la patria potestad (LOPDGDD, art. 7). Recoge además lo que
+// un adulto no necesita: crecimiento, carga frente a la edad, coordinación con
+// su entrenador actual, supervisión y la voz del propio jugador.
+const G_AUT = 'Autorización de la familia';
+const G_JUG = 'El jugador';
+const G_ENT = 'Tenis y disponibilidad';
+const G_SAL = 'Salud y objetivos';
+const INTAKE_MENOR_INTROS = {};
+INTAKE_MENOR_INTROS[G_AUT] = 'Lo rellena el padre, la madre o el tutor legal. Es lo único imprescindible para empezar: con menos de 14 años, los datos solo se pueden tratar con vuestra autorización, y podéis retirarla cuando queráis.';
+INTAKE_MENOR_INTROS[G_JUG] = 'Si algún dato no lo tenéis a mano, dejadlo en blanco: lo medimos en la primera sesión.';
+INTAKE_MENOR_INTROS[G_ENT] = 'Para encajar el trabajo físico con lo que ya hace, sin saturarle.';
+INTAKE_MENOR_INTROS[G_SAL] = 'Lo marcado con * es lo único obligatorio. Cuéntanos lo que recuerdes: sirve para evitar riesgos, no para juzgar.';
+
+const DIAS_SEMANA_CORTOS = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+const INTAKE_FIELDS_MENOR = [
+  // Autorización
+  {id:'tutorNombre', label:'Nombre y apellidos del padre, madre o tutor legal', type:'text', group:G_AUT, req:true},
+  {id:'tutorRelacion', label:'Relación con el jugador', type:'select', options:['Padre','Madre','Tutor legal'], group:G_AUT, req:true},
+  {id:'tutorContacto', label:'Teléfono de contacto', type:'text', group:G_AUT, req:true},
+  {id:'chkParticipacion', label:'Autorizo a mi hijo/a a participar en el programa de entrenamiento de Umbral. Declaro que, hasta donde sé, no tiene ninguna contraindicación médica para el ejercicio, y entiendo que este seguimiento no sustituye a un médico ni a un fisioterapeuta.', type:'check', group:G_AUT, req:true},
+  {id:'chkDatos', label:'Consiento el tratamiento de sus datos personales y de salud solo para planificar y seguir su entrenamiento. Puedo pedir acceso, corrección o borrado cuando quiera.', type:'check', group:G_AUT, req:true},
+  {id:'chkVideo', label:'Opcional: autorizo grabar vídeo y foto de sus entrenamientos para el análisis técnico, de uso privado entre el entrenador, el jugador y la familia.', type:'check', group:G_AUT},
+  {id:'chkRedes', label:'Opcional: autorizo además usar imágenes suyas en las redes sociales de Umbral. Si no lo marco, no se publicará nada.', type:'check', group:G_AUT},
+  {id:'firmaTutor', label:'Firma: escribe tu nombre y apellidos', type:'text', group:G_AUT, req:true,
+    nota:'Quedan registrados tu nombre, la fecha y la hora. Si el otro progenitor también ejerce la patria potestad, conviene que esté al tanto.'},
+
+  // El jugador
+  {id:'fechaNacimiento', label:'Fecha de nacimiento', type:'date', group:G_JUG, req:true},
+  {id:'genero', label:'Chico o chica', type:'select', options:[{v:'Hombre',l:'Chico'},{v:'Mujer',l:'Chica'}], group:G_JUG},
+  {id:'altura', label:'Altura (cm), descalzo y de pie', type:'number', step:0.1, min:80, max:230, group:G_JUG, req:true},
+  {id:'peso', label:'Peso (kg)', type:'number', step:0.1, min:15, max:150, group:G_JUG},
+
+  // Tenis y disponibilidad
+  {id:'edadInicioTenis', label:'¿A qué edad empezó con el tenis?', type:'number', step:1, min:2, max:17, group:G_ENT},
+  {id:'clubActual', label:'Club o academia y entrenador actual', type:'text', group:G_ENT},
+  {id:'tenisDias', label:'Días de tenis a la semana', type:'select', options:['1','2','3','4','5','6','7'], group:G_ENT, req:true},
+  {id:'tenisHorasSesion', label:'Horas por sesión de tenis (media, p. ej. 1,5)', type:'number', step:0.25, min:0.25, max:6, group:G_ENT, req:true},
+  {id:'otrosDeportes', label:'Otros deportes que practica (cuáles y cuántas horas a la semana)', type:'text', group:G_ENT},
+  {id:'diasDescanso', label:'Días completos a la semana sin deporte organizado', type:'select', options:['0','1','2 o más'], group:G_ENT},
+  {id:'diasDisponibles', label:'Días en los que podría hacer este trabajo', type:'chips', options:DIAS_SEMANA_CORTOS, group:G_ENT, req:true},
+  {id:'franjas', label:'Franjas horarias posibles (p. ej. tardes de 18 a 20 h)', type:'text', group:G_ENT},
+  {id:'material', label:'Material disponible (gomas, kettlebell, cajón, escalera…)', type:'text', group:G_ENT},
+
+  // Salud y objetivos
+  {id:'lesiones', label:'¿Ha tenido lesiones importantes o tiene alguna molestia ahora?', type:'select', options:['No','Sí'], group:G_SAL, req:true},
+  {id:'lesionesDetalle', label:'Cuéntanos qué, cuándo y cómo quedó', type:'textarea', group:G_SAL, condicion:{campo:'lesiones', valor:'Sí'}},
+  {id:'condicionesMedicas', label:'¿Alguna enfermedad, alergia o medicación habitual que debamos conocer? (asma, alergias…)', type:'select', options:['No','Sí'], group:G_SAL, req:true},
+  {id:'condicionesDetalle', label:'Cuéntanos cuál', type:'textarea', group:G_SAL, condicion:{campo:'condicionesMedicas', valor:'Sí'}},
+  {id:'reconocimiento', label:'Último reconocimiento médico deportivo', type:'select', options:['Hace menos de 12 meses','Hace más de 12 meses','Nunca'], group:G_SAL},
+  {id:'objetivosFamilia', label:'Familia: ¿qué esperáis conseguir con este programa?', type:'textarea', group:G_SAL, req:true},
+  {id:'objetivosJugador', label:'Jugador: ¿qué quieres conseguir? (con tus palabras)', type:'textarea', group:G_SAL},
+  {id:'extra', label:'¿Algo más que debamos saber?', type:'textarea', group:G_SAL},
+  {id:'comoLlego', label:'¿Cómo llegasteis a mí?', type:'select', options:['Recomendación','Redes sociales','Otro'], group:G_SAL}
+];
+
+function esMenor(atleta){ return !!atleta && tienePerfil(atleta, 'menor'); }
+function intakeCamposDe(atleta){ return camposIntakeEfectivos(esMenor(atleta) ? 'menor' : 'adulto'); }
+function optVal(o){ return typeof o === 'string' ? o : o.v; }
+function optLab(o){ return typeof o === 'string' ? o : o.l; }
+// Con el perfil de menor, el cuestionario no está completo hasta que consta la
+// autorización; para adultos basta con que exista.
+function intakeCompleto(atleta, datos){
+  if(!datos || typeof datos !== 'object') return false;
+  if(esMenor(atleta)) return !!(datos.consentimiento && datos.consentimiento.fecha);
+  return true;
+}
+function numIntake(x){ const n = parseFloat(String(x==null ? '' : x).replace(',','.')); return isNaN(n) ? null : n; }
+function edadAnios(nacimientoISO, hoyISO){
+  if(!ISO_RE.test(nacimientoISO || '') || !ISO_RE.test(hoyISO || '')) return null;
+  const d = diasEntre(nacimientoISO, hoyISO);
+  return d < 0 ? null : d / 365.25;
+}
+
+// Un solo generador de controles para los tres sitios que muestran el
+// cuestionario (alta, perfil del atleta) con el atributo que corresponda.
+function intakeInputHtml(f, v, attr){
+  if(f.type === 'info') return '';
+  const val = v == null ? '' : v;
+  if(f.type === 'select'){
+    const ops = (f.options||[]).map(o=>`<option value="${escapeHtml(String(optVal(o)))}" ${String(val)===String(optVal(o))?'selected':''}>${escapeHtml(String(optLab(o)))}</option>`).join('');
+    return `<select ${attr}="${f.id}" style="width:100%;"><option value="">Selecciona…</option>${ops}</select>`;
+  }
+  if(f.type === 'textarea') return `<textarea ${attr}="${f.id}" style="min-height:56px;">${escapeHtml(String(val))}</textarea>`;
+  if(f.type === 'chips'){
+    const sel = Array.isArray(val) ? val : [];
+    return `<div class="gal-secs" ${attr}="${f.id}" data-chipsintake="1">${(f.options||[]).map(o=>`<button type="button" class="gs-chip ${sel.includes(optVal(o))?'on':''}" data-val="${escapeHtml(String(optVal(o)))}">${escapeHtml(String(optLab(o)))}</button>`).join('')}</div>`;
+  }
+  if(f.type === 'check') return `<label class="q-check"><input type="checkbox" ${attr}="${f.id}" ${val===true?'checked':''}><span>${escapeHtml(f.label)}${f.req?' <b class="q-req">*</b>':''}</span></label>`;
+  const extra = f.type === 'number' ? `step="${f.step||1}" ${f.min!=null?`min="${f.min}"`:''} ${f.max!=null?`max="${f.max}"`:''} inputmode="decimal"` : '';
+  return `<input type="${f.type}" ${attr}="${f.id}" value="${escapeHtml(String(val))}" ${extra} ${f.type==='date'?`max="${todayISO()}"`:''} style="width:100%;">`;
+}
+function leeCampoIntake(f, attr){
+  const el = document.querySelector(`[${attr}="${f.id}"]`);
+  if(!el) return undefined;
+  if(f.type === 'chips') return [...el.querySelectorAll('.gs-chip.on')].map(b=>b.dataset.val);
+  if(f.type === 'check') return !!el.checked;
+  return (el.value || '').trim();
+}
+function intakeValorVacio(f, v){
+  if(f.type === 'check') return v !== true;
+  if(f.type === 'chips') return !Array.isArray(v) || !v.length;
+  return v == null || String(v).trim() === '';
+}
+function intakeCondicionCumplida(f, data){ return !f.condicion || String(data[f.condicion.campo]) === String(f.condicion.valor); }
+
+// Qué falta por responder (solo obligatorias), con reglas de plausibilidad
+// para que un dato absurdo no entre como válido.
+function validaIntakeMenor(data){
+  const faltan = [];
+  camposIntakeEfectivos('menor').forEach(f=>{
+    if(!f.req || !intakeCondicionCumplida(f, data)) return;
+    if(intakeValorVacio(f, data[f.id])) faltan.push({id:f.id, label:f.label});
+  });
+  const firma = String(data.firmaTutor || '').trim();
+  if(firma && firma.split(/\s+/).length < 2 && !faltan.some(x=>x.id==='firmaTutor')) faltan.push({id:'firmaTutor', label:'Firma: escribe nombre y apellidos'});
+  const edad = edadAnios(data.fechaNacimiento, todayISO());
+  if(data.fechaNacimiento && (edad === null || edad < 3 || edad >= 18) && !faltan.some(x=>x.id==='fechaNacimiento'))
+    faltan.push({id:'fechaNacimiento', label:'Fecha de nacimiento: comprueba que sea correcta (debe ser menor de 18 años)'});
+  return faltan;
+}
+// Datos derivados: edad exacta, horas de tenis a la semana y, solo la primera
+// vez, la constancia de la autorización (quién, cuándo y qué versión).
+function derivaIntakeMenor(data, hoyISO, marcaTiempo){
+  const out = Object.assign({}, data);
+  const edad = edadAnios(out.fechaNacimiento, hoyISO);
+  if(edad !== null){ out.edad = String(Math.floor(edad)); out.edadDecimal = Math.round(edad*10)/10; }
+  const dias = numIntake(out.tenisDias), horas = numIntake(out.tenisHorasSesion);
+  if(dias !== null && horas !== null) out.tenisHorasSemana = Math.round(dias*horas*10)/10;
+  out.tipo = 'menor';
+  if(!out.consentimiento && marcaTiempo){
+    out.consentimiento = { firmante:String(out.firmaTutor||'').trim(), tutor:String(out.tutorNombre||'').trim(), relacion:out.tutorRelacion||'', fecha:marcaTiempo, version:'v1-2026-10' };
+  }
+  return out;
+}
+
+// Señales para el entrenador: no son diagnósticos, son motivos para
+// preguntar, vigilar la carga o derivar antes de empezar.
+function alertasMenor(d){
+  const out = [];
+  const add = (nivel, titulo, texto)=>out.push({nivel, titulo, texto});
+  if(!d.consentimiento) add('rojo','Falta la autorización firmada','No hay constancia de la autorización del padre, madre o tutor. No empieces el trabajo hasta tenerla.');
+  if(d.consentimiento && d.chkVideo !== true) add('ambar','No autorizan grabar vídeo','Los tests y ejercicios que piden vídeo tendrán que resolverse de otra forma.');
+  if(d.consentimiento && d.chkRedes !== true) add('info','No autorizan publicar su imagen','No subas fotos ni vídeos suyos a redes. Sí puedes usarlos en privado para el análisis técnico.');
+  const edad = numIntake(d.edad), tenisH = numIntake(d.tenisHorasSemana);
+  if(edad !== null && tenisH !== null && tenisH > edad){
+    add('ambar', `Carga semanal: ${tenisH} h de tenis (tiene ${Math.floor(edad)} años)`, 'En deportistas jóvenes, superar con las horas semanales de deporte organizado su edad en años se asoció a más lesiones graves por sobrecarga (Jayanthi y cols., 2015). Es una asociación observacional, no un límite: sirve para vigilar la carga total antes de añadir trabajo.');
+  }
+  if(d.diasDescanso === '0') add('ambar','Ningún día completo de descanso','Lo habitual en las recomendaciones para jóvenes es al menos un día a la semana sin deporte organizado.');
+  if(d.lesiones === 'Sí') add('ambar','Lesión o molestia que revisar', d.lesionesDetalle || 'Pregunta qué fue y confirma que está dado de alta antes de cargar.');
+  if(d.condicionesMedicas === 'Sí') add('info','Condición médica, alergia o medicación', d.condicionesDetalle || 'Revisa el detalle con la familia.');
+  if(d.reconocimiento === 'Nunca' || d.reconocimiento === 'Hace más de 12 meses') add('ambar','Sin reconocimiento médico deportivo reciente','Conviene que se lo hagan antes de subir la intensidad.');
+  const orden = {rojo:0, ambar:1, info:2};
+  return out.sort((a,b)=>orden[a.nivel]-orden[b.nivel]);
+}
+
+// ---------- CONTENIDO POR TIPO DE ATLETA ----------
+// Qué recibe cada tipo de atleta (adulto o menor): preguntas del cuestionario
+// inicial y del semanal, piezas del Welcome Pack y hábitos sugeridos. Todo se
+// decide desde Agenda → Contenido; aquí viven los valores de partida y la lógica.
+// Un atleta con el perfil "Menor de edad" es un menor; cualquier otro, adulto.
+const BLOQUEO_MENOR_DEFECTO = ['ayuno','ayunar','creatina','déficit calórico','contar calorías','quemagrasas','suplemento'];
+// Lo que un menor NO recibe de partida (se cambia desde Agenda → Contenido).
+const CONTENIDO_OCULTO_MENOR = [
+  'q:nutrition_adherence','q:protein_ok','q:appetite','q:external_stress','q:running_feel','q:strength_feel','q:cycle_phase','q:cycle_impact',
+  'w:guiaProteina','w:guiaCarga','h:Creatina','h:Proteína objetivo','h:Magnesio'
+];
+const HABITOS_SUGERIDOS_LISTA = ['Creatina','Horas de sueño','Calidad del sueño','Pasos','Proteína objetivo','Hidratación','Magnesio','Estiramientos','Movilidad','Meditación'];
+// Sin esto no hay autorización válida: no se pueden ocultar ni hacer opcionales.
+const INTAKE_BLOQUEADOS_MENOR = ['tutorNombre','tutorContacto','chkParticipacion','chkDatos','firmaTutor','fechaNacimiento'];
+const CONTENIDO_TIPOS_INTAKE = [{v:'text',l:'Texto corto'},{v:'textarea',l:'Texto largo'},{v:'number',l:'Número'},{v:'sino',l:'Sí / No'},{v:'select',l:'Opciones'}];
+const CONTENIDO_TIPOS_SEMANAL = [{v:'opciones',l:'Opciones (de peor a mejor)'},{v:'numero',l:'Número'},{v:'text',l:'Texto'}];
+
+function contenidoVacio(){ return { v:1, reglas:{}, edits:{}, custom:{intake:[], semanal:[]}, bloqueoMenor:BLOQUEO_MENOR_DEFECTO.slice() }; }
+let CONTENIDO = contenidoVacio(), contenidoCargadoEn = 0;
+
+async function cargaContenido(forzar){
+  if(!forzar && Date.now() - contenidoCargadoEn < 15000) return CONTENIDO;
+  const raw = await safeGet('contenido-config', true);
+  const base = contenidoVacio();
+  try{
+    const o = raw ? JSON.parse(raw) : null;
+    if(o && typeof o === 'object'){
+      if(o.reglas && typeof o.reglas === 'object') base.reglas = o.reglas;
+      if(o.edits && typeof o.edits === 'object') base.edits = o.edits;
+      if(o.custom){
+        if(Array.isArray(o.custom.intake)) base.custom.intake = o.custom.intake;
+        if(Array.isArray(o.custom.semanal)) base.custom.semanal = o.custom.semanal;
+      }
+      if(Array.isArray(o.bloqueoMenor)) base.bloqueoMenor = o.bloqueoMenor;
+    }
+  }catch(e){}
+  CONTENIDO = base; contenidoCargadoEn = Date.now();
+  aplicaBancoSemanal();
+  return CONTENIDO;
+}
+async function guardaContenido(){
+  const ok = await safeSet('contenido-config', JSON.stringify(CONTENIDO), true);
+  aplicaBancoSemanal(); contenidoCargadoEn = Date.now();
+  return ok;
+}
+function audienciaDe(atleta){ return esMenor(atleta) ? 'menor' : 'adulto'; }
+// ¿Lo ve este tipo de atleta? Una regla guardada manda; si no, el valor de partida.
+function contenidoVisible(id, aud){
+  const r = CONTENIDO.reglas[id];
+  if(r && typeof r[aud] === 'boolean') return r[aud];
+  return !(aud === 'menor' && CONTENIDO_OCULTO_MENOR.includes(id));
+}
+function contenidoRegla(id){ return { adulto: contenidoVisible(id,'adulto'), menor: contenidoVisible(id,'menor') }; }
+
+// El banco semanal se reconstruye en el sitio: las pantallas que lo leen no
+// cambian, pero ahora ven los textos editados y las preguntas propias.
+function aplicaBancoSemanal(){
+  QUESTION_BANK.length = 0;
+  QUESTION_BANK_BASE.forEach(q=>{
+    const e = CONTENIDO.edits['q:'+q.id];
+    QUESTION_BANK.push(e && e.text ? Object.assign({}, q, {text:e.text}) : q);
+  });
+  (CONTENIDO.custom.semanal || []).forEach(q=>QUESTION_BANK.push(q));
+}
+
+// Preguntas iniciales que ve cada tipo de atleta: las de partida que no se han
+// ocultado (con su texto editado) más las propias que se han añadido.
+function camposIntakeEfectivos(aud){
+  const base = aud === 'menor' ? INTAKE_FIELDS_MENOR : INTAKE_FIELDS;
+  const pref = aud === 'menor' ? 'im:' : 'ia:';
+  const out = [];
+  base.forEach(f=>{
+    const bloqueado = aud === 'menor' && INTAKE_BLOQUEADOS_MENOR.includes(f.id);
+    if(!bloqueado && !contenidoVisible(pref+f.id, aud)) return;
+    const e = CONTENIDO.edits[pref+f.id];
+    if(!e) { out.push(f); return; }
+    const g = Object.assign({}, f);
+    if(e.label) g.label = e.label;
+    if(aud === 'menor' && !bloqueado && typeof e.req === 'boolean') g.req = e.req;
+    out.push(g);
+  });
+  (CONTENIDO.custom.intake || []).forEach(c=>{
+    if(!(c.audiencia && c.audiencia[aud])) return;
+    const g = { id:c.id, label:c.label, type: c.type === 'sino' ? 'select' : c.type, group:'Más preguntas', propia:true };
+    if(c.type === 'sino') g.options = ['Sí','No']; else if(c.type === 'select') g.options = c.options || [];
+    if(aud === 'menor' && c.req) g.req = true;
+    out.push(g);
+  });
+  return out;
+}
+// Para mostrar la ficha de un atleta: lo que se le pregunta ahora más lo que
+// contestó antes aunque esa pregunta ya se haya quitado (no se pierde nada).
+function camposFichaDe(aud, datos){
+  const ef = camposIntakeEfectivos(aud), ids = new Set(ef.map(f=>f.id));
+  const base = aud === 'menor' ? INTAKE_FIELDS_MENOR : INTAKE_FIELDS;
+  return ef.concat(base.filter(f=>!ids.has(f.id) && !intakeValorVacio(f, (datos||{})[f.id])));
+}
+
+function welcomeItemsDe(atleta){
+  const aud = audienciaDe(atleta);
+  return WELCOME_ITEMS.filter(i=>contenidoVisible('w:'+i.id, aud));
+}
+
+// Temas que no debe recibir un menor (ayuno, creatina…). Se busca al principio
+// de palabra para que "desayuno" no se confunda con "ayuno".
+function normTexto(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+function temaBloqueadoMenor(texto){
+  const t = normTexto(texto);
+  const terminos = (CONTENIDO.bloqueoMenor || []).map(x=>String(x||'').trim()).filter(Boolean);
+  for(const term of terminos){
+    const n = normTexto(term).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    if(new RegExp('(^|[^a-z0-9])'+n).test(t)) return term;
+  }
+  return null;
+}
+function actualizaSugerenciasHabitos(){
+  const dl = document.getElementById('habitSuggestions'); if(!dl) return;
+  const idAt = state.role === 'atleta' ? state.athleteAsId : state.selectedId;
+  const aud = audienciaDe(state.athletes.find(a=>a.id === idAt));
+  dl.innerHTML = HABITOS_SUGERIDOS_LISTA.filter(n=>contenidoVisible('h:'+n, aud)).map(n=>`<option value="${escapeHtml(n)}"></option>`).join('');
+}
+
+// ---------- Editor: Agenda → Contenido ----------
+function contFila(id, aud, texto, extra){
+  return `<div class="cont-fila"><label class="cont-aud"><input type="checkbox" data-cid="${escapeHtml(id)}" data-caud="${aud}" ${contenidoVisible(id,aud)?'checked':''}> ${aud==='adulto'?'Adultos':'Menores'}</label>${extra||''}<span class="cont-txt">${texto}</span></div>`;
+}
+function contFilaDoble(id, texto){
+  return `<div class="cont-fila"><label class="cont-aud"><input type="checkbox" data-cid="${escapeHtml(id)}" data-caud="adulto" ${contenidoVisible(id,'adulto')?'checked':''}> Adultos</label><label class="cont-aud"><input type="checkbox" data-cid="${escapeHtml(id)}" data-caud="menor" ${contenidoVisible(id,'menor')?'checked':''}> Menores</label><span class="cont-txt">${texto}</span></div>`;
+}
+function contSec(clave, titulo, ayuda, cuerpo){
+  const abierta = (state.contAbiertas || {})[clave];
+  return `<details class="card cont-sec" data-contsec="${clave}" ${abierta?'open':''}><summary><b>${titulo}</b></summary><p class="cont-ayuda">${ayuda}</p>${cuerpo}</details>`;
+}
+function contFormNueva(tipo){
+  const esI = tipo === 'intake';
+  return `<div class="cont-nueva" data-contnueva="${tipo}">
+    <label class="field-label">Nueva pregunta</label>
+    <input type="text" class="cn-texto" placeholder="${esI?'Ej. ¿Con quién entrena normalmente?':'Ej. ¿Cómo te has sentido en el colegio esta semana?'}" style="width:100%;margin-bottom:8px;">
+    <div class="row" style="gap:8px;margin-bottom:8px;">
+      <select class="cn-tipo" style="flex:1;min-width:0;">${(esI?CONTENIDO_TIPOS_INTAKE:CONTENIDO_TIPOS_SEMANAL).map(t=>`<option value="${t.v}">${t.l}</option>`).join('')}</select>
+      ${esI?'':'<input type="text" class="cn-unidad" placeholder="Unidad (si es número)" style="flex:1;min-width:0;display:none;">'}
+    </div>
+    <input type="text" class="cn-opciones" placeholder="Opciones separadas por comas (de peor a mejor)" style="width:100%;margin-bottom:8px;display:none;">
+    <div class="row" style="gap:14px;margin-bottom:10px;flex-wrap:wrap;">
+      <label class="cont-aud"><input type="checkbox" class="cn-adulto" checked> Adultos</label>
+      <label class="cont-aud"><input type="checkbox" class="cn-menor" checked> Menores</label>
+      ${esI?'<label class="cont-aud"><input type="checkbox" class="cn-req"> Obligatoria (solo menores)</label>':''}
+    </div>
+    <button class="btn ghost small" data-cadd="${tipo}">+ Añadir pregunta</button>
+  </div>`;
+}
+async function tplContenidoEditor(){
+  await cargaContenido(true);
+  const C = CONTENIDO;
+  let html = `<div class="card"><h2>Contenido por tipo de atleta</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Decide qué recibe cada atleta. En cada pieza marcas <b>Adultos</b> y/o <b>Menores</b>: lo que no esté marcado para un grupo, ese grupo no lo ve. Los menores son los atletas con el perfil «Menor de edad». Los cambios se guardan solos y se aplican la próxima vez que abran la app.</p></div><div id="contenidoEditor">`;
+
+  // --- Cuestionario inicial ---
+  let a = '', ultimo = '';
+  INTAKE_FIELDS.forEach(f=>{
+    if(f.group !== ultimo){ a += `<div class="q-cat">${escapeHtml(f.group)}</div>`; ultimo = f.group; }
+    const id = 'ia:'+f.id, e = C.edits[id] || {};
+    a += contFila(id, 'adulto', `<input type="text" class="cont-label" data-cid="${id}" data-cfield="label" data-base="${escapeHtml(f.label)}" value="${escapeHtml(e.label||f.label)}">`);
+  });
+  let m = ''; ultimo = '';
+  INTAKE_FIELDS_MENOR.forEach(f=>{
+    if(f.group !== ultimo){ m += `<div class="q-cat">${escapeHtml(f.group)}</div>`; ultimo = f.group; }
+    const id = 'im:'+f.id, e = C.edits[id] || {}, bloq = INTAKE_BLOQUEADOS_MENOR.includes(f.id);
+    const req = bloq ? true : (typeof e.req === 'boolean' ? e.req : !!f.req);
+    const lab = `<input type="text" class="cont-label" data-cid="${id}" data-cfield="label" data-base="${escapeHtml(f.label)}" value="${escapeHtml(e.label||f.label)}">`;
+    const reqHtml = `<label class="cont-aud"><input type="checkbox" data-cid="${id}" data-cfield="req" ${req?'checked':''} ${bloq?'disabled':''}> Obligatoria</label>`;
+    m += bloq
+      ? `<div class="cont-fila cont-lock"><span class="cont-candado" title="Necesaria para que la autorización sea válida">🔒</span>${reqHtml}<span class="cont-txt">${lab}</span></div>`
+      : `<div class="cont-fila"><label class="cont-aud"><input type="checkbox" data-cid="${id}" data-caud="menor" ${contenidoVisible(id,'menor')?'checked':''}> Mostrar</label>${reqHtml}<span class="cont-txt">${lab}</span></div>`;
+  });
+  let propiasI = (C.custom.intake||[]).map(c=>`<div class="cont-fila cont-propia" data-cuid="${c.id}">
+      <span class="cont-txt"><input type="text" class="cont-label" data-cuid="${c.id}" data-cfield="label" value="${escapeHtml(c.label)}"><span class="cont-meta">${(CONTENIDO_TIPOS_INTAKE.find(t=>t.v===c.type)||{}).l||c.type}${c.type==='select'?': '+escapeHtml((c.options||[]).join(', ')):''}</span></span>
+      <label class="cont-aud"><input type="checkbox" data-cuid="${c.id}" data-cfield="aud-adulto" ${c.audiencia&&c.audiencia.adulto?'checked':''}> Adultos</label>
+      <label class="cont-aud"><input type="checkbox" data-cuid="${c.id}" data-cfield="aud-menor" ${c.audiencia&&c.audiencia.menor?'checked':''}> Menores</label>
+      <label class="cont-aud"><input type="checkbox" data-cuid="${c.id}" data-cfield="req" ${c.req?'checked':''}> Obligatoria</label>
+      <button class="btn ghost small" data-cdel="intake|${c.id}">Quitar</button></div>`).join('');
+  html += contSec('inicial-adultos','Cuestionario inicial · adultos','Las preguntas que ve un atleta adulto al entrar por primera vez. Desmarca las que no quieras.', a);
+  html += contSec('inicial-menores','Cuestionario inicial · menores','Lo que ve la familia de un menor. Lo marcado con 🔒 es lo mínimo para que la autorización sea válida y no se puede quitar.', m);
+  html += contSec('inicial-propias','Cuestionario inicial · preguntas propias','Añade preguntas nuevas y decide si las ven adultos, menores o ambos. Aparecen al final, en «Más preguntas».', (propiasI || '<div class="empty">Todavía no has añadido ninguna.</div>') + contFormNueva('intake'));
+
+  // --- Cuestionario semanal ---
+  let s = '', cat = '';
+  QUESTION_BANK_BASE.forEach(q=>{
+    if(q.cat !== cat){ s += `<div class="q-cat">${escapeHtml(q.cat)}</div>`; cat = q.cat; }
+    const id = 'q:'+q.id, e = C.edits[id] || {};
+    s += contFilaDoble(id, `<input type="text" class="cont-label" data-cid="${id}" data-cfield="text" data-base="${escapeHtml(q.text)}" value="${escapeHtml(e.text||q.text)}">`);
+  });
+  let propiasS = (C.custom.semanal||[]).map(q=>`<div class="cont-fila cont-propia" data-cuid="${q.id}">
+      <span class="cont-txt"><input type="text" class="cont-label" data-cuid="${q.id}" data-cfield="stext" value="${escapeHtml(q.text)}"><span class="cont-meta">${(CONTENIDO_TIPOS_SEMANAL.find(t=>t.v===q.type)||{}).l||q.type}${q.type==='opciones'?': '+escapeHtml((q.opciones||[]).join(' · ')):''}</span></span>
+      <label class="cont-aud"><input type="checkbox" data-cid="q:${q.id}" data-caud="adulto" ${contenidoVisible('q:'+q.id,'adulto')?'checked':''}> Adultos</label>
+      <label class="cont-aud"><input type="checkbox" data-cid="q:${q.id}" data-caud="menor" ${contenidoVisible('q:'+q.id,'menor')?'checked':''}> Menores</label>
+      <button class="btn ghost small" data-cdel="semanal|${q.id}">Quitar</button></div>`).join('');
+  html += contSec('semanal','Cuestionario semanal','Las preguntas que puedes activar a cada atleta (en su ficha → Cuestionarios). Aquí decides cuáles puede ver un adulto y cuáles un menor: una pregunta oculta para menores no les llega aunque la tengas marcada.', s);
+  html += contSec('semanal-propias','Cuestionario semanal · preguntas propias','Tus preguntas nuevas. Después las activas atleta a atleta como las demás.', (propiasS || '<div class="empty">Todavía no has añadido ninguna.</div>') + contFormNueva('semanal'));
+
+  // --- Welcome Pack y hábitos ---
+  html += contSec('welcome','Welcome Pack','Las guías y tareas de bienvenida. Si un menor no ve ninguna, no le aparece el Welcome Pack.', WELCOME_ITEMS.map(i=>contFilaDoble('w:'+i.id, escapeHtml(i.titulo))).join(''));
+  html += contSec('habitos','Hábitos sugeridos','Lo que se sugiere al escribir el nombre de un hábito. Puedes seguir escribiendo cualquier otro a mano.', HABITOS_SUGERIDOS_LISTA.map(n=>contFilaDoble('h:'+n, escapeHtml(n))).join(''));
+
+  // --- Temas bloqueados para menores ---
+  html += contSec('bloqueo','Temas que no debe recibir un menor','Una palabra o frase por línea. Si intentas asignar a un menor un hábito, una tarea o una guía que la contenga, te pedirá confirmación; y un menor no puede crearse un hábito que la contenga.',
+    `<textarea id="cBloqueo" style="min-height:130px;width:100%;">${escapeHtml((C.bloqueoMenor||[]).join('\n'))}</textarea>`);
+  html += `<div class="card"><button class="btn ghost small danger" id="cReset">Restaurar valores de partida</button></div></div>`;
+  return html;
+}
+
+function bindContenido(){
+  const ed = document.getElementById('contenidoEditor'); if(!ed || ed.dataset.bound) return;
+  ed.dataset.bound = '1';
+  const guardar = async ()=>{ const ok = await guardaContenido(); if(!ok) toast('No se pudo guardar', true); return ok; };
+  const limpia = (clave)=>{ const o = CONTENIDO.edits[clave]; if(o && !Object.keys(o).length) delete CONTENIDO.edits[clave]; };
+  ed.addEventListener('toggle', e=>{
+    const sec = e.target && e.target.dataset && e.target.dataset.contsec; if(!sec) return;
+    state.contAbiertas = state.contAbiertas || {}; state.contAbiertas[sec] = e.target.open;
+  }, true);
+  ed.addEventListener('change', async e=>{
+    const t = e.target, d = t.dataset;
+    if(t.id === 'cBloqueo'){ CONTENIDO.bloqueoMenor = t.value.split('\n').map(x=>x.trim()).filter(Boolean); await guardar(); return; }
+    // visibilidad por tipo de atleta
+    if(d.caud && d.cid){
+      const r = Object.assign({}, CONTENIDO.reglas[d.cid] || contenidoRegla(d.cid));
+      r[d.caud] = t.checked; CONTENIDO.reglas[d.cid] = r; await guardar(); return;
+    }
+    // texto o obligatoriedad de una pregunta de partida
+    if(d.cid && d.cfield === 'label' || d.cid && d.cfield === 'text'){
+      const campo = d.cfield, v = t.value.trim(), base = t.dataset.base;
+      const o = CONTENIDO.edits[d.cid] = CONTENIDO.edits[d.cid] || {};
+      if(!v || v === base){ delete o[campo]; t.value = base; } else o[campo] = v;
+      limpia(d.cid); await guardar(); return;
+    }
+    if(d.cid && d.cfield === 'req'){
+      const o = CONTENIDO.edits[d.cid] = CONTENIDO.edits[d.cid] || {};
+      o.req = t.checked; await guardar(); return;
+    }
+    // preguntas propias
+    if(d.cuid){
+      const lista = d.cfield === 'stext' ? CONTENIDO.custom.semanal : CONTENIDO.custom.intake;
+      const q = lista.find(x=>x.id === d.cuid); if(!q) return;
+      if(d.cfield === 'label'){ if(t.value.trim()) q.label = t.value.trim(); else t.value = q.label; }
+      else if(d.cfield === 'stext'){ if(t.value.trim()) q.text = t.value.trim(); else t.value = q.text; }
+      else if(d.cfield === 'aud-adulto'){ q.audiencia = Object.assign({adulto:false,menor:false}, q.audiencia, {adulto:t.checked}); }
+      else if(d.cfield === 'aud-menor'){ q.audiencia = Object.assign({adulto:false,menor:false}, q.audiencia, {menor:t.checked}); }
+      else if(d.cfield === 'req'){ q.req = t.checked; }
+      await guardar();
+    }
+  });
+  // el selector de tipo muestra u oculta opciones / unidad
+  ed.addEventListener('input', e=>{
+    if(!e.target.classList.contains('cn-tipo')) return;
+    const f = e.target.closest('[data-contnueva]'), v = e.target.value;
+    const op = f.querySelector('.cn-opciones'), un = f.querySelector('.cn-unidad');
+    if(op) op.style.display = (v === 'select' || v === 'opciones') ? '' : 'none';
+    if(un) un.style.display = v === 'numero' ? '' : 'none';
+  });
+  ed.addEventListener('click', async e=>{
+    const del = e.target.closest('[data-cdel]');
+    if(del){
+      if(!confirm('¿Quitar esta pregunta? Las respuestas que ya se hayan dado no se borran.')) return;
+      const [tipo, id] = del.dataset.cdel.split('|');
+      if(tipo === 'intake') CONTENIDO.custom.intake = CONTENIDO.custom.intake.filter(x=>x.id !== id);
+      else { CONTENIDO.custom.semanal = CONTENIDO.custom.semanal.filter(x=>x.id !== id); delete CONTENIDO.reglas['q:'+id]; }
+      await guardar(); renderKeepScroll(); return;
+    }
+    const add = e.target.closest('[data-cadd]');
+    if(add){
+      const f = add.closest('[data-contnueva]'), tipo = add.dataset.cadd;
+      const texto = f.querySelector('.cn-texto').value.trim(), tp = f.querySelector('.cn-tipo').value;
+      const opciones = f.querySelector('.cn-opciones').value.split(/[,\n]/).map(x=>x.trim()).filter(Boolean);
+      const adulto = f.querySelector('.cn-adulto').checked, menor = f.querySelector('.cn-menor').checked;
+      if(!texto){ toast('Escribe la pregunta', true); return; }
+      if(!adulto && !menor){ toast('Marca a quién se la haces: adultos, menores o ambos', true); return; }
+      if((tp === 'select' || tp === 'opciones') && opciones.length < 2){ toast('Pon al menos dos opciones, separadas por comas', true); return; }
+      if(tipo === 'intake'){
+        CONTENIDO.custom.intake.push({ id:'c'+uid(), label:texto, type:tp, options: tp === 'select' ? opciones : undefined, audiencia:{adulto, menor}, req: !!(f.querySelector('.cn-req')||{}).checked });
+      } else {
+        const id = 'cq'+uid();
+        const q = { id, cat:'Mis preguntas', text:texto, type:tp };
+        if(tp === 'opciones') q.opciones = opciones;
+        if(tp === 'numero'){ q.unidad = f.querySelector('.cn-unidad').value.trim(); q.min = 0; q.max = 1000; q.paso = 1; }
+        CONTENIDO.custom.semanal.push(q);
+        CONTENIDO.reglas['q:'+id] = {adulto, menor};
+      }
+      await guardar(); toast('Pregunta añadida'); renderKeepScroll(); return;
+    }
+    if(e.target.id === 'cReset'){
+      if(!confirm('¿Restaurar todo el contenido a los valores de partida? Se perderán tus cambios y tus preguntas propias.')) return;
+      CONTENIDO = contenidoVacio(); await guardar(); renderKeepScroll();
+    }
+  });
+}
+
+async function tplIntake(athleteId){
+  const at = state.athletes.find(a=>a.id===athleteId);
+  const menor = esMenor(at);
+  const campos = intakeCamposDe(at);
+  let borrador = {};
+  try{ const raw = await safeGet('intake-borrador-'+athleteId, true); const o = raw ? JSON.parse(raw) : null; if(o && typeof o === 'object') borrador = o; }catch(e){}
+  let html;
+  if(menor){
+    html = `<div class="card"><h2>Cuestionario inicial${at?` de ${escapeHtml(at.name)}`:''}</h2>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;line-height:1.6;">Lo rellena la familia, con su ayuda si hace falta. Son unos 5 minutos y <b>se va guardando solo</b>: podéis dejarlo y seguir más tarde. Solo lo marcado con <b class="q-req">*</b> es obligatorio; lo demás, si no lo sabéis, lo dejáis en blanco.</p>`;
+  } else {
+    html = `<div class="card"><h2>Antes de empezar — cuéntame sobre ti</h2>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">Esto ayuda a tu entrenador a diseñar tu plan desde el primer día.</p>`;
+  }
+  let lastGroup = '';
+  campos.forEach(f=>{
+    if(f.group !== lastGroup){
+      html += `<div class="q-cat">${f.group}</div>`;
+      lastGroup = f.group;
+      if(f.group === 'Salud femenina'){
+        html += `<p class="q-nota-suave">Esto le ayuda a tu entrenador a adaptar tu entrenamiento a cómo vives tu ciclo — no hay respuestas "raras", cuéntalo tal cual lo sientes.</p>`;
+      }
+      if(INTAKE_MENOR_INTROS[f.group]) html += `<p class="q-nota-suave">${INTAKE_MENOR_INTROS[f.group]}</p>`;
+    }
+    const cond = f.condicion ? `data-cond-campo="${f.condicion.campo}" data-cond-valor="${escapeHtml(f.condicion.valor)}"` : '';
+    const v = borrador[f.id];
+    html += `<div class="q-item" data-qwrap="${f.id}" ${cond} style="margin-bottom:16px;${f.condicion?'display:none;':''}">`;
+    if(f.type !== 'check') html += `<label class="field-label">${f.label}${f.req?' <b class="q-req">*</b>':''}</label>`;
+    html += intakeInputHtml(f, v, 'data-intake');
+    if(f.nota) html += `<p class="q-nota-suave" style="margin:6px 0 0;">${escapeHtml(f.nota)}</p>`;
+    html += `</div>`;
+  });
+  html += `<button class="btn" id="submitIntake">${menor?'Enviar cuestionario':'Guardar y continuar'}</button></div>`;
+  return html;
+}
+
+// Comportamiento del formulario: progreso, borrador automático y envío.
+function bindIntakeForm(){
+  const submit = document.getElementById('submitIntake');
+  const cont = document.getElementById('tabContent');
+  if(!submit || !cont || cont.dataset.intakeBound) return;
+  cont.dataset.intakeBound = '1';
+  const athleteId = state.athleteAsId;
+  const at = state.athletes.find(a=>a.id===athleteId);
+  const campos = intakeCamposDe(at);
+  const recoge = ()=>{
+    const data = {};
+    campos.forEach(f=>{ if(f.type==='info') return; const v = leeCampoIntake(f,'data-intake'); if(v!==undefined) data[f.id] = v; });
+    return data;
+  };
+  const progreso = ()=>{
+    const el = document.getElementById('intakeProgreso'); if(!el) return;
+    const data = recoge();
+    const reqs = campos.filter(f=>f.req && intakeCondicionCumplida(f, data));
+    const hechas = reqs.filter(f=>!intakeValorVacio(f, data[f.id])).length;
+    el.textContent = `Obligatorias completadas: ${hechas} de ${reqs.length}`;
+  };
+  let t = null;
+  const programa = ()=>{
+    progreso();
+    clearTimeout(t);
+    t = setTimeout(()=>{ safeSet('intake-borrador-'+athleteId, JSON.stringify(recoge()), true); }, 700);
+  };
+  cont.addEventListener('input', programa);
+  cont.addEventListener('change', programa);
+  cont.addEventListener('click', e=>{
+    const chip = e.target.closest && e.target.closest('[data-chipsintake] .gs-chip');
+    if(chip){ chip.classList.toggle('on'); programa(); }
+  });
+  progreso();
+  submit.addEventListener('click', async ()=>{
+    try{
+      let data = recoge();
+      if(esMenor(at)){
+        const faltan = validaIntakeMenor(data);
+        document.querySelectorAll('.q-falta').forEach(e=>e.classList.remove('q-falta'));
+        if(faltan.length){
+          faltan.forEach(f=>{ const w = document.querySelector(`[data-qwrap="${f.id}"]`); if(w) w.classList.add('q-falta'); });
+          const primero = document.querySelector(`[data-qwrap="${faltan[0].id}"]`);
+          if(primero && primero.scrollIntoView) primero.scrollIntoView({block:'center'});
+          toast(`Faltan ${faltan.length}: ${faltan[0].label.slice(0,46)}${faltan[0].label.length>46?'…':''}`, true);
+          return;
+        }
+        data = derivaIntakeMenor(data, todayISO(), new Date().toISOString());
+      }
+      clearTimeout(t);
+      const ok = await safeSet('intake-'+athleteId, JSON.stringify(data), true);
+      if(!ok){ toast('No se pudo guardar — revisa la conexión e inténtalo de nuevo', true); return; }
+      await safeSet('intake-borrador-'+athleteId, 'null', true);
+      toast('Datos guardados');
+      state.tab = 'rutina'; renderScrollTop();
+    }catch(e){ toast('Error al guardar: '+e.message, true); }
+  });
+}
+
+// Ficha del menor para el entrenador: autorización, alertas y datos por bloques.
+function tplFichaMenor(d, at){
+  const c = d.consentimiento;
+  let html = `<div class="card"><h2>Autorización</h2>`;
+  if(c){
+    const cuando = new Date(c.fecha);
+    const f = isNaN(cuando) ? c.fecha : cuando.toLocaleString('es-ES', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'});
+    html += `<p style="font-size:13px;line-height:1.7;">Firmada por <b>${escapeHtml(c.firmante||'')}</b>${c.relacion?` (${escapeHtml(c.relacion)})`:''} el ${escapeHtml(f)}.<br>
+      Datos y entrenamiento: <b>sí</b> · Vídeo para análisis: <b>${d.chkVideo===true?'sí':'no'}</b> · Imágenes en redes: <b>${d.chkRedes===true?'sí':'no'}</b></p>`;
+  } else {
+    html += `<div class="empty">Todavía no hay autorización firmada.</div>`;
+  }
+  html += `</div>`;
+  const al = alertasMenor(d);
+  if(al.length){
+    html += `<div class="card"><h2>A tener en cuenta</h2>${al.map(a=>`<div class="al-menor ${a.nivel}"><b>${escapeHtml(a.titulo)}</b>${escapeHtml(a.texto)}</div>`).join('')}</div>`;
+  }
+  html += `<div class="card"><h2>Ficha del jugador</h2>`;
+  let ultimo = '';
+  camposFichaDe('menor', d).forEach(f=>{
+    if(f.type === 'check' || f.id === 'firmaTutor') return;
+    const v = d[f.id];
+    if(intakeValorVacio(f, v)) return;
+    if(f.group !== ultimo){ html += `<div class="q-cat">${f.group}</div>`; ultimo = f.group; }
+    let txt;
+    if(f.type === 'chips') txt = v.join(', ');
+    else if(f.type === 'select'){ const o = (f.options||[]).find(x=>String(optVal(x))===String(v)); txt = o ? optLab(o) : String(v); }
+    else txt = String(v);
+    html += `<div style="margin-bottom:10px;"><label class="field-label">${f.label}</label><div style="font-size:13.5px;">${escapeHtml(txt)}</div></div>`;
+  });
+  if(d.tenisHorasSemana != null) html += `<div class="q-cat">Calculado</div><div style="font-size:13.5px;">Tenis: <b>${d.tenisHorasSemana} h/semana</b>${d.edad?` · Edad: <b>${escapeHtml(String(d.edad))} años</b>`:''}</div>`;
+  return html + `</div>`;
+}
 
 const TABATA_PRESETS = [
   {label:'20"/10"', work:20, rest:10}, {label:'25"/5"', work:25, rest:5},
@@ -1330,6 +1962,7 @@ async function init(){
 
   await seedDemoAthlete();
   await loadAthletes();
+  await cargaContenido(true);
   if(state.athletes.length && !state.selectedId) state.selectedId = state.athletes[0].id;
   const savedLogin = await safeGet('umbral-session', false);
   if(savedLogin){
@@ -1338,6 +1971,9 @@ async function init(){
       if(l.role === 'coach'){ state.authRole='coach'; state.role='coach'; state.tab='atletas'; }
       else if(l.role === 'atleta' && l.athleteAsId && state.athletes.find(a=>a.id===l.athleteAsId)){
         state.authRole='atleta'; state.role='atleta'; state.athleteAsId=l.athleteAsId; state.tab='rutina';
+        { const atR = state.athletes.find(a=>a.id===l.athleteAsId);
+          if(esMenor(atR)){ const ikR = await safeGet('intake-'+l.athleteAsId, true); let ikD = null; try{ ikD = ikR ? JSON.parse(ikR) : null; }catch(e){}
+            if(!intakeCompleto(atR, ikD)) state.tab = 'intake'; } }
         // Si dejó una sesión a medias, le llevamos directo a ella.
         const pend = await findPausedSession(l.athleteAsId);
         if(pend) state.tab = 'diario';
@@ -1353,6 +1989,8 @@ async function init(){
     // el check de hábitos o el cuestionario de la sesión anterior.
     state.modoDemo = false; demoStore.clear();
     state.calShowHabits=false; state.calShowQuest=false; state.questWeek=null;
+    state.verTests=false; state.verGym=false; state.verFotos=false; state.verCiclo=false; state.verComp=false; state.verNutri=false;
+    state.nutriCat=null; state.nutriMomento=''; state.nutriGrupo='';
     state.editEntry=null; state.editTask=null; state._inAthleteDetail=false;
     state.openDays={}; state.calOffset=0; state.sessionWeek=null; state.sessionDay=null;
     stopSession();
@@ -1595,7 +2233,8 @@ async function bindGateEvents(){
         state.authRole = 'atleta'; state.role = 'atleta'; state.athleteAsId = a.id; state.gateMode = null;
         await safeSet('umbral-session', JSON.stringify({role:'atleta', athleteAsId:a.id}), false);
         const intakeRaw = await safeGet('intake-'+a.id, true);
-        state.tab = intakeRaw ? 'rutina' : 'intake';
+        let intakeDatos = null; try{ intakeDatos = intakeRaw ? JSON.parse(intakeRaw) : null; }catch(e){}
+        state.tab = intakeCompleto(a, intakeDatos) ? 'rutina' : 'intake';
         render();
       } else toast('PIN incorrecto', true);
     }catch(e){ toast('Error al entrar: '+e.message, true); }
@@ -1713,6 +2352,7 @@ function renderCoachAtletas(){
   });
   html += `</div><div class="row" style="margin-top:12px;">
     <input type="text" id="newAthleteName" placeholder="Nombre del nuevo atleta">
+    <label class="row" style="gap:6px;font-size:12.5px;white-space:nowrap;"><input type="checkbox" id="newAthleteMenor"> Menor de edad</label>
     ${TENIS_ACTIVO?`<select id="newAthleteModalidad" style="min-width:100px;">
       <option value="gym">Gym</option>
       <option value="tenis">Tenis</option>
@@ -1876,9 +2516,11 @@ async function bindShellEvents(){
     if(!pin){ toast('No quedan PINs libres de 4 dígitos', true); return; }
     const modalidad = (document.getElementById('newAthleteModalidad')||{}).value || 'gym';
     const newAthlete = { id: uid(), name, pin, modalidad };
+    const esMenorNuevo = !!(document.getElementById('newAthleteMenor') || {}).checked;
+    if(esMenorNuevo) newAthlete.perfiles = ['menor'];
     state.athletes.push(newAthlete);
     const ok = await safeSet('athletes-list', JSON.stringify(state.athletes), true);
-    toast(ok ? `${name} añadido · PIN ${pin}` : 'No se pudo guardar', !ok);
+    toast(ok ? `${name} añadido · PIN ${pin}${esMenorNuevo?' · cuestionario de menor':''}` : 'No se pudo guardar', !ok);
     render();
   });
   const previewBtn = document.getElementById('previewAsAthleteBtn');
@@ -1920,6 +2562,7 @@ async function renderTabContent(){
   const el = document.getElementById('tabContent'); if(!el) return;
   const mode = el.dataset.mode;
   const token = ++_renderToken;
+  await cargaContenido();
 
   // No vaciamos la pantalla mientras cargamos: dejar el contenido anterior a la
   // vista evita el parpadeo en cada toque. Sólo si tarda de verdad avisamos.
@@ -1949,7 +2592,8 @@ async function renderTabContent(){
         html += sub==='diario' ? await tplDiarioLectura(athleteId, false) : await tplProgreso(athleteId);
       }
       else if(state.tab==='perfil'){
-        if(state.verTests) html = await tplTestsAtleta(athleteId);
+        if(state.verNutri) html = await tplGuiaNutri(athleteId);
+        else if(state.verTests) html = await tplTestsAtleta(athleteId);
         else if(state.verGym) html = await tplGym(athleteId, false);
         else if(state.verFotos) html = await tplProgresoFotos(athleteId, false);
         else if(state.verCiclo) html = await tplCiclo(athleteId, false);
@@ -1971,28 +2615,6 @@ async function renderTabContent(){
 }
 
 // ---------- INTAKE ----------
-async function tplIntake(athleteId){
-  let html = `<div class="card"><h2>Antes de empezar — cuéntame sobre ti</h2>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">Esto ayuda a tu entrenador a diseñar tu plan desde el primer día.</p>`;
-  let lastGroup = '';
-  INTAKE_FIELDS.forEach(f=>{
-    if(f.group !== lastGroup){
-      html += `<div class="q-cat">${f.group}</div>`;
-      lastGroup = f.group;
-      if(f.group === 'Salud femenina'){
-        html += `<p class="q-nota-suave">Esto le ayuda a tu entrenador a adaptar tu entrenamiento a cómo vives tu ciclo — no hay respuestas "raras", cuéntalo tal cual lo sientes.</p>`;
-      }
-    }
-    const oculto = f.condicion ? 'style="display:none;"' : '';
-    html += `<div class="q-item" data-qwrap="${f.id}" ${f.condicion?`data-cond-campo="${f.condicion.campo}" data-cond-valor="${escapeHtml(f.condicion.valor)}"`:''} ${oculto} style="margin-bottom:16px;${f.condicion?'display:none;':''}"><label class="field-label">${f.label}</label>`;
-    if(f.type==='select') html += `<select data-intake="${f.id}" style="width:100%;"><option value="">Selecciona…</option>${f.options.map(o=>`<option value="${o}">${o}</option>`).join('')}</select>`;
-    else if(f.type==='textarea') html += `<textarea data-intake="${f.id}" style="min-height:56px;"></textarea>`;
-    else html += `<input type="${f.type}" data-intake="${f.id}" style="width:100%;">`;
-    html += `</div>`;
-  });
-  html += `<button class="btn" id="submitIntake">Guardar y continuar</button></div>`;
-  return html;
-}
 
 // ---------- ROUTINE HELPERS ----------
 // ---------- RUTINAS POR SEMANA ----------
@@ -2723,6 +3345,7 @@ function estimacionDeTest(test, resultado, intake){
   if(test.lift){
     const unRM = estima1RM(resultado.peso, resultado.reps);
     if(!unRM) return null;
+    if(intake && intake.tipo === 'menor') return { titular:`1RM estimado: ${unRM} kg`, nivel:'medio', texto:'En menores no se compara con tablas de adultos: lo que importa es su propia evolución.' };
     const pc = parseFloat(intake && intake.peso);
     const nf = nivelFuerza(test.lift, unRM, pc, intake && intake.genero);
     return {
@@ -2933,7 +3556,7 @@ async function getWelcome(athleteId){
   return { hechos:[], cerrado:null };
 }
 async function saveWelcome(athleteId, w){ return safeSet('welcome-'+athleteId, JSON.stringify(w), true); }
-function welcomeCompleto(w){ return WELCOME_ITEMS.every(i=>w.hechos.includes(i.id)); }
+function welcomeCompleto(w, at){ return welcomeItemsDe(at).every(i=>w.hechos.includes(i.id)); }
 
 // Da formato simple al cuerpo de las guías: **negrita** y saltos de línea.
 function formateaGuia(txt){
@@ -3407,7 +4030,8 @@ const PERFILES_ATLETA = [
   { id:'tenis', label:'Tenis' },
   { id:'hyrox', label:'Hyrox' },
   { id:'rendimiento', label:'Rendimiento' },
-  { id:'composicion', label:'Composición corporal' }
+  { id:'composicion', label:'Composición corporal' },
+  { id:'menor', label:'Menor de edad' }
 ];
 function perfilesDe(atleta){
   if(!atleta) return [];
@@ -3426,43 +4050,323 @@ function tienePerfil(atleta, id){ return perfilesDe(atleta).includes(id); }
 // Bloque de Gestión de Carga (lútea → menstruación) → reducir intensidad,
 // priorizar recuperación. La fase ovulatoria es un caso aparte: máxima fuerza
 // pero con más laxitud ligamentosa, así que se vigila la técnica.
+// Fechas como número de día en UTC: restar dos fechas da siempre días
+// enteros, sin que un cambio de hora ni el huso horario cuelen un día de más
+// o de menos (el mismo fallo que ya nos pasó con toISOString en las semanas).
+function diaUTC(iso){ const p = iso.split('-').map(Number); return Date.UTC(p[0], p[1]-1, p[2])/86400000; }
+function diasEntre(aISO, bISO){ return Math.round(diaUTC(bISO) - diaUTC(aISO)); }
+function sumaDiasISO(iso, n){
+  const t = new Date((diaUTC(iso)+n)*86400000);
+  return `${t.getUTCFullYear()}-${String(t.getUTCMonth()+1).padStart(2,'0')}-${String(t.getUTCDate()).padStart(2,'0')}`;
+}
+const ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
+function normalizaInicios(lista){
+  const set = new Set();
+  (lista||[]).forEach(f=>{ if(typeof f==='string' && ISO_RE.test(f)) set.add(f); });
+  return [...set].sort();
+}
+// El historial que ya leía la pantalla se deriva de los inicios: cada inicio
+// con los días que duró ese ciclo hasta el siguiente.
+function derivaHistorial(inicios){
+  return inicios.slice(0,-1).map((s,i)=>({ fecha:s, duracion: diasEntre(s, inicios[i+1]) }));
+}
+
+// La fuente de verdad es la lista de INICIOS de regla (primer día de sangrado
+// real). Todo lo demás —fase, duración media, tendencias— se deriva de ella,
+// así que corregir o añadir un inicio recalcula todo sin arrastrar errores.
 async function getCiclo(athleteId){
   const raw = await safeGet('ciclo-'+athleteId, true);
-  try{
-    const o = raw ? JSON.parse(raw) : null;
-    if(o && typeof o==='object') return {
-      ultimaRegla: o.ultimaRegla || null,
-      duracionCiclo: o.duracionCiclo || 28,
-      duracionRegla: o.duracionRegla || 5,
-      anticonceptivo: o.anticonceptivo || 'ninguno',
-      condicion: o.condicion || '',
-      historial: Array.isArray(o.historial) ? o.historial : []
-    };
-  }catch(e){}
-  return { ultimaRegla:null, duracionCiclo:28, duracionRegla:5, anticonceptivo:'ninguno', condicion:'', historial:[] };
+  let o = null;
+  try{ o = raw ? JSON.parse(raw) : null; }catch(e){}
+  if(!o || typeof o!=='object') o = {};
+  // Compatibilidad: lo guardado antes sólo tenía la última regla y un
+  // historial {fecha, duracion}; los juntamos en la lista de inicios.
+  const antiguos = (Array.isArray(o.historial) ? o.historial.map(h=>h && h.fecha) : []).concat([o.ultimaRegla]);
+  const inicios = normalizaInicios((Array.isArray(o.inicios) ? o.inicios : []).concat(antiguos));
+  return {
+    ultimaRegla: inicios.length ? inicios[inicios.length-1] : null,
+    inicios,
+    duracionCiclo: o.duracionCiclo || 28,
+    duracionRegla: o.duracionRegla || 5,
+    anticonceptivo: o.anticonceptivo || 'ninguno',
+    condicion: o.condicion || '',
+    historial: derivaHistorial(inicios)
+  };
 }
 async function saveCiclo(athleteId, c){ return safeSet('ciclo-'+athleteId, JSON.stringify(c), true); }
 
-// Día del ciclo y fase a partir de la fecha de la última regla. Con
-// anticonceptivo combinado el ciclo natural está suprimido, así que no se
-// calcula fase: se avisa de que toca programar por sensaciones, tal como
-// dicen tus propios apuntes.
-function faseCiclo(ciclo, fechaISO){
-  if(!ciclo || !ciclo.ultimaRegla) return null;
+// ---- Estadística del ciclo propio ----
+// Ciclo "analizable": 21–35 días (criterio de inclusión de las
+// recomendaciones metodológicas para investigar con mujeres deportistas).
+const CICLO_MIN = 21, CICLO_MAX = 35;
+function cicloRegular(dias){ return dias >= CICLO_MIN && dias <= CICLO_MAX; }
+function medianaNum(a){
+  if(!a.length) return null;
+  const s = [...a].sort((x,y)=>x-y); const m = Math.floor(s.length/2);
+  return s.length%2 ? s[m] : (s[m-1]+s[m])/2;
+}
+function sdNum(a){
+  if(a.length < 2) return null;
+  const m = a.reduce((x,y)=>x+y,0)/a.length;
+  return Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/(a.length-1));
+}
+function estadisticasCiclo(ciclo){
+  const inicios = ciclo.inicios || normalizaInicios([ciclo.ultimaRegla]);
+  const cerrados = inicios.slice(0,-1).map((s,i)=>({ inicio:s, dias: diasEntre(s, inicios[i+1]) }));
+  const validos = cerrados.filter(c=>cicloRegular(c.dias));
+  const ultimos = validos.slice(-6).map(c=>c.dias);
+  const mediana = medianaNum(ultimos);
+  return {
+    cerrados, nCerrados: cerrados.length, nValidos: validos.length,
+    nAtipicos: cerrados.length - validos.length,
+    mediana, sd: sdNum(ultimos),
+    // Con menos de 2 ciclos válidos medidos, un valor propio sería ruido: se
+    // usa lo que ella declara como habitual. Con 2 o más, manda la mediana
+    // (más robusta que la media ante un ciclo raro).
+    estimada: validos.length >= 2 ? Math.round(mediana) : (ciclo.duracionCiclo || 28)
+  };
+}
+
+// ---- Fase en una fecha ----
+// Con el ciclo CERRADO (ya se registró la regla siguiente) se cuenta hacia
+// atrás desde ella: la fase lútea es la más estable (≈14 días) y la folicular
+// absorbe casi toda la variabilidad, así que ese método es el más fiable que
+// permite un calendario. Con el ciclo EN CURSO sólo se puede proyectar hacia
+// delante: queda marcado como provisional.
+// Siempre es una ESTIMACIÓN por calendario: confirmar la ovulación exige
+// tests hormonales.
+function faseEnFecha(ciclo, fechaISO){
+  if(!ciclo) return { sinFase:true, motivo:'sin_registro' };
   if(ciclo.anticonceptivo === 'combinado') return { sinCicloNatural:true };
-  const ini = new Date(ciclo.ultimaRegla+'T00:00:00');
-  const hoy = new Date(fechaISO+'T00:00:00');
-  const dias = Math.round((hoy-ini)/86400000);
-  const dur = ciclo.duracionCiclo || 28;
-  const diaCiclo = ((dias % dur) + dur) % dur + 1;
-  const diaOvulacion = dur - 14;
+  const inicios = ciclo.inicios || normalizaInicios([ciclo.ultimaRegla]);
+  if(!inicios.length) return { sinFase:true, motivo:'sin_registro' };
+  let idx = -1;
+  for(let i=0;i<inicios.length;i++){ if(inicios[i] <= fechaISO) idx = i; }
+  if(idx < 0) return { sinFase:true, motivo:'anterior_al_primer_registro' };
+  const S = inicios[idx], N = inicios[idx+1];
+  const dia = diasEntre(S, fechaISO) + 1;
   const durRegla = ciclo.duracionRegla || 5;
+  let L, metodo, confianza, tarde = 0;
+  if(N){
+    L = diasEntre(S, N); metodo = 'retrospectivo'; confianza = 'media';
+    if(!cicloRegular(L)){
+      // Ciclo atípico: la ovulación no se puede situar con el calendario. Sólo
+      // se reconocen los días de sangrado.
+      if(dia <= durRegla) return { fase:'menstrual', diaCiclo:dia, longitud:L, metodo, confianza:'baja', inicioCiclo:S, atipico:true };
+      return { sinFase:true, motivo:'ciclo_irregular', diaCiclo:dia, longitud:L, inicioCiclo:S };
+    }
+  } else {
+    const est = estadisticasCiclo(ciclo);
+    L = est.estimada; metodo = 'provisional';
+    confianza = (est.nValidos >= 3 && est.sd !== null && est.sd <= 3) ? 'media' : 'baja';
+    if(dia > L + 7) return { sinFase:true, motivo: dia > 45 ? 'ausencia_prolongada' : 'retraso', diaCiclo:dia, longitud:L, inicioCiclo:S };
+    if(dia > L) tarde = dia - L;
+  }
+  const ov = L - 14;
   let fase;
-  if(diaCiclo <= durRegla) fase = 'menstrual';
-  else if(diaCiclo <= diaOvulacion - 2) fase = 'folicular';
-  else if(diaCiclo <= diaOvulacion + 1) fase = 'ovulatoria';
+  if(dia <= durRegla) fase = 'menstrual';
+  else if(dia <= ov - 2) fase = 'folicular';
+  else if(dia <= ov + 1) fase = 'ovulatoria';
   else fase = 'lutea';
-  return { diaCiclo, fase, duracionCiclo:dur };
+  // Los días de sangrado no dependen de ninguna proyección (sólo del inicio
+  // que ella registró): son un hecho observado, no una estimación. Sólo lo que
+  // se proyecta hacia delante queda pendiente de validar.
+  if(metodo === 'provisional' && fase === 'menstrual') metodo = 'observado';
+  return { fase, diaCiclo:dia, longitud:L, metodo, confianza, tarde, inicioCiclo:S };
+}
+
+// Misma firma de siempre (pantallas y tests ya la usan) pero sin proyectar
+// ciclos de forma indefinida: si la regla se retrasa, no inventa fase.
+function faseCiclo(ciclo, fechaISO){
+  const f = faseEnFecha(ciclo, fechaISO);
+  if(f.sinCicloNatural) return { sinCicloNatural:true };
+  if(f.sinFase) return f.motivo==='sin_registro' ? null : f;
+  return { diaCiclo:f.diaCiclo, fase:f.fase, duracionCiclo:f.longitud, metodo:f.metodo, confianza:f.confianza, tarde:f.tarde };
+}
+function textoSinFase(info){
+  if(info.motivo==='retraso') return `Tu regla lleva ${info.diaCiclo - info.longitud} días de retraso sobre tu ciclo habitual (${info.longitud} días). Mientras tanto no te asigno fase: no sabemos cuándo has ovulado este ciclo. Cuando te baje, regístralo.`;
+  if(info.motivo==='ausencia_prolongada') return `Llevas ${info.diaCiclo} días desde la última regla registrada. Si es un olvido de registro, anótala. Si de verdad no te ha bajado, coméntalo con un profesional sanitario: en deportistas, la ausencia de regla puede estar relacionada con comer o recuperar poco para lo que se entrena.`;
+  return 'No hay datos suficientes para estimar tu fase ahora mismo.';
+}
+
+// ---- Bloques de análisis ----
+// Para tendencias se usan 3 bloques: menstrual, folicular y lútea. La ventana
+// ovulatoria queda FUERA a propósito: es donde el calendario falla más, y
+// dejarla como zona de transición limpia el contraste entre las fases que sí
+// se distinguen bien.
+const CICLO_BLOQUES = ['menstrual','folicular','lutea'];
+const CICLO_BLOQUE_LABEL = { menstrual:'Menstrual', folicular:'Folicular', lutea:'Lútea' };
+function bloqueAnalisis(fase){ return CICLO_BLOQUES.includes(fase) ? fase : null; }
+
+// Una respuesta semanal cubre 7 días y puede cruzar fases. Sólo se asigna a
+// un bloque si al menos 4 de esos 7 días caen en él; si no, es "mixta" y se
+// deja fuera en vez de forzarla.
+function faseDeSemana(ciclo, hastaISO){
+  const cuenta = { menstrual:0, folicular:0, lutea:0, transicion:0, sinDato:0 };
+  const prov = { menstrual:0, folicular:0, lutea:0 };
+  const ciclos = { menstrual:null, folicular:null, lutea:null };
+  for(let k=0;k<7;k++){
+    const f = faseEnFecha(ciclo, sumaDiasISO(hastaISO, -k));
+    if(f.sinCicloNatural) return { fase:null, motivo:'anticonceptivo_combinado' };
+    if(f.sinFase){ cuenta.sinDato++; continue; }
+    const b = bloqueAnalisis(f.fase);
+    if(!b){ cuenta.transicion++; continue; }
+    cuenta[b]++;
+    if(f.metodo === 'provisional') prov[b]++;
+    ciclos[b] = f.inicioCiclo;
+  }
+  let mejor = null, n = 0;
+  CICLO_BLOQUES.forEach(b=>{ if(cuenta[b] > n){ n = cuenta[b]; mejor = b; } });
+  if(n >= 4) return { fase:mejor, dias:cuenta, validada: prov[mejor]===0, metodo: prov[mejor]===0?'retrospectivo':'provisional', cicloInicio:ciclos[mejor] };
+  return { fase:null, motivo: cuenta.sinDato>=4 ? 'sin_datos' : 'mixta', dias:cuenta, validada:false };
+}
+function snapshotSemana(ciclo, hastaISO){
+  const s = faseDeSemana(ciclo, hastaISO);
+  return { fase:s.fase, motivo:s.motivo||null, validada:!!s.validada, dias:s.dias||null, metodo:s.metodo||null };
+}
+
+// ---- Sensaciones semanales del ciclo ----
+// Adaptación propia del tipo de ítems que usan los diarios de síntomas
+// menstruales (energía, ánimo, dolor, hinchazón, capacidad percibida), con
+// etiquetas explícitas en cada punto. NO es el instrumento validado original
+// (DRSP): es una versión breve para ver tu patrón, no para diagnosticar.
+// En todas, 5 = mejor, igual que el resto de la app.
+const CICLO_ITEMS = [
+  { id:'energia',     corto:'Energía', text:'Tu nivel de energía, en general',
+    opciones:['Muy bajo, agotada','Bajo','Normal','Bueno','Muy alto'] },
+  { id:'animo',       corto:'Ánimo', text:'Tu estado de ánimo (irritabilidad, tristeza, tensión)',
+    opciones:['Muy alterado o decaído','Bastante alterado','Algo alterado','Estable','Muy estable y positivo'] },
+  { id:'dolor',       corto:'Dolor', text:'Dolor o molestias en el vientre, la pelvis o la zona lumbar',
+    opciones:['Intenso, me limita','Moderado','Leve','Casi nada','Ninguno'] },
+  { id:'hinchazon',   corto:'Hinchazón', text:'Hinchazón, retención de líquidos o pecho sensible',
+    opciones:['Mucha','Bastante','Algo','Poca','Ninguna'] },
+  { id:'rendimiento', corto:'Capacidad de entrenar', text:'Cómo has notado tu capacidad para entrenar (fuerza, recuperación)',
+    opciones:['Muy baja','Baja','Normal','Buena','Muy buena'] }
+];
+const CICLO_UMBRAL_PATRON = 0.6; // puntos sobre 5: orientativo, no un umbral clínico
+
+// Reasigna la fase de cada respuesta guardada. Se llama cada vez que cambia
+// el ciclo (nuevo inicio, borrado, ajustes): así, al registrar la regla
+// siguiente, las semanas que estaban "pendientes" pasan a validadas solas.
+async function reasignaFasesRespuestas(athleteId, cicloArg){
+  const ciclo = cicloArg || await getCiclo(athleteId);
+  const raw = await safeGet('quest-'+athleteId, true);
+  let resp;
+  try{ resp = raw ? JSON.parse(raw) : []; }catch(e){ return false; }
+  if(!Array.isArray(resp)) return false;
+  let cambio = false;
+  resp.forEach(r=>{
+    if(!r.cicloSint) return;
+    const snap = snapshotSemana(ciclo, r.date || r.weekOf);
+    if(JSON.stringify(snap) !== JSON.stringify(r.cicloSnap)){ r.cicloSnap = snap; cambio = true; }
+  });
+  if(cambio) return safeSet('quest-'+athleteId, JSON.stringify(resp), true);
+  return true;
+}
+async function guardaCicloYReasigna(athleteId, ciclo){
+  ciclo.inicios = normalizaInicios(ciclo.inicios);
+  ciclo.ultimaRegla = ciclo.inicios.length ? ciclo.inicios[ciclo.inicios.length-1] : null;
+  ciclo.historial = derivaHistorial(ciclo.inicios);
+  const est = estadisticasCiclo(ciclo);
+  if(est.nValidos >= 2) ciclo.duracionCiclo = est.estimada;
+  const ok = await saveCiclo(athleteId, ciclo);
+  if(ok) await reasignaFasesRespuestas(athleteId, ciclo);
+  return ok;
+}
+// Registra el primer día de una regla (hoy o una fecha pasada). Valida antes
+// de guardar: un dato mal metido contamina todo lo que se calcula después.
+async function registrarInicioRegla(athleteId, fechaISO, opciones){
+  opciones = opciones || {};
+  const ciclo = await getCiclo(athleteId);
+  if(!ISO_RE.test(fechaISO || '')) return { ok:false, motivo:'fecha_invalida' };
+  if(fechaISO > todayISO()) return { ok:false, motivo:'futura' };
+  if(ciclo.inicios.includes(fechaISO)) return { ok:false, motivo:'duplicada' };
+  const previo = [...ciclo.inicios].reverse().find(f=>f < fechaISO);
+  const siguiente = ciclo.inicios.find(f=>f > fechaISO);
+  const dPrev = previo ? diasEntre(previo, fechaISO) : null;
+  const dSig = siguiente ? diasEntre(fechaISO, siguiente) : null;
+  const corto = (dPrev !== null && dPrev < CICLO_MIN) || (dSig !== null && dSig < CICLO_MIN);
+  if(corto && !opciones.forzar) return { ok:false, motivo:'corto', dias: Math.min(dPrev===null?999:dPrev, dSig===null?999:dSig) };
+  ciclo.inicios.push(fechaISO);
+  const ok = await guardaCicloYReasigna(athleteId, ciclo);
+  return { ok, motivo: ok ? null : 'guardado', atipico: corto };
+}
+async function eliminarInicioRegla(athleteId, fechaISO){
+  const ciclo = await getCiclo(athleteId);
+  ciclo.inicios = ciclo.inicios.filter(f=>f !== fechaISO);
+  return guardaCicloYReasigna(athleteId, ciclo);
+}
+
+// ---- Tendencias por fase (cálculo puro, sin pantalla) ----
+function nuevoAcum(items){
+  const a = {};
+  CICLO_BLOQUES.forEach(b=>{
+    a[b] = { n:0, ciclos:new Set(), suma:{}, cuenta:{} };
+    items.forEach(k=>{ a[b].suma[k] = 0; a[b].cuenta[k] = 0; });
+  });
+  return a;
+}
+function acumula(acum, bloque, cicloId, valores){
+  const a = acum[bloque]; a.n++; a.ciclos.add(cicloId);
+  Object.keys(valores).forEach(k=>{
+    const v = valores[k];
+    if(typeof v === 'number' && !isNaN(v)){ a.suma[k] += v; a.cuenta[k]++; }
+  });
+}
+function cierraAcum(acum, items){
+  const global = {};
+  items.forEach(k=>{
+    let s = 0, c = 0;
+    CICLO_BLOQUES.forEach(b=>{ s += acum[b].suma[k]; c += acum[b].cuenta[k]; });
+    global[k] = c ? s/c : null;
+  });
+  const bloques = {}, patrones = [];
+  CICLO_BLOQUES.forEach(b=>{
+    bloques[b] = { n:acum[b].n, ciclos:acum[b].ciclos.size, medias:{}, cuentas:{} };
+    items.forEach(k=>{
+      const c = acum[b].cuenta[k];
+      const m = c ? acum[b].suma[k]/c : null;
+      bloques[b].medias[k] = m; bloques[b].cuentas[k] = c;
+      // Un patrón exige datos de al menos 2 ciclos distintos y 3 observaciones
+      // en esa fase, y una diferencia apreciable frente a la media propia.
+      if(m !== null && global[k] !== null && c >= 3 && acum[b].ciclos.size >= 2){
+        const diff = m - global[k];
+        if(Math.abs(diff) >= CICLO_UMBRAL_PATRON) patrones.push({ item:k, bloque:b, diff, media:m, global:global[k] });
+      }
+    });
+  });
+  const todos = new Set();
+  CICLO_BLOQUES.forEach(b=>acum[b].ciclos.forEach(c=>todos.add(c)));
+  return { global, bloques, patrones, ciclosConDatos: todos.size, total: CICLO_BLOQUES.reduce((s,b)=>s+acum[b].n,0) };
+}
+function calculaTendenciaCiclo(ciclo, respuestas, readinessLog){
+  const itemsS = CICLO_ITEMS.map(i=>i.id);
+  const acS = nuevoAcum(itemsS);
+  let pendientes = 0, mixtas = 0, sinDatos = 0;
+  (respuestas || []).forEach(r=>{
+    if(!r.cicloSint) return;
+    const s = faseDeSemana(ciclo, r.date || r.weekOf);
+    if(s.fase === null){ if(s.motivo==='mixta') mixtas++; else sinDatos++; return; }
+    if(!s.validada){ pendientes++; return; }
+    acumula(acS, s.fase, s.cicloInicio, r.cicloSint);
+  });
+  const semanal = Object.assign(cierraAcum(acS, itemsS), { pendientes, mixtas, sinDatos, items:itemsS });
+
+  const itemsD = READINESS_ITEMS.map(i=>i.id);
+  const acD = nuevoAcum(itemsD);
+  let pendD = 0;
+  Object.keys(readinessLog || {}).sort().forEach(fecha=>{
+    const dia = readinessLog[fecha];
+    if(!dia || !itemsD.every(k=>typeof dia[k]==='number')) return;
+    const f = faseEnFecha(ciclo, fecha);
+    if(f.sinCicloNatural || f.sinFase) return;
+    const b = bloqueAnalisis(f.fase);
+    if(!b) return;
+    if(f.metodo === 'provisional'){ pendD++; return; }
+    acumula(acD, b, f.inicioCiclo, dia);
+  });
+  const diario = Object.assign(cierraAcum(acD, itemsD), { pendientes:pendD, items:itemsD });
+  return { semanal, diario, ciclos: estadisticasCiclo(ciclo) };
 }
 
 // ---------- TEXTOS EDUCATIVOS (editables) ----------
@@ -3484,14 +4388,17 @@ const TEXTOS_EDUCATIVOS_DEFECTO = {
   rd_fatiga: { titulo:'Fatiga muscular', cuerpo:'Las agujetas y la pesadez muscular son microrroturas reales en el tejido conectivo, no solo una sensación. Entrenar encima de una fatiga alta sin que el cuerpo haya terminado de reparar no suma estímulo — compite con la propia reparación, y eso es lo que lleva a la lesión por sobreuso.\n\nQué ayuda: proteína repartida a lo largo del día (no solo post-entreno), movimiento suave en vez de reposo total, y si la fatiga viene con mal sueño acumulado, ese es probablemente el origen real.' },
   rd_estres: { titulo:'Estrés percibido', cuerpo:'El estrés mantenido activa el eje hormonal que sube el cortisol, y el cortisol alto interfiere directamente con el sueño profundo y con la síntesis de las hormonas que reparan tejido. El estrés de fuera de la pista no se queda fuera — quita rendimiento en la pista, aunque hayas entrenado y dormido "bien" en apariencia.\n\nQué ayuda: 5 minutos de respiración lenta antes de calentar, y hoy es buen día para priorizar técnica sobre buscar un máximo.' },
   rd_animo: { titulo:'Ánimo y motivación', cuerpo:'El ánimo bajo casi nunca es solo "cabeza" — está ligado a dopamina y serotonina, que a su vez dependen de dormir bien, no tener déficit de hierro o magnesio, y no arrastrar estrés crónico. Si el ánimo baja varios días seguidos, merece la pena mirar el sueño y la alimentación antes de asumir que es "falta de ganas".\n\nQué ayuda: exposición a luz solar 10-15 min, y entrenar hoy con objetivos pequeños y concretos en vez de uno grande.' },
-  ciclo_menstrual_entreno: { titulo:'Menstrual — entrenamiento', cuerpo:'Fase de descarga. Prioriza movilidad, técnica y trabajo aeróbico muy suave. No es el momento de buscar máximos — el sistema neuroendocrino está en mínimos estrogénicos.' },
-  ciclo_menstrual_nutricion: { titulo:'Menstrual — nutrición', cuerpo:'Pierdes hierro con el sangrado, así que esta semana conviene reforzarlo. Para el hierro no hemo (vegetal), acompáñalo siempre de vitamina C — se absorbe 2-3 veces mejor así. Si prefieres una fuente animal, mejillones o almejas son mucho más ricos en hierro que la carne roja, y encajan mejor con una base natural y el cuidado de la microbiota.\n\n🍽️ Lentejas con pimiento rojo y un chorro de limón\n🍽️ Tostada de pan integral con hummus y tomate\n🍽️ Ensalada de espinacas, fresas y semillas de calabaza\n\nEvita té o café justo con la comida principal — el tanino reduce la absorción del hierro; mejor una hora antes o después.' },
-  ciclo_folicular_entreno: { titulo:'Folicular — entrenamiento', cuerpo:'Ventana de rendimiento: pico estrogénico, mejor fuerza neuromuscular y mejor sensibilidad a la insulina. Buen momento para sobrecarga progresiva, intensidad y volumen altos — aprovecha para los tests o los pesos más exigentes.' },
-  ciclo_folicular_nutricion: { titulo:'Folicular — nutrición', cuerpo:'Tu cuerpo tira mejor de carbohidratos ahora — no los recortes si tienes sesiones exigentes, es cuando mejor los aprovechas.\n\n🍽️ Bowl de arroz integral, pollo y verduras salteadas\n🍽️ Boniato asado con garbanzos y tahini\n🍽️ Porridge de avena con fruta y frutos secos antes de entrenar fuerte' },
-  ciclo_ovulatoria_entreno: { titulo:'Ovulatoria — entrenamiento', cuerpo:'Sueles rendir más en fuerza, pero también hay más laxitud ligamentosa (más riesgo en la rodilla). Cuida la técnica en ejercicios de máxima carga, especialmente aterrizajes y cambios de dirección.' },
-  ciclo_ovulatoria_nutricion: { titulo:'Ovulatoria — nutrición', cuerpo:'Sin cambios especiales respecto a la fase folicular — sigue aprovechando bien los carbohidratos.\n\n🍽️ Las mismas opciones de la fase folicular funcionan igual de bien aquí.' },
-  ciclo_lutea_entreno: { titulo:'Lútea — entrenamiento', cuerpo:'Es normal fatigarte antes y notar la intensidad más dura de lo habitual — no es que rindas peor por hacer algo mal, es la progesterona subiendo. Baja algo el volumen si lo necesitas y autorregula por sensaciones más que por el papel.' },
-  ciclo_lutea_nutricion: { titulo:'Lútea — nutrición', cuerpo:'Tu temperatura corporal sube un poco: cuida más la hidratación. También cuesta más retener proteína, así que no la bajes ahora — repártela en 4 tomas si puedes.\n\n🍽️ Salmón al horno con quinoa y brócoli\n🍽️ Tortilla de dos huevos con espinacas y queso feta\n🍽️ Yogur griego con nueces y miel de media tarde, para sostener el ánimo sin picotear ultraprocesados' }
+  nutri_digestion: { titulo:'Nutrición — digerir y absorber mejor', cuerpo:'**Reparte la proteína** en varias tomas a lo largo del día (20-40 g por comida) en vez de concentrarla en una sola: se aprovecha mejor para la síntesis muscular.\n\n**Remoja las legumbres** antes de cocinarlas (o cocínalas bien): reduce el ácido fítico, que dificulta la absorción de minerales.\n\n**Combina el hierro vegetal** (legumbres, espinaca) con vitamina C (cítricos, pimiento, kiwi) en la misma comida: puede mejorar su absorción en esa comida, aunque con una dieta completa el efecto es modesto.\n\n**Evita comidas muy altas en fibra y grasa justo antes de entrenar:** ralentizan el vaciado gástrico y pueden dar pesadez o molestias.\n\n**Mastica despacio** y come sin prisa cuando puedas: la digestión empieza en la boca.\n\n**Incluye fermentados** (yogur, kéfir, chucrut) con cierta regularidad: favorecen el equilibrio de la microbiota.\n\n**Bebe suficiente agua** a lo largo del día, sobre todo si aumentas la fibra: sin hidratación, más fibra puede dar el efecto contrario (molestias, estreñimiento).' },
+  nutri_proteina: { titulo:'Nutrición — sumar proteína fácilmente', cuerpo:'**Ten siempre algo a mano que no necesite cocinar:** yogur griego, queso fresco, huevos cocidos, atún en lata. Se suman a cualquier plato (un huevo cocido junto al arroz, atún sobre la ensalada).\n\n**Un vaso de leche o un yogur** como acompañamiento de las comidas principales suma proteína sin ocupar espacio en el plato.\n\n**Si una comida se queda baja en proteína,** compénsala con un snack aparte (yogur, queso, fruta con un puñado de frutos secos o, si entrenas ese día, un batido de proteína).' },
+  ciclo_metodo: { titulo:'Cómo se calculan las fases y qué dice la evidencia', cuerpo:'**Cómo se calculan tus fases.** Se estiman por calendario, contando desde el primer día de tu regla. No es una confirmación hormonal: solo los tests de ovulación junto con análisis hormonales pueden confirmar cuándo ovulas. Para afinar al máximo, la app cuenta hacia atrás desde tu siguiente regla (la fase lútea es la más estable, unos 12-14 días; la folicular absorbe casi toda la variabilidad) y solo usa ciclos de 21 a 35 días. Por eso lo del ciclo en curso aparece como pendiente hasta que registras la próxima regla, y los días alrededor de la ovulación no se usan en las comparaciones.\n\n**Qué dice la evidencia actual.** Las revisiones sistemáticas con metaanálisis (McNulty y cols., 2020; Blagrove y cols., 2020) y una revisión de revisiones (Colenso-Semple y cols., 2023) encuentran diferencias triviales o inconsistentes entre fases en rendimiento, fuerza e hipertrofia, con estudios en su mayoría de baja calidad. Un ensayo aleatorizado de 2026 tampoco halló ventaja en concentrar el entrenamiento en una fase concreta. Ninguna de esas revisiones ofrece base para dar pautas generales por fase: recomiendan individualizar. Lo que sí está bien documentado es que los síntomas (dolor, cansancio, regla abundante, síntomas premenstruales) son muy frecuentes en deportistas y varían mucho de una mujer a otra. Por eso los textos de cada fase son orientativos, resumen lo que mejor respalda la evidencia hoy, y lo que de verdad guía tu entrenamiento es lo que tú registras.\n\n**Cómo leer tus tendencias.** Hacen falta al menos 2 ciclos (mejor 3) para ver algo fiable; una sola semana no dice nada. Los cuestionarios retrospectivos tienden a sobreestimar los síntomas frente al registro diario (estudio en deportistas de élite, 2025), por eso el check-in diario pesa más. Que no haya patrón también es información útil.\n\n**Cuándo consultar.** Ciclos de más de 35 días, o que desaparezcan 3 meses seguidos, no son algo que haya que aguantar: en deportistas puede estar relacionado con comer o recuperar poco para lo que se entrena. Coméntalo con un profesional sanitario.\n\n**Fuentes principales.** McNulty KL y cols., Sports Med 2020;50:1813-27. Blagrove RC y cols., J Sci Med Sport 2020;23:1220-7. Colenso-Semple LM y cols., Front Sports Act Living 2023. Herzberg SD y cols., Orthop J Sports Med 2017. Armour M y cols., Cochrane 2019 (CD004142). Cook JD y cols., Am J Clin Nutr 2001. ISSN, J Int Soc Sports Nutr 2023. Elliott-Sale KJ y cols., Sports Med 2021;51:843-61.' },
+  ciclo_menstrual_entreno: { titulo:'Menstrual — entrenamiento', cuerpo:'Si te encuentras bien, entrena tal y como está planificado. Si el dolor, el cansancio o un sangrado abundante te limitan, baja la intensidad o el volumen ese día, según cómo te sientas.\n\n📚 **Qué dice la evidencia:** un metaanálisis (McNulty y cols., 2020) encontró que el rendimiento podría ser trivialmente menor en los primeros días de la regla (tamaño del efecto de −0,06), con estudios de baja calidad y mucha variación entre ellos; concluye que no se pueden dar pautas generales y que hay que individualizar. Lo que sí varía mucho entre mujeres son los síntomas: entre el 71 y el 83 % de las deportistas refiere dolor menstrual, y el sangrado abundante es frecuente. Además, hacer ejercicio con regularidad reduce el dolor menstrual (revisión Cochrane, 2019; evidencia de baja calidad), así que moverte con suavidad suele ayudar.' },
+  ciclo_menstrual_nutricion: { titulo:'Menstrual — nutrición', cuerpo:'Con el sangrado se pierde hierro, y su déficit es frecuente en deportistas. No hace falta hacer nada especial solo en estos días: lo útil es incluir buenas fuentes de hierro de forma habitual y cuidar con qué las combinas.\n\n📚 **Qué dice la evidencia:** el déficit de hierro afecta a un 15-35 % de las deportistas, frente a alrededor del 5 % de la población general (Sim y cols., 2019), y la pérdida menstrual es uno de los factores principales. El hierro de origen animal (hemo) se absorbe mejor (un 5-35 %) que el vegetal (un 2-20 %). La vitamina C aumenta la absorción del hierro vegetal en una misma comida, pero con una dieta completa el efecto es mucho menor (Cook y cols., 2001) y la mejora de las reservas a largo plazo es modesta (Heffernan y cols., 2017): es un buen hábito, no una solución. Té, café, cacao, lácteos y calcio reducen la absorción si coinciden con la comida rica en hierro, y tras entrenar la hepcidina sube y absorbes peor durante unas horas. Si estás muy cansada o la regla es abundante, pide un análisis (ferritina) antes de tomar suplementos: el déficit se confirma con sangre, no con síntomas.\n\n🍽️ Lentejas con pimiento rojo y un chorro de limón\n🍽️ Tostada de pan integral con hummus y tomate\n🍽️ Ensalada de espinacas, fresas y semillas de calabaza\n🍽️ Mejillones al vapor con limón: unos 6 mg de hierro por 100 g, más del doble que la ternera (las almejas, en cambio, varían muchísimo según el tipo, y las picadas aportan poco)\n\nSepara el té o el café de la comida principal: mejor una hora antes o después.' },
+  ciclo_folicular_entreno: { titulo:'Folicular — entrenamiento', cuerpo:'Muchas mujeres se sienten con más energía y ganas en esta fase, y puedes entrenar tal y como está planificado. No hace falta reservar aquí las sesiones más duras.\n\n📚 **Qué dice la evidencia:** los metaanálisis no muestran diferencias consistentes de fuerza ni de rendimiento entre fases (Blagrove y cols., 2020; McNulty y cols., 2020), y una revisión de revisiones concluye que la evidencia es escasa, de baja calidad e inconsistente (Colenso-Semple y cols., 2023). Un ensayo aleatorizado de 2026 (Medicine & Science in Sports & Exercise; 24 mujeres, unas 12 semanas, cada pierna entrenada de una forma distinta) comparó concentrar el volumen alto en la fase folicular, en la lútea o repartirlo por igual: las ganancias de fuerza y de masa muscular fueron las mismas, y lo que determinó el resultado fue el volumen total acumulado. Una revisión de 2025 (Strength & Conditioning Journal) concluye que la evidencia para periodizar el entrenamiento por fases es insuficiente. Es posible que tú notes un patrón propio, y por eso registras tus sensaciones, pero no hay base para generalizarlo.' },
+  ciclo_folicular_nutricion: { titulo:'Folicular — nutrición', cuerpo:'Cubre tus necesidades de energía y de carbohidratos según la exigencia de cada sesión, igual que en el resto del ciclo. No recortes carbohidratos antes de entrenamientos duros.\n\n📚 **Qué dice la evidencia:** hay indicios, de evidencia limitada, de que en la fase folicular se repone algo menos de glucógeno muscular que en la lútea (ISSN, 2023), pero no está claro que eso cambie lo que necesitas comer. Una revisión de 2022 (European Journal of Sport Science) considera prematuro dar pautas distintas de carbohidratos o proteína según la fase siempre que se cubran las necesidades de energía, y el posicionamiento de la ISSN (2023) recomienda sobre todo asegurar los carbohidratos en todas las fases del ciclo.\n\n🍽️ Bowl de arroz integral, pollo y verduras salteadas\n🍽️ Boniato asado con garbanzos y tahini\n🍽️ Porridge de avena con fruta y frutos secos antes de entrenar fuerte' },
+  ciclo_ovulatoria_entreno: { titulo:'Ovulatoria — entrenamiento', cuerpo:'No hace falta cambiar tu entrenamiento en estos días. La técnica de aterrizaje y de cambio de dirección se cuida siempre, no solo ahora.\n\n📚 **Qué dice la evidencia:** en la ovulación la laxitud de la rodilla aumenta de media unas décimas de milímetro frente a la fase folicular (Herzberg y cols., 2017), y algunos estudios han sugerido más lesiones de ligamento cruzado en la fase preovulatoria, pero la calidad de esa evidencia se valora como muy baja. Otro metaanálisis (2019) no halló diferencias significativas de riesgo de rotura entre la fase lútea y la folicular (RR 1,18; IC 95 % 0,75-1,86), y una revisión sistemática de 2023 sobre marcadores biomecánicos concluye que no es concluyente que ninguna fase concreta predisponga. Lo que sí está bien demostrado es que los programas de entrenamiento neuromuscular (fuerza, pliometría, equilibrio y técnica) reducen las lesiones de ligamento cruzado en mujeres deportistas; la magnitud varía según el metaanálisis, desde cerca de un 20 % hasta un 50 % o más.' },
+  ciclo_ovulatoria_nutricion: { titulo:'Ovulatoria — nutrición', cuerpo:'Sin cambios especiales respecto a la fase folicular: sigue cubriendo tu energía y tus carbohidratos según la carga.\n\n📚 **Qué dice la evidencia:** no hay evidencia sólida que respalde pautas nutricionales específicas para estos días; la recomendación general (ISSN, 2023) es cubrir energía, carbohidratos y proteína en todas las fases. Una revisión (Nutrition Reviews, 2023) apunta a que la ingesta de energía tiende a ser más baja alrededor de la fase folicular tardía y la ovulación, aunque hay pocos estudios: si notas menos hambre, vigila no quedarte corta si estás entrenando fuerte.\n\n🍽️ Las mismas opciones de la fase folicular funcionan igual de bien aquí.' },
+  ciclo_lutea_entreno: { titulo:'Lútea — entrenamiento', cuerpo:'Es normal que algunos días notes más cansancio o que el mismo esfuerzo te cueste más, sobre todo con calor. Autorregula según cómo te sientas: si estás bien, entrena lo planificado; si no, baja el volumen o la intensidad ese día.\n\n📚 **Qué dice la evidencia:** en la fase lútea la temperatura corporal sube de media entre 0,3 y 0,7 °C por efecto de la progesterona, y en ejercicios largos con calor eso puede aumentar la frecuencia cardíaca y el esfuerzo percibido, aunque la capacidad máxima se mantiene (Giersch y cols., 2020). El sueño también puede empeorar algo por la mayor temperatura nocturna. Los síntomas premenstruales (cansancio, ánimo, hinchazón, dolor de cabeza) son muy frecuentes, en una encuesta a más de 1.000 deportistas los refería el 78 % de las que tenían ciclo natural, pero varían enormemente de una mujer a otra, y el ejercicio regular los alivia (revisión sistemática reciente en mujeres con síndrome premenstrual). No hay evidencia de que haya que bajar el volumen de forma sistemática en esta fase.' },
+  ciclo_lutea_nutricion: { titulo:'Lútea — nutrición', cuerpo:'Es habitual tener más apetito en esta fase: comer lo suficiente protege tu rendimiento y tu recuperación, así que no lo combatas. Mantén una ingesta de proteína suficiente y repartida a lo largo del día, igual que en el resto del ciclo.\n\n📚 **Qué dice la evidencia:** en varios estudios con la fase verificada, la ingesta de energía es mayor en la lútea (entre 100 y 500 kcal/día más; no todos los estudios lo encuentran; Nutrition Reviews, 2023), y el gasto energético en reposo sube algo, en torno a un 7-9 % en algunos estudios. Algunos estudios sugieren que se oxida algo más de proteína en esta fase, pero las revisiones más recientes concluyen que las necesidades no difieren de forma significativa y recomiendan la misma pauta todo el ciclo: 1,4-2,2 g/kg/día repartidos cada 3-4 horas (ISSN, 2023; Nutrients, 2026). Sobre la hidratación, la fase por sí sola no cambia de forma relevante el equilibrio de líquidos: pesan más el calor, la carga de trabajo y la forma física (Gatorade Sports Science Institute); si compites en calor, sí conviene probar tu estrategia de hidratación también en esta fase.\n\n🍽️ Salmón al horno con quinoa y brócoli\n🍽️ Tortilla de dos huevos con espinacas y queso feta\n🍽️ Yogur griego con nueces y miel de media tarde, para sostener el ánimo sin picotear ultraprocesados' }
 };
 async function getTextosEducativos(){
   const raw = await safeGet('textos-educativos', true);
@@ -3555,6 +4462,239 @@ async function getBlockLib(){
 async function saveBlockLib(lib){ return safeSet('block-library', JSON.stringify(lib), true); }
 
 // Copia limpia de un ejercicio: sin identidad ni datos de ejecución.
+// ---------- GUÍA NUTRICIONAL ----------
+// Cenas, comidas, snacks y alimentos sueltos, con macros y el momento en que
+// mejor encajan. Para todos los atletas; el entrenador la puede editar desde
+// Agenda → Nutrición. Con el perfil de menor se ven los alimentos y los
+// momentos pero no las calorías ni los macros: a esa edad no conviene contar.
+const NUTRI_CATEGORIAS = [{id:'cenas',label:'Cenas'},{id:'comidas',label:'Comidas'},{id:'snacks',label:'Snacks'},{id:'alimentos',label:'Alimentos'}];
+const NUTRI_MOMENTOS = ['Desayuno','Comida','Cena','Pre-entreno','Post-entreno','Snack','Antes de dormir','Cualquier momento'];
+const NUTRI_GRUPOS = ['Proteínas','Grasas','Carbohidratos','Fibra','Sueño','Cerebro','Antiinflamatorios'];
+// Rangos de partida (los de tu guía). Son independientes entre sí: no hace falta
+// llegar al máximo de todos a la vez. Se multiplican por el peso de cada atleta.
+const NUTRI_RANGOS = [
+  {k:'Carbohidratos', min:3, max:5}, {k:'Grasas', min:1, max:2}, {k:'Proteína', min:1.4, max:2.2}
+];
+function nutriGrupos(i){ return Array.isArray(i.grupos) ? i.grupos : (i.grupo ? [i.grupo] : []); }
+const NUTRI_AVISO = "Los momentos y las cantidades son orientativos: lo que más pesa es lo que comes en el total del día. Los valores nutricionales son aproximados (tablas de composición como USDA) y varían con la marca y el cocinado. Sobre los alimentos con fama de antiinflamatorios: en las revisiones sistemáticas, sus efectos sobre la recuperación son pequeños y de certeza baja o muy baja, y la mayoría de los estudios usan suplementos a dosis altas, no comida. Sirven como parte de una dieta variada, no como tratamiento. Si tienes una molestia que no se va, consulta a un profesional sanitario. Los grupos «Sueño» y «Cerebro» se apoyan en mecanismos plausibles y en estudios pequeños: no hay evidencia sólida de que ningún alimento concreto mejore el sueño o el rendimiento cognitivo en personas sanas. Esta guía orienta, no sustituye a un dietista-nutricionista; si tienes una condición médica, una alergia o una intolerancia, consúltalo.";
+const GUIA_NUTRI_DEFECTO = [{"id": "cena-salmon", "cat": "cenas", "nombre": "Salmón al horno con quinoa y brócoli", "racion": "150 g de salmón, 150 g de quinoa cocida, 150 g de brócoli y 1 cucharadita de AOVE", "kcal": 589, "p": 41, "c": 43, "g": 29, "momentos": ["Cena", "Post-entreno"], "nota": "Si entrenas por la tarde, esta cena sirve también de recuperación."}, {"id": "cena-tortilla", "cat": "cenas", "nombre": "Tortilla de dos huevos con espinacas y feta, y tostada integral", "racion": "2 huevos, 80 g de espinacas, 30 g de feta, 50 g de pan integral y un poco de AOVE", "kcal": 411, "p": 25, "c": 26, "g": 23, "momentos": ["Cena"], "nota": "Rápida y con proteína de calidad; añade una pieza de fruta si has entrenado fuerte."}, {"id": "cena-bacalao", "cat": "cenas", "nombre": "Bacalao o merluza con boniato asado y ensalada", "racion": "180 g de pescado blanco, 200 g de boniato asado, ensalada y 2 cucharaditas de AOVE", "kcal": 436, "p": 37, "c": 45, "g": 12, "momentos": ["Cena"], "nota": "Cena ligera de digerir, buena antes de un día de entreno exigente."}, {"id": "cena-pollo", "cat": "cenas", "nombre": "Pollo salteado con arroz integral y verduras", "racion": "120 g de pollo cocinado, 150 g de arroz integral cocido, 150 g de verduras y 1 cucharadita de AOVE", "kcal": 497, "p": 44, "c": 46, "g": 14, "momentos": ["Cena", "Post-entreno"], "nota": "Aporta proteína y carbohidrato a la vez: encaja si has entrenado por la tarde-noche."}, {"id": "comida-lentejas", "cat": "comidas", "nombre": "Lentejas estofadas con verduras y huevo", "racion": "250 g de lentejas cocidas con verduras, 1 huevo y 1 cucharadita de AOVE", "kcal": 472, "p": 31, "c": 58, "g": 14, "momentos": ["Comida"], "nota": "Buena fuente de hierro vegetal: añade algo con vitamina C (pimiento, limón) en la misma comida."}, {"id": "comida-bowl", "cat": "comidas", "nombre": "Bowl de arroz integral, pollo y verduras salteadas", "racion": "200 g de arroz integral cocido, 150 g de pollo cocinado, 150 g de verduras y 2 cucharaditas de AOVE", "kcal": 620, "p": 54, "c": 58, "g": 18, "momentos": ["Comida", "Post-entreno"], "nota": "Plato base fácil de preparar en tanda para varios días."}, {"id": "comida-pasta", "cat": "comidas", "nombre": "Pasta integral con atún y tomate", "racion": "220 g de pasta integral cocida, 80 g de atún al natural, 100 g de tomate y 2 cucharaditas de AOVE", "kcal": 486, "p": 34, "c": 65, "g": 12, "momentos": ["Comida", "Pre-entreno"], "nota": "Rica en carbohidrato: encaja 2-3 horas antes de un entreno largo o de una competición."}, {"id": "comida-boniato", "cat": "comidas", "nombre": "Boniato asado con garbanzos y tahini", "racion": "200 g de boniato asado, 150 g de garbanzos cocidos, 15 g de tahini y espinacas", "kcal": 524, "p": 21, "c": 87, "g": 12, "momentos": ["Comida"], "nota": "Opción vegetal completa; el tahini aporta grasa y calcio."}, {"id": "snack-yogur", "cat": "snacks", "nombre": "Yogur griego con nueces y miel", "racion": "200 g de yogur griego natural, 20 g de nueces y 1 cucharadita de miel", "kcal": 355, "p": 21, "c": 19, "g": 23, "momentos": ["Snack", "Desayuno", "Antes de dormir"], "nota": "Saciante y fácil de llevar."}, {"id": "snack-platano", "cat": "snacks", "nombre": "Plátano con crema de cacahuete", "racion": "1 plátano mediano y 20 g de crema de cacahuete", "kcal": 224, "p": 6, "c": 31, "g": 10, "momentos": ["Pre-entreno", "Snack"], "nota": "Carbohidrato rápido y algo de grasa: tómalo 45-60 minutos antes de entrenar."}, {"id": "snack-aguacate", "cat": "snacks", "nombre": "Tostada integral con aguacate y huevo", "racion": "60 g de pan integral, 50 g de aguacate y 1 huevo cocido", "kcal": 303, "p": 15, "c": 30, "g": 14, "momentos": ["Desayuno", "Snack"], "nota": ""}, {"id": "snack-hummus", "cat": "snacks", "nombre": "Hummus con zanahoria y pita integral", "racion": "60 g de hummus, 100 g de zanahoria y 40 g de pita integral", "kcal": 247, "p": 10, "c": 40, "g": 7, "momentos": ["Snack"], "nota": ""}, {"id": "snack-batido", "cat": "snacks", "nombre": "Batido de leche, plátano y avena", "racion": "300 ml de leche semidesnatada, 1 plátano y 30 g de copos de avena", "kcal": 344, "p": 16, "c": 57, "g": 7, "momentos": ["Post-entreno", "Snack"], "nota": "Proteína y carbohidrato para después de entrenar, sin necesidad de suplementos."}, {"id": "snack-fruta", "cat": "snacks", "nombre": "Manzana con un puñado de nueces", "racion": "1 manzana mediana y 20 g de nueces", "kcal": 209, "p": 3, "c": 23, "g": 13, "momentos": ["Snack"], "nota": ""}, {"id": "al-salmon", "cat": "alimentos", "nombre": "Salmón", "racion": "100 g", "kcal": 208, "p": 20.4, "c": 0, "g": 13.4, "momentos": ["Comida", "Cena", "Post-entreno"], "nota": "~2,3 g de omega-3 (EPA+DHA) por 100 g. El omega-3 puede reducir algo marcadores inflamatorios como la IL-6 y la PCR (sobre todo en estudios con suplementos); en deportistas, sus efectos sobre la recuperación son mixtos. Muy útil además por su proteína.", "grupos": ["Antiinflamatorios", "Proteínas", "Grasas", "Cerebro"], "rank": {"Proteínas": {"v": 20.4, "t": "20,4 g de proteína"}, "Grasas": {"v": 13.4, "t": "13,4 g de grasa"}}}, {"id": "al-sardina", "cat": "alimentos", "nombre": "Sardina", "racion": "100 g", "kcal": 208, "p": 24.6, "c": 0, "g": 11.5, "momentos": ["Comida", "Cena"], "nota": "~2,1 g de omega-3 por 100 g, con el mismo mecanismo que el salmón. Más económica; en lata, mejor al natural o en aceite de oliva.", "grupos": ["Antiinflamatorios"], "rank": {}}, {"id": "al-aove", "cat": "alimentos", "nombre": "Aceite de oliva virgen extra", "racion": "100 g (1 cucharada ≈ 10 g)", "kcal": 884, "p": 0, "c": 0, "g": 100, "momentos": ["Comida", "Cena"], "nota": "Rico en oleocantal (contenido muy variable según variedad y frescura). En laboratorio inhibe las mismas enzimas que el ibuprofeno, pero a las cantidades de la dieta (~50 g al día) equivale solo a un 10 % de una dosis de ibuprofeno (Beauchamp, 2005), y no se sabe si ocurre igual en el cuerpo. Es sobre todo una grasa de calidad.", "grupos": ["Antiinflamatorios", "Grasas"], "rank": {"Grasas": {"v": 100, "t": "100 g de grasa"}}}, {"id": "al-curcuma", "cat": "alimentos", "nombre": "Cúrcuma (con pimienta negra)", "racion": "100 g en polvo (se usa en pequeñas cantidades)", "kcal": 312, "p": 9.7, "c": 67.1, "g": 3.3, "momentos": ["Comida", "Cena"], "nota": "Contiene curcumina; la pimienta negra mejora notablemente su absorción. Las revisiones muestran un efecto pequeño-medio sobre las agujetas con certeza baja o muy baja, y usan ~500 mg de curcumina en formulaciones especiales: cocinar con cúrcuma aporta mucho menos.", "grupos": ["Antiinflamatorios", "Cerebro"], "rank": {}}, {"id": "al-granada", "cat": "alimentos", "nombre": "Granada", "racion": "100 g", "kcal": 83, "p": 1.7, "c": 18.7, "g": 1.2, "momentos": ["Snack", "Post-entreno"], "nota": "Rica en polifenoles (contenido variable), con acción antioxidante. En revisiones, el zumo de granada y el de cereza ácida redujeron las agujetas, tomados durante varios días alrededor del ejercicio.", "grupos": ["Antiinflamatorios"], "rank": {}}, {"id": "al-arandanos", "cat": "alimentos", "nombre": "Arándanos", "racion": "100 g", "kcal": 57, "p": 0.7, "c": 14.5, "g": 0.3, "momentos": ["Desayuno", "Snack", "Post-entreno"], "nota": "Ricos en polifenoles (antocianinas, contenido variable). Buena fruta de snack; la evidencia sobre la recuperación es más limitada que su fama.", "grupos": ["Antiinflamatorios", "Cerebro"], "rank": {}}, {"id": "al-jengibre", "cat": "alimentos", "nombre": "Jengibre", "racion": "100 g (se usa en pequeñas cantidades)", "kcal": 80, "p": 1.8, "c": 17.8, "g": 0.8, "momentos": ["Cualquier momento"], "nota": "Contiene gingerol, al que se atribuye efecto antiinflamatorio y ayuda con las molestias digestivas, con evidencia limitada en deportistas. Infusión, platos o batidos.", "grupos": ["Antiinflamatorios"], "rank": {}}, {"id": "al-espinaca", "cat": "alimentos", "nombre": "Espinaca (cruda)", "racion": "100 g", "kcal": 23, "p": 2.9, "c": 3.6, "g": 0.4, "momentos": ["Comida", "Cena"], "nota": "483 µg de vitamina K por 100 g, además de antioxidantes. Si tomas anticoagulantes (acenocumarol o warfarina), consulta antes de cambiar mucho tu consumo de verdura de hoja verde.", "grupos": ["Antiinflamatorios", "Fibra"], "rank": {"Fibra": {"v": 2.2, "t": "2,2 g de fibra"}}}, {"id": "al-kale", "cat": "alimentos", "nombre": "Kale (crudo)", "racion": "100 g", "kcal": 49, "p": 4.3, "c": 8.8, "g": 0.9, "momentos": ["Comida", "Cena"], "nota": "705 µg de vitamina K por 100 g: mismo perfil que la espinaca, más concentrado (y el mismo aviso con los anticoagulantes).", "grupos": ["Antiinflamatorios"], "rank": {}}, {"id": "al-nueces", "cat": "alimentos", "nombre": "Nueces", "racion": "100 g (una ración habitual son unos 30 g)", "kcal": 654, "p": 15.2, "c": 13.7, "g": 65.2, "momentos": ["Snack", "Desayuno"], "nota": "~9 g de omega-3 vegetal (ALA) por 100 g, más grasas saludables y polifenoles. Son calóricas; cuidado si hay alergia a frutos secos.", "grupos": ["Antiinflamatorios", "Grasas", "Cerebro"], "rank": {"Grasas": {"v": 65, "t": "65 g de grasa"}}}, {"id": "al-te-verde", "cat": "alimentos", "nombre": "Té verde (infusión)", "racion": "1 taza (≈ 240 ml)", "kcal": 1, "p": 0.2, "c": 0, "g": 0, "momentos": ["Cualquier momento"], "nota": "Catequinas (EGCG, concentración variable según la preparación) con efecto antioxidante pequeño. Contiene algo de cafeína: mejor evitarlo por la tarde-noche si duermes mal, y tomarlo lejos de las comidas ricas en hierro.", "grupos": ["Antiinflamatorios", "Cerebro"], "rank": {}}, {"id": "al-isolate", "nombre": "Proteína aislada (isolate) en polvo", "racion": "100 g de polvo (una dosis son unos 30 g)", "kcal": 380, "p": 90, "c": 2, "g": 1, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 90, "t": "90 g de proteína"}}, "momentos": ["Post-entreno", "Desayuno", "Snack"], "nota": "Útil cuando cuesta llegar a la proteína del día. Es un complemento práctico, no obligatorio: la comida normal cubre lo mismo.", "cat": "alimentos"}, {"id": "al-pollo", "nombre": "Pechuga de pollo", "racion": "100 g cocinada", "kcal": 165, "p": 31, "c": 0, "g": 3.6, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 31, "t": "31 g de proteína"}}, "momentos": ["Comida", "Cena", "Post-entreno"], "nota": "Proteína magra y versátil; se conserva bien cocinada para toda la semana.", "cat": "alimentos"}, {"id": "al-pavo", "nombre": "Pechuga de pavo", "racion": "100 g cocinada", "kcal": 135, "p": 30, "c": 0, "g": 1, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 30, "t": "30 g de proteína"}}, "momentos": ["Comida", "Cena"], "nota": "Muy magra: acompáñala de una grasa saludable (aceite de oliva, aguacate) para que sea más saciante.", "cat": "alimentos"}, {"id": "al-atun", "nombre": "Atún en lata (al natural)", "racion": "100 g escurrido", "kcal": 116, "p": 26, "c": 0, "g": 1, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 26, "t": "26 g de proteína"}}, "momentos": ["Comida", "Cena", "Snack"], "nota": "Proteína lista para usar sobre ensalada, pasta o una tostada.", "cat": "alimentos"}, {"id": "al-ternera", "nombre": "Ternera magra", "racion": "100 g cocinada", "kcal": 158, "p": 26, "c": 0, "g": 5.5, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 26, "t": "26 g de proteína"}}, "momentos": ["Comida", "Cena"], "nota": "Buena fuente de hierro de fácil absorción (hierro hemo). Conviene alternarla con pescado y legumbres.", "cat": "alimentos"}, {"id": "al-merluza", "nombre": "Merluza (pescado blanco)", "racion": "100 g cocinada", "kcal": 86, "p": 17, "c": 0, "g": 1.5, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 17, "t": "17 g de proteína"}}, "momentos": ["Cena", "Comida"], "nota": "Ligera de digerir: buena opción para la cena, sobre todo si entrenas al día siguiente.", "cat": "alimentos"}, {"id": "al-huevo", "nombre": "Huevo entero", "racion": "100 g (≈ 2 huevos medianos)", "kcal": 155, "p": 13, "c": 1.1, "g": 11, "grupos": ["Proteínas", "Cerebro"], "rank": {"Proteínas": {"v": 13, "t": "13 g de proteína"}}, "momentos": ["Desayuno", "Comida", "Cena", "Snack"], "nota": "Proteína de alta calidad. Aporta colina (≈ 147 mg por 100 g), que participa en la síntesis de acetilcolina; en adultos sanos no hay evidencia sólida de que comer más colina mejore la memoria.", "cat": "alimentos"}, {"id": "al-requeson", "nombre": "Requesón / queso fresco batido", "racion": "100 g", "kcal": 98, "p": 11, "c": 3.4, "g": 4.3, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 11, "t": "11 g de proteína"}}, "momentos": ["Desayuno", "Snack", "Antes de dormir"], "nota": "Rico en caseína, una proteína de digestión lenta: encaja bien por la noche.", "cat": "alimentos"}, {"id": "al-yogur-griego", "nombre": "Yogur griego", "racion": "100 g", "kcal": 97, "p": 9, "c": 4, "g": 5, "grupos": ["Proteínas", "Sueño"], "rank": {"Proteínas": {"v": 9, "t": "9 g de proteína"}, "Sueño": {"v": 11, "t": "11 mg de magnesio"}}, "momentos": ["Desayuno", "Snack", "Antes de dormir"], "nota": "Proteína y probióticos. Con fruta y frutos secos es un snack completo; antes de dormir aporta proteína de digestión lenta.", "cat": "alimentos"}, {"id": "al-lentejas", "nombre": "Lentejas cocidas", "racion": "100 g cocidas", "kcal": 116, "p": 9, "c": 20, "g": 0.4, "grupos": ["Proteínas", "Carbohidratos", "Fibra"], "rank": {"Proteínas": {"v": 9, "t": "9 g de proteína"}, "Carbohidratos": {"v": 20, "t": "20 g de carbohidratos"}, "Fibra": {"v": 8, "t": "8 g de fibra"}}, "momentos": ["Comida", "Cena"], "nota": "Proteína vegetal, carbohidrato y fibra a la vez. Su hierro se absorbe mejor con algo de vitamina C en la misma comida (en una dieta completa el efecto es modesto).", "cat": "alimentos"}, {"id": "al-tofu", "nombre": "Tofu firme", "racion": "100 g", "kcal": 76, "p": 8, "c": 1.9, "g": 4.8, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 8, "t": "8 g de proteína"}}, "momentos": ["Comida", "Cena"], "nota": "Proteína vegetal que toma el sabor de lo que lo acompañe; salteado o a la plancha.", "cat": "alimentos"}, {"id": "al-almendras", "nombre": "Almendras", "racion": "100 g (un puñado son unos 30 g)", "kcal": 579, "p": 21, "c": 22, "g": 50, "grupos": ["Grasas", "Cerebro"], "rank": {"Grasas": {"v": 50, "t": "50 g de grasa"}}, "momentos": ["Snack", "Desayuno"], "nota": "Grasa insaturada, fibra y magnesio (≈ 270 mg por 100 g). Con un puñado (≈ 30 g) basta: es un snack muy concentrado.", "cat": "alimentos"}, {"id": "al-calabaza", "nombre": "Semillas de calabaza", "racion": "100 g (un puñado son unos 30 g)", "kcal": 559, "p": 30, "c": 11, "g": 49, "grupos": ["Grasas", "Cerebro"], "rank": {"Grasas": {"v": 49, "t": "49 g de grasa"}}, "momentos": ["Snack", "Desayuno"], "nota": "Aportan magnesio (≈ 262 mg por 100 g) y proteína. Van bien sobre yogur, ensaladas o porridge.", "cat": "alimentos"}, {"id": "al-chia", "nombre": "Semillas de chía", "racion": "100 g (dos cucharadas son unos 20 g)", "kcal": 486, "p": 17, "c": 42, "g": 31, "grupos": ["Grasas", "Fibra"], "rank": {"Grasas": {"v": 31, "t": "31 g de grasa"}, "Fibra": {"v": 34, "t": "34 g de fibra"}}, "momentos": ["Desayuno", "Snack"], "nota": "Dos cucharadas (≈ 20 g) aportan unos 7 g de fibra. Hidrátalas en yogur, leche o avena antes de comerlas y bebe agua.", "cat": "alimentos"}, {"id": "al-aguacate", "nombre": "Aguacate", "racion": "100 g de pulpa", "kcal": 160, "p": 2, "c": 8.5, "g": 14.7, "grupos": ["Grasas"], "rank": {"Grasas": {"v": 14.7, "t": "14,7 g de grasa"}}, "momentos": ["Desayuno", "Comida", "Snack"], "nota": "Grasa insaturada y fibra. Un cuarto o media pieza es una ración razonable.", "cat": "alimentos"}, {"id": "al-avena", "nombre": "Avena", "racion": "100 g en crudo", "kcal": 389, "p": 17, "c": 66, "g": 7, "grupos": ["Carbohidratos", "Fibra", "Sueño", "Cerebro"], "rank": {"Carbohidratos": {"v": 66, "t": "66 g de carbohidratos"}, "Fibra": {"v": 10, "t": "10 g de fibra"}, "Sueño": {"v": 138, "t": "138 mg de magnesio"}}, "momentos": ["Desayuno", "Pre-entreno", "Snack"], "nota": "Carbohidrato de absorción gradual: buena base de desayuno o de pre-entreno si la toleras. Aporta magnesio y vitaminas del grupo B.", "cat": "alimentos"}, {"id": "al-pan-integral", "nombre": "Pan integral", "racion": "100 g (una rebanada son unos 30 g)", "kcal": 247, "p": 13, "c": 41, "g": 3.4, "grupos": ["Carbohidratos", "Fibra"], "rank": {"Carbohidratos": {"v": 41, "t": "41 g de carbohidratos"}, "Fibra": {"v": 7, "t": "7 g de fibra"}}, "momentos": ["Desayuno", "Comida", "Snack"], "nota": "Base de tostadas con proteína (huevo, atún, requesón). Con mucha fibra, evítalo justo antes de un entreno intenso si te sienta pesado.", "cat": "alimentos"}, {"id": "al-pasta-integral", "nombre": "Pasta integral", "racion": "100 g cocida", "kcal": 124, "p": 5.3, "c": 25, "g": 1.1, "grupos": ["Carbohidratos"], "rank": {"Carbohidratos": {"v": 25, "t": "25 g de carbohidratos"}}, "momentos": ["Comida", "Cena", "Pre-entreno", "Post-entreno"], "nota": "Carbohidrato de absorción gradual; para antes de entrenar, tómala 2-3 h antes.", "cat": "alimentos"}, {"id": "al-arroz-integral", "nombre": "Arroz integral", "racion": "100 g cocido", "kcal": 111, "p": 2.6, "c": 23, "g": 0.9, "grupos": ["Carbohidratos"], "rank": {"Carbohidratos": {"v": 23, "t": "23 g de carbohidratos"}}, "momentos": ["Comida", "Cena", "Post-entreno"], "nota": "Acompañamiento fácil de combinar con proteína y verduras.", "cat": "alimentos"}, {"id": "al-quinoa", "nombre": "Quinoa", "racion": "100 g cocida", "kcal": 120, "p": 4.4, "c": 21, "g": 1.9, "grupos": ["Carbohidratos"], "rank": {"Carbohidratos": {"v": 21, "t": "21 g de carbohidratos"}}, "momentos": ["Comida", "Cena"], "nota": "Carbohidrato con algo más de proteína que otros cereales.", "cat": "alimentos"}, {"id": "al-boniato", "nombre": "Boniato", "racion": "100 g cocido", "kcal": 90, "p": 2, "c": 21, "g": 0.2, "grupos": ["Carbohidratos", "Fibra"], "rank": {"Carbohidratos": {"v": 21, "t": "21 g de carbohidratos"}, "Fibra": {"v": 3.3, "t": "3,3 g de fibra (con piel)"}}, "momentos": ["Comida", "Cena", "Pre-entreno", "Post-entreno"], "nota": "Carbohidrato fácil de digerir y versátil: asado, en puré o en tortilla.", "cat": "alimentos"}, {"id": "al-lino", "nombre": "Semillas de lino", "racion": "100 g (una cucharada son unos 10 g)", "kcal": 534, "p": 18, "c": 29, "g": 42, "grupos": ["Fibra", "Grasas"], "rank": {"Fibra": {"v": 27, "t": "27 g de fibra"}}, "momentos": ["Desayuno", "Snack"], "nota": "Mejor molidas para aprovechar su fibra y su omega-3 vegetal (ALA). Añádelas a yogur o avena.", "cat": "alimentos"}, {"id": "al-nibs", "nombre": "Nibs de cacao", "racion": "100 g (se usan en pequeñas cantidades)", "kcal": 476, "p": 14, "c": 37, "g": 31, "grupos": ["Sueño"], "rank": {"Sueño": {"v": 499, "t": "499 mg de magnesio"}}, "momentos": ["Snack", "Desayuno"], "nota": "Muy ricos en magnesio, pero se toman en cantidades pequeñas (un puñadito sobre yogur o fruta). La composición varía mucho entre marcas.", "cat": "alimentos"}, {"id": "al-pistachos", "nombre": "Pistachos", "racion": "100 g (un puñado son unos 30 g)", "kcal": 560, "p": 20, "c": 28, "g": 45, "grupos": ["Sueño", "Grasas"], "rank": {"Sueño": {"v": 121, "t": "121 mg de magnesio"}}, "momentos": ["Snack"], "nota": "Magnesio y grasa insaturada. Sin sal y con cáscara, comes más despacio.", "cat": "alimentos"}, {"id": "al-platano", "nombre": "Plátano", "racion": "100 g (una pieza mediana son unos 120 g de pulpa)", "kcal": 89, "p": 1.1, "c": 23, "g": 0.3, "grupos": ["Sueño", "Carbohidratos"], "rank": {"Sueño": {"v": 27, "t": "27 mg de magnesio"}}, "momentos": ["Pre-entreno", "Post-entreno", "Snack", "Desayuno"], "nota": "Carbohidrato rápido y fácil de digerir: útil antes y después de entrenar. Aporta algo de magnesio, pero poco.", "cat": "alimentos"}, {"id": "al-kiwi", "nombre": "Kiwi", "racion": "100 g (un kiwi son unos 75 g)", "kcal": 61, "p": 1.1, "c": 15, "g": 0.5, "grupos": ["Sueño"], "rank": {"Sueño": {"v": 17, "t": "17 mg de magnesio"}}, "momentos": ["Snack", "Antes de dormir", "Desayuno"], "nota": "En algún estudio pequeño, comerlo antes de acostarse se asoció a mejor sueño; la evidencia es limitada. Sobre todo es una fruta rica en vitamina C.", "cat": "alimentos"}, {"id": "al-cerezas", "nombre": "Cerezas", "racion": "100 g", "kcal": 63, "p": 1.1, "c": 16, "g": 0.2, "grupos": ["Sueño"], "rank": {"Sueño": {"v": 11, "t": "11 mg de magnesio"}}, "momentos": ["Snack", "Post-entreno", "Antes de dormir"], "nota": "Contienen algo de melatonina (cantidad variable). El zumo de cereza ácida tiene estudios modestos sobre recuperación; en fruta entera, la evidencia es menor.", "cat": "alimentos"}, {"id": "al-kefir", "nombre": "Kéfir", "racion": "100 g", "kcal": 41, "p": 3.4, "c": 4.5, "g": 1, "grupos": ["Sueño"], "rank": {"Sueño": {"v": 10, "t": "10 mg de magnesio"}}, "momentos": ["Desayuno", "Snack", "Antes de dormir"], "nota": "Lácteo fermentado con probióticos y algo de proteína.", "cat": "alimentos"}, {"id": "al-cacao", "nombre": "Cacao puro en polvo", "racion": "100 g (una cucharada son unos 5 g)", "kcal": 228, "p": 20, "c": 58, "g": 14, "grupos": ["Cerebro"], "rank": {}, "momentos": ["Desayuno", "Snack"], "nota": "Rico en flavonoides (cantidad variable según el procesado) y con un ligero efecto estimulante. Mézclalo con leche, yogur o avena, en pequeñas cantidades.", "cat": "alimentos"}];
+async function getGuiaNutri(){
+  const raw = await safeGet('guia-nutri', true);
+  try{ const o = raw ? JSON.parse(raw) : null; if(o && Array.isArray(o.items)) return o.items; }catch(e){}
+  return JSON.parse(JSON.stringify(GUIA_NUTRI_DEFECTO));
+}
+async function saveGuiaNutri(items){ return safeSet('guia-nutri', JSON.stringify({items}), true); }
+function nutriNum(n){ return (Math.round((Number(n)||0)*10)/10).toString().replace('.',','); }
+
+async function tplGuiaNutri(athleteId){
+  const items = await getGuiaNutri();
+  const atl = state.athletes.find(a=>a.id===athleteId);
+  const menor = esMenor(atl);
+  const cat = state.nutriCat || 'todos', mom = state.nutriMomento || '', grp = (cat === 'alimentos' || cat === 'todos') ? (state.nutriGrupo || '') : '';
+  let html = `<div class="row" style="margin-bottom:12px;"><button class="btn ghost small" id="volverNutriBtn">← Perfil</button></div>
+    <div class="card"><h2>Guía nutricional</h2>
+      <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">${menor ? 'Ideas de qué comer y cuándo. No hace falta contar calorías: lo importante es comer variado y con ganas.' : 'Ideas de cenas, comidas, snacks y alimentos, con sus macros y cuándo encajan mejor.'}</p>
+      <details class="nutri-aviso"><summary>Cómo leer esta guía</summary><p>${escapeHtml(NUTRI_AVISO)}</p></details>
+      <div class="gal-secs" style="margin:12px 0 8px;"><button type="button" class="gs-chip ${cat==='todos'?'on':''}" data-nutricat="todos">Todo</button>${NUTRI_CATEGORIAS.map(c=>`<button type="button" class="gs-chip ${cat===c.id?'on':''}" data-nutricat="${c.id}">${c.label}</button>`).join('')}</div>
+      <div class="gal-secs">${NUTRI_MOMENTOS.map(m=>`<button type="button" class="gs-chip ${mom===m?'on':''}" data-nutrimomento="${escapeHtml(m)}">${m}</button>`).join('')}</div>
+      ${(cat==='alimentos' || cat==='todos') ? `<label class="field-label" style="margin-top:12px;">Alimentos por grupo</label><div class="gal-secs">${NUTRI_GRUPOS.map(g=>`<button type="button" class="gs-chip ${grp===g?'on':''}" data-nutrigrupo="${escapeHtml(g)}">${g}</button>`).join('')}</div>` : ''}
+    </div>`;
+  if(!menor){
+    const intakeRaw = await safeGet('intake-'+athleteId, true);
+    let peso = null; try{ peso = numIntake((intakeRaw ? JSON.parse(intakeRaw) : {}).peso); }catch(e){}
+    html += `<div class="card"><h2>Tu orientación diaria</h2>`;
+    if(peso){
+      html += `<div class="tabla-comp-wrap"><table class="tabla-comp"><thead><tr><th></th><th>g/kg/día</th><th>Total (${nutriNum(peso)} kg)</th></tr></thead><tbody>${NUTRI_RANGOS.map(r=>`<tr><td>${r.k}</td><td>${nutriNum(r.min)}-${nutriNum(r.max)}</td><td>${Math.round(r.min*peso)}-${Math.round(r.max*peso)} g</td></tr>`).join('')}</tbody></table></div>`;
+    } else {
+      html += `<p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Añade tu peso en tus datos del Perfil y aquí verás tus cantidades.</p>`;
+    }
+    html += `<p style="font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:8px;">Son rangos orientativos e independientes: no hace falta llegar al máximo de los tres a la vez. Si entrenas mucho, los carbohidratos suben: 5-7 g/kg con un programa moderado (≈ 1 h al día) y 6-10 g/kg con 1-3 h diarias de resistencia (ACSM / Academy of Nutrition and Dietetics / Dietitians of Canada, 2016).</p></div>`;
+    const ov = await getTextosEducativos();
+    [['nutri_digestion','Consejos para digerir y absorber mejor'],['nutri_proteina','Consejos para sumar proteína fácilmente']].forEach(([k,tit])=>{
+      html += `<details class="nutri-aviso nutri-consejos"><summary>${tit}</summary><p>${formateaGuia(textoEducativo(ov,k).cuerpo)}</p></details>`;
+    });
+  }
+  let lista = items.filter(i=>(cat==='todos' || i.cat===cat) && (!mom || (i.momentos||[]).includes(mom)) && (!grp || nutriGrupos(i).includes(grp)));
+  // Con un grupo elegido se ordena por su ranking (más a menos), como en tu documento.
+  if(grp) lista = lista.map((x,n)=>({x,n})).sort((a,b)=>{ const ra = a.x.rank && a.x.rank[grp], rb = b.x.rank && b.x.rank[grp]; if(ra && rb) return rb.v - ra.v; if(ra) return -1; if(rb) return 1; return a.n - b.n; }).map(o=>o.x);
+  if(!lista.length) html += `<div class="card"><div class="empty">No hay nada con ese filtro.</div></div>`;
+  lista.forEach(i=>{
+    const rk = grp && i.rank && i.rank[grp];
+    html += `<div class="card nutri-card"><b>${escapeHtml(i.nombre||'')}</b>${nutriGrupos(i).map(g=>` <span class="tipo-tag">${escapeHtml(g)}</span>`).join('')}
+      ${i.racion?`<div class="nutri-rac">${escapeHtml(i.racion)}</div>`:''}
+      ${(rk && !menor) ? `<div class="nutri-rank">📊 Ranking de ${escapeHtml(grp.toLowerCase())}: ${escapeHtml(rk.t)} por 100 g</div>` : ''}
+      ${menor ? '' : `<div class="ex-meta"><span><b>${nutriNum(i.kcal)}</b> kcal</span><span>P <b>${nutriNum(i.p)}</b> g</span><span>C <b>${nutriNum(i.c)}</b> g</span><span>G <b>${nutriNum(i.g)}</b> g</span></div>`}
+      <div class="gal-secs" style="margin:8px 0 4px;">${(i.momentos||[]).map(m=>`<span class="mom-tag">${escapeHtml(m)}</span>`).join('')}</div>
+      ${i.nota?`<p class="nutri-nota">${escapeHtml(i.nota)}</p>`:''}</div>`;
+  });
+  return html;
+}
+
+async function tplGuiaNutriEditor(){
+  const items = await getGuiaNutri();
+  let html = `<div class="card"><h2>Guía nutricional</h2>
+    <p style="font-size:12px;color:var(--muted);line-height:1.6;">Lo que ven todos los atletas en Perfil → Guía nutricional. Los cambios se guardan solos. Los atletas con perfil de menor ven los alimentos y los momentos, pero no las calorías ni los macros.</p></div><div id="nutriEditor">`;
+  NUTRI_CATEGORIAS.forEach(c=>{
+    html += `<div class="card"><h2>${c.label}</h2>`;
+    items.filter(i=>i.cat===c.id).forEach(i=>{
+      html += `<div class="ex-card" data-nid="${i.id}">
+        <input type="text" class="ne-nombre" value="${escapeHtml(i.nombre||'')}" placeholder="Nombre" style="width:100%;font-weight:700;">
+        <input type="text" class="ne-racion" value="${escapeHtml(i.racion||'')}" placeholder="Ración (150 g, 1 taza…)" style="width:100%;margin-top:6px;">
+        <div class="ex-grid">
+          <div><label class="field-label">kcal</label><input type="text" inputmode="decimal" class="ne-kcal" value="${nutriNum(i.kcal)}"></div>
+          <div><label class="field-label">Proteína (g)</label><input type="text" inputmode="decimal" class="ne-p" value="${nutriNum(i.p)}"></div>
+          <div><label class="field-label">Hidratos (g)</label><input type="text" inputmode="decimal" class="ne-c" value="${nutriNum(i.c)}"></div>
+          <div><label class="field-label">Grasa (g)</label><input type="text" inputmode="decimal" class="ne-g" value="${nutriNum(i.g)}"></div>
+        </div>
+        <label class="field-label" style="margin-top:8px;">Momentos ideales</label>
+        <div class="gal-secs">${NUTRI_MOMENTOS.map(m=>`<button type="button" class="gs-chip ${(i.momentos||[]).includes(m)?'on':''}" data-nmom="${escapeHtml(m)}">${m}</button>`).join('')}</div>
+        <input type="text" class="ne-grupo" value="${escapeHtml(nutriGrupos(i).join(', '))}" placeholder="Grupos separados por comas (Proteínas, Cerebro…)" style="width:100%;margin-top:8px;">
+        <textarea class="ne-nota" placeholder="Nota" style="min-height:52px;width:100%;margin-top:6px;">${escapeHtml(i.nota||'')}</textarea>
+        <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-nborrar="${i.id}">Eliminar</button></div>
+      </div>`;
+    });
+    html += `<button class="btn ghost small" data-nanadir="${c.id}">+ Añadir en ${c.label.toLowerCase()}</button></div>`;
+  });
+  html += `</div><div class="card"><button class="btn ghost small danger" id="nutriRestaurar">Restaurar valores de partida</button></div>`;
+  return html;
+}
+
+function bindNutri(){
+  const ab = document.getElementById('abrirNutriBtn'); if(ab) ab.addEventListener('click', ()=>{ state.verNutri = true; renderScrollTop(); });
+  const vb = document.getElementById('volverNutriBtn'); if(vb) vb.addEventListener('click', ()=>{ state.verNutri = false; renderScrollTop(); });
+  document.querySelectorAll('[data-nutricat]').forEach(b=>b.addEventListener('click', ()=>{ state.nutriCat = b.dataset.nutricat; if(state.nutriCat !== 'alimentos' && state.nutriCat !== 'todos') state.nutriGrupo = ''; renderKeepScroll(); }));
+  document.querySelectorAll('[data-nutrigrupo]').forEach(b=>b.addEventListener('click', ()=>{ state.nutriGrupo = (state.nutriGrupo === b.dataset.nutrigrupo) ? '' : b.dataset.nutrigrupo; renderKeepScroll(); }));
+  document.querySelectorAll('[data-nutrimomento]').forEach(b=>b.addEventListener('click', ()=>{ state.nutriMomento = (state.nutriMomento === b.dataset.nutrimomento) ? '' : b.dataset.nutrimomento; renderKeepScroll(); }));
+  const ed = document.getElementById('nutriEditor');
+  if(ed && !ed.dataset.bound){
+    ed.dataset.bound = '1';
+    const guarda = async (card)=>{
+      const items = await getGuiaNutri(), it = items.find(x=>x.id === card.dataset.nid); if(!it) return;
+      const v = s=>card.querySelector(s).value.trim();
+      const n = s=>{ const x = numIntake(v(s)); return x === null ? 0 : x; };
+      it.nombre = v('.ne-nombre'); it.racion = v('.ne-racion'); it.grupos = v('.ne-grupo').split(',').map(x=>x.trim()).filter(Boolean); delete it.grupo; it.nota = v('.ne-nota');
+      it.kcal = n('.ne-kcal'); it.p = n('.ne-p'); it.c = n('.ne-c'); it.g = n('.ne-g');
+      it.momentos = [...card.querySelectorAll('[data-nmom].on')].map(b=>b.dataset.nmom);
+      await saveGuiaNutri(items);
+    };
+    ed.addEventListener('change', e=>{ const card = e.target.closest('[data-nid]'); if(card) guarda(card); });
+    ed.addEventListener('click', async e=>{
+      const chip = e.target.closest('[data-nmom]');
+      if(chip){ chip.classList.toggle('on'); const card = chip.closest('[data-nid]'); if(card) await guarda(card); return; }
+      const del = e.target.closest('[data-nborrar]');
+      if(del){ if(!confirm('¿Eliminar este elemento de la guía?')) return; await saveGuiaNutri((await getGuiaNutri()).filter(i=>i.id !== del.dataset.nborrar)); renderKeepScroll(); return; }
+      const add = e.target.closest('[data-nanadir]');
+      if(add){ const items = await getGuiaNutri(); items.push({id:'n'+uid(), cat:add.dataset.nanadir, nombre:'Nuevo elemento', racion:'', kcal:0, p:0, c:0, g:0, momentos:[], nota:''}); await saveGuiaNutri(items); renderKeepScroll(); return; }
+    });
+    const rest = document.getElementById('nutriRestaurar');
+    if(rest) rest.addEventListener('click', async ()=>{
+      if(!confirm('¿Restaurar la guía a los valores de partida? Se perderán tus cambios.')) return;
+      await safeSet('guia-nutri', 'null', true); renderKeepScroll();
+    });
+  }
+}
+
+// ---------- TIPOS DE ENTRENAMIENTO: GYM / RUNNING / TENIS ----------
+// Cada ejercicio de la parte principal se clasifica como gym (lo de siempre),
+// running o tenis. El calentamiento y la vuelta a la calma no cambian.
+const EX_TIPOS = { gym:'Gym', running:'Running', tenis:'Tenis' };
+const RUN_MODOS = ['Rodaje continuo','Series / intervalos','Tirada larga','Fartlek','Progresivo'];
+const RUN_ZONAS = [
+  {v:'Z1', l:'Z1 · muy suave'}, {v:'Z2', l:'Z2 · aeróbica'}, {v:'Z3', l:'Z3 · tempo'},
+  {v:'Z4', l:'Z4 · umbral'}, {v:'Z5', l:'Z5 · series cortas / VO2'}
+];
+function runVacio(){
+  return { modo:'Rodaje continuo', medida:'distancia', distancia:'', duracion:'', series:'', cadaSerie:'', recuperacion:'', zona:'', ritmo:'' };
+}
+function runDe(ex){ return Object.assign(runVacio(), (ex && ex.run) || {}); }
+function runConIntervalos(r){ return r.modo === 'Series / intervalos' || r.modo === 'Fartlek'; }
+function ritmoTexto(minPorKm){
+  if(!isFinite(minPorKm) || minPorKm <= 0) return '';
+  let m = Math.floor(minPorKm), s = Math.round((minPorKm - m) * 60);
+  if(s === 60){ m++; s = 0; }
+  return `${m}:${String(s).padStart(2,'0')}`;
+}
+function runResumenTexto(ex){
+  const r = runDe(ex), p = [r.modo];
+  if(runConIntervalos(r)){
+    if(r.series || r.cadaSerie) p.push(`${r.series || '?'} × ${r.cadaSerie || '?'}`);
+    if(r.recuperacion) p.push(`rec. ${r.recuperacion}`);
+  } else if(r.medida === 'tiempo'){ if(r.duracion) p.push(`${r.duracion} min`); }
+  else if(r.distancia) p.push(`${r.distancia} km`);
+  if(r.zona) p.push(r.zona);
+  if(r.ritmo) p.push(`${r.ritmo} /km`);
+  if(ex && ex.rpeTarget) p.push(`RPE ${ex.rpeTarget}`);
+  return p.join(' · ');
+}
+function runHechoTexto(e){
+  const km = numIntake(e.runKm), min = numIntake(e.runMin), p = [];
+  if(km) p.push(`${String(e.runKm).replace('.',',')} km`);
+  if(min) p.push(`${String(e.runMin).replace('.',',')} min`);
+  if(km && min) p.push(`${ritmoTexto(min/km)} /km`);
+  return p.join(' · ');
+}
+function runMetaHtml(ex){
+  const r = runDe(ex), sp = [`<span><b>${escapeHtml(r.modo)}</b></span>`];
+  if(runConIntervalos(r)){
+    if(r.series || r.cadaSerie) sp.push(`<span>${escapeHtml(String(r.series || '?'))} × <b>${escapeHtml(r.cadaSerie || '?')}</b></span>`);
+    if(r.recuperacion) sp.push(`<span>Recuperación: <b>${escapeHtml(r.recuperacion)}</b></span>`);
+  } else if(r.medida === 'tiempo'){ if(r.duracion) sp.push(`<span>Duración: <b>${escapeHtml(String(r.duracion))} min</b></span>`); }
+  else if(r.distancia) sp.push(`<span>Distancia: <b>${escapeHtml(String(r.distancia))} km</b></span>`);
+  if(r.zona) sp.push(`<span>Zona: <b>${escapeHtml(r.zona)}</b></span>`);
+  if(r.ritmo) sp.push(`<span>Ritmo: <b>${escapeHtml(r.ritmo)} /km</b></span>`);
+  if(ex.rpeTarget) sp.push(`<span>RPE obj. <b>${escapeHtml(ex.rpeTarget)}</b></span>`);
+  return `<div class="ex-meta">${sp.join('')}</div>` + (ex.objetivo ? `<p class="run-objetivo"><b>Objetivo de la sesión:</b> ${escapeHtml(ex.objetivo)}</p>` : '');
+}
+// Etiqueta que acompaña al título en los ejercicios de tenis (el objetivo de
+// la sesión lo lleva el tenis igual que el running).
+function tipoEtiquetaHtml(ex){
+  if((ex.tipo || 'gym') !== 'tenis') return '';
+  return `<span class="tipo-tag">🎾 Tenis</span>${ex.objetivo ? `<p class="run-objetivo"><b>Objetivo:</b> ${escapeHtml(ex.objetivo)}</p>` : ''}`;
+}
+function runCamposHtml(ex){
+  const r = runDe(ex), inter = runConIntervalos(r), enTiempo = r.medida === 'tiempo';
+  return `<div class="ex-grid run-grid">
+    <div class="full"><label class="field-label">Tipo de sesión</label><select class="run-modo" style="width:100%;">${RUN_MODOS.map(m=>`<option ${r.modo===m?'selected':''}>${m}</option>`).join('')}</select></div>
+    ${inter ? `<div><label class="field-label">Series</label><input type="number" class="run-series" value="${escapeHtml(String(r.series||''))}"></div>
+      <div><label class="field-label">Cada serie (800 m, 3 min…)</label><input type="text" class="run-cada" value="${escapeHtml(r.cadaSerie||'')}"></div>
+      <div class="full"><label class="field-label">Recuperación</label><input type="text" class="run-recup" value="${escapeHtml(r.recuperacion||'')}" placeholder="90 s de trote suave"></div>`
+    : `<div><label class="field-label">Medir por</label><select class="run-medida" style="width:100%;"><option value="distancia" ${!enTiempo?'selected':''}>Distancia</option><option value="tiempo" ${enTiempo?'selected':''}>Tiempo</option></select></div>
+      <div><label class="field-label">${enTiempo?'Duración (min)':'Distancia (km)'}</label><input type="text" inputmode="decimal" class="${enTiempo?'run-duracion':'run-distancia'}" value="${escapeHtml(String(enTiempo?r.duracion:r.distancia)||'')}"></div>`}
+    <div><label class="field-label">Zona de entrenamiento</label><select class="run-zona" style="width:100%;"><option value="">—</option>${RUN_ZONAS.map(z=>`<option value="${z.v}" ${r.zona===z.v?'selected':''}>${z.l}</option>`).join('')}</select></div>
+    <div><label class="field-label">Ritmo objetivo (min/km)</label><input type="text" class="run-ritmo-in" value="${escapeHtml(r.ritmo||'')}" placeholder="5:30"></div>
+    <div><label class="field-label">RPE a aplicar</label><input type="text" class="ex-rpetarget" value="${escapeHtml(ex.rpeTarget||'')}"></div>
+  </div>`;
+}
+function runVistaHtml(ex){
+  const t = exTimer(ex);
+  return `<div class="ex-view-card run-card"><h4>🏃 ${escapeHtml(ex.name||'Running')}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+    ${runMetaHtml(ex)}
+    ${t.type!=='none'?`<div class="timer-badge">${TIMER_TYPE_LABELS[t.type]}</div>`:''}
+    ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
+  </div>`;
+}
+function tplRunSesion(ex, i){
+  const t = exTimer(ex), km = numIntake(ex.runKm), min = numIntake(ex.runMin);
+  const ritmo = (km && min) ? ritmoTexto(min/km) : '';
+  return `<div class="ex-view-card run-card ${ex.done?'done':''}" data-exi="${i}">
+    <h4 data-strike="${i}" style="cursor:pointer;">🏃 ${escapeHtml(ex.name||'Running')}</h4>
+    ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+    ${runMetaHtml(ex)}
+    ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
+    <div class="ex-grid" style="margin-top:8px;">
+      <div><label class="field-label">Distancia real (km)</label><input type="text" inputmode="decimal" class="run-km-input" data-exi="${i}" value="${escapeHtml(ex.runKm||'')}" placeholder="8,2"></div>
+      <div><label class="field-label">Tiempo real (min)</label><input type="text" inputmode="decimal" class="run-min-input" data-exi="${i}" value="${escapeHtml(ex.runMin||'')}" placeholder="48"></div>
+      <div><label class="field-label">RPE aplicado</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto||'')}"></div>
+      <div class="run-ritmo-calc" style="align-self:end;font-size:12.5px;">${ritmo?`Ritmo medio: <b>${ritmo} /km</b>`:'El ritmo se calcula solo.'}</div>
+      <div class="full"><label class="field-label">Nota</label><textarea class="note-applied-input" data-exi="${i}" placeholder="Sensaciones, molestias, terreno…" style="min-height:34px;">${escapeHtml(ex.noteApplied||'')}</textarea></div>
+    </div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px;">
+      ${t.type!=='none'?`<button class="btn ghost small" data-extimer="${i}">▶ ${TIMER_TYPE_LABELS[t.type]}</button>`:''}
+      <button class="btn ghost small" data-strike="${i}">${ex.done?'Desmarcar':'✓ Marcar como hecha'}</button>
+    </div>
+  </div>`;
+}
+
 function plantillaDe(ex){
   // En una rutina cada ejercicio va bajo UNA sección (es su sitio dentro del
   // día), aunque en la galería pueda estar clasificado en varias. Tomamos la
@@ -3566,13 +4706,14 @@ function plantillaDe(ex){
     rir:ex.rir||'', rpeTarget:ex.rpeTarget||'', tempo:ex.tempo||'', timer:{...exTimer(ex)},
     videoUrl:ex.videoUrl||'', videoName:ex.videoName||'',
     variante: ex.variante ? {...ex.variante} : null,
+    tipo: ex.tipo||'gym', run: ex.run ? {...ex.run} : null, objetivo: ex.objetivo||'',
     juegoCfg: ex.juegoCfg ? JSON.parse(JSON.stringify(ex.juegoCfg)) : null };
 }
 function desdePlantilla(pl){
   return { ...plantillaDe(pl), id: uid() };
 }
 
-function blankExercise(){ return {id:uid(), name:'', desc:'', section:'', turno:'', grupoId:'', grupoTipo:'', pideGrabacion:false, load:'', series:3, reps:'', rest:'', rir:'', rpeTarget:'', tempo:'', juegoCfg:null, timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}}; }
+function blankExercise(tipo){ const _e = {id:uid(), name:'', desc:'', section:'', turno:'', grupoId:'', grupoTipo:'', pideGrabacion:false, load:'', series:3, reps:'', rest:'', rir:'', rpeTarget:'', tempo:'', juegoCfg:null, timer:{type:'none', work:30, rest:15, rounds:8, sets:1, setRest:60, emomLen:60, emomRounds:10, amrapMin:12, seriesRestSec:180, seriesCount:5}}; _e.tipo = tipo||'gym'; if(_e.tipo==='running') _e.run = runVacio(); return _e; }
 function exTimer(ex){
   const t = (ex && ex.timer) ? ex.timer : {};
   return { type:t.type||'none', work:+t.work||30, rest:+t.rest||15, rounds:+t.rounds||8,
@@ -3837,7 +4978,8 @@ async function tplRutinaAtleta(athleteId){
   // El Welcome Pack va lo primero de todo mientras no esté completo: es lo que
   // tiene que ver un atleta nuevo nada más entrar.
   const wp = await getWelcome(athleteId);
-  if(!welcomeCompleto(wp) || state.wpRelectura) html += tplWelcomePack(wp, false);
+  const atWp = state.athletes.find(a=>a.id===athleteId);
+  if(!welcomeCompleto(wp, atWp) || state.wpRelectura) html += tplWelcomePack(wp, false, atWp);
   // Tareas sueltas que el entrenador manda cuando quiere: van justo después
   // del Welcome Pack, con el mismo lenguaje visual.
   const tareasAt = await getTareas(athleteId);
@@ -3913,7 +5055,8 @@ async function tplRutinaAtleta(athleteId){
           // Ejercicio suelto, como siempre
           g.ejercicios.forEach(ex=>{
             const t = exTimer(ex);
-            html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+            if(ex.tipo==='running'){ html += runVistaHtml(ex); return; }
+            html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
               <div class="ex-meta"><span>Series x reps: <b>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</b></span>${ex.load?`<span>Carga: <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso: <b>${escapeHtml(ex.rest||'—')}</b></span><span>RIR: <b>${escapeHtml(ex.rir||'—')}</b></span><span>RPE objetivo: <b>${escapeHtml(ex.rpeTarget||'—')}</b></span>${ex.tempo?`<span>Tempo: <b>${escapeHtml(ex.tempo)}</b></span>`:''}</div>
               ${t.type!=='none'?`<div class="timer-badge">${TIMER_TYPE_LABELS[t.type]}</div>`:''}
               ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
@@ -4211,7 +5354,8 @@ function sessionPreviewHtml(routine, day, turno){
         return;
       }
       g.ejercicios.forEach(ex=>{
-      html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+      if(ex.tipo==='running'){ html += runVistaHtml(ex); return; }
+      html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
         <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span><span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span>${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
         ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
         ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Ver técnica</button>`:''}
@@ -4444,6 +5588,7 @@ function renderSessionOverlay(){
     g.ejercicios.forEach(exg=>{
     const ex = exg; const i = exg._i;
     const t = exTimer(ex);
+    if(ex.tipo==='running'){ html += tplRunSesion(ex, i); return; }
     if(ex.juegoCfg && ex.juegoCfg.activo){
       html += `<div class="ex-view-card ${ex.done?'done':''}" data-exi="${i}">
         <h4>${escapeHtml(ex.name)} 🎮</h4>
@@ -4457,7 +5602,7 @@ function renderSessionOverlay(){
       return;
     }
     html += `<div class="ex-view-card ${ex.done?'done':''}" data-exi="${i}">
-      <h4 data-strike="${i}" style="cursor:pointer;">${escapeHtml(ex.name)}</h4>
+      <h4 data-strike="${i}" style="cursor:pointer;">${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}
       ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
       <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span>${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
       <div class="set-box">${ex.setsDone.map((done,si)=>`<div class="set-chip ${done?'done':''}" data-exi="${i}" data-si="${si}">S${si+1}</div>`).join('')}</div>
@@ -4583,6 +5728,16 @@ function bindSessionOverlayEvents(){
     inp.style.borderColor = (inp.value.trim() && !p) ? 'var(--danger)' : '';
     queueSessionSave();
   }));
+  document.querySelectorAll('.run-km-input, .run-min-input').forEach(inp=>inp.addEventListener('change', ()=>{
+    const i = parseInt(inp.dataset.exi,10), ex = session.exercises[i];
+    if(inp.classList.contains('run-km-input')) ex.runKm = inp.value.trim(); else ex.runMin = inp.value.trim();
+    queueSessionSave();
+    const card = inp.closest('.run-card'), out = card && card.querySelector('.run-ritmo-calc');
+    if(out){
+      const km = numIntake(ex.runKm), min = numIntake(ex.runMin), r = (km && min) ? ritmoTexto(min/km) : '';
+      out.innerHTML = r ? `Ritmo medio: <b>${r} /km</b>` : 'El ritmo se calcula solo.';
+    }
+  }));
   document.querySelectorAll('.load-applied-input').forEach(inp=>inp.addEventListener('change', ()=>{ const i=parseInt(inp.dataset.exi,10); session.exercises[i].loadApplied=inp.value.trim(); queueSessionSave(); }));
   document.querySelectorAll('.note-applied-input').forEach(inp=>{
     let deb=null;
@@ -4689,7 +5844,8 @@ function bindSurveyEvents(){
         // Repeticiones previstas y qué series concretas se completaron: antes
         // no se guardaba nada de esto, así que el diario no podía mostrar
         // "reps × kg" ni qué series quedaron hechas.
-        repsPlanned: e.reps||'', seriesPlanned: parseInt(e.series,10)||0,
+        repsPlanned: e.reps||'', seriesPlanned: e.tipo==='running' ? 0 : (parseInt(e.series,10)||0),
+        tipo: e.tipo||'gym', runPlan: e.tipo==='running' ? runResumenTexto(e) : undefined, runHecho: e.tipo==='running' ? runHechoTexto(e) : undefined,
         setsDone: Array.isArray(e.setsDone) ? e.setsDone : [],
         // Sólo se guarda si el atleta llegó a rellenar alguna fila; si no usó
         // el detalle por serie, esto queda vacío y no añade ruido al diario.
@@ -5758,7 +6914,7 @@ async function tplCalendarioAtleta(athleteId){
     const weeks = [];
     for(let i=0;i<6;i++){
       const d = new Date(wk+'T00:00:00'); d.setDate(d.getDate()-i*7);
-      const key = d.toISOString().slice(0,10);
+      const key = fechaLocalISO(d);
       const sat = new Date(d); sat.setDate(sat.getDate()+5);
       weeks.push({ key, label: (i===0?'Esta semana':'Hace '+i+' sem.') + ' · sábado ' + fmtShortDate(sat), done: !!responses.find(r=>r.weekOf===key) });
     }
@@ -5774,7 +6930,7 @@ async function tplCalendarioAtleta(athleteId){
         ${weeks.map(w=>`<option value="${w.key}" ${w.key===sel?'selected':''}>${w.label}${w.done?' · respondido':''}</option>`).join('')}
       </select>
       ${selExisting?`<p style="font-size:12.5px;color:var(--muted);">Ya respondiste esta semana. Puedes actualizar tus respuestas.</p>`:''}
-      ${await tplQuestForm(athleteId, selExisting)}
+      ${await tplQuestForm(athleteId, selExisting, sel)}
     </div>`;
     return html;
   }
@@ -5893,27 +7049,42 @@ async function tplCallEditBody(athleteId){
 
 // ---------- CUESTIONARIO ----------
 async function getQuestConfig(athleteId){
-  // Preferimos la configuración propia del atleta; si no tiene, la general.
+  await cargaContenido();
+  // Preferimos la configuración propia del atleta; si no tiene, la general. Y
+  // de lo que salga, solo lo que su tipo de atleta (adulto o menor) puede ver.
+  let ids = null;
   if(athleteId){
     const own = await safeGet('quest-config-'+athleteId, true);
-    if(own){ try{ const p=JSON.parse(own); if(Array.isArray(p)) return p; }catch(e){} }
+    if(own){ try{ const p=JSON.parse(own); if(Array.isArray(p)) ids = p; }catch(e){} }
   }
-  const raw = await safeGet('quest-config', true);
-  return raw ? JSON.parse(raw) : DEFAULT_ACTIVE.slice();
+  if(!ids){ const raw = await safeGet('quest-config', true); ids = raw ? JSON.parse(raw) : DEFAULT_ACTIVE.slice(); }
+  const aud = audienciaDe(state.athletes.find(a=>a.id===athleteId));
+  return ids.filter(id=>contenidoVisible('q:'+id, aud));
 }
 async function countPlannedSessions(athleteId){
   const routine = await getRoutine(athleteId, false);
   const n = DAYS.filter(d => BLOCKS.some(b => routine.days[d][b.key].length > 0)).length;
   return n > 0 ? n : 5;
 }
-async function tplQuestForm(athleteId, existing){
+async function tplQuestForm(athleteId, existing, semanaKey){
   const active = await getQuestConfig(athleteId);
   const planned = await countPlannedSessions(athleteId);
-  if(!active.length){
+  // El bloque del ciclo es independiente de la selección de preguntas: sale
+  // siempre que la atleta tenga ciclo natural, para que el dato no dependa de
+  // acordarse de activarlo.
+  const intakeRaw = await safeGet('intake-'+athleteId, true);
+  let generoAtleta = ''; try{ generoAtleta = intakeRaw ? (JSON.parse(intakeRaw).genero||'') : ''; }catch(e){}
+  const cicloAtleta = await getCiclo(athleteId);
+  const mostrarCiclo = generoAtleta === 'Mujer' && cicloAtleta.anticonceptivo !== 'combinado';
+  if(!active.length && !mostrarCiclo){
     return `<div class="empty" style="padding:18px 0;">Tu entrenador no ha activado ninguna pregunta para este cuestionario todavía. Cuando lo haga, aparecerá aquí.</div>`;
   }
+  // La respuesta cubre los 7 días que acaban en esta fecha, así que nunca puede
+  // ser futura: si el sábado de la semana aún no ha llegado, se usa hoy.
+  const sabadoSemana = semanaKey ? sumaDiasISO(semanaKey, 5) : saturdayOfWeek();
+  const fechaDefecto = sabadoSemana > todayISO() ? todayISO() : sabadoSemana;
   let html = `<div style="margin-top:10px;">
-    <div class="q-item"><p>Fecha (sábado de esta semana)</p><input type="date" id="questDateInput" value="${existing && existing.date ? existing.date : saturdayOfWeek()}"></div>`;
+    <div class="q-item"><p>Fecha en la que acaba la semana que describes</p><input type="date" id="questDateInput" max="${todayISO()}" value="${existing && existing.date ? existing.date : fechaDefecto}"></div>`;
   active.forEach(qid=>{
     const q = QUESTION_BANK.find(x=>x.id===qid); if(!q) return;
     const val = existing && existing.answers ? existing.answers[qid] : null;
@@ -5950,6 +7121,21 @@ async function tplQuestForm(athleteId, existing){
         <div class="q-note"><textarea data-qnote="${q.id}" placeholder="Notas adicionales (opcional)">${note?escapeHtml(note):''}</textarea></div></div>`;
     }
   });
+  if(mostrarCiclo){
+    html += `<div class="q-ciclo" data-qcycle="1">
+      <div class="q-cat">Ciclo menstrual · sensaciones de esta semana</div>
+      <p class="q-ciclo-nota">Piensa en la <b>media de los últimos 7 días</b> (hasta la fecha de arriba), no solo en hoy. Solo lo veis tú y tu entrenador: sirve para descubrir <b>tu</b> patrón a lo largo de los ciclos.</p>
+      ${cicloAtleta.inicios.length ? '' : `<p class="q-ciclo-nota" style="color:var(--warn);">Aún no has registrado el inicio de tu regla (Perfil → Ciclo menstrual). Responde igualmente: cuando lo registres, estas semanas se asignarán solas a su fase.</p>`}`;
+    CICLO_ITEMS.forEach(it=>{
+      const val = existing && existing.cicloSint ? existing.cicloSint[it.id] : null;
+      html += `<div class="q-item"><p>${it.text}</p><div class="q-ops" data-qops="cyc_${it.id}">`;
+      it.opciones.forEach((op,idx)=>{
+        html += `<button class="q-op ${val===idx+1?'on':''}" data-val="${idx+1}">${escapeHtml(op)}</button>`;
+      });
+      html += `</div></div>`;
+    });
+    html += `</div>`;
+  }
   html += `<button class="btn" id="submitQuest">Enviar cuestionario</button></div>`;
   return html;
 }
@@ -6561,7 +7747,7 @@ function ultimosDias(n){
   const out = [];
   for(let i=n-1;i>=0;i--){
     const d = new Date(); d.setDate(d.getDate()-i);
-    out.push(d.toISOString().slice(0,10));
+    out.push(fechaLocalISO(d));
   }
   return out;
 }
@@ -6841,7 +8027,7 @@ async function tplPerfilAtleta(athleteId){
 
   // Welcome Pack completado: su resumen vive aquí.
   const wpPerfil = await getWelcome(athleteId);
-  if(welcomeCompleto(wpPerfil)) html += tplWelcomePack(wpPerfil, true);
+  if(welcomeItemsDe(me).length && welcomeCompleto(wpPerfil, me)) html += tplWelcomePack(wpPerfil, true, me);
 
   // Banner de competiciones: siempre visible, con la próxima si hay una.
   {
@@ -6858,6 +8044,11 @@ async function tplPerfilAtleta(athleteId){
     </button>`;
   }
 
+  html += `<button class="task-banner" id="abrirNutriBtn" style="margin-top:10px;">
+    <span class="task-ic">${icClipboard()}</span>
+    <span class="task-txt"><b>Guía nutricional</b><span>Cenas, comidas, snacks y alimentos, con cuándo tomarlos</span></span>
+    <span class="task-arrow">›</span>
+  </button>`;
   // Banner de ciclo menstrual: sólo si el atleta se identificó como mujer en
   // su ficha inicial. No se ofrece a nadie más.
   if(data && data.genero === 'Mujer'){
@@ -6868,7 +8059,7 @@ async function tplPerfilAtleta(athleteId){
       <span class="task-txt">
         <b>Ciclo menstrual</b>
         <span>${faseAt
-          ? (faseAt.sinCicloNatural ? 'Con anticonceptivo combinado · toca para más info' : `Fase ${FASES_CICLO[faseAt.fase].label} · día ${faseAt.diaCiclo}`)
+          ? (faseAt.sinCicloNatural ? 'Con anticonceptivo combinado · toca para más info' : (faseAt.sinFase ? 'Revisa tu ciclo · toca para ver' : `Fase ${FASES_CICLO[faseAt.fase].label}${faseAt.metodo==='provisional'?' (estimada)':''} · día ${faseAt.diaCiclo}`))
           : 'Regístralo para adaptar tu carga a tu fase'}</span>
       </span>
       <span class="task-arrow">${faseAt?'✓':'›'}</span>
@@ -6935,13 +8126,16 @@ async function tplPerfilAtleta(athleteId){
     return html;
   }
   html += `<p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Mantén esto al día: tu entrenador lo usa para ajustar tu plan.</p>`;
-  INTAKE_FIELDS.forEach(f=>{
-    const v = data[f.id] || '';
-    html += `<div class="q-item" style="margin-bottom:14px;"><label class="field-label">${f.label}</label>`;
-    if(f.type==='select') html += `<select data-myintake="${f.id}" style="width:100%;"><option value="">Selecciona…</option>${f.options.map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('')}</select>`;
-    else if(f.type==='textarea') html += `<textarea data-myintake="${f.id}" style="min-height:52px;">${escapeHtml(v)}</textarea>`;
-    else html += `<input type="${f.type}" data-myintake="${f.id}" value="${escapeHtml(v)}" style="width:100%;">`;
-    html += `</div>`;
+  const camposMe = intakeCamposDe(me), menorMe = esMenor(me);
+  if(menorMe && data.consentimiento){
+    html += `<p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;">Autorización firmada por <b>${escapeHtml(data.consentimiento.firmante||'')}</b> el ${escapeHtml(String(data.consentimiento.fecha||'').slice(0,10))}. Para cambiarla o retirarla, díselo a tu entrenador.</p>`;
+  }
+  camposMe.forEach(f=>{
+    if(f.type === 'info' || (menorMe && f.group === G_AUT)) return;
+    const v = data[f.id];
+    html += `<div class="q-item" style="margin-bottom:14px;">`;
+    if(f.type !== 'check') html += `<label class="field-label">${f.label}</label>`;
+    html += intakeInputHtml(f, v, 'data-myintake') + `</div>`;
   });
   html += `<button class="btn" id="saveMyIntake">Guardar mis datos</button></div>`;
 
@@ -7420,6 +8614,7 @@ function tplCamposDisciplina(c){
 async function tplCiclo(athleteId, esCoach){
   const ciclo = await getCiclo(athleteId);
   const info = faseCiclo(ciclo, todayISO());
+  const est = estadisticasCiclo(ciclo);
 
   let html = '';
   if(!esCoach){
@@ -7433,27 +8628,41 @@ async function tplCiclo(athleteId, esCoach){
 
   // Resultado actual, arriba del todo
   if(info && info.sinCicloNatural){
-    html += `<div class="card"><div class="rd-zona rd-ambar"><div><b>Anticonceptivo combinado</b><span>Con este método el ciclo natural está suprimido, así que no tiene sentido programar por fase. Mejor autorregular según cómo te sientas día a día.</span></div></div></div>`;
+    html += `<div class="card"><div class="rd-zona rd-ambar"><div><b>Anticonceptivo combinado</b><span>Con este método el ciclo natural está suprimido, así que no tiene sentido programar por fase. Mejor autorregular según cómo te sientes día a día.</span></div></div></div>`;
+  } else if(info && info.sinFase){
+    html += `<div class="card"><div class="rd-zona rd-ambar"><div><b>Sin fase asignable ahora</b><span>${escapeHtml(textoSinFase(info))}</span></div></div></div>`;
   } else if(info){
     const f = FASES_CICLO[info.fase];
     const overrides = await getTextosEducativos();
     const tEnt = textoEducativo(overrides, 'ciclo_'+info.fase+'_entreno');
     const tNut = textoEducativo(overrides, 'ciclo_'+info.fase+'_nutricion');
+    const nota = info.metodo==='provisional'
+      ? `Fase estimada por calendario${info.tarde?` · tu regla lleva ${info.tarde} día${info.tarde===1?'':'s'} de retraso`:''} · se confirma al registrar tu próxima regla.`
+      : (info.metodo==='observado' ? 'Días de sangrado registrados.' : 'Fase estimada por calendario, contando desde tu regla siguiente.');
+    const avisoEvidencia = ' Orientación basada en la evidencia actual, que es limitada y varía mucho entre mujeres.';
     html += `<div class="card"><div class="rd-zona rd-${f.color==='danger'?'rojo':(f.color==='gold'?'ambar':'verde')}">
       <div><b>Fase ${f.label} · día ${info.diaCiclo} de ${info.duracionCiclo}</b>
-      <span><b>Entrenamiento:</b> ${formateaGuia(tEnt.cuerpo)}</span>
+      <span style="font-size:11px;opacity:0.85;">${nota}${avisoEvidencia}</span>
+      <span style="display:block;margin-top:6px;"><b>Entrenamiento:</b> ${formateaGuia(tEnt.cuerpo)}</span>
       <span style="display:block;margin-top:6px;"><b>Nutrición:</b> ${formateaGuia(tNut.cuerpo)}</span></div>
     </div></div>`;
   } else if(!esCoach){
-    html += `<div class="card"><div class="empty">Registra la fecha de tu última regla para empezar a ver tu fase.</div></div>`;
+    html += `<div class="card"><div class="empty">Registra el primer día de tu última regla para empezar a ver tu fase.</div></div>`;
   }
 
   if(!esCoach){
+    html += `<div class="card"><h2>Registrar inicio de regla</h2>
+      <div class="row" style="gap:8px;">
+        <input type="date" id="reglaFecha" value="${todayISO()}" max="${todayISO()}" style="flex:1;min-width:0;">
+        <button class="btn" id="registrarReglaFechaBtn">Registrar</button>
+      </div>
+      <button class="btn ghost" id="registrarReglaBtn" style="width:100%;margin-top:10px;">Hoy me ha bajado la regla</button>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.6;">Cuenta el <b>primer día de sangrado real</b>, no el manchado previo. Si se te olvidó anotarla, pon la fecha en que fue: es lo que más afina tus fases. Cada inicio que registras valida solo las semanas anteriores.</p>
+    </div>`;
+
     html += `<div class="card"><h2>Tus datos</h2>
       <div class="row" style="flex-direction:column;align-items:stretch;gap:10px;">
-        <div><label class="field-label">Fecha del primer día de tu última regla</label>
-          <input type="date" id="cicloUltima" value="${ciclo.ultimaRegla||''}" max="${todayISO()}" style="width:100%;"></div>
-        <div><label class="field-label">Duración media de tu ciclo (días)</label>
+        <div><label class="field-label">Duración habitual de tu ciclo (días) <span style="font-weight:400;text-transform:none;letter-spacing:0;">— se sustituye por tu mediana real cuando haya 2 ciclos medidos</span></label>
           <input type="number" id="cicloDuracion" value="${ciclo.duracionCiclo}" min="18" max="45" style="width:100%;"></div>
         <div><label class="field-label">Duración media de la regla (días)</label>
           <input type="number" id="cicloDuracionRegla" value="${ciclo.duracionRegla}" min="1" max="10" style="width:100%;"></div>
@@ -7469,19 +8678,95 @@ async function tplCiclo(athleteId, esCoach){
           <input type="text" id="cicloCondicion" value="${escapeHtml(ciclo.condicion||'')}" placeholder="Ej. SOP, endometriosis…" style="width:100%;"></div>
         <button class="btn" id="guardarCicloBtn">Guardar</button>
       </div>
-    </div>
-    <div class="card">
-      <button class="btn ghost" id="registrarReglaBtn" style="width:100%;">Hoy me ha bajado la regla</button>
-      <p style="font-size:11.5px;color:var(--muted);margin-top:8px;">Cada vez que lo registres, la app afina sola la duración media de tu ciclo.</p>
     </div>`;
-    if(ciclo.historial.length){
-      html += `<div class="card"><h2>Historial</h2>`;
-      ciclo.historial.slice().reverse().slice(0,6).forEach(h=>{
-        html += `<div class="entry"><div class="entry-top"><span>${h.fecha}</span>${h.duracion?`<span>${h.duracion} días</span>`:''}</div></div>`;
+
+    if(ciclo.inicios.length){
+      const lista = ciclo.inicios.slice().reverse().slice(0,10);
+      html += `<div class="card"><h2>Historial de reglas</h2>
+        <p style="font-size:11.5px;color:var(--muted);margin-bottom:8px;">${est.nCerrados
+          ? `${est.nCerrados} ciclo${est.nCerrados===1?'':'s'} medido${est.nCerrados===1?'':'s'} · ${est.nValidos} dentro de 21–35 días${est.mediana!==null?` · mediana ${Math.round(est.mediana)} días`:''}${est.sd!==null?` (±${est.sd.toFixed(1).replace('.',',')})`:''}`
+          : 'Con un segundo inicio registrado ya se mide tu primer ciclo.'}</p>`;
+      lista.forEach(f=>{
+        const i = ciclo.inicios.indexOf(f);
+        const sig = ciclo.inicios[i+1];
+        const dias = sig ? diasEntre(f, sig) : null;
+        const atipico = dias!==null && !cicloRegular(dias);
+        html += `<div class="entry"><div class="entry-top"><span>${f}</span>
+          <span>${dias!==null?`${dias} días${atipico?' · atípico':''}`:'en curso'} <button class="btn ghost small" data-borrarregla="${f}" style="margin-left:8px;" title="Eliminar este registro">✕</button></span></div></div>`;
       });
-      html += `</div>`;
+      html += `<p style="font-size:11px;color:var(--muted);margin-top:8px;">Los ciclos atípicos (fuera de 21–35 días) no se usan para asignar fases. Si una fecha está mal, elimínala con ✕.</p></div>`;
     }
   }
+  html += await tplTendenciaCiclo(athleteId, esCoach);
+  return html;
+}
+
+// Tendencias por fase, con las salvaguardas necesarias para que no engañen:
+// sólo ciclos cerrados y válidos, bloques sin la ventana ovulatoria, un
+// mínimo de datos de al menos 2 ciclos antes de hablar de "patrón", y
+// comparación contra la media de la propia persona.
+async function tplTendenciaCiclo(athleteId, esCoach){
+  const ciclo = await getCiclo(athleteId);
+  if(ciclo.anticonceptivo === 'combinado') return '';
+  const rawQ = await safeGet('quest-'+athleteId, true);
+  let resp = []; try{ resp = rawQ ? JSON.parse(rawQ) : []; }catch(e){}
+  const log = await getReadiness(athleteId);
+  const t = calculaTendenciaCiclo(ciclo, resp, log);
+  const overrides = await getTextosEducativos();
+  const metodo = textoEducativo(overrides, 'ciclo_metodo');
+  const nota = (n)=>n.toFixed(1).replace('.',',');
+
+  let html = `<div class="card"><h2>Tendencias por fase</h2>
+    <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px;">Lo que ${esCoach?'ella nota':'notas'} en cada fase del ciclo, para descubrir ${esCoach?'su':'tu'} patrón propio — no el de un libro.</p>`;
+
+  if(t.ciclos.nCerrados < 1){
+    html += `<div class="empty">Hace falta al menos un ciclo completo (dos inicios de regla registrados) para asignar fases a las respuestas.</div>`;
+  } else {
+    html += `<div class="kpi-row">
+      <div class="kpi"><b>${t.ciclos.nValidos}</b><span>Ciclos válidos</span></div>
+      <div class="kpi"><b>${t.semanal.total}</b><span>Semanas validadas</span></div>
+      <div class="kpi"><b>${t.diario.total}</b><span>Días con check-in</span></div>
+      <div class="kpi"><b>${t.semanal.pendientes + t.diario.pendientes}</b><span>Pendientes</span></div>
+    </div>`;
+    if(t.semanal.pendientes || t.diario.pendientes){
+      html += `<p style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Lo del ciclo en curso queda <b>pendiente</b> hasta que ${esCoach?'ella registre':'registres'} la próxima regla: sólo entonces se puede situar la ovulación hacia atrás con fiabilidad.</p>`;
+    }
+    const tabla = (titulo, items, etiqueta, datos, unidad, aviso)=>{
+      if(!datos.total) return '';
+      let h = `<div class="block-title">${titulo}</div>${aviso?`<p style="font-size:11px;color:var(--muted);margin-bottom:8px;">${aviso}</p>`:''}
+        <div class="tabla-comp-wrap"><table class="tabla-comp"><thead><tr><th></th>${CICLO_BLOQUES.map(b=>`<th>${CICLO_BLOQUE_LABEL[b]}<br><span class="tend-n">${datos.bloques[b].n} ${unidad}</span></th>`).join('')}</tr></thead><tbody>`;
+      items.forEach(k=>{
+        h += `<tr><td>${etiqueta(k)}</td>`;
+        CICLO_BLOQUES.forEach(b=>{
+          const m = datos.bloques[b].medias[k];
+          const pat = datos.patrones.find(p=>p.item===k && p.bloque===b);
+          h += `<td class="${pat?(pat.diff<0?'tend-peor':'tend-mejor'):''}">${m===null?'—':nota(m)}</td>`;
+        });
+        h += `</tr>`;
+      });
+      return h + `</tbody></table></div>`;
+    };
+    html += tabla('Sensaciones semanales', t.semanal.items, k=>CICLO_ITEMS.find(i=>i.id===k).corto, t.semanal, 'sem.', '1 = peor, 5 = mejor.');
+    html += tabla('Check-in diario (datos del día, sin sesgo de recuerdo)', t.diario.items, k=>READINESS_ITEMS.find(i=>i.id===k).label, t.diario, 'días', '1 = peor, 5 = mejor. Es la fuente más fiable.');
+
+    const patrones = [].concat(
+      t.semanal.patrones.map(p=>Object.assign({fuente:'semanal'}, p)),
+      t.diario.patrones.map(p=>Object.assign({fuente:'diario'}, p))
+    );
+    const ciclosMax = Math.max(t.semanal.ciclosConDatos, t.diario.ciclosConDatos);
+    html += `<div class="block-title">Patrones</div>`;
+    if(patrones.length){
+      html += patrones.map(p=>{
+        const lab = p.fuente==='semanal' ? CICLO_ITEMS.find(i=>i.id===p.item).corto : READINESS_ITEMS.find(i=>i.id===p.item).label;
+        return `<p style="font-size:13px;margin-bottom:6px;"><b>${escapeHtml(lab)}</b>: ${p.diff<0?'peor':'mejor'} en fase ${CICLO_BLOQUE_LABEL[p.bloque].toLowerCase()} (${nota(p.media)} frente a ${esCoach?'su':'tu'} media de ${nota(p.global)}).</p>`;
+      }).join('');
+    } else if(ciclosMax >= 2){
+      html += `<p style="font-size:13px;color:var(--muted);">Sin patrón claro: ${esCoach?'sus':'tus'} valores son parecidos en todas las fases. También es información útil: significa que ${esCoach?'su':'tu'} entrenamiento no tiene por qué cambiar con el ciclo.</p>`;
+    } else {
+      html += `<p style="font-size:13px;color:var(--muted);">Todavía pocos datos: hacen falta respuestas de al menos <b>2 ciclos</b> para hablar de patrones (mejor 3). Una sola semana no dice nada.</p>`;
+    }
+  }
+  html += `<details class="ciclo-metodo"><summary>Cómo se calculan estas fases y cómo leerlas</summary><p>${formateaGuia(metodo.cuerpo)}</p></details></div>`;
   return html;
 }
 
@@ -7547,15 +8832,16 @@ async function tplGym(athleteId, esCoach){
 }
 
 // ---------- WELCOME PACK: VISTA ----------
-function tplWelcomePack(w, compacto){
-  const hechos = w.hechos.length, total = WELCOME_ITEMS.length;
-  const pct = Math.round((hechos/total)*100);
+function tplWelcomePack(w, compacto, at){
+  const items = welcomeItemsDe(at);
+  const hechos = items.filter(i=>w.hechos.includes(i.id)).length, total = items.length;
+  const pct = total ? Math.round((hechos/total)*100) : 100;
 
   if(compacto){
     // Resumen que vive en Perfil una vez completado.
     return `<div class="card"><h2>Welcome Pack</h2>
       <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">Completado el ${w.cerrado||'—'}.</p>
-      ${WELCOME_ITEMS.map(i=>`<div class="wp-linea done"><span>✓</span>${escapeHtml(i.titulo)}</div>`).join('')}
+      ${items.map(i=>`<div class="wp-linea done"><span>✓</span>${escapeHtml(i.titulo)}</div>`).join('')}
       <button class="btn ghost small" id="reabrirWelcomeBtn" style="margin-top:12px;">Volver a leer las guías</button>
     </div>`;
   }
@@ -7568,7 +8854,7 @@ function tplWelcomePack(w, compacto){
     <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:8px;">Empieza por aquí. Las dos guías te llevan dos minutos cada una y te van a ahorrar muchas dudas más adelante.</p>
     <div class="wp-barra"><i style="width:${pct}%;"></i></div>`;
 
-  WELCOME_ITEMS.forEach((item,i)=>{
+  items.forEach((item,i)=>{
     const hecho = w.hechos.includes(item.id);
     const abierto = state.wpAbierto === item.id;
     html += `<div class="acc ${abierto?'open':''} wp-item ${hecho?'wp-done':''} ${item.destacado?'wp-destacado':''}" data-wpacc="${item.id}">
@@ -8298,6 +9584,7 @@ function exCardHtml(ex, blockKey, d, listaBloque){
   const draftBloqueActual = listaBloque || [];
   return `<div class="ex-card" data-exid="${ex.id}" data-block="${blockKey}" data-day="${d}">
           <span class="save-flag" data-flagfor="${ex.id}">Guardado ✓</span>
+          ${blockKey==='principal' ? `<div class="gal-secs ex-tipo-chips" style="margin-bottom:8px;">${Object.keys(EX_TIPOS).map(k=>`<button type="button" class="gs-chip ${(ex.tipo||'gym')===k?'on':''}" data-extipo="${k}">${EX_TIPOS[k]}</button>`).join('')}</div>` : ''}
           <div class="row" style="gap:6px;margin-bottom:6px;">
             <select class="ex-grupo" style="width:100%;font-size:12px;${ex.grupoId?'color:var(--accent);font-weight:600;':''}">
               <option value="">Sin combinar</option>
@@ -8315,7 +9602,7 @@ function exCardHtml(ex, blockKey, d, listaBloque){
           </div>
           <input type="text" class="ex-name full" value="${escapeHtml(ex.name)}" placeholder="Nombre del ejercicio" style="width:100%;font-weight:700;">
           <textarea class="ex-desc" placeholder="Descripción / técnica&#10;Puedes usar varias líneas:&#10;1. Cat camel&#10;2. Zancada spiderman" style="min-height:62px;margin-top:6px;white-space:pre-wrap;">${escapeHtml(ex.desc||'')}</textarea>
-          <div class="ex-grid">
+          ${(ex.tipo||'gym')==='running' ? runCamposHtml(ex) : `<div class="ex-grid">
             <div><label class="field-label">Series</label><input type="number" class="ex-series" value="${ex.series||''}"></div>
             <div><label class="field-label">Reps</label><input type="text" class="ex-reps" value="${escapeHtml(ex.reps||'')}"></div>
             <div><label class="field-label">Peso / carga</label><input type="text" class="ex-load" value="${escapeHtml(ex.load||'')}" placeholder="80kg, 40>30kg, corporal"></div>
@@ -8323,7 +9610,8 @@ function exCardHtml(ex, blockKey, d, listaBloque){
             <div><label class="field-label">RIR objetivo</label><input type="text" class="ex-rir" value="${escapeHtml(ex.rir||'')}"></div>
             <div><label class="field-label">RPE a aplicar</label><input type="text" class="ex-rpetarget" value="${escapeHtml(ex.rpeTarget||'')}"></div>
             <div><label class="field-label">Tempo</label><input type="text" class="ex-tempo" value="${escapeHtml(ex.tempo||'')}" placeholder="3-1-2-0"></div>
-          </div>
+          </div>`}
+          ${(ex.tipo||'gym')!=='gym' ? `<div style="margin-top:8px;"><label class="field-label">Objetivo de la sesión</label><input type="text" class="ex-objetivo" value="${escapeHtml(ex.objetivo||'')}" placeholder="Qué buscamos con esta sesión" style="width:100%;"></div>` : ''}
           <div class="timer-config">
             <label class="field-label">Temporizador para el atleta</label>
             <select class="ex-timer-type" style="width:100%;">
@@ -8371,7 +9659,7 @@ function exCardHtml(ex, blockKey, d, listaBloque){
               </div>
             </div>` : ''}
           </div>
-          ${tplJuegoConfig(ex)}
+          ${(ex.tipo||'gym')==='running' ? '' : tplJuegoConfig(ex)}
           <div class="row" style="margin-top:8px;">
             <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="up" title="Subir">↑</button>
             <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="down" title="Bajar">↓</button>
@@ -8479,7 +9767,7 @@ function cuerpoDia(d, draft, athleteId, esTenisOMixto){
           html += exCardHtml(ex, b.key, d, draft.days[d][b.key]);
         });
         html += `<div class="row" style="gap:8px;flex-wrap:wrap;">
-          <button class="btn ghost small" data-addex="${d}|${b.key}">+ Añadir a ${b.label.toLowerCase()}</button>
+          ${b.key==='principal' ? `<button class="btn ghost small" data-addex="${d}|${b.key}|gym">+ Gym</button><button class="btn ghost small" data-addex="${d}|${b.key}|running">+ Running</button><button class="btn ghost small" data-addex="${d}|${b.key}|tenis">+ Tenis</button>` : `<button class="btn ghost small" data-addex="${d}|${b.key}">+ Añadir a ${b.label.toLowerCase()}</button>`}
           <button class="btn ghost small" data-fromlib="${d}|${b.key}">Desde galería</button>
           ${draft.days[d][b.key].length?`<button class="btn ghost small" data-saveblock="${d}|${b.key}">Guardar bloque</button>`:''}
         </div>`;
@@ -8566,9 +9854,10 @@ async function tplDiarioLectura(athleteId, esCoach){
           // desplegar el detalle por serie: es justo lo que hacía falta ver
           // de un vistazo ("RPE • reps × kg movidos").
           const conReps = (kg)=> x.repsPlanned ? `${escapeHtml(x.repsPlanned)} × ${escapeHtml(kg)}` : escapeHtml(kg);
-          const prev = conReps(x.loadPlanned || '—');
-          const hecho = conReps(x.loadApplied || '—');
-          const difiere = x.loadPlanned && x.loadApplied && x.loadPlanned !== x.loadApplied;
+          const esRun = x.tipo === 'running';
+          const prev = esRun ? escapeHtml(x.runPlan || '—') : conReps(x.loadPlanned || '—');
+          const hecho = esRun ? escapeHtml(x.runHecho || '—') : conReps(x.loadApplied || '—');
+          const difiere = !esRun && x.loadPlanned && x.loadApplied && x.loadPlanned !== x.loadApplied;
           // Si anotó varias series o un rango ("8-9", "7,8,9") mostramos lo que
           // escribió y la media debajo: el detalle dice más que el promedio.
           const esf = (texto, media)=>{
@@ -8655,11 +9944,15 @@ async function tplQuestConfigAndRead(athleteId){
   const raw = await safeGet('quest-'+athleteId, true);
   const responses = raw ? JSON.parse(raw) : [];
   const a = state.athletes.find(x=>x.id===athleteId);
-  let html = `<div class="card"><h2>Preguntas del cuestionario</h2><p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">Selección propia de ${escapeHtml(a?a.name:'este atleta')}. Un tenista y un cliente de Hyrox no necesitan las mismas preguntas.</p>`;
+  const intakeRawC = await safeGet('intake-'+athleteId, true);
+  let esMujerC = false; try{ esMujerC = intakeRawC && JSON.parse(intakeRawC).genero === 'Mujer'; }catch(e){}
+  let html = esMujerC ? await tplTendenciaCiclo(athleteId, true) : '';
+  html += `<div class="card"><h2>Preguntas del cuestionario</h2><p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">Selección propia de ${escapeHtml(a?a.name:'este atleta')}. Un tenista y un cliente de Hyrox no necesitan las mismas preguntas.</p>`;
   let lastCat = '';
   QUESTION_BANK.forEach(q=>{
     if(q.cat!==lastCat){ html += `<div class="q-cat">${q.cat}</div>`; lastCat=q.cat; }
-    html += `<label class="q-config-item"><input type="checkbox" data-qid="${q.id}" ${active.includes(q.id)?'checked':''}> ${q.text}</label>`;
+    const permitida = contenidoVisible('q:'+q.id, audienciaDe(a));
+    html += `<label class="q-config-item" ${permitida?'':'style="opacity:.55;"'}><input type="checkbox" data-qid="${q.id}" ${active.includes(q.id)?'checked':''} ${permitida?'':'disabled'}> ${escapeHtml(q.text)}${permitida?'':` <i style="font-size:11px;">(oculta para ${esMenor(a)?'menores':'adultos'}; se cambia en Agenda → Contenido)</i>`}</label>`;
   });
   html += `<label class="q-config-item" style="margin-top:12px;"><input type="checkbox" id="questApplyAll"> Aplicar también como plantilla para nuevos atletas</label>
     <button class="btn" id="saveQuestConfig" style="margin-top:8px;">Guardar selección</button></div>`;
@@ -8667,6 +9960,13 @@ async function tplQuestConfigAndRead(athleteId){
   if(!responses.length) html += `<div class="empty">Sin respuestas todavía.</div>`;
   else responses.slice().reverse().forEach(r=>{
     html += `<div class="entry"><div class="entry-top"><span>${r.date||r.weekOf}</span></div>`;
+    if(r.cicloSint){
+      const sn = r.cicloSnap || {};
+      const etiquetaFase = sn.fase
+        ? `Fase ${CICLO_BLOQUE_LABEL[sn.fase].toLowerCase()} ${sn.validada?'(validada)':'(pendiente de validar)'}`
+        : (sn.motivo==='mixta' ? 'semana a caballo entre fases (no se asigna)' : 'sin fase asignable');
+      html += `<div style="font-size:12.5px;margin-top:6px;"><span style="color:var(--muted);">Ciclo:</span> ${CICLO_ITEMS.map(it=>`${it.corto.toLowerCase()} <b style="color:var(--accent);">${r.cicloSint[it.id]}/5</b>`).join(' · ')}<br><span style="font-size:11px;color:var(--muted);">${etiquetaFase}</span></div>`;
+    }
     active.forEach(qid=>{
       const q = QUESTION_BANK.find(x=>x.id===qid); if(!q) return;
       const val = r.answers ? r.answers[qid] : undefined; if(val===undefined || val==='') return;
@@ -8717,12 +10017,15 @@ async function tplPerfilCoachBody(athleteId){
       html += `<div class="empty">Aún no lo ha registrado.</div>`;
     } else if(faseC.sinCicloNatural){
       html += `<p style="font-size:13px;color:var(--muted);">Anticonceptivo combinado: ciclo natural suprimido. Programa por sensaciones/RPE en vez de por fase.</p>`;
+    } else if(faseC.sinFase){
+      html += `<div class="rd-zona rd-ambar"><div><b>Sin fase asignable ahora</b><span>${escapeHtml(textoSinFase(faseC))}</span></div></div>`;
     } else {
       const f = FASES_CICLO[faseC.fase];
       const overridesC = await getTextosEducativos();
       const tEntC = textoEducativo(overridesC, 'ciclo_'+faseC.fase+'_entreno');
       html += `<div class="rd-zona rd-${f.color==='danger'?'rojo':(f.color==='gold'?'ambar':'verde')}">
-        <div><b>Fase ${f.label} · día ${faseC.diaCiclo} de ${faseC.duracionCiclo}</b>
+        <div><b>Fase ${f.label}${faseC.metodo==='provisional'?' (estimada)':''} · día ${faseC.diaCiclo} de ${faseC.duracionCiclo}${faseC.tarde?` · ${faseC.tarde} d de retraso`:''}</b>
+        <span style="font-size:11px;opacity:0.85;">Orientación basada en la evidencia actual, que es limitada y varía mucho entre mujeres.</span>
         <span>${formateaGuia(tEntC.cuerpo)}</span></div>
       </div>`;
     }
@@ -8732,10 +10035,10 @@ async function tplPerfilCoachBody(athleteId){
   // Estado del Welcome Pack: para saber sin preguntarle si ya te mandó los
   // tests y las fotos del gimnasio.
   html += `<div class="card"><h2>Welcome Pack</h2>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">${welcomeCompleto(wpCoach)
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">${welcomeCompleto(wpCoach, a)
       ? `Completado el ${wpCoach.cerrado||'—'}.`
-      : `${wpCoach.hechos.length} de ${WELCOME_ITEMS.length} completados.`}</p>
-    ${WELCOME_ITEMS.map(i=>{
+      : `${welcomeItemsDe(a).filter(i=>wpCoach.hechos.includes(i.id)).length} de ${welcomeItemsDe(a).length} completados.`}</p>
+    ${welcomeItemsDe(a).map(i=>{
       const hecho = wpCoach.hechos.includes(i.id);
       return `<div class="wp-linea ${hecho?'done':''}"><span>${hecho?'✓':'○'}</span>${escapeHtml(i.titulo)}${hecho?'':' — pendiente'}</div>`;
     }).join('')}
@@ -8774,9 +10077,12 @@ async function tplPerfilCoachBody(athleteId){
       <button class="btn" id="saveProfileBtn" data-athleteid="${athleteId}" style="align-self:flex-start;">Guardar</button>
     </div></div>`;
   if(intake){
-    html += `<div class="card"><h2>Ficha del atleta</h2>`;
-    INTAKE_FIELDS.forEach(f=>{ if(intake[f.id]) html += `<div style="margin-bottom:10px;"><label class="field-label">${f.label}</label><div style="font-size:13.5px;">${escapeHtml(intake[f.id])}</div></div>`; });
-    html += `</div>`;
+    if(esMenor(a)) html += tplFichaMenor(intake, a);
+    else {
+      html += `<div class="card"><h2>Ficha del atleta</h2>`;
+      camposFichaDe('adulto', intake).forEach(f=>{ if(intake[f.id]) html += `<div style="margin-bottom:10px;"><label class="field-label">${escapeHtml(f.label)}</label><div style="font-size:13.5px;">${escapeHtml(Array.isArray(intake[f.id]) ? intake[f.id].join(', ') : String(intake[f.id]))}</div></div>`; });
+      html += `</div>`;
+    }
   }
   html += await tplTareasCoach(athleteId);
   return html;
@@ -9268,11 +10574,15 @@ async function tplAgenda(){
     <button data-agendasub="resumen" class="${sub==='resumen'?'active':''}">Resumen</button>
     <button data-agendasub="tareas" class="${sub==='tareas'?'active':''}">Tareas</button>
     <button data-agendasub="calendario" class="${sub==='calendario'?'active':''}">Calendario</button>
+    <button data-agendasub="nutricion" class="${sub==='nutricion'?'active':''}">Nutrición</button>
     <button data-agendasub="textos" class="${sub==='textos'?'active':''}">Textos</button>
+    <button data-agendasub="contenido" class="${sub==='contenido'?'active':''}">Contenido</button>
   </div>`;
   if(sub==='tareas') html += await tplTareas();
   else if(sub==='calendario') html += await tplCalendarioCoach();
+  else if(sub==='nutricion') html += await tplGuiaNutriEditor();
   else if(sub==='textos') html += await tplTextosEducativos();
+  else if(sub==='contenido') html += await tplContenidoEditor();
   else html += await tplResumen();
   return html;
 }
@@ -9285,7 +10595,8 @@ async function tplTextosEducativos(){
   const grupos = [
     { titulo:'Check-in pre-entreno', claves:['rd_sueno','rd_fatiga','rd_estres','rd_animo'] },
     { titulo:'Glosario (pestaña Sesión)', claves: GLOSARIO_CLAVES },
-    { titulo:'Ciclo menstrual', claves:['ciclo_menstrual_entreno','ciclo_menstrual_nutricion','ciclo_folicular_entreno','ciclo_folicular_nutricion','ciclo_ovulatoria_entreno','ciclo_ovulatoria_nutricion','ciclo_lutea_entreno','ciclo_lutea_nutricion'] }
+    { titulo:'Nutrición', claves:['nutri_digestion','nutri_proteina'] },
+    { titulo:'Ciclo menstrual', claves:['ciclo_metodo','ciclo_menstrual_entreno','ciclo_menstrual_nutricion','ciclo_folicular_entreno','ciclo_folicular_nutricion','ciclo_ovulatoria_entreno','ciclo_ovulatoria_nutricion','ciclo_lutea_entreno','ciclo_lutea_nutricion'] }
   ];
   let html = `<div class="card"><h2>Textos educativos</h2>
     <p style="font-size:12px;color:var(--muted);">Lo que ve el atleta junto a cada valor. Puedes editar cualquiera; si no tocas uno, se queda el texto de partida.</p>
@@ -9520,6 +10831,22 @@ function bindJuegoBotones(root, athleteId){
 
 function bindExerciseCard(card, athleteId){
     bindJuegoBotones(card, athleteId);
+    card.querySelectorAll('[data-extipo]').forEach(btn=>btn.addEventListener('click', async ()=>{
+      const nuevoTipo = btn.dataset.extipo;
+      const d = card.dataset.day, blockKey = card.dataset.block, exId = card.dataset.exid;
+      const draft = await getRoutine(state.selectedId, true);
+      const ex = draft.days[d][blockKey].find(x=>x.id===exId);
+      if(!ex || (ex.tipo||'gym') === nuevoTipo) return;
+      ex.tipo = nuevoTipo;
+      if(nuevoTipo === 'running' && !ex.run) ex.run = runVacio();
+      draft.updatedAt = new Date().toISOString();
+      const ok = await saveRoutine(state.selectedId, true, draft);
+      if(!ok){ toast('No se pudo guardar', true); return; }
+      if(!card.parentNode) return;
+      card.insertAdjacentHTML('afterend', exCardHtml(ex, blockKey, d, draft.days[d][blockKey]));
+      const nueva = card.nextElementSibling; card.remove();
+      if(nueva) bindExerciseCard(nueva, athleteId);
+    }));
 
     const fields = card.querySelectorAll('input, textarea, select');
     const commit = async ()=>{
@@ -9549,13 +10876,20 @@ function bindExerciseCard(card, athleteId){
             ex.grupoTipo = hermano ? (hermano.grupoTipo||'superserie') : 'superserie';
           }
         }
-        ex.load = card.querySelector('.ex-load').value.trim();
-        ex.series = card.querySelector('.ex-series').value.trim();
-        ex.reps = card.querySelector('.ex-reps').value.trim();
-        ex.rest = card.querySelector('.ex-rest').value.trim();
-        ex.rir = card.querySelector('.ex-rir').value.trim();
-        ex.rpeTarget = card.querySelector('.ex-rpetarget').value.trim();
-        ex.tempo = card.querySelector('.ex-tempo').value.trim();
+        const gv = (sel)=>{ const el = card.querySelector(sel); return el ? el.value.trim() : undefined; };
+        [['load','.ex-load'],['series','.ex-series'],['reps','.ex-reps'],['rest','.ex-rest'],['rir','.ex-rir'],['rpeTarget','.ex-rpetarget'],['tempo','.ex-tempo']]
+          .forEach(([campo,sel])=>{ const v = gv(sel); if(v !== undefined) ex[campo] = v; });
+        const objEl = card.querySelector('.ex-objetivo'); if(objEl) ex.objetivo = objEl.value.trim();
+        if((ex.tipo||'gym') === 'running'){
+          const r = runDe(ex), modoAntes = r.modo, medidaAntes = r.medida;
+          const rd = (sel, def)=>{ const el = card.querySelector(sel); return el ? el.value.trim() : def; };
+          r.modo = rd('.run-modo', r.modo); r.medida = rd('.run-medida', r.medida);
+          r.series = rd('.run-series', r.series); r.cadaSerie = rd('.run-cada', r.cadaSerie); r.recuperacion = rd('.run-recup', r.recuperacion);
+          r.distancia = rd('.run-distancia', r.distancia); r.duracion = rd('.run-duracion', r.duracion);
+          r.zona = rd('.run-zona', r.zona); r.ritmo = rd('.run-ritmo-in', r.ritmo);
+          ex.run = r;
+          if(r.modo !== modoAntes || r.medida !== medidaAntes) rehacerVista = true; // cambian los campos visibles
+        }
         const rondasEl = card.querySelector('.ex-juego-rondas');
         const ventanaEl = card.querySelector('.ex-juego-ventana');
         if(rondasEl && ex.juegoCfg){ ex.juegoCfg.rondas = parseInt(rondasEl.value,10) || 15; }
@@ -10547,16 +11881,7 @@ async function bindDynamicEvents(){
     disparador.addEventListener('change', actualizar);
     actualizar();
   });
-  const submitIntake = document.getElementById('submitIntake');
-  if(submitIntake) submitIntake.addEventListener('click', async ()=>{
-    try{
-      const data = {}; INTAKE_FIELDS.forEach(f=>{ const el=document.querySelector(`[data-intake="${f.id}"]`); data[f.id]=el?el.value.trim():''; });
-      const ok = await safeSet('intake-'+state.athleteAsId, JSON.stringify(data), true);
-      if(!ok){ toast('No se pudo guardar — revisa la conexión e inténtalo de nuevo', true); return; }
-      toast('Datos guardados');
-      state.tab='rutina'; renderScrollTop();
-    }catch(e){ toast('Error al guardar: '+e.message, true); }
-  });
+  bindIntakeForm();
 
   document.querySelectorAll('[data-toggle]').forEach(h=>h.addEventListener('click', ()=>{
     const d = h.dataset.toggle;
@@ -10705,6 +12030,8 @@ async function bindDynamicEvents(){
     const tipo = document.getElementById('tareaTipoNueva').value;
     if(!titulo){ toast('Ponle un título a la tarea', true); return; }
     const athleteId = state.selectedId;
+    { const tb = esMenor(state.athletes.find(a=>a.id===athleteId)) ? temaBloqueadoMenor(titulo+' '+cuerpo) : null;
+      if(tb && !confirm(`Esta tarea menciona «${tb}», un tema que has marcado como no recomendable para menores. ¿Enviarla igualmente?`)) return; }
     const tareas = await getTareas(athleteId);
     const nueva = { id: uid(), tipo, titulo,
       resumen: tipo==='guia' ? 'Léela cuando puedas' : (tipo==='poms' ? '12 preguntas cortas, 1 minuto' : (tipo==='hrv' ? 'Medición con la cámara, 30 segundos' : (tipo==='juego' ? 'Juego de reacción, 2 minutos' : 'Tarea pendiente'))),
@@ -10806,7 +12133,7 @@ async function bindDynamicEvents(){
     const id = b.dataset.wphecho;
     const w = await getWelcome(athleteId);
     if(!w.hechos.includes(id)) w.hechos.push(id);
-    const completo = welcomeCompleto(w);
+    const completo = welcomeCompleto(w, state.athletes.find(a=>a.id===athleteId));
     if(completo && !w.cerrado) w.cerrado = todayISO();
     const ok = await saveWelcome(athleteId, w);
     if(!ok){ toast('No se pudo guardar', true); return; }
@@ -10898,39 +12225,53 @@ async function bindDynamicEvents(){
   if(abrirCiclo) abrirCiclo.addEventListener('click', ()=>{ state.verCiclo = true; renderScrollTop(); });
   const volverCiclo = document.getElementById('volverPerfilCicloBtn');
   if(volverCiclo) volverCiclo.addEventListener('click', ()=>{ state.verCiclo = false; renderScrollTop(); });
+  bindNutri();
+  bindContenido();
+  actualizaSugerenciasHabitos();
   const guardarCiclo = document.getElementById('guardarCicloBtn');
   if(guardarCiclo) guardarCiclo.addEventListener('click', async ()=>{
     const athleteId = state.athleteAsId;
     const ciclo = await getCiclo(athleteId);
-    ciclo.ultimaRegla = document.getElementById('cicloUltima').value || null;
+    // Los ajustes se guardan sin tocar la lista de inicios: ahí vive el
+    // historial real y sobrescribirla perdería datos.
     ciclo.duracionCiclo = parseInt(document.getElementById('cicloDuracion').value,10) || 28;
     ciclo.duracionRegla = parseInt(document.getElementById('cicloDuracionRegla').value,10) || 5;
     ciclo.anticonceptivo = document.getElementById('cicloAnticonceptivo').value;
     ciclo.condicion = document.getElementById('cicloCondicion').value.trim();
-    const ok = await saveCiclo(athleteId, ciclo);
+    const ok = await guardaCicloYReasigna(athleteId, ciclo);
     toast(ok?'Guardado':'No se pudo guardar', !ok);
     if(ok) renderKeepScroll();
   });
-  const registrarRegla = document.getElementById('registrarReglaBtn');
-  if(registrarRegla) registrarRegla.addEventListener('click', async ()=>{
+  // Registrar un inicio de regla. Si la fecha dejaría un ciclo de menos de 21
+  // días (suele ser un manchado, no una regla nueva) se pide confirmación
+  // antes de guardar: un dato falso contamina todas las fases que se calculan
+  // después.
+  const intentaRegistrarRegla = async (fecha)=>{
     const athleteId = state.athleteAsId;
-    const ciclo = await getCiclo(athleteId);
-    const hoy = todayISO();
-    // Si ya había una fecha anterior, calculamos cuántos días duró ese ciclo
-    // y afinamos la media automáticamente con los últimos registros.
-    if(ciclo.ultimaRegla){
-      const dias = Math.round((new Date(hoy+'T00:00:00') - new Date(ciclo.ultimaRegla+'T00:00:00'))/86400000);
-      if(dias > 10 && dias < 60){
-        ciclo.historial.push({ fecha: ciclo.ultimaRegla, duracion: dias });
-        const ultimas = ciclo.historial.slice(-4).map(h=>h.duracion).filter(Boolean);
-        if(ultimas.length) ciclo.duracionCiclo = Math.round(ultimas.reduce((a,b)=>a+b,0)/ultimas.length);
-      }
+    let r = await registrarInicioRegla(athleteId, fecha);
+    if(!r.ok && r.motivo==='corto'){
+      const seguro = confirm(`Entre esa fecha y otra regla registrada solo hay ${r.dias} días, menos que un ciclo habitual (21–35). ¿Es de verdad el primer día de sangrado de una regla nueva, y no un manchado? Si lo dudas, cancela.`);
+      if(!seguro) return;
+      r = await registrarInicioRegla(athleteId, fecha, { forzar:true });
     }
-    ciclo.ultimaRegla = hoy;
-    const ok = await saveCiclo(athleteId, ciclo);
-    toast(ok?'Registrado':'No se pudo guardar', !ok);
-    if(ok) renderKeepScroll();
+    const mensajes = { fecha_invalida:'Elige una fecha válida', futura:'La fecha no puede ser futura', duplicada:'Esa fecha ya está registrada', guardado:'No se pudo guardar' };
+    if(!r.ok){ toast(mensajes[r.motivo] || 'No se pudo registrar', true); return; }
+    toast(r.atipico ? 'Registrado (ciclo atípico: no se usará para asignar fases)' : 'Registrado');
+    renderKeepScroll();
+  };
+  const registrarRegla = document.getElementById('registrarReglaBtn');
+  if(registrarRegla) registrarRegla.addEventListener('click', ()=>intentaRegistrarRegla(todayISO()));
+  const registrarReglaFecha = document.getElementById('registrarReglaFechaBtn');
+  if(registrarReglaFecha) registrarReglaFecha.addEventListener('click', ()=>{
+    intentaRegistrarRegla(document.getElementById('reglaFecha').value);
   });
+  document.querySelectorAll('[data-borrarregla]').forEach(b=>b.addEventListener('click', async ()=>{
+    const fecha = b.dataset.borrarregla;
+    if(!confirm(`¿Eliminar el registro del ${fecha}? Se recalcularán tus fases.`)) return;
+    const ok = await eliminarInicioRegla(state.athleteAsId, fecha);
+    toast(ok?'Eliminado':'No se pudo eliminar', !ok);
+    if(ok) renderKeepScroll();
+  }));
 
   // --- Fotos de progreso ---
   const abrirFotos = document.getElementById('abrirFotosBtn');
@@ -11892,7 +13233,7 @@ async function bindDynamicEvents(){
   const copyPrev = document.getElementById('copyPrevWeekBtn');
   if(copyPrev) copyPrev.addEventListener('click', async ()=>{
     const actual = state.planWeek;
-    const anterior = (()=>{ const d=new Date(actual+'T00:00:00'); d.setDate(d.getDate()-7); return d.toISOString().slice(0,10); })();
+    const anterior = sumaDiasISO(actual, -7);
     const previa = await getRoutine(athleteId, true, anterior);
     let total = 0;
     DAYS.forEach(d=>BLOCKS.forEach(b=>{ total += previa.days[d][b.key].length; }));
@@ -12024,17 +13365,21 @@ async function bindDynamicEvents(){
   // Añadir ejercicio: insertamos la tarjeta en el sitio y ya. Reconstruir la
   // pantalla entera hacía que el scroll saltara al principio en cada añadido.
   document.querySelectorAll('[data-addex]').forEach(b=>b.addEventListener('click', async ()=>{
-    const [d, blockKey] = b.dataset.addex.split('|');
+    const [d, blockKey, tipoNuevo] = b.dataset.addex.split('|');
     const athleteId = state.selectedId;
     const draft = await getRoutine(athleteId, true);
-    const nuevo = blankExercise();
+    const nuevo = blankExercise(tipoNuevo);
     draft.days[d][blockKey].push(nuevo);
     draft.updatedAt = new Date().toISOString();
     const ok = await saveRoutine(athleteId, true, draft);
     if(!ok){ toast('No se pudo guardar. Comprueba la conexión.', true); return; }
     state.openDays[d] = true;
-    b.insertAdjacentHTML('beforebegin', exCardHtml(nuevo, blockKey, d, draft.days[d][blockKey]));
-    const card = b.previousElementSibling;
+    // Con varios botones de añadir (Gym / Running / Tenis) la tarjeta nueva se
+    // coloca siempre antes del primero, o sea, al final de la lista: así queda
+    // en el mismo orden en el que se guarda.
+    const ancla = (b.parentElement && b.parentElement.querySelector('[data-addex]')) || b;
+    ancla.insertAdjacentHTML('beforebegin', exCardHtml(nuevo, blockKey, d, draft.days[d][blockKey]));
+    const card = ancla.previousElementSibling;
     if(card){
       bindExerciseCard(card, athleteId);
       const nombre = card.querySelector('.ex-name');
@@ -12045,7 +13390,9 @@ async function bindDynamicEvents(){
   }));
 
   // auto-save per exercise field on blur
-  document.querySelectorAll('.ex-card').forEach(card=>bindExerciseCard(card, athleteId));
+  // Solo las tarjetas que son ejercicios (llevan data-exid): otros editores
+  // reutilizan la clase .ex-card por estilo y no deben pasar por este enlazado.
+  document.querySelectorAll('.ex-card[data-exid]').forEach(card=>bindExerciseCard(card, athleteId));
 
   // Deshacer: devuelve el borrador a lo que el atleta ya está viendo.
   const descartarBorrador = document.getElementById('discardDraftBtn');
@@ -12160,6 +13507,7 @@ async function bindDynamicEvents(){
   if(addHab) addHab.addEventListener('click', async ()=>{
     const nombre = document.getElementById('newHabitName').value.trim();
     if(!nombre){ toast('Ponle un nombre al hábito', true); return; }
+    if(esMenor(state.athletes.find(a=>a.id===athleteId)) && temaBloqueadoMenor(nombre)){ toast('Eso mejor coméntaselo a tu entrenador antes de añadirlo', true); return; }
     const cfg = await getHabitDefs(athleteId);
     cfg.athlete.push({ id:habitId(), name:nombre,
       type:document.getElementById('newHabitType').value,
@@ -12179,6 +13527,8 @@ async function bindDynamicEvents(){
   if(addCoachHab) addCoachHab.addEventListener('click', async ()=>{
     const nombre = document.getElementById('coachHabitName').value.trim();
     if(!nombre){ toast('Ponle un nombre al hábito', true); return; }
+    { const tb = esMenor(state.athletes.find(a=>a.id===athleteId)) ? temaBloqueadoMenor(nombre) : null;
+      if(tb && !confirm(`«${nombre}» contiene «${tb}», un tema que has marcado como no recomendable para menores. ¿Asignarlo igualmente?`)) return; }
     const cfg = await getHabitDefs(athleteId);
     cfg.coach.push({ id:habitId(), name:nombre,
       type:document.getElementById('coachHabitType').value,
@@ -12309,8 +13659,13 @@ async function bindDynamicEvents(){
   if(saveMyIntake) saveMyIntake.addEventListener('click', async ()=>{
     try{
       const prevRaw = await safeGet('intake-'+athleteId, true);
-      const data = prevRaw ? JSON.parse(prevRaw) : {};
-      INTAKE_FIELDS.forEach(f=>{ const el=document.querySelector(`[data-myintake="${f.id}"]`); if(el) data[f.id]=el.value.trim(); });
+      let data = prevRaw ? JSON.parse(prevRaw) : {};
+      const meG = state.athletes.find(a=>a.id===athleteId);
+      intakeCamposDe(meG).forEach(f=>{
+        if(f.type === 'info' || (esMenor(meG) && f.group === G_AUT)) return;
+        const v = leeCampoIntake(f, 'data-myintake'); if(v !== undefined) data[f.id] = v;
+      });
+      if(esMenor(meG)) data = derivaIntakeMenor(data, todayISO(), null);
       const ok = await safeSet('intake-'+athleteId, JSON.stringify(data), true);
       toast(ok?'Datos actualizados':'No se pudo guardar', !ok);
     }catch(e){ toast('Error al guardar: '+e.message, true); }
@@ -12580,12 +13935,35 @@ async function bindDynamicEvents(){
         }
       });
       if(!ok2){ toast(`Te falta responder: ${faltaTexto.slice(0,48)}${faltaTexto.length>48?'…':''}`, true); return; }
-      const date = document.getElementById('questDateInput').value || saturdayOfWeek();
-      const wk = weekOfISO();
+      // Bloque del ciclo: las 5 son obligatorias, un dato a medias no sirve
+      // para calcular medias por fase.
+      let cicloSint = null;
+      if(document.querySelector('[data-qcycle]')){
+        cicloSint = {};
+        for(const it of CICLO_ITEMS){
+          const cont = document.querySelector(`[data-qops="cyc_${it.id}"]`);
+          const sel = cont && cont.querySelector('.q-op.on');
+          if(!sel){ toast(`Te falta responder (ciclo): ${it.text.slice(0,40)}…`, true); return; }
+          cicloSint[it.id] = parseInt(sel.dataset.val,10);
+        }
+      }
+      let date = document.getElementById('questDateInput').value || saturdayOfWeek();
+      if(date > todayISO()) date = todayISO();
+      // La semana es la que se eligió en el selector, no siempre la actual:
+      // antes responder "hace 2 semanas" sobrescribía los datos de esta semana.
+      const wk = state.questWeek || weekOfISO();
       const raw = await safeGet('quest-'+athleteId, true);
       let responses = raw ? JSON.parse(raw) : [];
       responses = responses.filter(r=>r.weekOf!==wk);
-      responses.push({ weekOf: wk, date, answers, notes });
+      const respuesta = { weekOf: wk, date, answers, notes };
+      if(cicloSint){
+        respuesta.cicloSint = cicloSint;
+        // Fase de esa semana con lo que se sabe hoy; si ya hay una regla
+        // posterior registrada sale validada, si no queda pendiente y se
+        // reasigna sola al registrar la siguiente.
+        respuesta.cicloSnap = snapshotSemana(await getCiclo(athleteId), date);
+      }
+      responses.push(respuesta);
       const ok = await safeSet('quest-'+athleteId, JSON.stringify(responses), true);
       toast(ok ? 'Cuestionario enviado' : 'No se pudo guardar', !ok);
       state.calShowQuest=false;
