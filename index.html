@@ -650,6 +650,106 @@
   .cont-candado{font-size:13px;}
   .cont-lock .cont-label{opacity:.85;}
   .cont-nueva{background:var(--panel2);border-radius:8px;padding:12px;margin-top:12px;}
+  .rx-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+  .rx-barra{height:4px;background:var(--panel3);border-radius:4px;overflow:hidden;margin-bottom:12px;}
+  .rx-barra i{display:block;height:100%;background:var(--accent);transition:width .15s linear;}
+  .rx-area{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:min(46vh,300px);min-height:220px;border:none;border-radius:16px;background:var(--panel3);color:var(--muted);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;overflow:hidden;transition:box-shadow .12s;}
+  .rx-area.ok{box-shadow:inset 0 0 0 4px #3fa55a;}
+  .rx-area.mal{box-shadow:inset 0 0 0 4px var(--danger);}
+  .rx-area.ant{box-shadow:inset 0 0 0 4px var(--warn);}
+  .rx-cruz{width:26px;height:26px;opacity:.4;}
+  .rx-disco{width:clamp(110px,36vw,170px);height:clamp(110px,36vw,170px);border-radius:50%;box-shadow:0 8px 26px rgba(0,0,0,.28),inset 0 -6px 14px rgba(0,0,0,.12);}
+  .rx-flecha{width:clamp(110px,36vw,170px);height:clamp(110px,36vw,170px);color:var(--accent);}
+  .rx-num{font-family:'IBM Plex Mono',monospace;font-size:clamp(90px,28vw,150px);font-weight:600;color:var(--ink);line-height:1;}
+  .rx-img{max-width:70%;max-height:75%;border-radius:10px;object-fit:contain;}
+  .rx-rt{position:absolute;bottom:12px;right:14px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);opacity:.85;}
+  .rx-objetivos{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px;}
+  .rx-mini{width:54px;height:54px;display:flex;align-items:center;justify-content:center;background:var(--panel3);border-radius:10px;}
+  .rx-mini .rx-disco{width:32px;height:32px;box-shadow:none;}
+  .rx-mini .rx-flecha{width:34px;height:34px;}
+  .rx-mini .rx-num{font-size:28px;}
+  .rx-plan{margin-top:12px;padding:10px 12px;background:var(--panel2);border-radius:8px;font-size:12.5px;font-weight:600;color:var(--accent);line-height:1.6;}
+  .rx-plan span{font-weight:400;font-size:11.5px;color:var(--muted);}
+  .rx-descanso{text-align:center;padding:30px 0;}
+  .rx-etq{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .rx-cuenta{font-family:'IBM Plex Mono',monospace;font-size:78px;color:var(--accent);line-height:1.1;margin:6px 0;}
+  .rx-sig{font-size:12.5px;color:var(--muted);}
+  .editor-cargas{background:var(--panel2);border-radius:8px;padding:12px;margin-top:8px;}
+  .ec-ayuda{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+  .ec-ej{padding:8px 0;border-bottom:1px dashed var(--border);}
+  .ec-ej input.ec-carga{width:100%;margin-top:6px;}
+  .ec-prev{font-size:11px;color:var(--muted);font-weight:400;}
+  .ec-sets{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+  .ec-sets label{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:4px;}
+  .ec-sets .ec-kg{width:64px;}
+  .ec-lectura{font-size:12px;margin-top:5px;line-height:1.5;}
+  .ec-ok{color:var(--accent);}
+  .ec-mal{color:var(--danger);}
+  .ec-etq{font-size:11px;color:var(--muted);}
+  .q-graf-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:100px;padding:1px 8px;font-size:11px;cursor:pointer;margin-left:4px;}
+  .q-graf-btn.on{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+  .q-graf-fila{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;}
+  .q-graf{background:var(--panel2);border-radius:8px;padding:10px 12px;margin:6px 0 10px;}
+  .q-graf-svg{width:100%;height:auto;display:block;}
+  .q-graf-pie{font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:6px;}
+  .q-graf-vacio{font-size:12px;color:var(--muted);}
+  .res-fila{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+  .res-chip{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:8px 10px;text-align:left;cursor:pointer;color:var(--ink);font-family:inherit;}
+  .res-chip span{display:block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  .res-chip b{display:block;font-size:12.5px;margin-top:2px;font-weight:600;}
+  .seccion{margin-bottom:10px;}
+  .seccion-cab{width:100%;display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:13px 14px;cursor:pointer;color:var(--ink);font-family:inherit;text-align:left;}
+  .seccion.abierta>.seccion-cab{border-color:var(--accent);background:var(--accent-dim);}
+  .seccion-cab b{font-family:'Fraunces',serif;font-size:15px;font-weight:600;}
+  .sec-res{margin-left:auto;font-size:11.5px;color:var(--muted);}
+  .sec-chev{color:var(--accent);font-size:12px;}
+  .seccion.abierta .sec-chev{margin-left:auto;}
+  .seccion-cuerpo{padding-top:10px;}
+  .analisis-box{margin-top:8px;}
+  .analisis-campos{margin-top:8px;}
+  .an-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:10px;}
+  .an-card.caducado{border-color:var(--warn);}
+  .an-estado{font-size:11px;color:var(--muted);margin-bottom:8px;}
+  .an-card.caducado .an-estado{color:var(--warn);font-weight:600;}
+  .an-etq{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px;}
+  .an-grupo{margin-bottom:8px;}
+  .an-miniaturas{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .an-mini{position:relative;width:64px;height:64px;border-radius:6px;overflow:hidden;background:var(--panel3);}
+  .an-mini img{width:100%;height:100%;object-fit:cover;display:block;}
+  .an-mini button{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:none;background:rgba(0,0,0,.6);color:#fff;font-size:11px;cursor:pointer;line-height:1;}
+  .an-subir{display:flex;align-items:center;justify-content:center;width:64px;height:64px;border:1.5px dashed var(--border);border-radius:6px;color:var(--accent);font-size:11px;font-weight:600;cursor:pointer;text-align:center;}
+  .analisis-lectura{background:var(--panel3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin-top:8px;}
+  .analisis-lectura>summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--accent);list-style:none;}
+  .analisis-lectura>summary::-webkit-details-marker{display:none;}
+  .an-fecha{font-weight:400;color:var(--muted);font-size:11px;margin-left:6px;}
+  .an-lec-grupo{margin-top:10px;}
+  .an-fotos{display:flex;gap:8px;flex-wrap:wrap;}
+  .an-foto{padding:0;border:none;background:var(--panel2);border-radius:8px;overflow:hidden;width:calc(50% - 4px);aspect-ratio:3/4;cursor:zoom-in;}
+  .an-foto img{width:100%;height:100%;object-fit:cover;display:block;}
+  .an-texto-lec{font-size:13px;line-height:1.7;margin-top:10px;color:var(--ink);}
+  .lightbox-back{position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:300;display:flex;flex-direction:column;}
+  .lb-top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;color:#F4F2EA;font-family:'IBM Plex Mono',monospace;font-size:12px;}
+  .lb-x{background:transparent;border:none;color:#F4F2EA;font-size:22px;cursor:pointer;padding:4px 10px;}
+  .lb-img{flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;padding:0 8px 24px;}
+  .lb-img img{max-width:100%;max-height:100%;object-fit:contain;touch-action:pinch-zoom;}
+  .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:64px;border:none;border-radius:8px;background:rgba(255,255,255,.14);color:#fff;font-size:28px;cursor:pointer;}
+  .lb-prev{left:8px;} .lb-next{right:8px;}
+  .pista-editable [data-jugtoque],.pista-editable [data-destdrag]{cursor:grab;touch-action:none;}
+  .pista-editable{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}
+  .golpes-lista{display:flex;gap:6px;flex-wrap:wrap;}
+  .golpe-chip{background:var(--panel2);border:1px solid var(--border);border-radius:100px;padding:3px 10px;font-size:12px;}
+  .nutri-crono{font-size:12.5px;line-height:1.6;margin:8px 0 4px;padding:8px 10px;background:var(--panel3);border-radius:8px;color:var(--ink);}
+  .nutri-crono b{color:var(--accent);margin-right:4px;}
+  .nutri-porque{font-size:12.5px;line-height:1.6;margin:8px 0 4px;padding:8px 10px;border-left:3px solid var(--accent);background:var(--panel3);border-radius:0 8px 8px 0;}
+  .nutri-porque b{display:block;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+  .nutri-intro{font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px;}
+  .nutri-comidas{margin-top:8px;}
+  .nutri-idea{padding:8px 0;border-top:1px dashed var(--border);}
+  .nutri-idea:first-of-type{border-top:none;}
+  .nutri-idea b{font-size:13px;display:block;}
+  .dr-fase{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);margin:2px 0 0;}
+  .dr-fila:hover{background:var(--panel2);}
+  .rec-guardada{display:inline-block;margin-top:8px;font-size:12px;color:var(--accent);font-weight:600;}
   .rd-explica{background:var(--panel3);border-radius:8px;padding:10px 12px;margin-top:10px;}
   .rd-explica b{display:block;font-size:12px;color:var(--accent);margin-bottom:4px;}
   .rd-explica p{font-size:12px;color:var(--ink);line-height:1.6;}
@@ -3254,13 +3354,13 @@ async function saveAsimetria(athleteId, lista){ return safeSet('asimetria-'+athl
 // Mide tiempo de reacción real, y también aciertos/fallos (si reacciona a
 // lo que no tocaba, o se le escapa el objetivo).
 const REACCION_ESTIMULOS = {
-  colores: ['🔴 Rojo','🟢 Verde','🔵 Azul','🟡 Amarillo'],
-  flechas: ['⬆️ Arriba','⬇️ Abajo','⬅️ Izquierda','➡️ Derecha'],
-  numeros: ['1','2','3','4','5','6','7','8','9'],
+  colores: ['🔴 Rojo','🟠 Naranja','🟡 Amarillo','🟢 Verde','🔵 Azul','🟣 Morado','🟤 Marrón','⚪ Blanco'],
+  flechas: ['⬆️ Arriba','↗️ Arriba-derecha','➡️ Derecha','↘️ Abajo-derecha','⬇️ Abajo','↙️ Abajo-izquierda','⬅️ Izquierda','↖️ Arriba-izquierda'],
+  numeros: ['1','2','3','4','5','6','7','8'],
   letras: ['A','B','C','D','E','F','G','H'],
   formas: ['⬤ Círculo','▲ Triángulo','■ Cuadrado','◆ Diamante','⬟ Pentágono','★ Estrella']
 };
-const REACCION_TIPO_LABEL = { colores:'Colores', flechas:'Flechas', numeros:'Números', letras:'Letras', formas:'Formas', imagenes:'Imágenes propias' };
+const REACCION_TIPO_LABEL = { colores:'Colores (8)', flechas:'Flechas (8 direcciones)', numeros:'Números (1-8)', letras:'Letras', formas:'Formas', imagenes:'Imágenes propias' };
 // Junta en una sola lista los estímulos de todas las categorías elegidas,
 // incluidas las imágenes propias (identificables porque son una URL). Así
 // un mismo juego puede mezclar, por ejemplo, colores y formas a la vez.
@@ -3934,7 +4034,7 @@ function totalReadiness(dia){
 // Interruptor del módulo de tenis. En false, la app se comporta como si el
 // módulo no existiera: no aparece la modalidad, ni gym/pista, ni drills.
 // El código permanece intacto para reactivarlo poniendo true.
-const TENIS_ACTIVO = false;
+const TENIS_ACTIVO = true;
 
 // ---------- DRILLS DE TENIS ----------
 const DRILL_OBJETIVOS = ['Cambio de dirección','Approach','Buscar el espacio libre','Consistencia','Saque y resto','Subir a la red (volea)'];
@@ -4478,12 +4578,126 @@ const NUTRI_RANGOS = [
 function nutriGrupos(i){ return Array.isArray(i.grupos) ? i.grupos : (i.grupo ? [i.grupo] : []); }
 const NUTRI_AVISO = "Los momentos y las cantidades son orientativos: lo que más pesa es lo que comes en el total del día. Los valores nutricionales son aproximados (tablas de composición como USDA) y varían con la marca y el cocinado. Sobre los alimentos con fama de antiinflamatorios: en las revisiones sistemáticas, sus efectos sobre la recuperación son pequeños y de certeza baja o muy baja, y la mayoría de los estudios usan suplementos a dosis altas, no comida. Sirven como parte de una dieta variada, no como tratamiento. Si tienes una molestia que no se va, consulta a un profesional sanitario. Los grupos «Sueño» y «Cerebro» se apoyan en mecanismos plausibles y en estudios pequeños: no hay evidencia sólida de que ningún alimento concreto mejore el sueño o el rendimiento cognitivo en personas sanas. Esta guía orienta, no sustituye a un dietista-nutricionista; si tienes una condición médica, una alergia o una intolerancia, consúltalo.";
 const GUIA_NUTRI_DEFECTO = [{"id": "cena-salmon", "cat": "cenas", "nombre": "Salmón al horno con quinoa y brócoli", "racion": "150 g de salmón, 150 g de quinoa cocida, 150 g de brócoli y 1 cucharadita de AOVE", "kcal": 589, "p": 41, "c": 43, "g": 29, "momentos": ["Cena", "Post-entreno"], "nota": "Si entrenas por la tarde, esta cena sirve también de recuperación."}, {"id": "cena-tortilla", "cat": "cenas", "nombre": "Tortilla de dos huevos con espinacas y feta, y tostada integral", "racion": "2 huevos, 80 g de espinacas, 30 g de feta, 50 g de pan integral y un poco de AOVE", "kcal": 411, "p": 25, "c": 26, "g": 23, "momentos": ["Cena"], "nota": "Rápida y con proteína de calidad; añade una pieza de fruta si has entrenado fuerte."}, {"id": "cena-bacalao", "cat": "cenas", "nombre": "Bacalao o merluza con boniato asado y ensalada", "racion": "180 g de pescado blanco, 200 g de boniato asado, ensalada y 2 cucharaditas de AOVE", "kcal": 436, "p": 37, "c": 45, "g": 12, "momentos": ["Cena"], "nota": "Cena ligera de digerir, buena antes de un día de entreno exigente."}, {"id": "cena-pollo", "cat": "cenas", "nombre": "Pollo salteado con arroz integral y verduras", "racion": "120 g de pollo cocinado, 150 g de arroz integral cocido, 150 g de verduras y 1 cucharadita de AOVE", "kcal": 497, "p": 44, "c": 46, "g": 14, "momentos": ["Cena", "Post-entreno"], "nota": "Aporta proteína y carbohidrato a la vez: encaja si has entrenado por la tarde-noche."}, {"id": "comida-lentejas", "cat": "comidas", "nombre": "Lentejas estofadas con verduras y huevo", "racion": "250 g de lentejas cocidas con verduras, 1 huevo y 1 cucharadita de AOVE", "kcal": 472, "p": 31, "c": 58, "g": 14, "momentos": ["Comida"], "nota": "Buena fuente de hierro vegetal: añade algo con vitamina C (pimiento, limón) en la misma comida."}, {"id": "comida-bowl", "cat": "comidas", "nombre": "Bowl de arroz integral, pollo y verduras salteadas", "racion": "200 g de arroz integral cocido, 150 g de pollo cocinado, 150 g de verduras y 2 cucharaditas de AOVE", "kcal": 620, "p": 54, "c": 58, "g": 18, "momentos": ["Comida", "Post-entreno"], "nota": "Plato base fácil de preparar en tanda para varios días."}, {"id": "comida-pasta", "cat": "comidas", "nombre": "Pasta integral con atún y tomate", "racion": "220 g de pasta integral cocida, 80 g de atún al natural, 100 g de tomate y 2 cucharaditas de AOVE", "kcal": 486, "p": 34, "c": 65, "g": 12, "momentos": ["Comida", "Pre-entreno"], "nota": "Rica en carbohidrato: encaja 2-3 horas antes de un entreno largo o de una competición."}, {"id": "comida-boniato", "cat": "comidas", "nombre": "Boniato asado con garbanzos y tahini", "racion": "200 g de boniato asado, 150 g de garbanzos cocidos, 15 g de tahini y espinacas", "kcal": 524, "p": 21, "c": 87, "g": 12, "momentos": ["Comida"], "nota": "Opción vegetal completa; el tahini aporta grasa y calcio."}, {"id": "snack-yogur", "cat": "snacks", "nombre": "Yogur griego con nueces y miel", "racion": "200 g de yogur griego natural, 20 g de nueces y 1 cucharadita de miel", "kcal": 355, "p": 21, "c": 19, "g": 23, "momentos": ["Snack", "Desayuno", "Antes de dormir"], "nota": "Saciante y fácil de llevar."}, {"id": "snack-platano", "cat": "snacks", "nombre": "Plátano con crema de cacahuete", "racion": "1 plátano mediano y 20 g de crema de cacahuete", "kcal": 224, "p": 6, "c": 31, "g": 10, "momentos": ["Pre-entreno", "Snack"], "nota": "Carbohidrato rápido y algo de grasa: tómalo 45-60 minutos antes de entrenar."}, {"id": "snack-aguacate", "cat": "snacks", "nombre": "Tostada integral con aguacate y huevo", "racion": "60 g de pan integral, 50 g de aguacate y 1 huevo cocido", "kcal": 303, "p": 15, "c": 30, "g": 14, "momentos": ["Desayuno", "Snack"], "nota": ""}, {"id": "snack-hummus", "cat": "snacks", "nombre": "Hummus con zanahoria y pita integral", "racion": "60 g de hummus, 100 g de zanahoria y 40 g de pita integral", "kcal": 247, "p": 10, "c": 40, "g": 7, "momentos": ["Snack"], "nota": ""}, {"id": "snack-batido", "cat": "snacks", "nombre": "Batido de leche, plátano y avena", "racion": "300 ml de leche semidesnatada, 1 plátano y 30 g de copos de avena", "kcal": 344, "p": 16, "c": 57, "g": 7, "momentos": ["Post-entreno", "Snack"], "nota": "Proteína y carbohidrato para después de entrenar, sin necesidad de suplementos."}, {"id": "snack-fruta", "cat": "snacks", "nombre": "Manzana con un puñado de nueces", "racion": "1 manzana mediana y 20 g de nueces", "kcal": 209, "p": 3, "c": 23, "g": 13, "momentos": ["Snack"], "nota": ""}, {"id": "al-salmon", "cat": "alimentos", "nombre": "Salmón", "racion": "100 g", "kcal": 208, "p": 20.4, "c": 0, "g": 13.4, "momentos": ["Comida", "Cena", "Post-entreno"], "nota": "~2,3 g de omega-3 (EPA+DHA) por 100 g. El omega-3 puede reducir algo marcadores inflamatorios como la IL-6 y la PCR (sobre todo en estudios con suplementos); en deportistas, sus efectos sobre la recuperación son mixtos. Muy útil además por su proteína.", "grupos": ["Antiinflamatorios", "Proteínas", "Grasas", "Cerebro"], "rank": {"Proteínas": {"v": 20.4, "t": "20,4 g de proteína"}, "Grasas": {"v": 13.4, "t": "13,4 g de grasa"}}}, {"id": "al-sardina", "cat": "alimentos", "nombre": "Sardina", "racion": "100 g", "kcal": 208, "p": 24.6, "c": 0, "g": 11.5, "momentos": ["Comida", "Cena"], "nota": "~2,1 g de omega-3 por 100 g, con el mismo mecanismo que el salmón. Más económica; en lata, mejor al natural o en aceite de oliva.", "grupos": ["Antiinflamatorios"], "rank": {}}, {"id": "al-aove", "cat": "alimentos", "nombre": "Aceite de oliva virgen extra", "racion": "100 g (1 cucharada ≈ 10 g)", "kcal": 884, "p": 0, "c": 0, "g": 100, "momentos": ["Comida", "Cena"], "nota": "Rico en oleocantal (contenido muy variable según variedad y frescura). En laboratorio inhibe las mismas enzimas que el ibuprofeno, pero a las cantidades de la dieta (~50 g al día) equivale solo a un 10 % de una dosis de ibuprofeno (Beauchamp, 2005), y no se sabe si ocurre igual en el cuerpo. Es sobre todo una grasa de calidad.", "grupos": ["Antiinflamatorios", "Grasas"], "rank": {"Grasas": {"v": 100, "t": "100 g de grasa"}}}, {"id": "al-curcuma", "cat": "alimentos", "nombre": "Cúrcuma (con pimienta negra)", "racion": "100 g en polvo (se usa en pequeñas cantidades)", "kcal": 312, "p": 9.7, "c": 67.1, "g": 3.3, "momentos": ["Comida", "Cena"], "nota": "Contiene curcumina; la pimienta negra mejora notablemente su absorción. Las revisiones muestran un efecto pequeño-medio sobre las agujetas con certeza baja o muy baja, y usan ~500 mg de curcumina en formulaciones especiales: cocinar con cúrcuma aporta mucho menos.", "grupos": ["Antiinflamatorios", "Cerebro"], "rank": {}}, {"id": "al-granada", "cat": "alimentos", "nombre": "Granada", "racion": "100 g", "kcal": 83, "p": 1.7, "c": 18.7, "g": 1.2, "momentos": ["Snack", "Post-entreno"], "nota": "Rica en polifenoles (contenido variable), con acción antioxidante. En revisiones, el zumo de granada y el de cereza ácida redujeron las agujetas, tomados durante varios días alrededor del ejercicio.", "grupos": ["Antiinflamatorios"], "rank": {}}, {"id": "al-arandanos", "cat": "alimentos", "nombre": "Arándanos", "racion": "100 g", "kcal": 57, "p": 0.7, "c": 14.5, "g": 0.3, "momentos": ["Desayuno", "Snack", "Post-entreno"], "nota": "Ricos en polifenoles (antocianinas, contenido variable). Buena fruta de snack; la evidencia sobre la recuperación es más limitada que su fama.", "grupos": ["Antiinflamatorios", "Cerebro"], "rank": {}}, {"id": "al-jengibre", "cat": "alimentos", "nombre": "Jengibre", "racion": "100 g (se usa en pequeñas cantidades)", "kcal": 80, "p": 1.8, "c": 17.8, "g": 0.8, "momentos": ["Cualquier momento"], "nota": "Contiene gingerol, al que se atribuye efecto antiinflamatorio y ayuda con las molestias digestivas, con evidencia limitada en deportistas. Infusión, platos o batidos.", "grupos": ["Antiinflamatorios"], "rank": {}}, {"id": "al-espinaca", "cat": "alimentos", "nombre": "Espinaca (cruda)", "racion": "100 g", "kcal": 23, "p": 2.9, "c": 3.6, "g": 0.4, "momentos": ["Comida", "Cena"], "nota": "483 µg de vitamina K por 100 g, además de antioxidantes. Si tomas anticoagulantes (acenocumarol o warfarina), consulta antes de cambiar mucho tu consumo de verdura de hoja verde.", "grupos": ["Antiinflamatorios", "Fibra"], "rank": {"Fibra": {"v": 2.2, "t": "2,2 g de fibra"}}}, {"id": "al-kale", "cat": "alimentos", "nombre": "Kale (crudo)", "racion": "100 g", "kcal": 49, "p": 4.3, "c": 8.8, "g": 0.9, "momentos": ["Comida", "Cena"], "nota": "705 µg de vitamina K por 100 g: mismo perfil que la espinaca, más concentrado (y el mismo aviso con los anticoagulantes).", "grupos": ["Antiinflamatorios"], "rank": {}}, {"id": "al-nueces", "cat": "alimentos", "nombre": "Nueces", "racion": "100 g (una ración habitual son unos 30 g)", "kcal": 654, "p": 15.2, "c": 13.7, "g": 65.2, "momentos": ["Snack", "Desayuno"], "nota": "~9 g de omega-3 vegetal (ALA) por 100 g, más grasas saludables y polifenoles. Son calóricas; cuidado si hay alergia a frutos secos.", "grupos": ["Antiinflamatorios", "Grasas", "Cerebro"], "rank": {"Grasas": {"v": 65, "t": "65 g de grasa"}}}, {"id": "al-te-verde", "cat": "alimentos", "nombre": "Té verde (infusión)", "racion": "1 taza (≈ 240 ml)", "kcal": 1, "p": 0.2, "c": 0, "g": 0, "momentos": ["Cualquier momento"], "nota": "Catequinas (EGCG, concentración variable según la preparación) con efecto antioxidante pequeño. Contiene algo de cafeína: mejor evitarlo por la tarde-noche si duermes mal, y tomarlo lejos de las comidas ricas en hierro.", "grupos": ["Antiinflamatorios", "Cerebro"], "rank": {}}, {"id": "al-isolate", "nombre": "Proteína aislada (isolate) en polvo", "racion": "100 g de polvo (una dosis son unos 30 g)", "kcal": 380, "p": 90, "c": 2, "g": 1, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 90, "t": "90 g de proteína"}}, "momentos": ["Post-entreno", "Desayuno", "Snack"], "nota": "Útil cuando cuesta llegar a la proteína del día. Es un complemento práctico, no obligatorio: la comida normal cubre lo mismo.", "cat": "alimentos"}, {"id": "al-pollo", "nombre": "Pechuga de pollo", "racion": "100 g cocinada", "kcal": 165, "p": 31, "c": 0, "g": 3.6, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 31, "t": "31 g de proteína"}}, "momentos": ["Comida", "Cena", "Post-entreno"], "nota": "Proteína magra y versátil; se conserva bien cocinada para toda la semana.", "cat": "alimentos"}, {"id": "al-pavo", "nombre": "Pechuga de pavo", "racion": "100 g cocinada", "kcal": 135, "p": 30, "c": 0, "g": 1, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 30, "t": "30 g de proteína"}}, "momentos": ["Comida", "Cena"], "nota": "Muy magra: acompáñala de una grasa saludable (aceite de oliva, aguacate) para que sea más saciante.", "cat": "alimentos"}, {"id": "al-atun", "nombre": "Atún en lata (al natural)", "racion": "100 g escurrido", "kcal": 116, "p": 26, "c": 0, "g": 1, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 26, "t": "26 g de proteína"}}, "momentos": ["Comida", "Cena", "Snack"], "nota": "Proteína lista para usar sobre ensalada, pasta o una tostada.", "cat": "alimentos"}, {"id": "al-ternera", "nombre": "Ternera magra", "racion": "100 g cocinada", "kcal": 158, "p": 26, "c": 0, "g": 5.5, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 26, "t": "26 g de proteína"}}, "momentos": ["Comida", "Cena"], "nota": "Buena fuente de hierro de fácil absorción (hierro hemo). Conviene alternarla con pescado y legumbres.", "cat": "alimentos"}, {"id": "al-merluza", "nombre": "Merluza (pescado blanco)", "racion": "100 g cocinada", "kcal": 86, "p": 17, "c": 0, "g": 1.5, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 17, "t": "17 g de proteína"}}, "momentos": ["Cena", "Comida"], "nota": "Ligera de digerir: buena opción para la cena, sobre todo si entrenas al día siguiente.", "cat": "alimentos"}, {"id": "al-huevo", "nombre": "Huevo entero", "racion": "100 g (≈ 2 huevos medianos)", "kcal": 155, "p": 13, "c": 1.1, "g": 11, "grupos": ["Proteínas", "Cerebro"], "rank": {"Proteínas": {"v": 13, "t": "13 g de proteína"}}, "momentos": ["Desayuno", "Comida", "Cena", "Snack"], "nota": "Proteína de alta calidad. Aporta colina (≈ 147 mg por 100 g), que participa en la síntesis de acetilcolina; en adultos sanos no hay evidencia sólida de que comer más colina mejore la memoria.", "cat": "alimentos"}, {"id": "al-requeson", "nombre": "Requesón / queso fresco batido", "racion": "100 g", "kcal": 98, "p": 11, "c": 3.4, "g": 4.3, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 11, "t": "11 g de proteína"}}, "momentos": ["Desayuno", "Snack", "Antes de dormir"], "nota": "Rico en caseína, una proteína de digestión lenta: encaja bien por la noche.", "cat": "alimentos"}, {"id": "al-yogur-griego", "nombre": "Yogur griego", "racion": "100 g", "kcal": 97, "p": 9, "c": 4, "g": 5, "grupos": ["Proteínas", "Sueño"], "rank": {"Proteínas": {"v": 9, "t": "9 g de proteína"}, "Sueño": {"v": 11, "t": "11 mg de magnesio"}}, "momentos": ["Desayuno", "Snack", "Antes de dormir"], "nota": "Proteína y probióticos. Con fruta y frutos secos es un snack completo; antes de dormir aporta proteína de digestión lenta.", "cat": "alimentos"}, {"id": "al-lentejas", "nombre": "Lentejas cocidas", "racion": "100 g cocidas", "kcal": 116, "p": 9, "c": 20, "g": 0.4, "grupos": ["Proteínas", "Carbohidratos", "Fibra"], "rank": {"Proteínas": {"v": 9, "t": "9 g de proteína"}, "Carbohidratos": {"v": 20, "t": "20 g de carbohidratos"}, "Fibra": {"v": 8, "t": "8 g de fibra"}}, "momentos": ["Comida", "Cena"], "nota": "Proteína vegetal, carbohidrato y fibra a la vez. Su hierro se absorbe mejor con algo de vitamina C en la misma comida (en una dieta completa el efecto es modesto).", "cat": "alimentos"}, {"id": "al-tofu", "nombre": "Tofu firme", "racion": "100 g", "kcal": 76, "p": 8, "c": 1.9, "g": 4.8, "grupos": ["Proteínas"], "rank": {"Proteínas": {"v": 8, "t": "8 g de proteína"}}, "momentos": ["Comida", "Cena"], "nota": "Proteína vegetal que toma el sabor de lo que lo acompañe; salteado o a la plancha.", "cat": "alimentos"}, {"id": "al-almendras", "nombre": "Almendras", "racion": "100 g (un puñado son unos 30 g)", "kcal": 579, "p": 21, "c": 22, "g": 50, "grupos": ["Grasas", "Cerebro"], "rank": {"Grasas": {"v": 50, "t": "50 g de grasa"}}, "momentos": ["Snack", "Desayuno"], "nota": "Grasa insaturada, fibra y magnesio (≈ 270 mg por 100 g). Con un puñado (≈ 30 g) basta: es un snack muy concentrado.", "cat": "alimentos"}, {"id": "al-calabaza", "nombre": "Semillas de calabaza", "racion": "100 g (un puñado son unos 30 g)", "kcal": 559, "p": 30, "c": 11, "g": 49, "grupos": ["Grasas", "Cerebro"], "rank": {"Grasas": {"v": 49, "t": "49 g de grasa"}}, "momentos": ["Snack", "Desayuno"], "nota": "Aportan magnesio (≈ 262 mg por 100 g) y proteína. Van bien sobre yogur, ensaladas o porridge.", "cat": "alimentos"}, {"id": "al-chia", "nombre": "Semillas de chía", "racion": "100 g (dos cucharadas son unos 20 g)", "kcal": 486, "p": 17, "c": 42, "g": 31, "grupos": ["Grasas", "Fibra"], "rank": {"Grasas": {"v": 31, "t": "31 g de grasa"}, "Fibra": {"v": 34, "t": "34 g de fibra"}}, "momentos": ["Desayuno", "Snack"], "nota": "Dos cucharadas (≈ 20 g) aportan unos 7 g de fibra. Hidrátalas en yogur, leche o avena antes de comerlas y bebe agua.", "cat": "alimentos"}, {"id": "al-aguacate", "nombre": "Aguacate", "racion": "100 g de pulpa", "kcal": 160, "p": 2, "c": 8.5, "g": 14.7, "grupos": ["Grasas"], "rank": {"Grasas": {"v": 14.7, "t": "14,7 g de grasa"}}, "momentos": ["Desayuno", "Comida", "Snack"], "nota": "Grasa insaturada y fibra. Un cuarto o media pieza es una ración razonable.", "cat": "alimentos"}, {"id": "al-avena", "nombre": "Avena", "racion": "100 g en crudo", "kcal": 389, "p": 17, "c": 66, "g": 7, "grupos": ["Carbohidratos", "Fibra", "Sueño", "Cerebro"], "rank": {"Carbohidratos": {"v": 66, "t": "66 g de carbohidratos"}, "Fibra": {"v": 10, "t": "10 g de fibra"}, "Sueño": {"v": 138, "t": "138 mg de magnesio"}}, "momentos": ["Desayuno", "Pre-entreno", "Snack"], "nota": "Carbohidrato de absorción gradual: buena base de desayuno o de pre-entreno si la toleras. Aporta magnesio y vitaminas del grupo B.", "cat": "alimentos"}, {"id": "al-pan-integral", "nombre": "Pan integral", "racion": "100 g (una rebanada son unos 30 g)", "kcal": 247, "p": 13, "c": 41, "g": 3.4, "grupos": ["Carbohidratos", "Fibra"], "rank": {"Carbohidratos": {"v": 41, "t": "41 g de carbohidratos"}, "Fibra": {"v": 7, "t": "7 g de fibra"}}, "momentos": ["Desayuno", "Comida", "Snack"], "nota": "Base de tostadas con proteína (huevo, atún, requesón). Con mucha fibra, evítalo justo antes de un entreno intenso si te sienta pesado.", "cat": "alimentos"}, {"id": "al-pasta-integral", "nombre": "Pasta integral", "racion": "100 g cocida", "kcal": 124, "p": 5.3, "c": 25, "g": 1.1, "grupos": ["Carbohidratos"], "rank": {"Carbohidratos": {"v": 25, "t": "25 g de carbohidratos"}}, "momentos": ["Comida", "Cena", "Pre-entreno", "Post-entreno"], "nota": "Carbohidrato de absorción gradual; para antes de entrenar, tómala 2-3 h antes.", "cat": "alimentos"}, {"id": "al-arroz-integral", "nombre": "Arroz integral", "racion": "100 g cocido", "kcal": 111, "p": 2.6, "c": 23, "g": 0.9, "grupos": ["Carbohidratos"], "rank": {"Carbohidratos": {"v": 23, "t": "23 g de carbohidratos"}}, "momentos": ["Comida", "Cena", "Post-entreno"], "nota": "Acompañamiento fácil de combinar con proteína y verduras.", "cat": "alimentos"}, {"id": "al-quinoa", "nombre": "Quinoa", "racion": "100 g cocida", "kcal": 120, "p": 4.4, "c": 21, "g": 1.9, "grupos": ["Carbohidratos"], "rank": {"Carbohidratos": {"v": 21, "t": "21 g de carbohidratos"}}, "momentos": ["Comida", "Cena"], "nota": "Carbohidrato con algo más de proteína que otros cereales.", "cat": "alimentos"}, {"id": "al-boniato", "nombre": "Boniato", "racion": "100 g cocido", "kcal": 90, "p": 2, "c": 21, "g": 0.2, "grupos": ["Carbohidratos", "Fibra"], "rank": {"Carbohidratos": {"v": 21, "t": "21 g de carbohidratos"}, "Fibra": {"v": 3.3, "t": "3,3 g de fibra (con piel)"}}, "momentos": ["Comida", "Cena", "Pre-entreno", "Post-entreno"], "nota": "Carbohidrato fácil de digerir y versátil: asado, en puré o en tortilla.", "cat": "alimentos"}, {"id": "al-lino", "nombre": "Semillas de lino", "racion": "100 g (una cucharada son unos 10 g)", "kcal": 534, "p": 18, "c": 29, "g": 42, "grupos": ["Fibra", "Grasas"], "rank": {"Fibra": {"v": 27, "t": "27 g de fibra"}}, "momentos": ["Desayuno", "Snack"], "nota": "Mejor molidas para aprovechar su fibra y su omega-3 vegetal (ALA). Añádelas a yogur o avena.", "cat": "alimentos"}, {"id": "al-nibs", "nombre": "Nibs de cacao", "racion": "100 g (se usan en pequeñas cantidades)", "kcal": 476, "p": 14, "c": 37, "g": 31, "grupos": ["Sueño"], "rank": {"Sueño": {"v": 499, "t": "499 mg de magnesio"}}, "momentos": ["Snack", "Desayuno"], "nota": "Muy ricos en magnesio, pero se toman en cantidades pequeñas (un puñadito sobre yogur o fruta). La composición varía mucho entre marcas.", "cat": "alimentos"}, {"id": "al-pistachos", "nombre": "Pistachos", "racion": "100 g (un puñado son unos 30 g)", "kcal": 560, "p": 20, "c": 28, "g": 45, "grupos": ["Sueño", "Grasas"], "rank": {"Sueño": {"v": 121, "t": "121 mg de magnesio"}}, "momentos": ["Snack"], "nota": "Magnesio y grasa insaturada. Sin sal y con cáscara, comes más despacio.", "cat": "alimentos"}, {"id": "al-platano", "nombre": "Plátano", "racion": "100 g (una pieza mediana son unos 120 g de pulpa)", "kcal": 89, "p": 1.1, "c": 23, "g": 0.3, "grupos": ["Sueño", "Carbohidratos"], "rank": {"Sueño": {"v": 27, "t": "27 mg de magnesio"}}, "momentos": ["Pre-entreno", "Post-entreno", "Snack", "Desayuno"], "nota": "Carbohidrato rápido y fácil de digerir: útil antes y después de entrenar. Aporta algo de magnesio, pero poco.", "cat": "alimentos"}, {"id": "al-kiwi", "nombre": "Kiwi", "racion": "100 g (un kiwi son unos 75 g)", "kcal": 61, "p": 1.1, "c": 15, "g": 0.5, "grupos": ["Sueño"], "rank": {"Sueño": {"v": 17, "t": "17 mg de magnesio"}}, "momentos": ["Snack", "Antes de dormir", "Desayuno"], "nota": "En algún estudio pequeño, comerlo antes de acostarse se asoció a mejor sueño; la evidencia es limitada. Sobre todo es una fruta rica en vitamina C.", "cat": "alimentos"}, {"id": "al-cerezas", "nombre": "Cerezas", "racion": "100 g", "kcal": 63, "p": 1.1, "c": 16, "g": 0.2, "grupos": ["Sueño"], "rank": {"Sueño": {"v": 11, "t": "11 mg de magnesio"}}, "momentos": ["Snack", "Post-entreno", "Antes de dormir"], "nota": "Contienen algo de melatonina (cantidad variable). El zumo de cereza ácida tiene estudios modestos sobre recuperación; en fruta entera, la evidencia es menor.", "cat": "alimentos"}, {"id": "al-kefir", "nombre": "Kéfir", "racion": "100 g", "kcal": 41, "p": 3.4, "c": 4.5, "g": 1, "grupos": ["Sueño"], "rank": {"Sueño": {"v": 10, "t": "10 mg de magnesio"}}, "momentos": ["Desayuno", "Snack", "Antes de dormir"], "nota": "Lácteo fermentado con probióticos y algo de proteína.", "cat": "alimentos"}, {"id": "al-cacao", "nombre": "Cacao puro en polvo", "racion": "100 g (una cucharada son unos 5 g)", "kcal": 228, "p": 20, "c": 58, "g": 14, "grupos": ["Cerebro"], "rank": {}, "momentos": ["Desayuno", "Snack"], "nota": "Rico en flavonoides (cantidad variable según el procesado) y con un ligero efecto estimulante. Mézclalo con leche, yogur o avena, en pequeñas cantidades.", "cat": "alimentos"}];
+// Ideas de comida añadidas después: sus macros se calcularon con los valores por 100 g
+// de los propios alimentos de la guía (gramos × valor), no son cifras inventadas.
+const GUIA_NUTRI_NUEVAS = [{"id": "comida-pavo", "cat": "comidas", "nombre": "Bowl de pavo con quinoa y espinacas", "racion": "150 g de pechuga de pavo, 150 g de quinoa cocida, 60 g de espinacas crudas y 10 g de AOVE", "kcal": 485, "p": 53, "c": 34, "g": 15, "momentos": ["Comida", "Post-entreno"], "nota": "Magro y fácil de digerir: sirve también para la comida de después de entrenar."}, {"id": "comida-pollo-curcuma", "cat": "comidas", "nombre": "Pollo con cúrcuma, quinoa y kale", "racion": "150 g de pechuga de pollo, 150 g de quinoa cocida, 80 g de kale, 3 g de cúrcuma con pimienta negra y 8 g de AOVE", "kcal": 547, "p": 57, "c": 41, "g": 17, "momentos": ["Comida", "Cena"], "nota": "La pimienta negra y el aceite ayudan a absorber la cúrcuma."}, {"id": "cena-ternera", "cat": "cenas", "nombre": "Ternera salteada con arroz integral y kale", "racion": "150 g de ternera magra, 150 g de arroz integral cocido, 80 g de kale y 8 g de AOVE", "kcal": 513, "p": 46, "c": 42, "g": 18, "momentos": ["Comida", "Cena"], "nota": "Añade un cítrico o pimiento para absorber mejor el hierro de la ternera."}, {"id": "cena-tofu", "cat": "cenas", "nombre": "Tofu salteado con arroz integral y jengibre", "racion": "150 g de tofu firme, 150 g de arroz integral cocido, 5 g de jengibre y 5 g de AOVE", "kcal": 329, "p": 16, "c": 38, "g": 14, "momentos": ["Cena", "Post-entreno"], "nota": "Opción vegetal con buena proteína; el jengibre ayuda a la digestión."}, {"id": "cena-sardinas", "cat": "cenas", "nombre": "Sardinas con boniato asado y espinacas", "racion": "100 g de sardinas, 200 g de boniato cocido, 60 g de espinacas crudas y 5 g de AOVE", "kcal": 446, "p": 30, "c": 44, "g": 17, "momentos": ["Cena"], "nota": "Una cena rápida si usas sardinas en lata al natural."}, {"id": "snack-requeson-kiwi", "cat": "snacks", "nombre": "Requesón con kiwi y semillas de chía", "racion": "150 g de requesón, 1 kiwi (≈ 100 g) y 10 g de semillas de chía", "kcal": 257, "p": 19, "c": 24, "g": 10, "momentos": ["Snack", "Antes de dormir"], "nota": "Proteína de digestión lenta con fruta: encaja antes de dormir."}, {"id": "snack-kefir-avena", "cat": "snacks", "nombre": "Kéfir con avena, arándanos, lino y nibs", "racion": "200 g de kéfir, 40 g de avena, 80 g de arándanos, 10 g de lino molido y 5 g de nibs de cacao", "kcal": 360, "p": 17, "c": 52, "g": 11, "momentos": ["Desayuno", "Snack"], "nota": "Un desayuno con fibra: bebe agua y, si te pesa, quita el lino."}, {"id": "snack-batido-isolate", "cat": "snacks", "nombre": "Batido de isolate con plátano y cacao", "racion": "30 g de proteína aislada, 1 plátano (≈ 120 g) y 5 g de cacao puro, con agua", "kcal": 232, "p": 29, "c": 31, "g": 1, "momentos": ["Post-entreno"], "nota": "Práctico después de entrenar cuando no apetece cocinar."}, {"id": "snack-yogur-granada", "cat": "snacks", "nombre": "Yogur griego con granada, almendras y semillas de calabaza", "racion": "150 g de yogur griego, 80 g de granada, 20 g de almendras y 10 g de semillas de calabaza", "kcal": 384, "p": 22, "c": 26, "g": 23, "momentos": ["Snack", "Desayuno"], "nota": ""}, {"id": "snack-cerezas-pistachos", "cat": "snacks", "nombre": "Cerezas con pistachos y té verde", "racion": "100 g de cerezas, 25 g de pistachos y una taza de té verde", "kcal": 205, "p": 7, "c": 23, "g": 11, "momentos": ["Snack"], "nota": "El té, a una hora de distancia de las comidas ricas en hierro y no por la noche si duermes mal."}];
+GUIA_NUTRI_NUEVAS.forEach(n=>GUIA_NUTRI_DEFECTO.push(JSON.parse(JSON.stringify(n))));
+const NUTRI_PORQUE_DEFECTO = {
+ "al-huevo": {
+  "Cerebro": "Su colina (≈ 147 mg por 100 g) es precursora de la acetilcolina, implicada en la memoria y el aprendizaje. Aun así, en adultos sanos no hay evidencia sólida de que comer más colina mejore la memoria."
+ },
+ "al-salmon": {
+  "Cerebro": "Su omega-3 (≈ 2,3 g de EPA+DHA por 100 g) es un componente estructural de las membranas de las neuronas. La evidencia de que comer más pescado mejore el rendimiento cognitivo en adultos sanos es limitada."
+ },
+ "al-nueces": {
+  "Cerebro": "Aportan omega-3 vegetal (ALA, ≈ 9 g por 100 g), con el mismo papel estructural que el del pescado, aunque el cuerpo convierte poco ALA en EPA y DHA."
+ },
+ "al-te-verde": {
+  "Cerebro": "Combina cafeína y L-teanina (cantidad variable según la preparación): se asocia a una activación mental más sostenida y con menos picos que el café, con evidencia limitada."
+ },
+ "al-cacao": {
+  "Cerebro": "Sus flavonoides (cantidad variable según el procesado) se estudian por su posible apoyo a la función cognitiva; además tiene un ligero efecto estimulante."
+ },
+ "al-curcuma": {
+  "Cerebro": "La curcumina es antiinflamatoria y interesa aquí porque la inflamación de bajo grado se asocia a peor rendimiento cognitivo. Con la cantidad que se come al cocinar, el efecto probablemente sea pequeño."
+ },
+ "al-almendras": {
+  "Cerebro": "Aportan magnesio (≈ 270 mg por 100 g), que participa en la transmisión nerviosa y en la regulación del estrés."
+ },
+ "al-calabaza": {
+  "Cerebro": "Aportan magnesio (≈ 262 mg por 100 g), con el mismo papel que en las almendras."
+ },
+ "al-avena": {
+  "Cerebro": "Es rica en vitaminas del grupo B, cofactores en la síntesis de neurotransmisores."
+ },
+ "al-arandanos": {
+  "Cerebro": "Sus flavonoides (antocianinas, cantidad variable) se estudian por su posible efecto sobre el flujo sanguíneo cerebral."
+ }
+};
+// Por qué cada alimento está en su grupo (del documento): se enseña al filtrar por ese grupo.
+const NUTRI_GRUPO_INTRO = {
+  'Cerebro': 'Alimentos de apoyo cognitivo, útiles también para el estudio. Lo que más pesa es la dieta en conjunto; para la mayoría de estos mecanismos, la evidencia en adultos sanos es limitada.',
+  'Sueño': 'Ordenados por su magnesio (relevante para la conciliación del sueño); donde aplica, también se indica su aporte de melatonina o de probióticos.',
+  'Antiinflamatorios': 'Apoyo a la recuperación deportiva. Sirven como parte de una dieta variada: sus efectos sobre la recuperación son pequeños y de certeza baja.'
+};
+const NUTRI_CRONO_DEFECTO = {
+ "al-isolate": "Después de entrenar, o cuando una comida se queda corta de proteína. Con 20-40 g por toma es suficiente; lo que más cuenta es el total del día.",
+ "al-pollo": "Comida o cena. Tras entrenar, acompañado de hidratos (arroz, pasta, patata), ayuda a recuperar.",
+ "al-pavo": "Comida o cena, o en un bocadillo después de entrenar. Es muy magro, así que se digiere con facilidad.",
+ "al-atun": "Es el snack proteico más práctico: sin cocinar, sobre pan o ensalada. Vale para comida, cena o después de entrenar.",
+ "al-ternera": "Comida o cena. Aporta hierro: acompáñala de vitamina C (pimiento, cítrico) para absorberlo mejor. Tarda más en digerirse, así que mejor lejos del entreno.",
+ "al-salmon": "Comida o cena, un par de veces por semana. Por su grasa se digiere despacio: mejor tomarlo al menos 3 h antes de entrenar, o después.",
+ "al-merluza": "Cena ligera: poca grasa y fácil de digerir. También sirve para una comida antes de entrenar si va con hidratos y poca grasa añadida.",
+ "al-huevo": "Desayuno o snack (cocido). Suma proteína de buena calidad en cualquier comida.",
+ "al-requeson": "Snack o antes de dormir: proteína de digestión lenta. Con fruta es una merienda completa. El efecto de tomar proteína antes de dormir es modesto, pero no estorba.",
+ "al-yogur-griego": "Desayuno, snack o antes de dormir (proteína de digestión lenta). Con fruta y avena también funciona después de entrenar.",
+ "al-lentejas": "En la comida principal. Llevan mucha fibra: evítalas justo antes de entrenar. Remojarlas y cocerlas bien mejora la tolerancia.",
+ "al-tofu": "Comida o cena. Salteado con arroz es una buena comida de después de entrenar.",
+ "al-aove": "En el plato, en comida y cena. Las grasas retrasan el vaciado del estómago: sin excesos en las 1-2 h previas al entreno.",
+ "al-nueces": "Snack o desayuno (un puñado ≈ 30 g). Son calóricas y de digestión lenta: mejor lejos del entreno inmediato.",
+ "al-almendras": "Snack o desayuno (un puñado ≈ 30 g). Digestión lenta: mejor lejos del entreno inmediato.",
+ "al-calabaza": "Sobre yogur, ensalada o avena, en puñado pequeño. Son muy concentradas.",
+ "al-chia": "Desayuno, hidratada en yogur o avena. Mucha fibra: bebe agua y evítala justo antes de entrenar.",
+ "al-aguacate": "Desayuno o comida (tostada, ensalada). Por su grasa, mejor lejos del entreno.",
+ "al-lino": "Molida (entera casi no se absorbe) y en el desayuno o el yogur. Introdúcela poco a poco por su fibra.",
+ "al-avena": "Desayuno, o 2-3 h antes de entrenar: hidratos de absorción gradual para una energía más sostenida.",
+ "al-pan-integral": "Desayuno o comida. Si te pesa antes de entrenar, 1-2 h antes puedes optar por pan blanco; el integral va mejor en las comidas lejanas al entreno.",
+ "al-pasta-integral": "Comida o cena. Es una base clásica de hidratos 3-4 h antes de un esfuerzo largo y para recuperar después.",
+ "al-arroz-integral": "Comida o cena; tras entrenar, junto a proteína. Si te pesa antes de entrenar, el arroz blanco es más ligero.",
+ "al-quinoa": "Comida o cena. Aporta hidratos y proteína completa: va bien en la comida posterior al entreno.",
+ "al-boniato": "Comida o cena, o asado 2-3 h antes de entrenar: hidratos de absorción gradual y bien tolerados.",
+ "al-espinaca": "Comida o cena, cruda o salteada. Es voluminosa y ligera: buena para la cena.",
+ "al-nibs": "Como snack de tarde o sobre yogur o fruta. Contienen algo de estimulantes (teobromina, algo de cafeína): si duermes mal, mejor no por la noche.",
+ "al-pistachos": "Snack de tarde, un puñado pequeño (≈ 30 g).",
+ "al-platano": "30-60 min antes de entrenar o justo después: hidrato rápido y fácil de digerir.",
+ "al-kiwi": "Una hora antes de acostarte, como en los pocos estudios que hay; la evidencia sobre el sueño es limitada.",
+ "al-cerezas": "Snack o después de entrenar. Su efecto sobre el sueño o la recuperación es modesto.",
+ "al-kefir": "Desayuno, snack o antes de dormir (ligero).",
+ "al-curcuma": "En las comidas principales, con pimienta negra y algo de grasa (aceite) para absorberla mejor.",
+ "al-granada": "Snack o después de entrenar, en fruta o en zumo natural.",
+ "al-arandanos": "Desayuno o snack, con yogur o avena.",
+ "al-jengibre": "Cualquier momento: en infusión (sienta bien después de comer) o en los platos.",
+ "al-kale": "Comida o cena, salteado o en batido. Con un chorrito de aceite se aprovechan mejor sus vitaminas liposolubles (como la K).",
+ "al-te-verde": "Por la mañana o a primera hora de la tarde, y a una hora de distancia de comidas ricas en hierro. Si duermes mal, no por la noche (lleva cafeína).",
+ "al-cacao": "Desayuno o snack, con leche, yogur o avena. Si te cuesta dormir, no por la noche.",
+ "al-sardina": "Comida o cena. En lata, al natural o en aceite de oliva, resuelve una cena rápida."
+};
+const NUTRI_CLAVES_DEFECTO = {"al-salmon": ["salmón"], "al-sardina": ["sardina"], "al-aove": ["aove", "aceite de oliva"], "al-curcuma": ["cúrcuma"], "al-granada": ["granada"], "al-arandanos": ["arándano"], "al-jengibre": ["jengibre"], "al-espinaca": ["espinaca"], "al-kale": ["kale"], "al-nueces": ["nueces"], "al-te-verde": ["té verde"], "al-isolate": ["isolate", "proteína en polvo"], "al-pollo": ["pollo"], "al-pavo": ["pavo"], "al-atun": ["atún"], "al-ternera": ["ternera"], "al-merluza": ["merluza"], "al-huevo": ["huevo"], "al-requeson": ["requesón", "queso fresco"], "al-yogur-griego": ["yogur"], "al-lentejas": ["lentejas"], "al-tofu": ["tofu"], "al-almendras": ["almendra"], "al-calabaza": ["semillas de calabaza"], "al-chia": ["chía"], "al-aguacate": ["aguacate"], "al-avena": ["avena"], "al-pan-integral": ["pan integral", "tostada integral", "pita integral"], "al-pasta-integral": ["pasta integral"], "al-arroz-integral": ["arroz integral"], "al-quinoa": ["quinoa"], "al-boniato": ["boniato"], "al-lino": ["lino"], "al-nibs": ["nibs"], "al-pistachos": ["pistacho"], "al-platano": ["plátano"], "al-kiwi": ["kiwi"], "al-cerezas": ["cereza"], "al-kefir": ["kéfir"], "al-cacao": ["cacao puro", "cacao en polvo"]};
+// Cada alimento lleva su consejo de «cuándo tomarlo» y las palabras con las que se
+// enlaza a las comidas de la guía. Si la guía ya estaba guardada sin estos campos,
+// se rellenan desde aquí al cargarla (lo que edites después manda).
+function nutriConDefectos(items){
+  items.forEach(i=>{
+    if(i.cat !== 'alimentos') return;
+    if(i.crono === undefined && NUTRI_CRONO_DEFECTO[i.id] !== undefined) i.crono = NUTRI_CRONO_DEFECTO[i.id];
+    if(!Array.isArray(i.claves) && NUTRI_CLAVES_DEFECTO[i.id]) i.claves = NUTRI_CLAVES_DEFECTO[i.id].slice();
+    if(i.porque === undefined && NUTRI_PORQUE_DEFECTO[i.id]) i.porque = Object.assign({}, NUTRI_PORQUE_DEFECTO[i.id]);
+  });
+  return items;
+}
+function nutriNorm(t){ return String(t == null ? '' : t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+function nutriClavesDe(i){
+  const c = (Array.isArray(i.claves) && i.claves.length) ? i.claves : [String(i.nombre || '').split(/[ (]/)[0]];
+  return c.map(nutriNorm).filter(x=>x.length >= 3);
+}
+function nutriComidasDe(i, items){
+  const ks = nutriClavesDe(i); if(!ks.length) return [];
+  return items.filter(m=>m.cat !== 'alimentos' && ks.some(k=>nutriNorm(m.nombre + ' ' + (m.racion || '')).includes(k)));
+}
 async function getGuiaNutri(){
   const raw = await safeGet('guia-nutri', true);
-  try{ const o = raw ? JSON.parse(raw) : null; if(o && Array.isArray(o.items)) return o.items; }catch(e){}
-  return JSON.parse(JSON.stringify(GUIA_NUTRI_DEFECTO));
+  try{
+    const o = raw ? JSON.parse(raw) : null;
+    if(o && Array.isArray(o.items)){
+      // Una guía guardada antes de que existieran las ideas nuevas las recibe una sola
+      // vez; en cuanto guardes un cambio queda anotado y lo que borres ya no vuelve.
+      if(!o.nuevasV2) GUIA_NUTRI_NUEVAS.forEach(n=>{ if(!o.items.some(i=>i.id === n.id)) o.items.push(JSON.parse(JSON.stringify(n))); });
+      return nutriConDefectos(o.items);
+    }
+  }catch(e){}
+  return nutriConDefectos(JSON.parse(JSON.stringify(GUIA_NUTRI_DEFECTO)));
 }
-async function saveGuiaNutri(items){ return safeSet('guia-nutri', JSON.stringify({items}), true); }
+async function saveGuiaNutri(items){ return safeSet('guia-nutri', JSON.stringify({items, nuevasV2:true}), true); }
 function nutriNum(n){ return (Math.round((Number(n)||0)*10)/10).toString().replace('.',','); }
 
 async function tplGuiaNutri(athleteId){
@@ -4495,10 +4709,12 @@ async function tplGuiaNutri(athleteId){
     <div class="card"><h2>Guía nutricional</h2>
       <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">${menor ? 'Ideas de qué comer y cuándo. No hace falta contar calorías: lo importante es comer variado y con ganas.' : 'Ideas de cenas, comidas, snacks y alimentos, con sus macros y cuándo encajan mejor.'}</p>
       <details class="nutri-aviso"><summary>Cómo leer esta guía</summary><p>${escapeHtml(NUTRI_AVISO)}</p></details>
-      <div class="gal-secs" style="margin:12px 0 8px;"><button type="button" class="gs-chip ${cat==='todos'?'on':''}" data-nutricat="todos">Todo</button>${NUTRI_CATEGORIAS.map(c=>`<button type="button" class="gs-chip ${cat===c.id?'on':''}" data-nutricat="${c.id}">${c.label}</button>`).join('')}</div>
-      <div class="gal-secs">${NUTRI_MOMENTOS.map(m=>`<button type="button" class="gs-chip ${mom===m?'on':''}" data-nutrimomento="${escapeHtml(m)}">${m}</button>`).join('')}</div>
-      ${(cat==='alimentos' || cat==='todos') ? `<label class="field-label" style="margin-top:12px;">Alimentos por grupo</label><div class="gal-secs">${NUTRI_GRUPOS.map(g=>`<button type="button" class="gs-chip ${grp===g?'on':''}" data-nutrigrupo="${escapeHtml(g)}">${g}</button>`).join('')}</div>` : ''}
+      <div class="gal-secs" style="margin:12px 0 8px;"><button type="button" class="gs-chip ${cat==='todos'?'on':''}" data-nutricat="todos">Todo</button>${NUTRI_CATEGORIAS.map(c=>`<button type="button" class="gs-chip ${cat===c.id?'on':''}" data-nutricat="${c.id}">${c.label}</button>`).join('')}<button type="button" class="gs-chip ${cat==='recetas'?'on':''}" data-nutricat="recetas">⭐ Mis recetas</button></div>
+      ${cat==='recetas' ? '' : `<div class="gal-secs">${NUTRI_MOMENTOS.map(m=>`<button type="button" class="gs-chip ${mom===m?'on':''}" data-nutrimomento="${escapeHtml(m)}">${m}</button>`).join('')}</div>`}
+      ${(cat==='alimentos' || cat==='todos') ? `<label class="field-label" style="margin-top:12px;">Alimentos por grupo</label><div class="gal-secs">${NUTRI_GRUPOS.map(g=>`<button type="button" class="gs-chip ${grp===g?'on':''}" data-nutrigrupo="${escapeHtml(g)}">${g}</button>`).join('')}</div>${(grp && NUTRI_GRUPO_INTRO[grp]) ? `<p class="nutri-intro">${escapeHtml(NUTRI_GRUPO_INTRO[grp])}</p>` : ''}` : ''}
     </div>`;
+  if(cat === 'recetas') return html + await tplMisRecetas(athleteId, menor);
+  const recsGuardadas = await getRecetas(athleteId);
   if(!menor){
     const intakeRaw = await safeGet('intake-'+athleteId, true);
     let peso = null; try{ peso = numIntake((intakeRaw ? JSON.parse(intakeRaw) : {}).peso); }catch(e){}
@@ -4523,8 +4739,13 @@ async function tplGuiaNutri(athleteId){
     html += `<div class="card nutri-card"><b>${escapeHtml(i.nombre||'')}</b>${nutriGrupos(i).map(g=>` <span class="tipo-tag">${escapeHtml(g)}</span>`).join('')}
       ${i.racion?`<div class="nutri-rac">${escapeHtml(i.racion)}</div>`:''}
       ${(rk && !menor) ? `<div class="nutri-rank">📊 Ranking de ${escapeHtml(grp.toLowerCase())}: ${escapeHtml(rk.t)} por 100 g</div>` : ''}
+      ${(grp && i.porque && i.porque[grp]) ? `<div class="nutri-porque"><b>Por qué está en ${escapeHtml(grp)}</b> ${escapeHtml(i.porque[grp])}</div>` : ''}
       ${menor ? '' : `<div class="ex-meta"><span><b>${nutriNum(i.kcal)}</b> kcal</span><span>P <b>${nutriNum(i.p)}</b> g</span><span>C <b>${nutriNum(i.c)}</b> g</span><span>G <b>${nutriNum(i.g)}</b> g</span></div>`}
       <div class="gal-secs" style="margin:8px 0 4px;">${(i.momentos||[]).map(m=>`<span class="mom-tag">${escapeHtml(m)}</span>`).join('')}</div>
+      ${i.crono?`<div class="nutri-crono"><b>⏱ Cuándo tomarlo</b> ${escapeHtml(i.crono)}</div>`:''}
+      ${i.cat==='alimentos' ? (()=>{ const m = nutriComidasDe(i, items); if(!m.length) return '';
+        return `<details class="nutri-aviso nutri-comidas"><summary>🍽 Ideas de comidas con este alimento (${m.length})</summary>${m.map(x=>`<div class="nutri-idea"><b>${escapeHtml(x.nombre)}</b>${x.racion?`<span class="nutri-rac">${escapeHtml(x.racion)}</span>`:''}${menor?'':`<div class="ex-meta"><span><b>${nutriNum(x.kcal)}</b> kcal</span><span>P <b>${nutriNum(x.p)}</b> g</span><span>C <b>${nutriNum(x.c)}</b> g</span><span>G <b>${nutriNum(x.g)}</b> g</span></div>`}</div>`).join('')}</details>`; })() : ''}
+      ${i.cat!=='alimentos' ? (recsGuardadas.some(r=>r.origenId===i.id) ? `<span class="rec-guardada">✓ En mis recetas</span>` : `<button type="button" class="btn ghost small" data-guardarreceta="${i.id}" style="margin-top:8px;">★ Guardar en mis recetas</button>`) : ''}
       ${i.nota?`<p class="nutri-nota">${escapeHtml(i.nota)}</p>`:''}</div>`;
   });
   return html;
@@ -4550,6 +4771,9 @@ async function tplGuiaNutriEditor(){
         <div class="gal-secs">${NUTRI_MOMENTOS.map(m=>`<button type="button" class="gs-chip ${(i.momentos||[]).includes(m)?'on':''}" data-nmom="${escapeHtml(m)}">${m}</button>`).join('')}</div>
         <input type="text" class="ne-grupo" value="${escapeHtml(nutriGrupos(i).join(', '))}" placeholder="Grupos separados por comas (Proteínas, Cerebro…)" style="width:100%;margin-top:8px;">
         <textarea class="ne-nota" placeholder="Nota" style="min-height:52px;width:100%;margin-top:6px;">${escapeHtml(i.nota||'')}</textarea>
+        ${i.cat==='alimentos' ? `<textarea class="ne-crono" placeholder="Cuándo tomarlo (crononutrición)" style="min-height:52px;width:100%;margin-top:6px;">${escapeHtml(i.crono||'')}</textarea>
+        <input type="text" class="ne-claves" value="${escapeHtml((i.claves||[]).join(', '))}" placeholder="Palabras para enlazar con comidas (separadas por comas)" style="width:100%;margin-top:6px;">
+        ${nutriGrupos(i).includes('Cerebro') ? `<textarea class="ne-porque" data-grupo="Cerebro" placeholder="Por qué está en Cerebro" style="min-height:52px;width:100%;margin-top:6px;">${escapeHtml((i.porque||{}).Cerebro||'')}</textarea>` : ''}` : ''}
         <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-nborrar="${i.id}">Eliminar</button></div>
       </div>`;
     });
@@ -4560,9 +4784,10 @@ async function tplGuiaNutriEditor(){
 }
 
 function bindNutri(){
-  const ab = document.getElementById('abrirNutriBtn'); if(ab) ab.addEventListener('click', ()=>{ state.verNutri = true; renderScrollTop(); });
+  bindRecetas();
+  const ab = document.getElementById('abrirNutriBtn'); if(ab) ab.addEventListener('click', ()=>{ state.verNutri = true; state.recFase = ''; state.recEdit = null; renderScrollTop(); });
   const vb = document.getElementById('volverNutriBtn'); if(vb) vb.addEventListener('click', ()=>{ state.verNutri = false; renderScrollTop(); });
-  document.querySelectorAll('[data-nutricat]').forEach(b=>b.addEventListener('click', ()=>{ state.nutriCat = b.dataset.nutricat; if(state.nutriCat !== 'alimentos' && state.nutriCat !== 'todos') state.nutriGrupo = ''; renderKeepScroll(); }));
+  document.querySelectorAll('[data-nutricat]').forEach(b=>b.addEventListener('click', ()=>{ if(b.dataset.nutricat === 'recetas' && state.nutriCat !== 'recetas'){ state.recFase = ''; state.recEdit = null; } state.nutriCat = b.dataset.nutricat; if(state.nutriCat !== 'alimentos' && state.nutriCat !== 'todos') state.nutriGrupo = ''; renderKeepScroll(); }));
   document.querySelectorAll('[data-nutrigrupo]').forEach(b=>b.addEventListener('click', ()=>{ state.nutriGrupo = (state.nutriGrupo === b.dataset.nutrigrupo) ? '' : b.dataset.nutrigrupo; renderKeepScroll(); }));
   document.querySelectorAll('[data-nutrimomento]').forEach(b=>b.addEventListener('click', ()=>{ state.nutriMomento = (state.nutriMomento === b.dataset.nutrimomento) ? '' : b.dataset.nutrimomento; renderKeepScroll(); }));
   const ed = document.getElementById('nutriEditor');
@@ -4575,6 +4800,9 @@ function bindNutri(){
       it.nombre = v('.ne-nombre'); it.racion = v('.ne-racion'); it.grupos = v('.ne-grupo').split(',').map(x=>x.trim()).filter(Boolean); delete it.grupo; it.nota = v('.ne-nota');
       it.kcal = n('.ne-kcal'); it.p = n('.ne-p'); it.c = n('.ne-c'); it.g = n('.ne-g');
       it.momentos = [...card.querySelectorAll('[data-nmom].on')].map(b=>b.dataset.nmom);
+      if(card.querySelector('.ne-crono')){ it.crono = v('.ne-crono'); it.claves = v('.ne-claves').split(',').map(x=>x.trim()).filter(Boolean); }
+      it.porque = it.porque || {};
+      card.querySelectorAll('.ne-porque').forEach(t=>{ const val = t.value.trim(); if(val) it.porque[t.dataset.grupo] = val; else delete it.porque[t.dataset.grupo]; });
       await saveGuiaNutri(items);
     };
     ed.addEventListener('change', e=>{ const card = e.target.closest('[data-nid]'); if(card) guarda(card); });
@@ -4871,64 +5099,127 @@ function calculaPosicionesJugadores(jugadores){
   return posiciones;
 }
 
-function tplPistaSVG(dr){
-  const W = 260, H = 540;
-  const jugadores = dr.jugadores || [];
-  let g = '';
-  // Fondo y líneas de pista
-  g += `<rect width="${W}" height="${H}" fill="#1B2A49" rx="10"/>`;
-  const dibujaBandas = (esMio, esPared) => {
-    BANDA_ZONAS.forEach(b=>{
-      const y0 = esMio ? H-20-b.y1 : 20+b.y0;
-      const alto = b.y1-b.y0;
-      g += `<rect x="30" y="${y0}" width="200" height="${alto}" fill="${b.color}" opacity="${esPared?0.35:0.5}"/>`;
+// Un jugador que dirige puede encadenar hasta 4 golpes (p. ej. cruzada, paralela,
+// cruzada). «zonaDestino» se mantiene igual al primero para todo lo que ya lo lee.
+const PISTA_MAX_GOLPES = 4;
+function golpesDe(j){
+  const g = (Array.isArray(j.golpes) && j.golpes.length) ? j.golpes : (j.zonaDestino ? [j.zonaDestino] : []);
+  return g.filter(Boolean).slice(0, PISTA_MAX_GOLPES);
+}
+function fijaGolpes(j, lista){
+  lista = lista.filter(Boolean).slice(0, PISTA_MAX_GOLPES);
+  j.golpes = lista; j.zonaDestino = lista[0] || '';
+}
+// Dónde cae cada golpe. Lo comparten el dibujo y la capa táctil para que el aro
+// y su zona de arrastre estén siempre en el mismo sitio.
+function pistaDestinos(dr){
+  const jug = dr.jugadores || [], pos = calculaPosicionesJugadores(jug), fr = !!dr.fronton, out = {};
+  let idx = 0;
+  jug.filter(j=>j.rol === 'dirige' && golpesDe(j).length).forEach(j=>{
+    const o = pos[j.numero], destinoEsMio = fr ? true : !o.esMio;
+    out[j.numero] = [];
+    golpesDe(j).forEach((z, k)=>{
+      out[j.numero].push({ x: 130 + ((idx%3)-1)*35, y: fr ? yMitad(z, false) : yMitad(z, destinoEsMio), k, idx });
+      idx++;
     });
-    if(esPared){
-      g += `<g opacity="0.5">${[...Array(6)].map((_,i)=>`<line x1="30" y1="${20+i*46+23}" x2="230" y2="${20+i*46+23}" stroke="#0A0A08" stroke-width="1"/>`).join('')}</g>`;
-      g += `<text x="130" y="${20+250/2}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#8C8578" opacity="0.8">FRONTÓN</text>`;
-    }
-  };
-  dibujaBandas(true, false);
-  dibujaBandas(false, dr.fronton);
-  g += `<rect x="30" y="20" width="200" height="${H-40}" fill="none" stroke="#F4F2EA" stroke-width="1.5"/>`;
-  if(!dr.fronton){
-    g += `<line x1="15" y1="${H/2}" x2="245" y2="${H/2}" stroke="#F4F2EA" stroke-width="3"/>`;
+  });
+  return out;
+}
+let __pistaN = 0;
+// Pista reglamentaria (23,77 × 10,97 m) sobre el mismo sistema de coordenadas de
+// siempre: viewBox 260×540, red en y=270, línea de fondo en y=60 y y=480. Las
+// zonas de color (roja, azul, amarilla, verde) son las de tu sistema y se dibujan
+// como capas translúcidas ENCIMA de las líneas reales, así que toques, flechas y
+// animación siguen coincidiendo exactamente.
+function tplPistaSVG(dr){
+  const W = 260, H = 540, id = 'pg'+(++__pistaN);
+  const jugadores = dr.jugadores || [];
+  const LINEA = '#F4F2EA', fr = !!dr.fronton;
+  let g = `<defs>
+    <linearGradient id="${id}f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E1A33"/><stop offset="1" stop-color="#17274B"/></linearGradient>
+    <linearGradient id="${id}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#417599"/><stop offset=".5" stop-color="#3A6B91"/><stop offset="1" stop-color="#417599"/></linearGradient>
+    <linearGradient id="${id}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A776B"/><stop offset="1" stop-color="#5E5C53"/></linearGradient>
+    <radialGradient id="${id}ja" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#EBCB5E"/><stop offset="1" stop-color="#B38D1B"/></radialGradient>
+    <radialGradient id="${id}jc" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D6D2C3"/></radialGradient>
+    <filter id="${id}sh" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="1.8" stdDeviation="1.8" flood-color="#000" flood-opacity=".5"/></filter>
+  </defs>`;
+  g += `<rect width="${W}" height="${H}" rx="14" fill="url(#${id}f)"/>`;
+  g += `<rect x="14" y="20" width="232" height="500" rx="6" fill="#2B4B66"/>`;
+  // Frontón: la mitad lejana es una pared; si no, pista completa.
+  if(fr){
+    g += `<rect x="14" y="20" width="232" height="250" rx="6" fill="url(#${id}w)"/>`;
+    g += `<g stroke="#0E1A33" stroke-opacity=".28" stroke-width="1">${[...Array(10)].map((_,i)=>`<line x1="14" y1="${20+i*25}" x2="246" y2="${20+i*25}"/>`).join('')}</g>`;
+    g += `<text x="130" y="150" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="3" fill="#F4F2EA" opacity=".75">FRONTÓN</text>`;
+    g += `<rect x="30" y="270" width="200" height="210" fill="url(#${id}s)"/>`;
+  } else {
+    g += `<rect x="30" y="60" width="200" height="420" fill="url(#${id}s)"/>`;
+  }
+  // Zonas de color (translúcidas, para que se vean las líneas debajo)
+  BANDA_ZONAS.forEach(b=>{
+    g += `<rect x="30" y="${H-20-b.y1}" width="200" height="${b.y1-b.y0}" fill="${b.color}" opacity=".30"/>`;
+    if(!fr) g += `<rect x="30" y="${20+b.y0}" width="200" height="${b.y1-b.y0}" fill="${b.color}" opacity=".30"/>`;
+  });
+  // Líneas reglamentarias
+  const yTop = fr ? 270 : 60;
+  g += `<g stroke="${LINEA}" stroke-width="1.7" fill="none" stroke-linecap="square">
+    <rect x="30" y="${yTop}" width="200" height="${480-yTop}"/>
+    <line x1="55" y1="${yTop}" x2="55" y2="480"/><line x1="205" y1="${yTop}" x2="205" y2="480"/>
+    <line x1="55" y1="383" x2="205" y2="383"/>
+    ${fr ? '' : '<line x1="55" y1="157" x2="205" y2="157"/>'}
+    <line x1="130" y1="${fr?270:157}" x2="130" y2="383"/>
+    <line x1="130" y1="${fr?270:60}" x2="130" y2="${fr?270:68}" stroke-width="1.7"/>
+    <line x1="130" y1="472" x2="130" y2="480"/>
+  </g>`;
+  // Red con postes (no hay en frontón)
+  if(!fr){
+    g += `<rect x="22" y="272" width="216" height="5" fill="#000" opacity=".16"/>`;
+    g += `<line x1="22" y1="270" x2="238" y2="270" stroke="${LINEA}" stroke-width="3.2" stroke-linecap="round"/>`;
+    g += `<line x1="24" y1="270" x2="236" y2="270" stroke="#0E1A33" stroke-width="2.6" stroke-dasharray="1.1 2.3" opacity=".55"/>`;
+    g += `<circle cx="22" cy="270" r="3.6" fill="#D6D2C3" stroke="#0E1A33" stroke-width="1"/><circle cx="238" cy="270" r="3.6" fill="#D6D2C3" stroke="#0E1A33" stroke-width="1"/>`;
   }
 
-  // Jugadores: posición según su lado y zona de origen, repartidos en X si
-  // coinciden varios en la misma banda para no solaparse.
   const posiciones = calculaPosicionesJugadores(jugadores);
 
-  // Flechas: sólo quien dirige y tiene zona de destino definida.
-  let idxFlecha = 0;
-  jugadores.filter(j=>j.rol==='dirige' && j.zonaDestino).forEach(j=>{
-    const origen = posiciones[j.numero];
-    const destinoEsMio = dr.fronton ? true : !origen.esMio;
-    const yDestino = dr.fronton
-      ? (yMitad(j.zonaDestino, false))   // en frontón el destino se marca en la pared (mitad "contraria")
-      : yMitad(j.zonaDestino, destinoEsMio);
-    const xDestino = 130 + ((idxFlecha%3)-1)*35;
-    const d = `M${origen.x} ${origen.y} L${xDestino} ${yDestino}`;
-    g += `<path class="pista-arrow" data-order="${idxFlecha}" d="${d}" stroke="#F4F2EA" stroke-width="2.5" fill="none" marker-end="url(#pistaArrow)" stroke-dasharray="500" stroke-dashoffset="0"/>`;
-    idxFlecha++;
+  // Trayectorias: curva suave, punta propia (no marcador) y destino marcado.
+  // Si el jugador encadena varios golpes, cada destino lleva su número de orden;
+  // tras cada destino se marca el bote (la bola sigue un poco más allá).
+  let flechas = '', impactos = '';
+  const destinos = pistaDestinos(dr);
+  jugadores.filter(j=>destinos[j.numero]).forEach(j=>{
+    const o = posiciones[j.numero], lista = destinos[j.numero];
+    lista.forEach(dst=>{
+      const xD = dst.x, yD = dst.y, idxFlecha = dst.idx;
+      const dx = xD-o.x, dy = yD-o.y, largo = Math.hypot(dx,dy) || 1;
+      const nx = -dy/largo, ny = dx/largo, curva = (idxFlecha%2 ? -1 : 1) * Math.min(26, largo*0.12);
+      const cx = (o.x+xD)/2 + nx*curva, cy = (o.y+yD)/2 + ny*curva;
+      const tx = xD-cx, ty = yD-cy, tl = Math.hypot(tx,ty) || 1, ux = tx/tl, uy = ty/tl;
+      const ex = xD-ux*11, ey = yD-uy*11;           // la punta termina junto al aro del destino
+      const d = `M${o.x.toFixed(1)} ${o.y.toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      const bx = ex-ux*10, by = ey-uy*10, px = -uy*5.2, py = ux*5.2;
+      flechas += `<path d="${d}" stroke="${LINEA}" stroke-opacity=".16" stroke-width="7" fill="none" stroke-linecap="round" class="pista-estela" data-order="${idxFlecha}"/>
+        <path class="pista-arrow" data-order="${idxFlecha}" d="${d}" stroke="${LINEA}" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-dasharray="600" stroke-dashoffset="0"/>
+        <polygon class="pista-punta" data-order="${idxFlecha}" points="${ex.toFixed(1)},${ey.toFixed(1)} ${(bx+px).toFixed(1)},${(by+py).toFixed(1)} ${(bx-px).toFixed(1)},${(by-py).toFixed(1)}" fill="${LINEA}"/>`;
+      const bote = `<line class="pista-bote" x1="${(xD+ux*12).toFixed(1)}" y1="${(yD+uy*12).toFixed(1)}" x2="${(xD+ux*28).toFixed(1)}" y2="${(yD+uy*28).toFixed(1)}" stroke="${LINEA}" stroke-width="1.6" stroke-dasharray="2 3.2" stroke-linecap="round" opacity=".75"/>`;
+      const num = lista.length > 1 ? `<circle cx="${xD+10}" cy="${(yD-10).toFixed(1)}" r="7.5" fill="#0E1A33" stroke="${LINEA}" stroke-width="1.3"/><text class="pista-num" x="${xD+10}" y="${(yD-6.8).toFixed(1)}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="700" fill="${LINEA}">${dst.k+1}</text>` : '';
+      impactos += `<g class="pista-impacto" data-order="${idxFlecha}" data-cx="${xD}" data-cy="${yD.toFixed(1)}"><circle cx="${xD}" cy="${yD.toFixed(1)}" r="9" fill="none" stroke="${LINEA}" stroke-width="1.7"/><circle cx="${xD}" cy="${yD.toFixed(1)}" r="3.2" fill="${LINEA}"/>${bote}${num}</g>`;
+    });
   });
+  g += flechas;
 
-  // Marcadores de jugador, encima de las flechas
+  // Jugadores, encima de todo
   jugadores.forEach(j=>{
-    const p = posiciones[j.numero];
-    const color = j.rol==='dirige' ? '#C9A227' : '#F4F2EA';
-    g += `<circle cx="${p.x}" cy="${p.y}" r="13" fill="${color}"/>
-      <text x="${p.x}" y="${p.y+4}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" font-weight="700" fill="#1B2A49">J${j.numero}</text>`;
+    const p = posiciones[j.numero], dirige = j.rol === 'dirige';
+    g += `<g filter="url(#${id}sh)"><circle cx="${p.x}" cy="${p.y}" r="14" fill="url(#${id}${dirige?'ja':'jc'})" stroke="#0E1A33" stroke-width="1.4"/></g>
+      <text x="${p.x}" y="${p.y+4}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" font-weight="700" fill="#14213D">J${j.numero}</text>`;
   });
 
-  g += `<defs><marker id="pistaArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#F4F2EA"/></marker></defs>`;
+  g += impactos;   // los aros y sus números van por encima de las fichas, para que ninguna los tape
   g += `<g class="pista-open" style="opacity:0;">
-      <ellipse cx="130" cy="270" rx="38" ry="24" fill="#F4F2EA" stroke="#1B2A49" stroke-width="2"/>
-      <path d="M100 288 L88 302 L110 292 Z" fill="#F4F2EA" stroke="#1B2A49" stroke-width="2"/>
-      <text x="130" y="276" text-anchor="middle" font-family="'Fraunces',serif" font-size="17" font-weight="700" fill="#1B2A49">OPEN</text>
+      <ellipse cx="130" cy="270" rx="40" ry="25" fill="${LINEA}" stroke="#0E1A33" stroke-width="2.2"/>
+      <path d="M100 289 L88 304 L111 293 Z" fill="${LINEA}" stroke="#0E1A33" stroke-width="2.2"/>
+      <text x="130" y="277" text-anchor="middle" font-family="'Fraunces',serif" font-size="18" font-weight="700" fill="#14213D">OPEN</text>
     </g>`;
-
-  return `<svg class="pista-svg" viewBox="0 0 ${W} ${H}" style="width:100%;max-width:280px;display:block;margin:0 auto;">${g}</svg>`;
+  return `<svg class="pista-svg" viewBox="0 0 ${W} ${H}" style="width:100%;max-width:300px;display:block;margin:0 auto;">${g}</svg>`;
 }
 
 // Lectura de un drill para el atleta: texto claro, sin dibujo todavía.
@@ -4943,6 +5234,7 @@ function tplDrillLectura(dr){
     <div class="pista-wrap" data-drillview="${dr.id}">${tplPistaSVG(dr)}</div>
     <div class="row" style="justify-content:center;margin:10px 0;">
       <button class="btn ghost small" data-verrecorrido="${dr.id}" data-drilljson="${escapeHtml(JSON.stringify(dr))}">▶ Ver recorrido</button>
+      <button class="btn ghost small" data-exportpista="${dr.id}" data-titulo="${escapeHtml(dr.nombre||'Jugada')}" style="margin-left:6px;">📷 Imagen</button>
     </div>
     <div class="ex-meta" style="margin:8px 0;">
       ${dr.series?`<span>Series: <b>${escapeHtml(dr.series)}</b></span>`:''}
@@ -4957,7 +5249,7 @@ function tplDrillLectura(dr){
         <span class="dj-rol ${j.rol}">${rolLbl[j.rol]||j.rol}</span>
         ${j.rol==='dirige'&&j.bolasObjetivo?`<span class="dj-bolas">${escapeHtml(j.bolasObjetivo)} bolas</span>`:''}
         ${j.zonaOrigen?`<span class="dj-zona">Desde <b class="z-${j.zonaOrigen}">${ZONAS_PISTA[j.zonaOrigen]?.nombre||j.zonaOrigen}</b></span>`:''}
-        ${j.zonaDestino?`<span class="dj-zona">A <b class="z-${j.zonaDestino}">${ZONAS_PISTA[j.zonaDestino]?.nombre||j.zonaDestino}</b></span>`:''}
+        ${(()=>{ const g = golpesDe(j); return g.length ? `<span class="dj-zona">A ${g.map((z,k)=>`<b class="z-${z}">${g.length>1?(k+1)+'. ':''}${ZONAS_PISTA[z]?.nombre||z}</b>`).join(' → ')}</span>` : ''; })()}
       </div>`).join('')}</div>`:''}
   </div>`;
 }
@@ -5401,9 +5693,184 @@ async function mountSessionOverlay(athleteId){
 // Aviso de variante: visible en cualquier sitio donde se muestre el
 // ejercicio (rutina, vista previa, sesión en vivo), para que el atleta sepa
 // de antemano que existe una alternativa si hoy no puede hacer el principal.
+// ---------- ANÁLISIS DE TÉCNICA CON FOTOS ----------
+// Junto al vídeo demostrativo de un ejercicio, el atleta puede ver un análisis
+// de SU técnica: fotos de su ejecución y fotos de corrección (editadas), con un
+// texto explicativo. Va plegado (no ocupa sitio hasta que se abre) y caduca: tras
+// los días que elijas deja de verse, para no acumular. Es de ese atleta y de esa
+// semana: no se copia a otras semanas ni a otros atletas.
+const ANALISIS_DIAS = [{v:7,l:'7 días'},{v:14,l:'14 días'},{v:30,l:'30 días'},{v:0,l:'Siempre'}];
+function analisisDias(a){ return (a.dias === undefined || a.dias === null) ? 7 : a.dias; }
+function analisisVigente(a, hoy){ const d = analisisDias(a); return !d || diasEntre(a.fecha, hoy) < d; }
+function analisisUltimoDia(a){ const d = analisisDias(a); return d ? sumaDiasISO(a.fecha, d-1) : null; }
+
+// Una foto de móvil pesa varios MB: se reduce antes de subirla (más rápida de
+// subir y de abrir). Si el navegador no puede, se sube tal cual.
+async function comprimeImagen(file, maxPx, calidad){
+  maxPx = maxPx || 1600; calidad = calidad || 0.86;
+  try{
+    if(!file || !/^image\/(jpeg|png|webp)/.test(file.type || '') || file.size < 350*1024) return file;
+    const url = URL.createObjectURL(file);
+    const img = await new Promise((ok, ko)=>{ const i = new Image(); i.onload = ()=>ok(i); i.onerror = ko; i.src = url; });
+    const esc = Math.min(1, maxPx/Math.max(img.naturalWidth, img.naturalHeight));
+    if(esc >= 1 && file.size < 1.5*1024*1024){ URL.revokeObjectURL(url); return file; }
+    const cv = document.createElement('canvas'); cv.width = Math.round(img.naturalWidth*esc); cv.height = Math.round(img.naturalHeight*esc);
+    const ctx = cv.getContext && cv.getContext('2d');
+    if(!ctx){ URL.revokeObjectURL(url); return file; }
+    ctx.drawImage(img, 0, 0, cv.width, cv.height); URL.revokeObjectURL(url);
+    const blob = await new Promise(r=>cv.toBlob(r, 'image/jpeg', calidad));
+    if(!blob || blob.size >= file.size) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/,'')+'.jpg', { type:'image/jpeg' });
+  }catch(e){ return file; }
+}
+async function borrarArchivoStorage(path){
+  try{ await fetch(SUPA_URL + '/storage/v1/object/' + VIDEO_BUCKET + '/' + path, { method:'DELETE', headers:{ 'apikey':SUPA_KEY, 'Authorization':'Bearer '+SUPA_KEY } }); }catch(e){}
+}
+function rutinaFotosPaths(rutina){
+  const set = new Set();
+  if(rutina && rutina.days) Object.keys(rutina.days).forEach(d=>BLOCKS.forEach(bl=>(rutina.days[d][bl.key]||[]).forEach(ex=>(ex.analisis||[]).forEach(a=>(a.fotos||[]).forEach(f=>{ if(f.path) set.add(f.path); })))));
+  return set;
+}
+
+// Lo que ve el atleta
+function tplAnalisisBadge(ex){
+  const hoy = todayISO();
+  const vis = (ex.analisis || []).filter(a=>analisisVigente(a, hoy) && ((a.fotos && a.fotos.length) || (a.texto || '').trim()));
+  return vis.map(a=>{
+    const grupo = (tipo, etq)=>{
+      const fs = (a.fotos || []).filter(f=>f.tipo === tipo); if(!fs.length) return '';
+      return `<div class="an-lec-grupo"><span class="an-etq">${etq}</span><div class="an-fotos" data-fotos="${escapeHtml(JSON.stringify(fs.map(f=>({url:f.url, tipo:f.tipo, nombre:f.nombre||''}))))}">${fs.map((f,i)=>`<button type="button" class="an-foto" data-anfoto="${i}"><img src="${escapeHtml(f.url)}" alt="${etq}" loading="lazy"></button>`).join('')}</div></div>`;
+    };
+    const abierto = state.anAbiertos && state.anAbiertos[a.id];
+    return `<details class="analisis-lectura" data-anabierto="${a.id}" ${abierto?'open':''}><summary>📸 ${a.titulo ? escapeHtml(a.titulo) : 'Análisis de tu técnica'} <span class="an-fecha">${fechaCortaISO(a.fecha)}</span></summary>
+      ${grupo('tecnica','Tu técnica')}${grupo('correccion','Corrección')}${(a.texto||'').trim() ? `<div class="an-texto-lec">${formateaGuia(a.texto)}</div>` : ''}</details>`;
+  }).join('');
+}
+// Visor a pantalla completa: las fotos de corrección llevan anotaciones y hay
+// que poder verlas grandes, con zoom y pasando de una a otra.
+function abrirLightboxFotos(fotos, i){
+  const previo = document.getElementById('lightboxBack'); if(previo) previo.remove();
+  const back = document.createElement('div'); back.id = 'lightboxBack'; back.className = 'lightbox-back'; document.body.appendChild(back);
+  let idx = i, x0 = null;
+  const pinta = ()=>{
+    const f = fotos[idx];
+    back.innerHTML = `<div class="lb-top"><span>${f.tipo === 'correccion' ? 'Corrección' : 'Tu técnica'} · ${idx+1} / ${fotos.length}</span><button type="button" class="lb-x" data-lbx>✕</button></div>
+      <div class="lb-img"><img src="${escapeHtml(f.url)}" alt=""></div>
+      ${fotos.length > 1 ? '<button type="button" class="lb-nav lb-prev" data-lbprev>‹</button><button type="button" class="lb-nav lb-next" data-lbnext>›</button>' : ''}`;
+  };
+  const mueve = d=>{ idx = (idx + d + fotos.length) % fotos.length; pinta(); };
+  pinta();
+  back.addEventListener('click', e=>{
+    if(e.target.closest('[data-lbx]') || e.target === back) back.remove();
+    else if(e.target.closest('[data-lbprev]')) mueve(-1);
+    else if(e.target.closest('[data-lbnext]')) mueve(1);
+  });
+  back.addEventListener('touchstart', e=>{ x0 = e.touches[0].clientX; }, {passive:true});
+  back.addEventListener('touchend', e=>{ if(x0 === null || fotos.length < 2) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if(Math.abs(dx) > 60) mueve(dx < 0 ? 1 : -1); }, {passive:true});
+}
+// Un solo oyente para todas las pantallas del atleta (incluida la sesión en
+// vivo, que se repinta entera y no pasa por el enlazado normal).
+document.addEventListener('click', e=>{
+  const b = e.target.closest && e.target.closest('.an-foto'); if(!b) return;
+  const cont = b.closest('.an-fotos'); if(!cont) return;
+  try{ abrirLightboxFotos(JSON.parse(cont.dataset.fotos), parseInt(b.dataset.anfoto, 10) || 0); }catch(err){}
+});
+document.addEventListener('toggle', e=>{
+  const dt = e.target; if(!dt || !dt.dataset || !dt.dataset.anabierto) return;
+  state.anAbiertos = state.anAbiertos || {}; state.anAbiertos[dt.dataset.anabierto] = dt.open;
+}, true);
+
+// Lo que ve el entrenador al preparar el ejercicio
+function tplAnalisisEditor(ex){
+  const lista = ex.analisis || [], abierto = state.analisisAbierto === ex.id, hoy = todayISO();
+  let h = `<div class="analisis-box"><button type="button" class="link-detalle" data-toggleanalisis="${ex.id}">${abierto?'▾':'▸'} ${lista.length ? `Análisis de técnica con fotos (${lista.length})` : 'Añadir análisis de técnica con fotos'}</button>`;
+  if(abierto){
+    h += `<div class="analisis-campos">`;
+    lista.forEach(a=>{
+      const vig = analisisVigente(a, hoy), dias = analisisDias(a);
+      const estado = vig ? (dias ? `Visible para el atleta hasta el ${fechaCortaISO(analisisUltimoDia(a))}` : 'Siempre visible para el atleta')
+        : `Caducado: el atleta ya no lo ve. Quítalo para no acumular fotos.`;
+      h += `<div class="an-card ${vig?'':'caducado'}" data-anid="${a.id}"><div class="an-estado">${estado}</div>
+        <input type="text" class="an-titulo" data-noautosave data-exid="${ex.id}" data-anid="${a.id}" value="${escapeHtml(a.titulo||'')}" placeholder="Título (opcional): p. ej. Punto de contacto" style="width:100%;margin-bottom:8px;">`;
+      [['tecnica','Su técnica'],['correccion','Corrección']].forEach(([tipo, etq])=>{
+        h += `<div class="an-grupo"><span class="an-etq">${etq}</span><div class="an-miniaturas">
+          ${(a.fotos||[]).filter(f=>f.tipo === tipo).map(f=>`<span class="an-mini"><img src="${escapeHtml(f.url)}" alt="" loading="lazy"><button type="button" data-andelfoto="${ex.id}|${a.id}|${f.id}" title="Quitar foto">✕</button></span>`).join('')}
+          <label class="an-subir">+ fotos<input type="file" accept="image/*" multiple hidden data-noautosave data-ansubir="${ex.id}|${a.id}|${tipo}"></label></div></div>`;
+      });
+      h += `<textarea class="an-texto" data-noautosave data-exid="${ex.id}" data-anid="${a.id}" placeholder="Explicación: qué se ve y qué corregir. El atleta la despliega al abrir el análisis." style="width:100%;min-height:70px;margin-top:8px;">${escapeHtml(a.texto||'')}</textarea>
+        <div class="row" style="gap:10px;margin-top:8px;align-items:center;flex-wrap:wrap;">
+          <label class="field-label" style="margin:0;">Visible durante</label>
+          <select class="an-dias" data-noautosave data-exid="${ex.id}" data-anid="${a.id}">${ANALISIS_DIAS.map(o=>`<option value="${o.v}" ${analisisDias(a)===o.v?'selected':''}>${o.l}</option>`).join('')}</select>
+          <button type="button" class="btn ghost small" data-anquitar="${ex.id}|${a.id}" style="color:var(--danger);margin-left:auto;">Quitar análisis</button></div></div>`;
+    });
+    h += `<button type="button" class="btn ghost small" data-nuevoanalisis="${ex.id}">+ Nuevo análisis</button></div>`;
+  }
+  return h + `</div>`;
+}
+function bindAnalisis(athleteId){
+  const buscaEx = (draft, exId)=>{ let h = null; DAYS.forEach(d=>BLOCKS.forEach(bl=>{ const x = draft.days[d][bl.key].find(y=>y.id === exId); if(x) h = x; })); return h; };
+  const mutar = async (exId, fn)=>{
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const ex = buscaEx(draft, exId); if(!ex) return false;
+    fn(ex);
+    draft.updatedAt = new Date().toISOString();
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    if(!ok) toast('No se pudo guardar', true);
+    return ok;
+  };
+  // Un archivo solo se borra del almacén si lo que ve el atleta ya no lo usa;
+  // si no, se borra al compartir la planificación (ver «Compartir»).
+  const borraSiLibre = async (paths)=>{
+    const pub = await getRoutine(athleteId, false, state.planWeek), usadas = rutinaFotosPaths(pub);
+    for(const p of paths) if(p && !usadas.has(p)) await borrarArchivoStorage(p);
+  };
+  document.querySelectorAll('[data-toggleanalisis]').forEach(b=>b.addEventListener('click', ()=>{
+    state.analisisAbierto = state.analisisAbierto === b.dataset.toggleanalisis ? null : b.dataset.toggleanalisis; renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-nuevoanalisis]').forEach(b=>b.addEventListener('click', async ()=>{
+    const exId = b.dataset.nuevoanalisis;
+    await mutar(exId, ex=>{ ex.analisis = ex.analisis || []; ex.analisis.push({ id:uid(), fecha:todayISO(), titulo:'', texto:'', dias:7, fotos:[] }); });
+    state.analisisAbierto = exId; renderKeepScroll();
+  }));
+  const campo = (sel, fn)=>document.querySelectorAll(sel).forEach(inp=>inp.addEventListener('change', async ()=>{
+    await mutar(inp.dataset.exid, ex=>{ const a = (ex.analisis||[]).find(x=>x.id === inp.dataset.anid); if(a) fn(a, inp); });
+    if(inp.classList.contains('an-dias')) renderKeepScroll(); else toast('Guardado');
+  }));
+  campo('.an-titulo', (a, i)=>{ a.titulo = i.value.trim(); });
+  campo('.an-texto', (a, i)=>{ a.texto = i.value.trim(); });
+  campo('.an-dias', (a, i)=>{ a.dias = parseInt(i.value, 10) || 0; });
+  document.querySelectorAll('[data-ansubir]').forEach(inp=>inp.addEventListener('change', async ()=>{
+    const [exId, anId, tipo] = inp.dataset.ansubir.split('|');
+    const files = [...(inp.files || [])]; if(!files.length) return;
+    const subidas = []; let errores = 0;
+    for(let i=0;i<files.length;i++){
+      toast(`Subiendo foto ${i+1} de ${files.length}…`);
+      try{ const r = await subirArchivoGym(await comprimeImagen(files[i])); subidas.push({ id:r.id, url:r.url, path:r.path, nombre:r.nombre, tipo }); }
+      catch(e){ errores++; }
+    }
+    if(subidas.length) await mutar(exId, ex=>{ const a = (ex.analisis||[]).find(x=>x.id === anId); if(a){ a.fotos = (a.fotos||[]).concat(subidas); } });
+    toast(errores ? `${subidas.length} subida(s), ${errores} no se pudieron subir` : `${subidas.length} foto${subidas.length===1?'':'s'} añadida${subidas.length===1?'':'s'}`, !!errores);
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-andelfoto]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [exId, anId, fId] = b.dataset.andelfoto.split('|'); let path = null;
+    await mutar(exId, ex=>{ const a = (ex.analisis||[]).find(x=>x.id === anId); if(!a) return; const f = (a.fotos||[]).find(x=>x.id === fId); if(f) path = f.path; a.fotos = (a.fotos||[]).filter(x=>x.id !== fId); });
+    if(path) await borraSiLibre([path]);
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-anquitar]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(!confirm('¿Quitar este análisis y sus fotos? El atleta dejará de verlo cuando compartas la planificación.')) return;
+    const [exId, anId] = b.dataset.anquitar.split('|'); let paths = [];
+    await mutar(exId, ex=>{ const a = (ex.analisis||[]).find(x=>x.id === anId); if(a) paths = (a.fotos||[]).map(f=>f.path); ex.analisis = (ex.analisis||[]).filter(x=>x.id !== anId); });
+    await borraSiLibre(paths);
+    renderKeepScroll();
+  }));
+}
+
 function tplVarianteBadge(ex){
-  if(!ex.variante || !ex.variante.nombre) return '';
-  return `<details class="variante-lectura"><summary>🔄 Si no puedes hacer este, alternativa disponible</summary>
+  const analisis = tplAnalisisBadge(ex);
+  if(!ex.variante || !ex.variante.nombre) return analisis;
+  return analisis + `<details class="variante-lectura"><summary>🔄 Si no puedes hacer este, alternativa disponible</summary>
     <b>${escapeHtml(ex.variante.nombre)}</b>${ex.variante.desc?`<p>${escapeHtml(ex.variante.desc)}</p>`:''}
   </details>`;
 }
@@ -5412,6 +5879,30 @@ function tplVarianteBadge(ex){
 // galería se marca como tal — así se manda, se edita y se añade a una
 // rutina exactamente igual que cualquier otro ejercicio (con su propio
 // nombre, descanso y rondas, en vez de ser una tarea suelta aparte).
+function tplReaccionTiempos(cfg){
+  const p = reaccionParams(cfg), seg = ms=>String(Math.round(ms/10)/100);
+  const c = (label, cls, val, step, min, extra)=>`<div ${extra||''}><label class="field-label">${label}</label><input type="number" class="rx-t ${cls}" value="${val}" step="${step}" min="${min}" inputmode="decimal"></div>`;
+  return `<label class="field-label" style="margin-top:6px;">Tiempos</label>
+    <div class="ex-grid">
+      ${c('Preparación (s)','ex-juego-prep',seg(p.prepMs),0.5,0)}
+      ${c('Estímulos por serie','ex-juego-rondas',p.rondas,1,1)}
+      ${c('Duración del estímulo (s)','ex-juego-estimulo',seg(p.estimuloMs),0.1,0.1)}
+      ${c('Entre estímulos (s)','ex-juego-isi',seg(p.isiMs),0.1,0)}
+      ${c('Variación entre estímulos ± (s)','ex-juego-isivar',seg(p.isiVarMs),0.1,0,'class="full"')}
+      ${c('Series','ex-juego-series',p.series,1,1)}
+      ${c('Descanso entre series (s)','ex-juego-descseries',seg(p.descSeriesMs),5,0)}
+      ${c('Sets','ex-juego-sets',p.sets,1,1)}
+      ${c('Descanso entre sets (s)','ex-juego-descsets',seg(p.descSetsMs),5,0)}
+    </div>
+    <p class="rx-total" style="font-size:12px;color:var(--accent);font-weight:600;margin:8px 0 2px;">Duración total estimada: ${escapeHtml(reaccionResumenTxt(cfg))}</p>
+    <p style="font-size:11px;color:var(--muted);line-height:1.5;">Un set agrupa varias series. Con variación 0 el ritmo es fijo; con variación, el atleta no puede anticipar cuándo sale el siguiente. La duración total se calcula sola con todo lo anterior.</p>`;
+}
+function actualizaTotalReaccion(card){
+  const box = card && card.querySelector('.rx-total'); if(!box) return;
+  const v = cls=>{ const el = card.querySelector(cls); return el ? parseFloat(String(el.value).replace(',','.')) : NaN; };
+  const cfg = { prepMs:v('.ex-juego-prep')*1000, rondas:v('.ex-juego-rondas'), estimuloMs:v('.ex-juego-estimulo')*1000, isiMs:v('.ex-juego-isi')*1000, isiVarMs:v('.ex-juego-isivar')*1000, series:v('.ex-juego-series'), descSeriesMs:v('.ex-juego-descseries')*1000, sets:v('.ex-juego-sets'), descSetsMs:v('.ex-juego-descsets')*1000 };
+  box.textContent = 'Duración total estimada: ' + reaccionResumenTxt(cfg);
+}
 function tplJuegoConfig(ex){
   const cfg = ex.juegoCfg || {activo:false, modo:'reaccion', tipos:[], objetivos:[], imagenes:[], rondas:15, ventanaMs:1200, duracionMin:1200, duracionMax:2800};
   const modo = cfg.modo || 'reaccion';
@@ -5449,10 +5940,7 @@ function tplJuegoConfig(ex){
       <div class="gal-secs" style="margin-bottom:10px;">
         ${listaEstimulos(cfg).map(v=>`<button type="button" class="gs-chip ${cfg.objetivos.includes(v)?'on':''}" data-juegoobjpick="${escapeHtml(v)}">${esImagenEstimulo(v)?`<img src="${escapeHtml(v)}" style="height:18px;vertical-align:middle;">`:escapeHtml(v)}</button>`).join('') || '<span style="font-size:11.5px;color:var(--muted);">Elige antes al menos un tipo de estímulo.</span>'}
       </div>
-      <div class="ex-grid">
-        <div><label class="field-label">Rondas</label><input type="number" class="ex-juego-rondas" value="${cfg.rondas||15}"></div>
-        <div><label class="field-label">Ventana de respuesta (ms)</label><input type="number" class="ex-juego-ventana" value="${cfg.ventanaMs||1200}"></div>
-      </div>`;
+      ${tplReaccionTiempos(cfg)}`;
     }
     html += `</div>`;
   }
@@ -6101,45 +6589,191 @@ async function guardarResultadoHrv(){
 let reaccionCap = null;
 let cronoJuegoCap = null;
 const REACCION_RONDAS = 15;
+// ---------- Configuración: valores de partida y límites ----------
+function reaccionNum(v, d, min, max){
+  const x = parseFloat(String(v === undefined || v === null ? '' : v).replace(',','.'));
+  if(!isFinite(x) || x < min) return d;
+  return Math.min(x, max);
+}
+// Todo en milisegundos. Lo que ya estaba guardado con la «ventana de respuesta»
+// (ventanaMs) se entiende como la duración del estímulo.
+function reaccionParams(cfg){
+  cfg = cfg || {};
+  const est = (cfg.estimuloMs !== undefined && cfg.estimuloMs !== null) ? cfg.estimuloMs : cfg.ventanaMs;
+  return {
+    prepMs: reaccionNum(cfg.prepMs, 3000, 0, 60000),
+    rondas: Math.round(reaccionNum(cfg.rondas, REACCION_RONDAS, 1, 200)),
+    estimuloMs: reaccionNum(est, 1200, 100, 10000),
+    isiMs: reaccionNum(cfg.isiMs, 1100, 0, 20000),
+    isiVarMs: reaccionNum(cfg.isiVarMs, 600, 0, 10000),
+    series: Math.round(reaccionNum(cfg.series, 1, 1, 20)),
+    descSeriesMs: reaccionNum(cfg.descSeriesMs, 30000, 0, 600000),
+    sets: Math.round(reaccionNum(cfg.sets, 1, 1, 20)),
+    descSetsMs: reaccionNum(cfg.descSetsMs, 60000, 0, 900000)
+  };
+}
+// Un set agrupa varias series, y cada serie son varios estímulos. Antes de cada
+// estímulo hay una pausa (también antes del primero, para que no se pueda
+// adivinar cuándo empieza). El total se calcula con lo anterior.
+function reaccionDuracionMs(cfg){
+  const p = reaccionParams(cfg);
+  const serie = p.rondas * (p.estimuloMs + p.isiMs);
+  return p.prepMs + p.sets*p.series*serie + p.sets*(p.series-1)*p.descSeriesMs + (p.sets-1)*p.descSetsMs;
+}
+function reaccionFmtDur(ms){
+  const s = Math.round(ms/1000), m = Math.floor(s/60);
+  return m ? `${m} min ${String(s%60).padStart(2,'0')} s` : `${s} s`;
+}
+function reaccionResumenTxt(cfg){
+  const p = reaccionParams(cfg);
+  return `≈ ${reaccionFmtDur(reaccionDuracionMs(cfg))} · ${p.sets} set${p.sets===1?'':'s'} × ${p.series} serie${p.series===1?'':'s'} × ${p.rondas} estímulos`;
+}
+function normalizaCfgReaccion(cfg){
+  const c = Object.assign({}, cfg || {});
+  if(!Array.isArray(c.tipos)) c.tipos = c.tipo ? [c.tipo] : [];
+  if(!Array.isArray(c.objetivos)) c.objetivos = c.objetivo ? [c.objetivo] : [];
+  if(!Array.isArray(c.imagenes)) c.imagenes = [];
+  return c;
+}
+
+// ---------- Secuencia de estímulos ----------
+// Cada serie lleva el mismo número de objetivos (≈40 %), repartidos al azar y
+// con los estímulos equilibrados: así las series son comparables entre sí.
+function reaccionBaraja(a){
+  const r = a.slice();
+  for(let i=r.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); const t = r[i]; r[i] = r[j]; r[j] = t; }
+  return r;
+}
+function reaccionCiclo(a, n){
+  const out = [];
+  if(!a.length) return out;
+  while(out.length < n) reaccionBaraja(a).forEach(x=>out.push(x));
+  return out.slice(0, n);
+}
+function reaccionSecuencia(cfg, rondas){
+  const lista = listaEstimulos(cfg), obj = cfg.objetivos || [];
+  const dis = lista.filter(x=>!obj.includes(x));
+  let nObj;
+  if(!obj.length) nObj = 0; else if(!dis.length) nObj = rondas; else nObj = Math.min(rondas, Math.max(1, Math.round(rondas*0.4)));
+  const base = dis.length ? dis : lista;
+  const sec = reaccionCiclo(obj, nObj).map(v=>({v, obj:true})).concat(reaccionCiclo(base, rondas-nObj).map(v=>({v, obj:false})));
+  return reaccionSinRepetidos(reaccionBaraja(sec));
+}
+// Que no salga dos veces seguido el mismo estímulo: cada repetición se
+// intercambia con otra posición que no cree una repetición nueva.
+function reaccionSinRepetidos(m){
+  const igual = (i,j)=> i>=0 && j>=0 && i<m.length && j<m.length && m[i].v === m[j].v;
+  const malo = i => igual(i,i-1) || igual(i,i+1);
+  for(let pasada=0; pasada<20; pasada++){
+    let cambios = false;
+    for(let i=1;i<m.length;i++){
+      if(!igual(i,i-1)) continue;
+      for(let k=0;k<m.length;k++){
+        if(k === i || k === i-1) continue;
+        let t = m[i]; m[i] = m[k]; m[k] = t;
+        if(!malo(i) && !malo(k)){ cambios = true; break; }
+        t = m[i]; m[i] = m[k]; m[k] = t;
+      }
+    }
+    if(!cambios) break;
+  }
+  return m;
+}
+
+// ---------- Cómo se dibuja cada estímulo ----------
+const REACCION_COLORES = {'🔴':'#e04646','🟠':'#f08a24','🟡':'#f2cf3a','🟢':'#3fa55a','🔵':'#2f7fe0','🟣':'#9a4fc7','🟤':'#8a5a3c','⚪':'#f3f1ea','⚫':'#2b2b2b'};
+const REACCION_ANGULOS = {'Arriba':0,'Arriba-derecha':45,'Derecha':90,'Abajo-derecha':135,'Abajo':180,'Abajo-izquierda':225,'Izquierda':270,'Arriba-izquierda':315};
+function reaccionEstimuloHtml(v){
+  if(esImagenEstimulo(v)) return `<img class="rx-img" src="${escapeHtml(v)}" alt="">`;
+  const s = String(v == null ? '' : v), partes = s.split(' '), primero = partes[0], resto = partes.slice(1).join(' ');
+  if(REACCION_COLORES[primero]) return `<div class="rx-disco" style="background:${REACCION_COLORES[primero]};"></div>`;
+  if(Object.prototype.hasOwnProperty.call(REACCION_ANGULOS, resto) && /^[⬆⬇⬅➡↗↘↙↖]/.test(primero))
+    return `<svg class="rx-flecha" viewBox="0 0 100 100" style="transform:rotate(${REACCION_ANGULOS[resto]}deg);"><path fill="currentColor" d="M50 8 L86 46 H62 V92 H38 V46 H14 Z"/></svg>`;
+  return `<div class="rx-num">${escapeHtml(resto ? primero : s)}</div>`;
+}
+function rxCruz(){ return '<svg class="rx-cruz" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>'; }
+
+// ---------- Estado y modal ----------
 function abrirReaccion(tareaId, cfg, exId){
-  reaccionCap = { paso:'instrucciones', tareaId, exId, cfg, ronda:0, aciertos:[], fallos:0, falsasAlarmas:0,
-    estimuloActual:null, esObjetivo:false, tActivo:null, timeoutId:null };
+  cfg = normalizaCfgReaccion(cfg);
+  reaccionCap = { paso:'instrucciones', tareaId, exId, cfg, p:reaccionParams(cfg),
+    set:1, serie:1, idx:0, secuencia:[], serieAc:null, series:[],
+    aciertos:[], fallos:0, falsasAlarmas:0, anticipados:0,
+    estimuloActual:null, esObjetivo:false, respondido:false, tActivo:null, ultimoToque:0,
+    timeoutId:null, tickId:null, t0:null, duracionRealMs:0 };
   renderReaccionModal();
 }
 function cerrarReaccion(){
-  if(reaccionCap && reaccionCap.timeoutId) clearTimeout(reaccionCap.timeoutId);
+  if(reaccionCap){
+    if(reaccionCap.timeoutId) clearTimeout(reaccionCap.timeoutId);
+    if(reaccionCap.tickId) clearInterval(reaccionCap.tickId);
+  }
   reaccionCap = null;
   const b = document.getElementById('reaccionModalBack'); if(b) b.remove();
+}
+function rxArea(){ return document.getElementById('reaccionEstimuloBtn'); }
+function rxMuestra(html){ const a = rxArea(); if(a) a.innerHTML = html; }
+function rxPintaEstado(){
+  const c = reaccionCap; if(!c) return; const p = c.p;
+  const el = document.getElementById('reaccionRondaTxt');
+  if(el) el.textContent = `${p.sets>1?'Set '+c.set+'/'+p.sets+' · ':''}${p.series>1?'Serie '+c.serie+'/'+p.series+' · ':''}Estímulo ${Math.min(c.idx+1,p.rondas)}/${p.rondas}`;
+  const b = document.querySelector('#reaccionBarra i'); if(b) b.style.width = Math.round(100*c.idx/p.rondas)+'%';
+}
+function rxFeedback(clase, txt){
+  const a = rxArea(); if(!a) return;
+  a.classList.remove('ok','mal','ant'); a.classList.add(clase);
+  a.innerHTML = rxCruz() + (txt ? `<span class="rx-rt">${escapeHtml(txt)}</span>` : '');
+  setTimeout(()=>{ const x = rxArea(); if(x) x.classList.remove(clase); }, 380);
+}
+function rxCuentaAtras(c, ms, alTerminar){
+  if(c.tickId) clearInterval(c.tickId);
+  c.finCuenta = performance.now() + ms;
+  const pinta = ()=>{ const el = document.getElementById('reaccionCuenta'); if(el) el.textContent = Math.max(0, Math.ceil((c.finCuenta - performance.now())/1000)); };
+  pinta();
+  c.tickId = setInterval(()=>{
+    if(reaccionCap !== c){ clearInterval(c.tickId); return; }
+    if(performance.now() >= c.finCuenta){ clearInterval(c.tickId); c.tickId = null; alTerminar(); } else pinta();
+  }, 100);
 }
 function renderReaccionModal(){
   let back = document.getElementById('reaccionModalBack');
   if(!back){ back = document.createElement('div'); back.id='reaccionModalBack'; back.className='modal-back'; document.body.appendChild(back); }
-  const c = reaccionCap, cfg = c.cfg;
-  const rondas = cfg.rondas || REACCION_RONDAS;
-  const objetivosTxt = (cfg.objetivos||[]).map(o=>nombreEstimulo(cfg,o)).join(', ');
+  const c = reaccionCap, cfg = c.cfg, p = c.p;
+  const objetivos = cfg.objetivos || [];
   let html = `<div class="modal"><div class="row" style="justify-content:space-between;"><h2 style="font-family:'Fraunces',serif;">Juego de reacción</h2><button class="btn ghost small" id="reaccionCerrarBtn">Cerrar</button></div>`;
   if(c.paso === 'instrucciones'){
+    const sinEstimulos = !listaEstimulos(cfg).length || !objetivos.length;
     html += `<div style="padding:6px 0;">
       ${cfg.instruccion ? `<p style="font-size:13px;line-height:1.7;margin-bottom:12px;">${formateaGuia(cfg.instruccion)}</p>` : ''}
-      <p style="font-size:13px;line-height:1.7;">Reacciona lo más rápido que puedas <b>solo</b> cuando aparezca: <span style="color:var(--accent);font-weight:700;">${escapeHtml(objetivosTxt)}</span></p>
-      <p style="font-size:11.5px;color:var(--muted);margin-top:8px;">Si tocas con cualquier otro estímulo, cuenta como fallo — igual que si se te escapa el objetivo.</p>
+      ${sinEstimulos ? `<div class="rd-zona rd-ambar"><div><b>Falta configurar el juego</b><span>El entrenador aún no ha elegido los estímulos y el objetivo.</span></div></div>` : `
+      <p style="font-size:13px;line-height:1.7;">Reacciona lo más rápido que puedas <b>solo</b> cuando aparezca:</p>
+      <div class="rx-objetivos">${objetivos.map(o=>`<div class="rx-mini">${reaccionEstimuloHtml(o)}</div>`).join('')}</div>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:8px;">Si tocas con cualquier otro estímulo, o antes de que aparezca, cuenta como fallo.</p>
+      <div class="rx-plan">${escapeHtml(reaccionResumenTxt(cfg))}<br><span>Preparación ${reaccionFmtDur(p.prepMs)} · estímulo ${(p.estimuloMs/1000).toFixed(1).replace('.',',')} s · entre estímulos ${(p.isiMs/1000).toFixed(1).replace('.',',')} s${p.isiVarMs?' (±'+(Math.min(p.isiVarMs,p.isiMs)/1000).toFixed(1).replace('.',',')+')':''}</span></div>`}
     </div>
-    <button class="btn" id="reaccionEmpezarBtn" style="width:100%;margin-top:8px;">Empezar</button>`;
+    <button class="btn" id="reaccionEmpezarBtn" style="width:100%;margin-top:8px;" ${sinEstimulos?'disabled':''}>Empezar</button>`;
   } else if(c.paso === 'preparando'){
-    html += `<div style="text-align:center;padding:40px 0;"><div style="font-family:'IBM Plex Mono',monospace;font-size:56px;color:var(--accent);">${c.cuenta}</div></div>`;
+    html += `<div class="rx-descanso"><p class="rx-etq">Prepárate</p><div class="rx-cuenta" id="reaccionCuenta">${Math.ceil(p.prepMs/1000)}</div></div>`;
   } else if(c.paso === 'jugando'){
-    const esImg = esImagenEstimulo(c.estimuloActual);
-    html += `<div style="text-align:center;padding:10px 0;">
-      <p id="reaccionRondaTxt" style="font-size:11px;color:var(--muted);">Ronda ${c.ronda} de ${rondas} · objetivo: ${escapeHtml(objetivosTxt)}</p>
-      <button id="reaccionEstimuloBtn" style="width:100%;min-height:180px;border-radius:14px;border:none;background:var(--panel3);${esImg?'padding:10px;':'font-size:56px;'}margin-top:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;">${esImg?`<img src="${escapeHtml(c.estimuloActual)}" style="max-width:100%;max-height:160px;border-radius:8px;object-fit:contain;">`:escapeHtml(c.estimuloActual||'')}</button>
-    </div>`;
+    html += `<div class="rx-top"><span id="reaccionRondaTxt"></span></div>
+      <div class="rx-barra" id="reaccionBarra"><i style="width:0%;"></i></div>
+      <button type="button" id="reaccionEstimuloBtn" class="rx-area">${rxCruz()}</button>`;
+  } else if(c.paso === 'descanso'){
+    const entreSets = c.tipoDescanso === 'sets';
+    html += `<div class="rx-descanso"><p class="rx-etq">${entreSets?'Descanso entre sets':'Descanso entre series'}</p>
+      <div class="rx-cuenta" id="reaccionCuenta">0</div>
+      <p class="rx-sig">Siguiente: ${p.sets>1?'Set '+c.set+' · ':''}Serie ${c.serie}${p.series>1?' de '+p.series:''}</p>
+      <button class="btn ghost small" id="reaccionSaltarBtn" style="margin-top:10px;">Ya estoy listo</button></div>`;
   } else if(c.paso === 'resultado'){
-    const nAciertos = c.aciertos.length;
-    const media = nAciertos ? Math.round(c.aciertos.reduce((a,b)=>a+b,0)/nAciertos) : null;
+    const n = c.aciertos.length, media = n ? Math.round(c.aciertos.reduce((a,b)=>a+b,0)/n) : null;
+    const objTotal = c.series.reduce((a,s)=>a+s.objetivos,0);
     if(media){
       html += `<div class="rd-zona rd-verde"><div><b>Tiempo de reacción medio: ${media} ms</b>
-        <span>${nAciertos} acierto${nAciertos===1?'':'s'} · ${c.fallos} objetivo${c.fallos===1?'':'s'} sin reaccionar · ${c.falsasAlarmas} falsa${c.falsasAlarmas===1?'':'s'} alarma${c.falsasAlarmas===1?'':'s'}</span></div></div>
-        <button class="btn" id="reaccionGuardarBtn" style="width:100%;margin-top:14px;">Guardar</button>`;
+        <span>${n} de ${objTotal} objetivo${objTotal===1?'':'s'} · ${c.falsasAlarmas} falsa${c.falsasAlarmas===1?'':'s'} alarma${c.falsasAlarmas===1?'':'s'}${c.anticipados?` · ${c.anticipados} toque${c.anticipados===1?'':'s'} anticipado${c.anticipados===1?'':'s'}`:''} · ${reaccionFmtDur(c.duracionRealMs)}</span></div></div>`;
+      if(c.series.length > 1){
+        html += `<div class="tabla-comp-wrap" style="margin-top:12px;"><table class="tabla-comp"><thead><tr><th></th><th>RT medio</th><th>Aciertos</th><th>Falsas</th></tr></thead><tbody>${c.series.map(s=>`<tr><td>${p.sets>1?'Set '+s.set+' · ':''}Serie ${s.serie}</td><td>${s.mediaMs===null?'—':s.mediaMs+' ms'}</td><td>${s.aciertos.length}/${s.objetivos}</td><td>${s.falsasAlarmas}</td></tr>`).join('')}</tbody></table></div>`;
+      }
+      html += `<button class="btn" id="reaccionGuardarBtn" style="width:100%;margin-top:14px;">Guardar</button>`;
     } else {
       html += `<div class="rd-zona rd-rojo"><div><b>No se registró ningún acierto</b><span>Puede que el objetivo apareciera poco o que no diera tiempo a reaccionar. Prueba de nuevo.</span></div></div>
         <button class="btn" id="reaccionReintentarBtn" style="width:100%;margin-top:14px;">Volver a intentarlo</button>`;
@@ -6153,89 +6787,108 @@ function bindReaccionModal(){
   const c = reaccionCap;
   document.getElementById('reaccionCerrarBtn').addEventListener('click', cerrarReaccion);
   const empezar = document.getElementById('reaccionEmpezarBtn');
-  if(empezar) empezar.addEventListener('click', ()=>{
-    c.paso='preparando'; c.cuenta=3; renderReaccionModal();
-    const tick = ()=>{
-      c.cuenta--;
-      if(c.cuenta<=0){ c.paso='jugando'; c.ronda=0; renderReaccionModal(); siguienteEstimulo(); }
-      else { renderReaccionModal(); c.timeoutId=setTimeout(tick,700); }
-    };
-    c.timeoutId=setTimeout(tick,700);
-  });
+  if(empezar) empezar.addEventListener('click', reaccionEmpezar);
+  const saltar = document.getElementById('reaccionSaltarBtn');
+  if(saltar) saltar.addEventListener('click', ()=>{ if(c.tickId){ clearInterval(c.tickId); c.tickId = null; } reaccionComienzaSerie(); });
   const reintentar = document.getElementById('reaccionReintentarBtn');
-  if(reintentar) reintentar.addEventListener('click', ()=>{ c.paso='instrucciones'; c.aciertos=[]; c.fallos=0; c.falsasAlarmas=0; renderReaccionModal(); });
+  if(reintentar) reintentar.addEventListener('click', ()=>abrirReaccion(c.tareaId, c.cfg, c.exId));
   const guardar = document.getElementById('reaccionGuardarBtn');
   if(guardar) guardar.addEventListener('click', guardarResultadoReaccion);
-  const btnEstimulo = document.getElementById('reaccionEstimuloBtn');
-  if(btnEstimulo) btnEstimulo.addEventListener('click', ()=>{
-    if(!c.tActivo) return; // fuera de ventana (ya pasó o aún no hay estímulo)
-    const rt = performance.now() - c.tActivo;
-    if(c.esObjetivo) c.aciertos.push(Math.round(rt));
-    else c.falsasAlarmas++;
-    c.tActivo = null;
-    clearTimeout(c.timeoutId);
-    siguienteEstimulo();
-  });
+  const area = rxArea();
+  if(area){
+    // pointerdown responde antes que click en pantallas táctiles; reaccionToque
+    // descarta el segundo evento del mismo toque.
+    area.addEventListener('pointerdown', reaccionToque);
+    area.addEventListener('click', reaccionToque);
+  }
 }
-// Pinta solo el contador de ronda y el botón de estímulo, sin reconstruir el
-// modal entero (cabecera, botón Cerrar...) en cada ronda — eso es lo que se
-// sentía como parpadeo cada 1-2 segundos durante toda la partida.
-function actualizaRondaReaccion(){
-  const c = reaccionCap, cfg = c.cfg;
-  const rondas = cfg.rondas || REACCION_RONDAS;
-  const objetivosTxt = (cfg.objetivos||[]).map(o=>nombreEstimulo(cfg,o)).join(', ');
-  const txtEl = document.getElementById('reaccionRondaTxt');
-  if(txtEl) txtEl.textContent = `Ronda ${c.ronda} de ${rondas} · objetivo: ${objetivosTxt}`;
-  const btn = document.getElementById('reaccionEstimuloBtn');
-  if(!btn) return false; // el modal no está en la pantalla de juego todavía; hace falta el render completo
-  const esImg = esImagenEstimulo(c.estimuloActual);
-  btn.style.cssText = `width:100%;min-height:180px;border-radius:14px;border:none;background:var(--panel3);${esImg?'padding:10px;':'font-size:56px;'}margin-top:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;`;
-  btn.innerHTML = esImg?`<img src="${escapeHtml(c.estimuloActual)}" style="max-width:100%;max-height:160px;border-radius:8px;object-fit:contain;">`:escapeHtml(c.estimuloActual||'');
-  return true;
+function reaccionEmpezar(){
+  const c = reaccionCap; if(!c) return;
+  c.t0 = performance.now();
+  if(c.p.prepMs > 0){ c.paso = 'preparando'; renderReaccionModal(); rxCuentaAtras(c, c.p.prepMs, reaccionComienzaSerie); }
+  else reaccionComienzaSerie();
 }
-function siguienteEstimulo(){
-  const c = reaccionCap;
-  if(!c || c.paso!=='jugando') return;
-  const rondas = c.cfg.rondas || REACCION_RONDAS;
-  c.ronda++;
-  if(c.ronda > rondas){ c.paso='resultado'; renderReaccionModal(); return; }
-  // 40% de probabilidad de que sea uno de los objetivos; el resto, otro
-  // estímulo de la lista combinada — así no se puede anticipar.
-  const lista = listaEstimulos(c.cfg);
-  const objetivos = c.cfg.objetivos || [];
-  const esObjetivo = Math.random() < 0.4 && objetivos.length>0;
-  const distractores = lista.filter(x=>!objetivos.includes(x));
-  c.estimuloActual = esObjetivo
-    ? objetivos[Math.floor(Math.random()*objetivos.length)]
-    : (distractores.length ? distractores[Math.floor(Math.random()*distractores.length)] : lista[Math.floor(Math.random()*lista.length)]);
-  c.esObjetivo = esObjetivo;
-  if(!actualizaRondaReaccion()) renderReaccionModal();
-  c.tActivo = performance.now();
-  const ventanaMs = c.cfg.ventanaMs || 1200;
-  c.timeoutId = setTimeout(()=>{
-    if(c.esObjetivo) c.fallos++; // el objetivo apareció y no se reaccionó a tiempo
-    c.tActivo = null;
-    // Pausa irregular antes del siguiente, para que no se pueda anticipar el ritmo.
-    c.timeoutId = setTimeout(siguienteEstimulo, 500 + Math.random()*1200);
-  }, ventanaMs);
+function reaccionComienzaSerie(){
+  const c = reaccionCap; if(!c) return;
+  c.paso = 'jugando'; c.idx = 0; c.secuencia = reaccionSecuencia(c.cfg, c.p.rondas);
+  c.serieAc = { set:c.set, serie:c.serie, aciertos:[], objetivos:0, fallos:0, falsasAlarmas:0, anticipados:0, mediaMs:null };
+  renderReaccionModal(); rxPintaEstado();
+  reaccionProgramaEstimulo();
+}
+function reaccionProgramaEstimulo(){
+  const c = reaccionCap; if(!c || c.paso !== 'jugando') return;
+  if(c.idx >= c.p.rondas){ reaccionFinSerie(); return; }
+  c.estimuloActual = null; c.tActivo = null; c.respondido = false; c.esObjetivo = false;
+  const a = rxArea(); if(a){ a.classList.remove('ok','mal','ant'); }
+  rxMuestra(rxCruz()); rxPintaEstado();
+  const p = c.p, variacion = Math.min(p.isiVarMs, p.isiMs);
+  const isi = Math.max(0, p.isiMs + (Math.random()*2 - 1)*variacion);
+  c.timeoutId = setTimeout(reaccionMuestra, isi);
+}
+function reaccionMuestra(){
+  const c = reaccionCap; if(!c || c.paso !== 'jugando') return;
+  const it = c.secuencia[c.idx];
+  if(!it){ c.idx++; reaccionProgramaEstimulo(); return; }
+  c.estimuloActual = it.v; c.esObjetivo = it.obj; c.respondido = false; c.tActivo = null;
+  if(it.obj) c.serieAc.objetivos++;
+  rxMuestra(reaccionEstimuloHtml(it.v));
+  // el reloj del tiempo de reacción arranca cuando el navegador pinta el estímulo
+  requestAnimationFrame(()=>{ if(reaccionCap === c && c.estimuloActual === it.v && !c.respondido && c.tActivo === null) c.tActivo = performance.now(); });
+  c.timeoutId = setTimeout(reaccionFinEstimulo, c.p.estimuloMs);
+}
+function reaccionToque(){
+  const c = reaccionCap; if(!c || c.paso !== 'jugando') return;
+  const ahora = performance.now();
+  if(ahora - c.ultimoToque < 80) return;
+  c.ultimoToque = ahora;
+  if(c.estimuloActual !== null){
+    if(c.tActivo === null || c.respondido) return;
+    const rt = Math.round(ahora - c.tActivo); c.respondido = true;
+    if(c.esObjetivo){ c.aciertos.push(rt); c.serieAc.aciertos.push(rt); rxFeedback('ok', rt+' ms'); }
+    else { c.falsasAlarmas++; c.serieAc.falsasAlarmas++; rxFeedback('mal', 'No era'); }
+  } else {
+    c.anticipados++; c.serieAc.anticipados++; rxFeedback('ant', 'Muy pronto');
+  }
+}
+// El estímulo dura lo configurado aunque se responda antes: así cada ronda
+// ocupa el mismo tiempo y la duración total es la prevista.
+function reaccionFinEstimulo(){
+  const c = reaccionCap; if(!c || c.paso !== 'jugando') return;
+  if(c.esObjetivo && !c.respondido){ c.fallos++; c.serieAc.fallos++; }
+  c.idx++; c.estimuloActual = null; c.tActivo = null;
+  reaccionProgramaEstimulo();
+}
+function reaccionFinSerie(){
+  const c = reaccionCap; if(!c) return;
+  const s = c.serieAc;
+  s.mediaMs = s.aciertos.length ? Math.round(s.aciertos.reduce((a,b)=>a+b,0)/s.aciertos.length) : null;
+  c.series.push(s);
+  const p = c.p; let espera = 0;
+  if(c.serie < p.series){ c.serie++; espera = p.descSeriesMs; c.tipoDescanso = 'series'; }
+  else if(c.set < p.sets){ c.set++; c.serie = 1; espera = p.descSetsMs; c.tipoDescanso = 'sets'; }
+  else { c.paso = 'resultado'; c.duracionRealMs = Math.round(performance.now() - c.t0); renderReaccionModal(); return; }
+  if(espera > 0){ c.paso = 'descanso'; renderReaccionModal(); rxCuentaAtras(c, espera, reaccionComienzaSerie); }
+  else reaccionComienzaSerie();
 }
 async function guardarResultadoReaccion(){
   const c = reaccionCap;
   const athleteId = state.athleteAsId;
   const nAciertos = c.aciertos.length;
   const media = Math.round(c.aciertos.reduce((a,b)=>a+b,0)/nAciertos);
+  const seriesRes = c.series.map(s=>({ set:s.set, serie:s.serie, mediaMs:s.mediaMs, aciertos:s.aciertos.length, objetivos:s.objetivos, fallos:s.fallos, falsasAlarmas:s.falsasAlarmas, anticipados:s.anticipados }));
+  const resumen = { mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas, anticipados:c.anticipados, duracionMs:c.duracionRealMs, series:seriesRes };
   const historial = await getReaccion(athleteId);
-  historial.push({ fecha: todayISO(), tipos:c.cfg.tipos||[c.cfg.tipo], objetivos:c.cfg.objetivos, mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas });
+  historial.push(Object.assign({ fecha: todayISO(), tipos:c.cfg.tipos, objetivos:c.cfg.objetivos, config:c.p }, resumen));
   const okH = await saveReaccion(athleteId, historial);
   if(c.tareaId){
     const tareas = await getTareas(athleteId);
     const t = tareas.find(x=>x.id===c.tareaId);
-    if(t){ t.hecho = true; t.fechaHecho = todayISO(); t.resultado = { mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas }; }
+    if(t){ t.hecho = true; t.fechaHecho = todayISO(); t.resultado = resumen; }
     await saveTareas(athleteId, tareas);
   }
   if(c.exId && typeof session !== 'undefined' && session){
     const ex = session.exercises.find(e=>e.id===c.exId);
-    if(ex){ ex.juegoResultado = { mediaMs:media, aciertos:nAciertos, fallos:c.fallos, falsasAlarmas:c.falsasAlarmas }; ex.done = true; }
+    if(ex){ ex.juegoResultado = resumen; ex.done = true; }
   }
   cerrarReaccion();
   if(!okH){ toast('No se pudo guardar', true); return; }
@@ -7015,7 +7668,14 @@ function weekHistoryHtml(hist, athleteId){
 }
 async function tplCalendarioCoach(){
   if(!state.athletes.length) return `<div class="card"><div class="empty">Añade atletas primero.</div></div>`;
-  let html = `<div class="card"><h2>Próximas videollamadas</h2>`;
+  let html = '';
+  {
+    const hoyC = todayISO(), filasC = [];
+    for(const a of state.athletes){ (await getCompeticiones(a.id)).filter(c=>c.fecha && c.fecha >= hoyC).forEach(c=>filasC.push({ atleta:a.name, c })); }
+    filasC.sort((x,y)=>x.c.fecha.localeCompare(y.c.fecha));
+    html += `<div class="card"><h2>Próximas competiciones</h2>${filasC.length ? filasC.slice(0,12).map(f=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(f.atleta)} · ${escapeHtml(f.c.nombre||'Sin nombre')}</span><span>${f.c.fecha} · ${diasEntre(hoyC, f.c.fecha)===0?'hoy':'en '+diasEntre(hoyC, f.c.fecha)+' d'}</span></div></div>`).join('') : '<div class="empty">Sin competiciones próximas.</div>'}</div>`;
+  }
+  html += `<div class="card"><h2>Próximas videollamadas</h2>`;
   const rows = [];
   for(const a of state.athletes){
     const raw = await safeGet('call-'+a.id, true);
@@ -7184,18 +7844,126 @@ function parseEsfuerzo(txt){
 function claveEjercicio(nombre){
   return (nombre||'').trim().toLowerCase().replace(/\s+/g,' ');
 }
+// ---------- CARGAS: lectura robusta y edición ----------
+// Antes se borraban todos los caracteres que no fueran dígitos o punto: "30 40
+// 50 60" se leía como 30405060 kg (una sola cifra) y "30,40,50,60" como 30,4.
+// Ahora cada número es una serie: 30 → 40 → 50 → 60, y para la evolución
+// cuenta la mejor serie. Un valor imposible (más de 700 kg, o varias series
+// pegadas sin separador, como 30405060) no se acepta: se marca para corregirlo.
+function parseCargas(txt){
+  let s = String(txt == null ? '' : txt).toLowerCase().replace(/kgs?|kilos?|\bk\b/g, ' ').replace(/\s+/g,' ').trim();
+  if(!s) return [];
+  s = s.replace(/(\d),(\d)(?!\d)/g, '$1.$2');          // 22,5 es un decimal
+  const out = [];
+  s.split(/[^0-9.]+/).filter(Boolean).forEach(t=>{
+    if((t.match(/\./g) || []).length >= 2) t.split('.').filter(Boolean).forEach(x=>out.push(x));   // 30.40.50.60: una lista
+    else out.push(t);
+  });
+  return out.map(parseFloat).filter(x=>isFinite(x) && x > 0 && x <= 700);
+}
+function cargasEjercicio(ex){
+  if(Array.isArray(ex.setsData)){
+    const k = ex.setsData.map(sd=>parseCargas(sd.kg)[0]).filter(v=>v !== undefined);
+    if(k.length) return k;
+  }
+  return parseCargas(ex.loadApplied);
+}
+function cargasTxt(cs){ return cs.length > 1 ? cs.join(' → ') : String(cs[0]); }
+// Texto bajo cada campo del editor: cómo se va a leer lo que está escrito.
+function ecLecturaHtml(valores){
+  const crudo = valores.map(v=>String(v==null?'':v).trim()).filter(Boolean);
+  if(!crudo.length) return '';
+  const cs = valores.map(v=>parseCargas(v)[0]).filter(v=>v !== undefined);
+  const una = crudo.length === 1 ? parseCargas(crudo[0]) : cs;
+  if(!una.length) return `<span class="ec-mal">No se entiende como kilos. Escribe cada serie separada por un espacio o una coma, por ejemplo 30 40 50 60.</span>`;
+  const mejor = Math.max(...una);
+  const aviso = mejor > 300 ? ' · ¿seguro? es mucho peso' : '';
+  return `<span class="ec-ok">Se leerá: ${una.length > 1 ? una.join(' · ')+' kg → mejor serie '+mejor+' kg' : una[0]+' kg'}${aviso}</span>`;
+}
+function tplEditorCargas(e, idx){
+  let h = `<div class="editor-cargas" data-editorcargas="${idx}">
+    <p class="ec-ayuda">Cada número es una serie: <b>30 40 50 60</b> se lee como una progresión de pesos, no como una sola cifra. En Progreso cuenta la mejor serie.</p>`;
+  (e.exercises || []).forEach((x,i)=>{
+    if(x.tipo === 'running') return;
+    const sets = Array.isArray(x.setsData) && x.setsData.some(s=>s.kg !== undefined && s.kg !== null && String(s.kg) !== '');
+    h += `<div class="ec-ej" data-ecej="${i}"><b>${escapeHtml(x.name || '—')}</b>${x.loadPlanned ? ` <span class="ec-prev">previsto: ${escapeHtml(x.loadPlanned)}</span>` : ''}`;
+    if(sets){
+      h += `<div class="ec-sets">${x.setsData.map((s,si)=>`<label>S${si+1} <input type="text" inputmode="decimal" class="ec-kg" data-si="${si}" value="${escapeHtml(String(s.kg == null ? '' : s.kg))}"> kg${s.reps ? ' × '+escapeHtml(String(s.reps)) : ''}</label>`).join('')}</div>`;
+      h += `<div class="ec-lectura">${ecLecturaHtml(x.setsData.map(s=>s.kg))}</div>`;
+    } else {
+      h += `<input type="text" class="ec-carga" value="${escapeHtml(x.loadApplied || '')}" placeholder="p. ej. 30 40 50 60">`;
+      h += `<div class="ec-lectura">${ecLecturaHtml([x.loadApplied])}</div>`;
+    }
+    h += `</div>`;
+  });
+  h += `<div class="row" style="margin-top:10px;"><button class="btn small" data-savecargas="${idx}">Guardar cargas</button><button class="btn ghost small" data-cancelcargas="1">Cancelar</button></div></div>`;
+  return h;
+}
+function bindEditorCargas(athleteId){
+  document.querySelectorAll('.ec-ej').forEach(el=>{
+    const refresca = ()=>{
+      const kgs = [...el.querySelectorAll('.ec-kg')];
+      const lect = el.querySelector('.ec-lectura');
+      if(kgs.length) lect.innerHTML = ecLecturaHtml(kgs.map(i=>i.value));
+      else { const c = el.querySelector('.ec-carga'); lect.innerHTML = ecLecturaHtml([c ? c.value : '']); }
+    };
+    el.querySelectorAll('input').forEach(inp=>inp.addEventListener('input', refresca));
+  });
+  document.querySelectorAll('[data-editcargas]').forEach(b=>b.addEventListener('click', ()=>{
+    state.editCargas = parseInt(b.dataset.editcargas, 10); state.diarioAbierto = state.editCargas; renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-cancelcargas]').forEach(b=>b.addEventListener('click', ()=>{ state.editCargas = null; renderKeepScroll(); }));
+  // desde Progreso, «Editar» lleva a esa sesión del Diario con el editor abierto
+  document.querySelectorAll('[data-editcargasde]').forEach(b=>b.addEventListener('click', ()=>{
+    state.editCargas = parseInt(b.dataset.editcargasde, 10); state.diarioAbierto = state.editCargas;
+    if(state.role === 'atleta') state.progresoSub = 'diario'; else irASubTab('diario');
+    renderScrollTop();
+  }));
+  document.querySelectorAll('[data-savecargas]').forEach(b=>b.addEventListener('click', async ()=>{
+    const idx = parseInt(b.dataset.savecargas, 10);
+    const ed = document.querySelector(`[data-editorcargas="${idx}"]`); if(!ed) return;
+    const raw = await safeGet('journal-'+athleteId, true);
+    const entries = raw ? JSON.parse(raw) : [];
+    const e = entries[idx]; if(!e) return;
+    let problema = null;
+    ed.querySelectorAll('.ec-ej').forEach(el=>{
+      const x = e.exercises[parseInt(el.dataset.ecej, 10)]; if(!x || problema) return;
+      const kgs = [...el.querySelectorAll('.ec-kg')];
+      if(kgs.length){
+        if(kgs.some(i=>i.value.trim() && !parseCargas(i.value).length)){ problema = x.name; return; }
+        kgs.forEach(inp=>{ const si = parseInt(inp.dataset.si, 10); const n = parseCargas(inp.value); if(x.setsData[si]) x.setsData[si].kg = n.length ? String(n[0]) : inp.value.trim(); });
+        const ks = x.setsData.map(s=>s.kg).filter(v=>v !== '' && v != null);
+        if(ks.length) x.loadApplied = ks.join(', ');
+        x.patronCarga = patronCarga(x.setsData);
+      } else {
+        const t = (el.querySelector('.ec-carga').value || '').trim();
+        const nums = parseCargas(t);
+        if(t && /\d/.test(t) && !nums.length){ problema = x.name; return; }
+        x.loadApplied = nums.length ? nums.join(', ') : t;
+      }
+    });
+    if(problema){ toast(`Revisa las cargas de «${problema}»: no se entienden como kilos`, true); return; }
+    e.cargasEditadas = { por: state.role === 'atleta' ? 'atleta' : 'entrenador', fecha: todayISO() };
+    const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
+    toast(ok ? 'Cargas guardadas · Progreso recalculado' : 'No se pudo guardar', !ok);
+    state.editCargas = null; renderKeepScroll();
+  }));
+}
+
 function extraeSeries(entries){
   const porEjercicio = new Map();   // clave normalizada -> { nombre, datos }
-  entries.forEach(e=>{
+  entries.forEach((e, ei)=>{
     (e.exercises||[]).forEach(ex=>{
       if(!ex.name) return;
       const clave = claveEjercicio(ex.name);
       if(!clave) return;
       if(!porEjercicio.has(clave)) porEjercicio.set(clave, { nombre: ex.name.trim(), datos: [] });
-      const kg = parseFloat(String(ex.loadApplied||'').replace(',','.').replace(/[^0-9.]/g,''));
+      const cs = cargasEjercicio(ex), crudo = String(ex.loadApplied||'').trim();
       porEjercicio.get(clave).datos.push({
         fecha: e.date,
-        carga: isNaN(kg) ? null : kg,
+        carga: cs.length ? Math.max(...cs) : null,   // la mejor serie
+        cargas: cs, crudo, entryIdx: ei,
+        ilegible: !cs.length && /\d/.test(crudo),
         rpe: (typeof ex.rpeApplied === 'number') ? ex.rpeApplied : null,
         series: ex.seriesDone || '',
         nota: ex.noteApplied || ''
@@ -7376,10 +8144,11 @@ function tplMetricasEjercicio(entries){
     </select>
     <div class="kpi-row">
       <div class="kpi"><b>${datos.length}</b><span>Veces</span></div>
-      ${cargas.length?`<div class="kpi"><b>${Math.max(...cargas)}</b><span>Mejor carga</span></div>`:''}
+      ${cargas.length?`<div class="kpi"><b>${Math.max(...cargas)}</b><span>Mejor serie (kg)</span></div>`:''}
       ${rpes.length?`<div class="kpi"><b>${(rpes.reduce((a,b)=>a+b,0)/rpes.length).toFixed(1)}</b><span>RPE medio</span></div>`:''}
     </div>
-    ${variacion?`<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">${variacion}</p>`:''}`;
+    ${variacion?`<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">${variacion}</p>`:''}
+    ${datos.some(d=>d.ilegible)?`<div class="rd-zona rd-ambar" style="margin-bottom:12px;"><div><b>${datos.filter(d=>d.ilegible).length} sesión${datos.filter(d=>d.ilegible).length===1?'':'es'} con una carga que no se entiende</b><span>Suele ser una progresión de pesos pegada en una sola cifra (30405060). Pulsa Editar en esa sesión y escribe los kilos de cada serie: 30 40 50 60.</span></div></div>`:''}`;
 
   if(cargas.length >= 2){
     html += `<div class="metrica"><span>Carga movida</span>${miniGrafica(datos,'carga','var(--accent)')}</div>`;
@@ -7390,7 +8159,7 @@ function tplMetricasEjercicio(entries){
   html += `<div class="block-title">Historial</div>`;
   datos.slice().reverse().slice(0,10).forEach(d=>{
     html += `<div class="entry"><div class="entry-top"><span>${d.fecha}</span>
-      <span>${d.carga!==null?`<b style="color:var(--accent);">${d.carga}</b>`:'—'}${d.rpe!==null?` · RPE ${d.rpe}`:''}${d.series?` · ${escapeHtml(String(d.series))} series`:''}</span></div>
+      <span>${d.carga!==null?`<b style="color:var(--accent);">${d.carga}</b>${d.cargas.length>1?` <span style="color:var(--muted);font-weight:400;">(${d.cargas.join(' → ')})</span>`:''}`:(d.ilegible?`<span style="color:var(--danger);">ilegible «${escapeHtml(d.crudo)}»</span>`:'—')}${d.rpe!==null?` · RPE ${d.rpe}`:''}${d.series?` · ${escapeHtml(String(d.series))} series`:''} <button class="btn ghost small" data-editcargasde="${d.entryIdx}" style="margin-left:6px;">Editar</button></span></div>
       ${d.nota?`<div style="font-size:12px;color:var(--muted);margin-top:4px;">"${escapeHtml(d.nota)}"</div>`:''}</div>`;
   });
   html += `</div>`;
@@ -8150,37 +8919,138 @@ async function tplPerfilAtleta(athleteId){
 }
 
 // ---------- COACH: ATHLETE DETAIL ----------
+// ---------- COMPETICIONES: una sola lista por atleta ----------
+// La fuente de verdad es «competiciones-<atleta>» (la del módulo Competiciones,
+// que ya alimenta el calendario del atleta). Cada macrociclo guarda
+// referencias a esas competiciones (compId), no copias sueltas: así cambiar el
+// nombre o la fecha en un sitio lo cambia en todos —periodización, calendario,
+// plan y resumen— y borrar una competición la quita de los macrociclos.
+// origen 'maestra': manda la lista del módulo. origen 'macro': acaba de editarse
+// una competición dentro de un macrociclo y esa edición sube a la lista.
+async function sincronizaCompeticiones(athleteId, origen){
+  origen = origen || 'maestra';
+  const plan = await getPlan(athleteId), lista = await getCompeticiones(athleteId);
+  let cPlan = false, cLista = false;
+  plan.macros.forEach(m=>{
+    if(!Array.isArray(m.competitions)) return;
+    const antes = m.competitions.length;
+    m.competitions = m.competitions.filter(c=>{
+      if(c.compId && !lista.some(x=>x.id === c.compId)){
+        if(origen === 'maestra') return false;          // la borraron en Competiciones
+        delete c.compId;                                 // se vuelve a crear abajo
+      }
+      return true;
+    });
+    if(m.competitions.length !== antes) cPlan = true;
+    m.competitions.forEach(c=>{
+      const mst = c.compId ? lista.find(x=>x.id === c.compId) : null;
+      if(mst){
+        if(origen === 'macro'){
+          if(c.name && mst.nombre !== c.name){ mst.nombre = c.name; cLista = true; }
+          if(c.date && mst.fecha !== c.date){ mst.fecha = c.date; cLista = true; }
+        } else if((c.name||'') !== mst.nombre || (c.date||'') !== mst.fecha){ c.name = mst.nombre; c.date = mst.fecha; cPlan = true; }
+        return;
+      }
+      if(!(c.name && c.date)) return;                    // aún a medio escribir: no se enlaza todavía
+      let nueva = lista.find(x=>x.nombre === c.name && x.fecha === c.date);
+      if(!nueva){ nueva = competicionVacia('otro'); nueva.nombre = c.name; nueva.fecha = c.date; lista.push(nueva); cLista = true; }
+      c.compId = nueva.id; cPlan = true;
+    });
+  });
+  if(cLista) await saveCompeticiones(athleteId, lista);
+  if(cPlan) await savePlan(athleteId, plan);
+  return cLista || cPlan;
+}
+
+// ---------- FICHA DEL ATLETA: 4 pestañas con secciones ----------
+const ATLETA_TABS = [{k:'plan',l:'Plan'},{k:'seguimiento',l:'Seguimiento'},{k:'evaluacion',l:'Evaluación'},{k:'perfil',l:'Perfil'}];
+const ATLETA_SECCIONES = {
+  plan:[{k:'semana',l:'Semana'},{k:'periodizacion',l:'Periodización y competiciones'}],
+  seguimiento:[{k:'progreso',l:'Progreso'},{k:'diario',l:'Diario'},{k:'cuestionarios',l:'Cuestionarios'},{k:'habitos',l:'Hábitos'}],
+  evaluacion:[{k:'tests',l:'Tests'},{k:'gym',l:'Gym'},{k:'fotos',l:'Fotos'}]
+};
+// Los nombres de las 11 pestañas antiguas siguen valiendo para saltar a un sitio.
+const SUBTAB_LEGACY = { planificacion:['plan','semana'], periodizacion:['plan','periodizacion'], competiciones:['plan','periodizacion'],
+  diario:['seguimiento','diario'], progreso:['seguimiento','progreso'], cuestionarios:['seguimiento','cuestionarios'], habitos:['seguimiento','habitos'],
+  tests:['evaluacion','tests'], gym:['evaluacion','gym'], fotos:['evaluacion','fotos'], perfil:['perfil',null] };
+function irASubTab(nombre){
+  const m = SUBTAB_LEGACY[nombre];
+  if(!m){ state.athleteSubTab = nombre; return; }
+  state.athleteSubTab = m[0];
+  if(m[1]){ state.secActiva = state.secActiva || {}; state.secActiva[m[0]] = m[1]; }
+}
+async function resumenSeccion(athleteId, k){
+  if(k === 'diario'){
+    const raw = await safeGet('journal-'+athleteId, true); let l = []; try{ l = raw ? JSON.parse(raw) : []; }catch(e){}
+    return l.length ? `${l.length} sesiones · última ${fechaCortaISO(l[l.length-1].date)}` : 'sin sesiones';
+  }
+  if(k === 'cuestionarios'){
+    const raw = await safeGet('quest-'+athleteId, true); let l = []; try{ l = raw ? JSON.parse(raw) : []; }catch(e){}
+    return l.length ? `${l.length} respuestas · última ${fechaCortaISO(l[l.length-1].date || l[l.length-1].weekOf)}` : 'sin respuestas';
+  }
+  if(k === 'periodizacion'){
+    const plan = await getPlan(athleteId), comps = await getCompeticiones(athleteId);
+    return `${plan.macros.length} macrociclo${plan.macros.length===1?'':'s'} · ${comps.length} ${comps.length===1?'competición':'competiciones'}`;
+  }
+  return '';
+}
+// Franja de datos cruzados: lo último de cada pestaña, a un toque.
+async function tplResumenAtleta(athleteId){
+  await sincronizaCompeticiones(athleteId);   // lo de los macrociclos y la lista única nunca se desincronizan
+  const hoy = todayISO();
+  const rawJ = await safeGet('journal-'+athleteId, true); let j = []; try{ j = rawJ ? JSON.parse(rawJ) : []; }catch(e){}
+  const rawQ = await safeGet('quest-'+athleteId, true); let q = []; try{ q = rawQ ? JSON.parse(rawQ) : []; }catch(e){}
+  const rawC = await safeGet('call-'+athleteId, true); let call = {}; try{ call = rawC ? JSON.parse(rawC) : {}; }catch(e){}
+  const comps = (await getCompeticiones(athleteId)).filter(c=>c.fecha && c.fecha >= hoy).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  const ult = j.length ? j[j.length-1] : null, ultQ = q.length ? q[q.length-1] : null, prox = comps[0];
+  const chip = (sub, etq, val)=>`<button type="button" class="res-chip" ${sub?`data-irsub="${sub}"`:''}><span>${etq}</span><b>${val}</b></button>`;
+  return `<div class="res-fila">
+    ${chip('diario','Última sesión', ult ? `${fechaCortaISO(ult.date)} · RPE ${ult.overallRPE}` : '—')}
+    ${chip('periodizacion','Próxima competición', prox ? `${escapeHtml(prox.nombre||'Sin nombre')} · ${diasEntre(hoy, prox.fecha)===0?'hoy':'en '+diasEntre(hoy, prox.fecha)+' d'}` : '—')}
+    ${chip('cuestionarios','Cuestionario semanal', ultQ ? fechaCortaISO(ultQ.date || ultQ.weekOf) : '—')}
+    ${chip('', 'Próxima videollamada', call.nextDate ? fechaCortaISO(call.nextDate) : '—')}
+  </div>`;
+}
+async function contenidoSeccion(athleteId, k){
+  if(k === 'semana') return await tplPlanificacionCoach(athleteId);
+  if(k === 'periodizacion'){
+    if(state.compEditId) return await tplCompeticiones(athleteId, true);
+    return await tplCompeticiones(athleteId, true) + await tplPeriodizacion(athleteId);
+  }
+  if(k === 'progreso') return await tplProgreso(athleteId);
+  if(k === 'diario') return await tplDiarioLectura(athleteId, true);
+  if(k === 'cuestionarios') return await tplQuestConfigAndRead(athleteId);
+  if(k === 'habitos') return await tplHabitosCoach(athleteId);
+  if(k === 'tests') return await tplTestsCoach(athleteId);
+  if(k === 'gym') return await tplGym(athleteId, true);
+  if(k === 'fotos') return await tplProgresoFotos(athleteId, true);
+  return '';
+}
+async function tplSeccionesAtleta(athleteId, tab){
+  const secs = ATLETA_SECCIONES[tab];
+  state.secActiva = state.secActiva || {};
+  const activa = state.secActiva[tab] === undefined ? secs[0].k : state.secActiva[tab];
+  let html = '';
+  for(const s of secs){
+    const abierta = s.k === activa;
+    html += `<div class="seccion ${abierta?'abierta':''}"><button type="button" class="seccion-cab" data-secabrir="${tab}|${s.k}"><b>${s.l}</b><span class="sec-res">${abierta ? '' : escapeHtml(await resumenSeccion(athleteId, s.k))}</span><span class="sec-chev">${abierta?'▴':'▾'}</span></button>`;
+    if(abierta) html += `<div class="seccion-cuerpo">${await contenidoSeccion(athleteId, s.k)}</div>`;
+    html += `</div>`;
+  }
+  return html;
+}
 async function tplAthleteDetail(athleteId){
   const a = state.athletes.find(x=>x.id===athleteId);
+  if(SUBTAB_LEGACY[state.athleteSubTab]) irASubTab(state.athleteSubTab);
+  const tab = ATLETA_SECCIONES[state.athleteSubTab] || state.athleteSubTab === 'perfil' ? state.athleteSubTab : 'plan';
   let html = `<div class="row" style="justify-content:space-between;margin-bottom:14px;">
     <span style="font-family:'Fraunces',serif;font-size:19px;font-weight:600;">${escapeHtml(a?a.name:'')}</span>
     <button class="btn ghost small" id="backToAthletes">← Atletas</button>
   </div>
-  <div class="sub-tabs">
-    <button data-subtab="planificacion" class="${state.athleteSubTab==='planificacion'?'active':''}">Planificación</button>
-    <button data-subtab="periodizacion" class="${state.athleteSubTab==='periodizacion'?'active':''}">Periodización</button>
-    <button data-subtab="diario" class="${state.athleteSubTab==='diario'?'active':''}">Diario</button>
-    <button data-subtab="progreso" class="${state.athleteSubTab==='progreso'?'active':''}">Progreso</button>
-    <button data-subtab="cuestionarios" class="${state.athleteSubTab==='cuestionarios'?'active':''}">Cuestionarios</button>
-    <button data-subtab="habitos" class="${state.athleteSubTab==='habitos'?'active':''}">Hábitos</button>
-    <button data-subtab="tests" class="${state.athleteSubTab==='tests'?'active':''}">Tests</button>
-    <button data-subtab="gym" class="${state.athleteSubTab==='gym'?'active':''}">Gym</button>
-    <button data-subtab="fotos" class="${state.athleteSubTab==='fotos'?'active':''}">Fotos</button>
-    <button data-subtab="competiciones" class="${state.athleteSubTab==='competiciones'?'active':''}">Competiciones</button>
-    <button data-subtab="perfil" class="${state.athleteSubTab==='perfil'?'active':''}">Perfil</button>
-  </div>`;
-  if(state.athleteSubTab==='planificacion') html += await tplPlanificacionCoach(athleteId);
-  else if(state.athleteSubTab==='periodizacion') html += await tplPeriodizacion(athleteId);
-  else if(state.athleteSubTab==='diario') html += await tplDiarioLectura(athleteId, true);
-  else if(state.athleteSubTab==='progreso') html += await tplProgreso(athleteId);
-  else if(state.athleteSubTab==='habitos') html += await tplHabitosCoach(athleteId);
-  else if(state.athleteSubTab==='tests') html += await tplTestsCoach(athleteId);
-  else if(state.athleteSubTab==='gym') html += await tplGym(athleteId, true);
-  else if(state.athleteSubTab==='fotos') html += await tplProgresoFotos(athleteId, true);
-  else if(state.athleteSubTab==='competiciones') html += await tplCompeticiones(athleteId, true);
-  else if(state.athleteSubTab==='perfil') html += await tplPerfilCoachBody(athleteId);
-  else html += await tplQuestConfigAndRead(athleteId);
-  return html;
+  <div class="sub-tabs">${ATLETA_TABS.map(t=>`<button data-subtab="${t.k}" class="${tab===t.k?'active':''}">${t.l}</button>`).join('')}</div>`;
+  if(tab === 'perfil') return html + await tplPerfilCoachBody(athleteId);
+  html += await tplResumenAtleta(athleteId);
+  return html + await tplSeccionesAtleta(athleteId, tab);
 }
 
 // Reúne todas las veces que se ha hecho un test concreto, de la batería activa
@@ -8611,6 +9481,220 @@ function tplCamposDisciplina(c){
 }
 
 // ---------- CICLO MENSTRUAL: PANTALLA COMPARTIDA ----------
+// ---------- DIARIO DE REGLA ----------
+// Una nota rápida al día (sangrado, dolor, síntomas). Es opcional y privado: solo
+// lo ve el entrenador si ella decide compartirlo. Se engancha al mismo ciclo de
+// siempre: si anotas un sangrado que no está en tu ciclo, te propone registrarlo
+// como inicio de regla, para que fases y tendencias se calculen con un solo dato.
+const DIARIO_FLUJO = ['Ninguno','Manchado','Ligero','Medio','Abundante'];
+const DIARIO_DOLOR = ['Sin dolor','Leve','Moderado','Fuerte','Muy fuerte'];
+const DIARIO_SINTOMAS = [
+  {id:'calambres', l:'Calambres'}, {id:'lumbar', l:'Dolor lumbar'}, {id:'hinchazon', l:'Hinchazón'}, {id:'cefalea', l:'Dolor de cabeza'},
+  {id:'cansancio', l:'Cansancio'}, {id:'sueno', l:'Sueño alterado'}, {id:'antojos', l:'Antojos'}, {id:'irritable', l:'Irritabilidad'},
+  {id:'animo_bajo', l:'Ánimo bajo'}, {id:'nauseas', l:'Náuseas'}, {id:'mamas', l:'Sensibilidad en el pecho'}, {id:'energia', l:'Mucha energía'}
+];
+async function getDiarioRegla(athleteId){
+  const raw = await safeGet('ciclo-diario-'+athleteId, true); let o = {};
+  try{ o = raw ? JSON.parse(raw) : {}; }catch(e){}
+  return { compartir: !!(o && o.compartir), dias: (o && o.dias && typeof o.dias === 'object') ? o.dias : {} };
+}
+async function saveDiarioRegla(athleteId, d){ return safeSet('ciclo-diario-'+athleteId, JSON.stringify(d), true); }
+// La regla empieza el primer día de sangrado real (no el manchado): de una racha de
+// días con sangrado ligero o más, el primero. Devuelve ese día si aún no está en el ciclo.
+function diarioInicioSugerido(ciclo, dias){
+  if(ciclo.anticonceptivo === 'combinado') return null;
+  const fechas = Object.keys(dias).filter(f=>ISO_RE.test(f) && dias[f].flujo >= 2).sort();
+  if(!fechas.length) return null;
+  let s = fechas[fechas.length-1];
+  while(dias[sumaDiasISO(s,-1)] && dias[sumaDiasISO(s,-1)].flujo >= 2) s = sumaDiasISO(s,-1);
+  if(ciclo.inicios.some(f=>f <= s && diasEntre(f, s) <= 6)) return null;      // ya está (o es la misma regla)
+  if(ciclo.inicios.some(f=>f > s && diasEntre(s, f) <= 6)) return null;
+  return s;
+}
+function diarioResumen(dias, hoy){
+  const desde = sumaDiasISO(hoy, -60), fs = Object.keys(dias).filter(f=>f >= desde && f <= hoy);
+  const cont = {}; fs.forEach(f=>(dias[f].sintomas || []).forEach(sx=>{ cont[sx] = (cont[sx] || 0) + 1; }));
+  const top = Object.keys(cont).sort((a,b)=>cont[b]-cont[a]).slice(0,3).map(id=>({ id, n:cont[id] }));
+  return { n:fs.length, top, dolorFuerte: fs.filter(f=>dias[f].dolor >= 3).length, diasSangrado: fs.filter(f=>dias[f].flujo >= 1).length };
+}
+const sintomaLabel = id=>(DIARIO_SINTOMAS.find(x=>x.id === id) || {l:id}).l;
+function diarioFilaHtml(ciclo, f, e, irA){
+  const info = faseCiclo(ciclo, f);
+  const fase = (info && info.fase && !info.sinFase && !info.sinCicloNatural) ? `${FASES_CICLO[info.fase].label} · día ${info.diaCiclo}` : '';
+  const partes = [];
+  if(e.flujo > 0) partes.push('Sangrado: '+DIARIO_FLUJO[e.flujo].toLowerCase());
+  if(e.dolor > 0) partes.push('Dolor: '+DIARIO_DOLOR[e.dolor].toLowerCase());
+  if((e.sintomas || []).length) partes.push(e.sintomas.map(sintomaLabel).join(', '));
+  return `<div class="entry dr-fila" ${irA ? `data-drir="${f}" style="cursor:pointer;"` : ''}><div class="entry-top"><span>${fechaCortaISO(f)}${fase ? ` · ${escapeHtml(fase)}` : ''}</span><span>${partes.length ? '' : 'Todo bien'}</span></div>
+    ${partes.length ? `<div style="font-size:12.5px;margin-top:3px;">${escapeHtml(partes.join(' · '))}</div>` : ''}
+    ${e.nota ? `<div style="font-size:12px;color:var(--muted);margin-top:3px;">${escapeHtml(e.nota)}</div>` : ''}</div>`;
+}
+function diarioResumenHtml(r){
+  if(!r.n) return '';
+  let h = `<p style="font-size:12px;color:var(--muted);line-height:1.6;margin:10px 0 6px;">Últimos 60 días: <b>${r.n}</b> día${r.n===1?'':'s'} anotado${r.n===1?'':'s'}${r.top.length ? ' · síntomas más frecuentes: '+r.top.map(t=>`${escapeHtml(sintomaLabel(t.id))} (${t.n})`).join(', ') : ''}.</p>`;
+  if(r.dolorFuerte >= 3) h += `<div class="rd-zona rd-ambar"><div><b>Has anotado dolor fuerte ${r.dolorFuerte} días</b><span>Si el dolor te limita con frecuencia, merece la pena comentarlo con tu médico: no es algo que tengas que aguantar sin más.</span></div></div>`;
+  return h;
+}
+async function tplDiarioRegla(athleteId){
+  const ciclo = await getCiclo(athleteId), diario = await getDiarioRegla(athleteId), hoy = todayISO();
+  const f = (state.drFecha && ISO_RE.test(state.drFecha) && state.drFecha <= hoy) ? state.drFecha : hoy;
+  const tiene = !!diario.dias[f], e = diario.dias[f] || { flujo:0, dolor:0, sintomas:[], nota:'' };
+  const info = faseCiclo(ciclo, f);
+  const fase = (info && info.fase && !info.sinFase && !info.sinCicloNatural) ? `${FASES_CICLO[info.fase].label} · día ${info.diaCiclo}` : '';
+  const sug = diarioInicioSugerido(ciclo, diario.dias);
+  const chips = (arr, attr, sel)=>arr.map((l,i)=>`<button type="button" class="gs-chip ${sel===i?'on':''}" ${attr}="${i}">${l}</button>`).join('');
+  let h = `<div class="card" id="diarioRegla"><h2>Diario de regla</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Una nota rápida al día: cómo es el sangrado, el dolor y cómo te sientes. Es opcional y <b>solo para ti</b>: tú decides si lo compartes con tu entrenador. El ciclo funciona igual aunque no lo uses.</p>`;
+  if(sug) h += `<div class="rd-zona rd-ambar" style="margin:10px 0;"><div><b>¿Empezó tu regla el ${fechaCortaISO(sug)}?</b><span>Lo anotaste con sangrado y todavía no está en tu ciclo.</span><button type="button" class="btn small" data-drinicio="${sug}" style="margin-top:8px;">Registrar como inicio de regla</button></div></div>`;
+  h += `<div class="row" style="align-items:center;gap:8px;margin:12px 0 4px;"><button type="button" class="btn ghost small" data-drdia="-1">‹</button><input type="date" id="drFecha" value="${f}" max="${hoy}" style="flex:1;min-width:0;"><button type="button" class="btn ghost small" data-drdia="1" ${f >= hoy ? 'disabled' : ''}>›</button></div>
+    ${fase ? `<div class="dr-fase">${escapeHtml(fase)}</div>` : ''}
+    <label class="field-label" style="margin-top:12px;">Sangrado</label><div class="gal-secs">${chips(DIARIO_FLUJO,'data-drflujo',e.flujo)}</div>
+    <label class="field-label" style="margin-top:12px;">Dolor</label><div class="gal-secs">${chips(DIARIO_DOLOR,'data-drdolor',e.dolor)}</div>
+    <label class="field-label" style="margin-top:12px;">Cómo te sientes (puedes marcar varios)</label>
+    <div class="gal-secs">${DIARIO_SINTOMAS.map(sx=>`<button type="button" class="gs-chip ${(e.sintomas||[]).includes(sx.id)?'on':''}" data-drsint="${sx.id}">${sx.l}</button>`).join('')}</div>
+    <textarea id="drNota" maxlength="300" placeholder="Nota (opcional)" style="width:100%;min-height:54px;margin-top:10px;">${escapeHtml(e.nota||'')}</textarea>
+    <div class="row" style="gap:8px;margin-top:10px;"><button type="button" class="btn" id="drGuardar">${tiene ? 'Actualizar' : 'Guardar'} el ${fechaCortaISO(f)}</button>${tiene ? '<button type="button" class="btn ghost" id="drBorrar">Borrar</button>' : ''}</div>
+    <label class="row" style="gap:8px;margin-top:14px;font-size:12.5px;align-items:flex-start;"><input type="checkbox" id="drCompartir" ${diario.compartir?'checked':''} style="margin-top:2px;"><span>Compartir mi diario con mi entrenador<br><span style="font-size:11px;color:var(--muted);">Desactivado: solo lo ves tú. Puedes cambiarlo cuando quieras.</span></span></label>`;
+  h += diarioResumenHtml(diarioResumen(diario.dias, hoy));
+  const fechas = Object.keys(diario.dias).filter(x=>x <= hoy).sort().reverse().slice(0,14);
+  if(fechas.length) h += `<div class="block-title">Últimos días</div>` + fechas.map(x=>diarioFilaHtml(ciclo, x, diario.dias[x], true)).join('');
+  return h + `</div>`;
+}
+// Lo que ve el entrenador: solo si ella lo comparte
+async function tplDiarioReglaCoach(athleteId){
+  const diario = await getDiarioRegla(athleteId), ciclo = await getCiclo(athleteId), hoy = todayISO();
+  if(!diario.compartir) return `<div class="card"><h2>Diario de regla</h2><p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Es privado: solo lo ve ella. Si decide compartirlo contigo, aparecerá aquí.</p></div>`;
+  const fechas = Object.keys(diario.dias).filter(x=>x <= hoy).sort().reverse().slice(0,14);
+  return `<div class="card"><h2>Diario de regla <span style="font-size:11px;font-weight:400;color:var(--muted);">(lo comparte ella)</span></h2>
+    ${diarioResumenHtml(diarioResumen(diario.dias, hoy)) || '<div class="empty">Todavía no ha anotado nada.</div>'}
+    ${fechas.map(x=>diarioFilaHtml(ciclo, x, diario.dias[x], false)).join('')}</div>`;
+}
+function bindDiarioRegla(athleteId, registrar){
+  const caja = document.getElementById('diarioRegla'); if(!caja) return;
+  const unico = attr=>caja.querySelectorAll(`[${attr}]`).forEach(b=>b.addEventListener('click', ()=>{ caja.querySelectorAll(`[${attr}]`).forEach(x=>x.classList.remove('on')); b.classList.add('on'); }));
+  unico('data-drflujo'); unico('data-drdolor');
+  caja.querySelectorAll('[data-drsint]').forEach(b=>b.addEventListener('click', ()=>b.classList.toggle('on')));
+  const ir = fecha=>{ state.drFecha = fecha; renderKeepScroll(); };
+  const campoFecha = document.getElementById('drFecha');
+  if(campoFecha) campoFecha.addEventListener('change', ()=>{ if(ISO_RE.test(campoFecha.value) && campoFecha.value <= todayISO()) ir(campoFecha.value); });
+  caja.querySelectorAll('[data-drdia]').forEach(b=>b.addEventListener('click', ()=>{
+    const nueva = sumaDiasISO(campoFecha.value, parseInt(b.dataset.drdia, 10));
+    if(nueva <= todayISO()) ir(nueva);
+  }));
+  caja.querySelectorAll('[data-drir]').forEach(b=>b.addEventListener('click', ()=>{ ir(b.dataset.drir); const c = document.getElementById('diarioRegla'); if(c && c.scrollIntoView) c.scrollIntoView(); }));
+  const guardar = document.getElementById('drGuardar');
+  if(guardar) guardar.addEventListener('click', async ()=>{
+    const fecha = campoFecha.value;
+    if(!ISO_RE.test(fecha) || fecha > todayISO()){ toast('Elige una fecha válida (no futura)', true); return; }
+    const idx = attr=>{ const on = [...caja.querySelectorAll(`[${attr}]`)].find(x=>x.classList.contains('on')); return on ? parseInt(on.getAttribute(attr), 10) : 0; };
+    const diario = await getDiarioRegla(athleteId);
+    diario.dias[fecha] = { flujo: idx('data-drflujo'), dolor: idx('data-drdolor'),
+      sintomas: [...caja.querySelectorAll('[data-drsint].on')].map(x=>x.dataset.drsint).filter(id=>DIARIO_SINTOMAS.some(sx=>sx.id === id)),
+      nota: (document.getElementById('drNota').value || '').trim().slice(0, 300) };
+    const ok = await saveDiarioRegla(athleteId, diario);
+    toast(ok ? 'Guardado' : 'No se pudo guardar', !ok);
+    if(ok) renderKeepScroll();
+  });
+  const borrar = document.getElementById('drBorrar');
+  if(borrar) borrar.addEventListener('click', async ()=>{
+    if(!confirm('¿Borrar lo anotado ese día?')) return;
+    const diario = await getDiarioRegla(athleteId); delete diario.dias[campoFecha.value];
+    const ok = await saveDiarioRegla(athleteId, diario); toast(ok ? 'Borrado' : 'No se pudo borrar', !ok); if(ok) renderKeepScroll();
+  });
+  const comp = document.getElementById('drCompartir');
+  if(comp) comp.addEventListener('change', async ()=>{
+    const diario = await getDiarioRegla(athleteId); diario.compartir = comp.checked;
+    const ok = await saveDiarioRegla(athleteId, diario);
+    toast(ok ? (comp.checked ? 'Tu entrenador ya puede ver tu diario' : 'Tu diario vuelve a ser solo tuyo') : 'No se pudo guardar', !ok);
+  });
+  caja.querySelectorAll('[data-drinicio]').forEach(b=>b.addEventListener('click', ()=>registrar(b.dataset.drinicio)));
+}
+
+// ---------- MIS RECETAS ----------
+// Un recetario personal dentro de la Guía nutricional: guardas con ★ las ideas de la
+// guía o escribes las tuyas, y las puedes marcar para una fase del ciclo. Son solo de
+// quien las guarda.
+const RECETA_FASES = [{id:'', l:'Cualquier momento'}, {id:'menstrual', l:'Menstrual'}, {id:'folicular', l:'Folicular'}, {id:'ovulatoria', l:'Ovulatoria'}, {id:'lutea', l:'Lútea'}];
+async function getRecetas(athleteId){
+  const raw = await safeGet('recetas-'+athleteId, true);
+  try{ const o = raw ? JSON.parse(raw) : []; return Array.isArray(o) ? o : []; }catch(e){ return []; }
+}
+async function saveRecetas(athleteId, lista){ return safeSet('recetas-'+athleteId, JSON.stringify(lista), true); }
+async function tplMisRecetas(athleteId, menor){
+  const lista = await getRecetas(athleteId), fase = state.recFase || '', edit = state.recEdit || null;
+  let h = `<div class="card"><h2>⭐ Mis recetas</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Las que quieras tener a mano: guarda las ideas de la guía con ★ o escribe las tuyas. Son solo tuyas. Si quieres, márcalas para una fase de tu ciclo.</p>
+    <div class="gal-secs" style="margin:10px 0;">${[{id:'', l:'Todas'}].concat(RECETA_FASES.slice(1)).map(f=>`<button type="button" class="gs-chip ${fase===f.id?'on':''}" data-recfase="${f.id}">${f.l}</button>`).join('')}</div>
+    ${edit ? '' : '<button type="button" class="btn small" data-recnueva="1">+ Nueva receta</button>'}</div>`;
+  if(edit){
+    const r = edit === 'nueva' ? { id:'', titulo:'', ingredientes:'', pasos:'', fase: fase || '', kcal:'', p:'', c:'', g:'', nota:'' } : lista.find(x=>x.id === edit);
+    if(r){
+      const num = (id, etq, v)=>`<div><label class="field-label">${etq}</label><input type="text" inputmode="decimal" id="${id}" value="${v === '' || v === undefined ? '' : nutriNum(v)}"></div>`;
+      h += `<div class="card" id="recForm" data-recid="${r.id}"><h2>${edit==='nueva' ? 'Nueva receta' : 'Editar receta'}</h2>
+        <input type="text" id="recTitulo" value="${escapeHtml(r.titulo)}" maxlength="80" placeholder="Nombre de la receta" style="width:100%;font-weight:700;">
+        <textarea id="recIngr" placeholder="Ingredientes (uno por línea o en una frase)" style="width:100%;min-height:80px;margin-top:8px;">${escapeHtml(r.ingredientes)}</textarea>
+        <textarea id="recPasos" placeholder="Preparación (opcional)" style="width:100%;min-height:80px;margin-top:8px;">${escapeHtml(r.pasos||'')}</textarea>
+        <label class="field-label" style="margin-top:8px;">Para qué fase de tu ciclo (opcional)</label>
+        <select id="recFase" style="width:100%;">${RECETA_FASES.map(f=>`<option value="${f.id}" ${r.fase===f.id?'selected':''}>${f.l}</option>`).join('')}</select>
+        ${menor ? '' : `<div class="ex-grid" style="margin-top:8px;">${num('recKcal','kcal',r.kcal)}${num('recP','Proteína (g)',r.p)}${num('recC','Hidratos (g)',r.c)}${num('recG','Grasa (g)',r.g)}</div>`}
+        <input type="text" id="recNota" value="${escapeHtml(r.nota||'')}" maxlength="160" placeholder="Nota (opcional)" style="width:100%;margin-top:8px;">
+        <div class="row" style="gap:8px;margin-top:10px;"><button type="button" class="btn" id="recGuardar">Guardar</button><button type="button" class="btn ghost" id="recCancelar">Cancelar</button></div></div>`;
+    }
+  }
+  const vis = lista.filter(r=>!fase || r.fase === fase);
+  if(!vis.length && !edit) h += `<div class="card"><div class="empty">${lista.length ? 'No tienes recetas para esta fase.' : 'Aún no has guardado ninguna. Pulsa ★ en una idea de la guía o añade la tuya.'}</div></div>`;
+  vis.forEach(r=>{
+    const f = RECETA_FASES.find(x=>x.id === r.fase);
+    h += `<div class="card receta-card"><b>${escapeHtml(r.titulo)}</b>${r.fase && f ? ` <span class="tipo-tag">${f.l}</span>` : ''}
+      ${r.ingredientes ? `<div class="nutri-rac" style="white-space:pre-line;">${escapeHtml(r.ingredientes)}</div>` : ''}
+      ${(!menor && Number(r.kcal)) ? `<div class="ex-meta"><span><b>${nutriNum(r.kcal)}</b> kcal</span><span>P <b>${nutriNum(r.p)}</b> g</span><span>C <b>${nutriNum(r.c)}</b> g</span><span>G <b>${nutriNum(r.g)}</b> g</span></div>` : ''}
+      ${r.pasos ? `<details class="nutri-aviso"><summary>Preparación</summary><p style="white-space:pre-line;">${escapeHtml(r.pasos)}</p></details>` : ''}
+      ${r.nota ? `<p class="nutri-nota">${escapeHtml(r.nota)}</p>` : ''}
+      <div class="row" style="gap:8px;margin-top:8px;"><button type="button" class="btn ghost small" data-receditar="${r.id}">Editar</button><button type="button" class="btn ghost small" data-recborrar="${r.id}" style="color:var(--danger);">Eliminar</button></div></div>`;
+  });
+  return h;
+}
+function bindRecetas(){
+  const id = state.athleteAsId; if(!id) return;
+  document.querySelectorAll('[data-recfase]').forEach(b=>b.addEventListener('click', ()=>{ state.recFase = (state.recFase === b.dataset.recfase) ? '' : b.dataset.recfase; state.recEdit = null; renderKeepScroll(); }));
+  document.querySelectorAll('[data-recnueva]').forEach(b=>b.addEventListener('click', ()=>{ state.recEdit = 'nueva'; renderKeepScroll(); }));
+  document.querySelectorAll('[data-receditar]').forEach(b=>b.addEventListener('click', ()=>{ state.recEdit = b.dataset.receditar; renderKeepScroll(); }));
+  const cancelar = document.getElementById('recCancelar'); if(cancelar) cancelar.addEventListener('click', ()=>{ state.recEdit = null; renderKeepScroll(); });
+  document.querySelectorAll('[data-recborrar]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(!confirm('¿Eliminar esta receta?')) return;
+    const ok = await saveRecetas(id, (await getRecetas(id)).filter(r=>r.id !== b.dataset.recborrar));
+    toast(ok ? 'Eliminada' : 'No se pudo eliminar', !ok); if(ok) renderKeepScroll();
+  }));
+  const guardar = document.getElementById('recGuardar');
+  if(guardar) guardar.addEventListener('click', async ()=>{
+    const titulo = document.getElementById('recTitulo').value.trim();
+    if(!titulo){ toast('Ponle un nombre a la receta', true); return; }
+    const lista = await getRecetas(id), rid = document.getElementById('recForm').dataset.recid;
+    const n = idc=>{ const el = document.getElementById(idc); if(!el) return ''; const x = numIntake(el.value.trim()); return x === null ? '' : x; };
+    const datos = { titulo, ingredientes: document.getElementById('recIngr').value.trim(), pasos: document.getElementById('recPasos').value.trim(),
+      fase: document.getElementById('recFase').value, kcal:n('recKcal'), p:n('recP'), c:n('recC'), g:n('recG'), nota: document.getElementById('recNota').value.trim() };
+    if(rid){ const r = lista.find(x=>x.id === rid); if(r) Object.assign(r, datos); }
+    else lista.push(Object.assign({ id:'r'+uid(), origen:'propia', fecha:todayISO() }, datos));
+    const ok = await saveRecetas(id, lista);
+    toast(ok ? 'Receta guardada' : 'No se pudo guardar', !ok);
+    if(ok){ state.recEdit = null; renderKeepScroll(); }
+  });
+  // ★ en una idea de la guía
+  document.querySelectorAll('[data-guardarreceta]').forEach(b=>b.addEventListener('click', async ()=>{
+    const it = (await getGuiaNutri()).find(x=>x.id === b.dataset.guardarreceta); if(!it) return;
+    const lista = await getRecetas(id);
+    if(lista.some(r=>r.origenId === it.id)){ toast('Ya está en tus recetas'); return; }
+    const menor = esMenor(state.athletes.find(a=>a.id === id));
+    lista.push({ id:'r'+uid(), titulo:it.nombre, ingredientes:it.racion || '', pasos:'', fase:'', kcal: menor ? '' : it.kcal, p: menor ? '' : it.p, c: menor ? '' : it.c, g: menor ? '' : it.g, nota: it.nota || '', origen:'guia', origenId: it.id, fecha: todayISO() });
+    const ok = await saveRecetas(id, lista);
+    toast(ok ? 'Guardada en Mis recetas' : 'No se pudo guardar', !ok); if(ok) renderKeepScroll();
+  }));
+  // desde la pantalla del ciclo: «Mis recetas para esta fase»
+  document.querySelectorAll('[data-irrecetas]').forEach(b=>b.addEventListener('click', ()=>{
+    state.verCiclo = false; state.verNutri = true; state.nutriCat = 'recetas'; state.recFase = b.dataset.irrecetas; state.recEdit = null; renderScrollTop();
+  }));
+}
+
 async function tplCiclo(athleteId, esCoach){
   const ciclo = await getCiclo(athleteId);
   const info = faseCiclo(ciclo, todayISO());
@@ -8645,7 +9729,7 @@ async function tplCiclo(athleteId, esCoach){
       <span style="font-size:11px;opacity:0.85;">${nota}${avisoEvidencia}</span>
       <span style="display:block;margin-top:6px;"><b>Entrenamiento:</b> ${formateaGuia(tEnt.cuerpo)}</span>
       <span style="display:block;margin-top:6px;"><b>Nutrición:</b> ${formateaGuia(tNut.cuerpo)}</span></div>
-    </div></div>`;
+    </div>${esCoach ? '' : `<div class="row" style="margin-top:10px;"><button type="button" class="btn ghost small" data-irrecetas="${info.fase}">⭐ Mis recetas para esta fase (${(await getRecetas(athleteId)).filter(r=>r.fase===info.fase).length})</button></div>`}</div>`;
   } else if(!esCoach){
     html += `<div class="card"><div class="empty">Registra el primer día de tu última regla para empezar a ver tu fase.</div></div>`;
   }
@@ -8660,6 +9744,7 @@ async function tplCiclo(athleteId, esCoach){
       <p style="font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.6;">Cuenta el <b>primer día de sangrado real</b>, no el manchado previo. Si se te olvidó anotarla, pon la fecha en que fue: es lo que más afina tus fases. Cada inicio que registras valida solo las semanas anteriores.</p>
     </div>`;
 
+    html += await tplDiarioRegla(athleteId);
     html += `<div class="card"><h2>Tus datos</h2>
       <div class="row" style="flex-direction:column;align-items:stretch;gap:10px;">
         <div><label class="field-label">Duración habitual de tu ciclo (días) <span style="font-weight:400;text-transform:none;letter-spacing:0;">— se sustituye por tu mediana real cuando haya 2 ciclos medidos</span></label>
@@ -8697,6 +9782,7 @@ async function tplCiclo(athleteId, esCoach){
       html += `<p style="font-size:11px;color:var(--muted);margin-top:8px;">Los ciclos atípicos (fuera de 21–35 días) no se usan para asignar fases. Si una fecha está mal, elimínala con ✕.</p></div>`;
     }
   }
+  if(esCoach) html += await tplDiarioReglaCoach(athleteId);
   html += await tplTendenciaCiclo(athleteId, esCoach);
   return html;
 }
@@ -9314,6 +10400,8 @@ async function paintStorageHealth(){
 async function tplPeriodizacion(athleteId){
   // El botón sólo aparece si alguna semana de algún macrociclo es la actual.
 
+  await sincronizaCompeticiones(athleteId);
+  const maestras = await getCompeticiones(athleteId);
   const plan = await getPlan(athleteId);
   let html = `<div class="card"><div class="row" style="justify-content:space-between;align-items:center;">
     <h2 style="margin:0;">Periodización</h2>
@@ -9381,20 +10469,14 @@ async function tplPeriodizacion(athleteId){
             <input type="date" class="comp-date" data-macro="${macro.id}" data-comp="${c.id}" value="${c.date||''}">
             <button class="btn ghost small" data-delcomp="${macro.id}|${c.id}">✕</button>
           </div>`).join('')}
-          ${(()=>{ const otras = [];
-            plan.macros.forEach(m=>{ if(m.id===macro.id) return;
-              (m.competitions||[]).forEach(c=>{ if(c.name && c.date && !(macro.competitions||[]).some(x=>x.name===c.name&&x.date===c.date)) otras.push({...c, macro:m.name}); }); });
-            const vistas = [];
-            otras.forEach(c=>{
-              const clave = (c.name||'')+'|'+(c.date||'');
-              if(!vistas.some(v=>((v.name||'')+'|'+(v.date||''))===clave)) vistas.push(c);
-            });
-            if(!vistas.length) return '';
+          ${(()=>{ const libres = maestras.filter(c=>c.nombre && c.fecha && !(macro.competitions||[]).some(x=>x.compId===c.id)).sort((x,y)=>x.fecha.localeCompare(y.fecha));
+            if(!libres.length) return '';
             return `<div class="day-tools" style="margin-top:8px;">
-              <span class="day-tools-label">Ya usadas en otros macrociclos</span>
-              ${vistas.map(c=>`<button class="btn ghost small" data-usecomp="${macro.id}|${escapeHtml(c.name)}|${c.date}">${escapeHtml(c.name)} · ${c.date}</button>`).join('')}
+              <span class="day-tools-label">Competiciones del atleta (pulsa para vincular)</span>
+              ${libres.map(c=>`<button class="btn ghost small" data-linkcomp="${macro.id}|${c.id}">${escapeHtml(c.nombre)} · ${c.fecha}</button>`).join('')}
             </div>`; })()}
           <button class="btn ghost small" data-addcomp="${macro.id}" style="margin-top:8px;">+ Añadir competición</button>
+          <p style="font-size:11px;color:var(--muted);margin-top:6px;">Es la misma lista que Competiciones y el Calendario: cambiar el nombre o la fecha aquí lo cambia en todas partes. ✕ solo la quita de este macrociclo.</p>
           <div class="block-title">Microciclos</div>
           ${macro.micros.map((m,i)=>{
             const d = microDate(macro, i);
@@ -9498,11 +10580,17 @@ function tplPistaEditable(dr, seleccionado){
     const sel = seleccionado === j.numero;
     capaToque += `<circle cx="${p.x}" cy="${p.y}" r="17" fill="${sel?'rgba(201,162,39,0.35)':'transparent'}" stroke="${sel?'#C9A227':'transparent'}" stroke-width="2.5" data-jugtoque="${j.numero}"/>`;
   });
+  const destinos = pistaDestinos(dr);
+  jugadores.forEach(j=>{
+    (destinos[j.numero] || []).forEach(dd=>{
+      capaToque += `<circle cx="${dd.x}" cy="${dd.y.toFixed(1)}" r="15" fill="transparent" data-destdrag="${j.numero}|${dd.k}" data-origenmio="${posiciones[j.numero].esMio?1:0}"/>`;
+    });
+  });
   const hint = jugadores.length===0 ? 'Toca la pista para colocar al primer jugador'
-    : seleccionado ? `J${seleccionado} seleccionado — toca otra zona para marcar hacia dónde juega`
-    : 'Toca un jugador para seleccionarlo, o una zona vacía para añadir otro';
+    : seleccionado ? `J${seleccionado} seleccionado — toca una zona para añadir un golpe (hasta ${PISTA_MAX_GOLPES} encadenados) o arrástralo para moverlo`
+    : 'Arrastra un jugador para moverlo · arrastra un aro para cambiar adónde va ese golpe · toca una zona vacía para añadir otro jugador';
   return `<div class="pista-editable-wrap">
-    <svg class="pista-svg pista-editable" viewBox="0 0 ${W} ${H}" style="width:100%;max-width:280px;display:block;margin:0 auto;">${interior}${capaToque}</svg>
+    <svg class="pista-svg pista-editable" data-fronton="${dr.fronton?1:0}" viewBox="0 0 ${W} ${H}" style="width:100%;max-width:300px;display:block;margin:0 auto;">${interior}${capaToque}</svg>
     <p class="pista-hint">${hint}</p>
   </div>`;
 }
@@ -9519,9 +10607,132 @@ function tplPanelJugadorSel(dr, numero){
       <button class="btn ghost small ${j.rol!=='dirige'?'on':''}" data-jugrol="${numero}" data-rol="consistente">Consistente</button>
     </div>
     ${j.rol==='dirige'?`<div style="margin-top:8px;"><label class="field-label">Bolas objetivo</label><input type="text" class="jug-bolas-sel" data-jugnum="${numero}" value="${escapeHtml(j.bolasObjetivo||'')}" placeholder="ej. 8" style="width:100%;"></div>`:''}
-    ${j.zonaDestino?`<button class="btn ghost small" data-jugquitardestino="${numero}" style="margin-top:8px;">Quitar trayectoria (apunta a ${escapeHtml(ZONAS_PISTA[j.zonaDestino]?.nombre||j.zonaDestino)})</button>`:''}
+    ${(()=>{ const g = golpesDe(j); if(!g.length) return `<p class="pista-hint" style="margin-top:8px;">Toca una zona de la pista para marcar su primer golpe (hasta ${PISTA_MAX_GOLPES} encadenados).</p>`;
+      return `<div style="margin-top:8px;"><label class="field-label">Golpes encadenados (${g.length}/${PISTA_MAX_GOLPES})</label>
+        <div class="golpes-lista">${g.map((z,k)=>`<span class="golpe-chip">${k+1} · <b class="z-${z}">${escapeHtml(ZONAS_PISTA[z]?.nombre||z)}</b></span>`).join('')}</div>
+        <div class="row" style="gap:8px;margin-top:6px;"><button class="btn ghost small" data-jugquitargolpe="${numero}">Quitar el último</button><button class="btn ghost small" data-jugquitardestino="${numero}">Quitar todos</button></div>
+        <p class="pista-hint">Toca otra zona para añadir el siguiente golpe.</p></div>`; })()}
     <button class="btn ghost small" data-jugeliminar="${numero}" style="margin-top:8px;color:var(--danger);">Eliminar jugador</button>
   </div>`;
+}
+
+
+// ---------- PIZARRA: exportar la jugada como imagen ----------
+// Se dibuja el SVG en un lienzo y se comparte (WhatsApp, etc.) o se descarga como
+// PNG. Si el navegador no puede, se descarga el SVG tal cual.
+async function exportaPistaImagen(svg, titulo){
+  const clon = svg.cloneNode(true);
+  clon.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); clon.removeAttribute('style');
+  clon.setAttribute('width', '520'); clon.setAttribute('height', '1080');
+  clon.querySelectorAll('.pista-ghost,.pista-tap-area,[data-jugtoque],[data-destdrag],.pista-open,.pista-bola').forEach(n=>n.remove());
+  clon.querySelectorAll('[style]').forEach(n=>{ n.removeAttribute('style'); });
+  const xml = new XMLSerializer().serializeToString(clon);
+  const nombre = (titulo || 'jugada').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'jugada';
+  const descargar = (blob, fichero)=>{
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = fichero; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>{ try{ URL.revokeObjectURL(url); }catch(e){} }, 4000);
+  };
+  const svgBlob = new Blob([xml], { type:'image/svg+xml;charset=utf-8' });
+  try{
+    const cv = document.createElement('canvas'); cv.width = 520; cv.height = 1170;
+    const ctx = cv.getContext && cv.getContext('2d');
+    if(!ctx) throw new Error('sin lienzo');
+    const url = URL.createObjectURL(svgBlob);
+    const img = await new Promise((ok, ko)=>{ const i = new Image(); const t = setTimeout(()=>ko(new Error('tarda demasiado')), 8000); i.onload = ()=>{ clearTimeout(t); ok(i); }; i.onerror = ()=>{ clearTimeout(t); ko(new Error('no carga')); }; i.src = url; });
+    ctx.fillStyle = '#EDE4D3'; ctx.fillRect(0, 0, 520, 1170);
+    ctx.fillStyle = '#14213D'; ctx.font = '700 30px Georgia, serif'; ctx.textBaseline = 'middle';
+    ctx.fillText((titulo || 'Jugada').slice(0, 34), 24, 46);
+    ctx.fillStyle = '#8C8073'; ctx.font = '600 15px monospace'; ctx.fillText('UMBRAL', 24 + 0, 76);
+    ctx.drawImage(img, 0, 90, 520, 1080);
+    try{ URL.revokeObjectURL(url); }catch(e){}
+    const blob = await new Promise(r=>cv.toBlob(r, 'image/png'));
+    if(!blob) throw new Error('sin imagen');
+    const file = new File([blob], nombre + '.png', { type:'image/png' });
+    if(navigator.canShare && navigator.canShare({ files:[file] })){
+      try{ await navigator.share({ files:[file], title: titulo || 'Jugada' }); return 'compartida'; }
+      catch(err){ if(err && err.name === 'AbortError') return 'cancelada'; }
+    }
+    descargar(blob, nombre + '.png'); return 'png';
+  }catch(e){
+    descargar(svgBlob, nombre + '.svg'); return 'svg';
+  }
+}
+document.addEventListener('click', async e=>{
+  const b = e.target.closest && e.target.closest('[data-exportpista]'); if(!b) return;
+  const id = b.dataset.exportpista;
+  const svg = document.querySelector(`[data-drillview="${id}"] .pista-svg`) || document.querySelector(`.drill-card[data-drillid="${id}"] .pista-svg`);
+  if(!svg){ toast('No se encuentra la pizarra', true); return; }
+  const r = await exportaPistaImagen(svg, b.dataset.titulo || 'Jugada');
+  if(r === 'png') toast('Imagen descargada'); else if(r === 'svg') toast('Descargada como SVG (este navegador no puede crear PNG)');
+});
+
+// ---------- PIZARRA: arrastrar con el dedo ----------
+// Mover una ficha a otra zona (o al otro lado de la red) y mover el aro de
+// destino de la bola. Mientras arrastras se resalta la banda de zona sobre la
+// que caería. Un toque sin movimiento sigue siendo seleccionar, como antes.
+let __pizarraUltimoArrastre = 0;
+function bindPistaArrastre(athleteId){
+  document.querySelectorAll('.pista-editable').forEach(svg=>{
+    if(svg.dataset.arrastreBound) return; svg.dataset.arrastreBound = '1';
+    const NS = 'http://www.w3.org/2000/svg', fr = svg.dataset.fronton === '1';
+    let drag = null;
+    // En móvil el navegador intenta desplazar la página al mover el dedo: mientras
+    // se arrastra una ficha lo impedimos (el resto de la pista sigue deslizando).
+    svg.addEventListener('touchmove', e=>{ if(drag && e.cancelable) e.preventDefault(); }, { passive:false });
+    const bandaDe = (zona, esMio)=>{ const b = BANDA_ZONAS.find(x=>x.zona === zona); return { y: esMio ? 540-20-b.y1 : 20+b.y0, h: b.y1-b.y0 }; };
+    const pintaGhost = (p)=>{
+      let g = svg.querySelector('.pista-ghost');
+      if(!g){ g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'pista-ghost'); g.setAttribute('pointer-events', 'none'); svg.appendChild(g); }
+      const yJ = (drag.tipo === 'jugador' && fr) ? Math.max(p.y, 272) : p.y;
+      const t = zonaDeToque(yJ);
+      const esMioBanda = drag.tipo === 'destino' ? (fr ? false : !drag.origenMio) : (fr ? true : t.esMio);
+      const bd = bandaDe(t.zona, esMioBanda);
+      const cx = Math.max(30, Math.min(230, p.x)), cy = drag.tipo === 'destino' ? Math.max(24, Math.min(516, p.y)) : Math.max(24, Math.min(516, yJ));
+      g.innerHTML = `<rect x="30" y="${bd.y}" width="200" height="${bd.h}" fill="#FFFFFF" opacity=".16" stroke="#FFFFFF" stroke-opacity=".7" stroke-width="1.4" stroke-dasharray="5 4"/>` +
+        (drag.tipo === 'jugador'
+          ? `<circle cx="${cx}" cy="${cy}" r="16" fill="#C9A227" opacity=".95" stroke="#0E1A33" stroke-width="1.4"/><text x="${cx}" y="${cy+4}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" font-weight="700" fill="#14213D">J${drag.numero}</text>`
+          : `<circle cx="${cx}" cy="${cy}" r="11" fill="none" stroke="#FFFFFF" stroke-width="2.2"/><circle cx="${cx}" cy="${cy}" r="3.4" fill="#FFFFFF"/>`);
+      drag.ultimo = t;
+    };
+    svg.addEventListener('pointerdown', e=>{
+      const t = e.target.closest && e.target.closest('[data-jugtoque],[data-destdrag]'); if(!t) return;
+      const p = puntoSVG(e, svg); if(!p) return;
+      drag = { tipo: t.dataset.destdrag ? 'destino' : 'jugador', numero: parseInt(t.dataset.destdrag || t.dataset.jugtoque, 10), k: t.dataset.destdrag ? (parseInt(t.dataset.destdrag.split('|')[1], 10) || 0) : 0, origenMio: t.dataset.origenmio === '1', x0:p.x, y0:p.y, moviendo:false, id:e.pointerId, ultimo:null };
+      try{ if(svg.setPointerCapture && e.pointerId !== undefined) svg.setPointerCapture(e.pointerId); }catch(err){}
+    });
+    svg.addEventListener('pointermove', e=>{
+      if(!drag || e.pointerId !== drag.id) return;
+      const p = puntoSVG(e, svg); if(!p) return;
+      if(!drag.moviendo && Math.hypot(p.x-drag.x0, p.y-drag.y0) < 7) return;   // un temblor del dedo no es un arrastre
+      drag.moviendo = true;
+      pintaGhost(p);
+    });
+    const fin = async (e, cancelado)=>{
+      if(!drag || (e.pointerId !== drag.id)) return;
+      const d = drag; drag = null;
+      try{ if(svg.releasePointerCapture && e.pointerId !== undefined) svg.releasePointerCapture(e.pointerId); }catch(err){}
+      const gh = svg.querySelector('.pista-ghost'); if(gh) gh.remove();
+      if(!d.moviendo || cancelado) return;                  // fue un toque: lo gestiona el clic de siempre
+      __pizarraUltimoArrastre = Date.now();
+      const p = puntoSVG(e, svg) || { x:d.x0, y:d.y0 };
+      const card = svg.closest('.drill-card'); if(!card) return;
+      const dia = card.dataset.day, id = card.dataset.drillid;
+      const draft = await getRoutine(athleteId, true, state.planWeek);
+      const dr = (draft.days[dia].drills || []).find(x=>x.id === id); if(!dr) return;
+      const j = dr.jugadores.find(x=>x.numero === d.numero); if(!j) return;
+      const yJ = (d.tipo === 'jugador' && dr.fronton) ? Math.max(p.y, 272) : p.y;
+      const t = zonaDeToque(yJ);
+      if(d.tipo === 'jugador'){ j.lado = (dr.fronton || t.esMio) ? 'mio' : 'contrario'; j.zonaOrigen = t.zona; }
+      else { const g = golpesDe(j).slice(); g[d.k] = t.zona; fijaGolpes(j, g); j.rol = 'dirige'; }
+      state.pizarraSel = { drillId:id, numero:d.numero };
+      const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+      if(!ok){ toast('No se pudo guardar', true); return; }
+      card.insertAdjacentHTML('afterend', drillCardHtml(dr, dia)); card.remove(); bindDynamicEvents();
+    };
+    svg.addEventListener('pointerup', e=>fin(e, false));
+    svg.addEventListener('pointercancel', e=>fin(e, true));
+  });
 }
 
 function drillCardHtml(dr, d){
@@ -9542,7 +10753,7 @@ function drillCardHtml(dr, d){
       <div><label class="field-label">Puntuación objetivo</label><input type="text" class="drill-puntuacion" value="${escapeHtml(dr.puntuacion)}" placeholder="ej. 7 de 10"></div>
       <div class="full"><label class="row" style="gap:8px;font-size:13px;"><input type="checkbox" class="drill-fronton" ${dr.fronton?'checked':''}> Modo frontón (1 vs pared)</label></div>
     </div>
-    <div class="block-title">Pista</div>
+    <div class="block-title">Pista <button type="button" class="btn ghost small" data-exportpista="${dr.id}" data-titulo="${escapeHtml(dr.nombre||'Jugada')}" style="float:right;text-transform:none;letter-spacing:0;">📷 Imagen</button></div>
     ${tplPistaEditable(dr, sel)}
     ${sel ? tplPanelJugadorSel(dr, sel) : ''}
     <div class="row" style="margin-top:10px;">
@@ -9648,6 +10859,7 @@ function exCardHtml(ex, blockKey, d, listaBloque){
                  <button class="btn ghost small" data-unlinkvideo="${ex.id}">Quitar</button>`
               : `<button class="btn ghost small" data-pickvideo="${ex.id}">+ Vídeo de técnica</button>`}
           </div>
+          ${tplAnalisisEditor(ex)}
           <div class="variante-box">
             <button type="button" class="link-detalle" data-togglevariante="${ex.id}">${ex.variante?'▾ Variante configurada':'▸ Añadir ejercicio variante (por si no se puede hacer el principal)'}</button>
             ${state.varianteAbierta===ex.id ? `<div class="variante-campos">
@@ -9847,7 +11059,7 @@ async function tplDiarioLectura(athleteId, esCoach){
       ${e.notes?`<div style="font-size:12px;color:var(--muted);margin-top:4px;font-style:italic;">"${escapeHtml(e.notes)}"</div>`:''}`;
     if(abierto && tieneDetalle){
       html += `<div class="diario-detalle">`;
-      if(e.exercises && e.exercises.length){
+      if(e.exercises && e.exercises.length && state.editCargas !== idx){
         html += `<table class="tabla-comp"><thead><tr><th>Ejercicio</th><th>Previsto</th><th>Hecho</th><th>RPE</th><th>RIR</th></tr></thead><tbody>`;
         e.exercises.forEach(x=>{
           // Reps × kg como bloque mínimo siempre visible, sin tener que
@@ -9856,7 +11068,8 @@ async function tplDiarioLectura(athleteId, esCoach){
           const conReps = (kg)=> x.repsPlanned ? `${escapeHtml(x.repsPlanned)} × ${escapeHtml(kg)}` : escapeHtml(kg);
           const esRun = x.tipo === 'running';
           const prev = esRun ? escapeHtml(x.runPlan || '—') : conReps(x.loadPlanned || '—');
-          const hecho = esRun ? escapeHtml(x.runHecho || '—') : conReps(x.loadApplied || '—');
+          const csH = esRun ? [] : cargasEjercicio(x);
+          const hecho = esRun ? escapeHtml(x.runHecho || '—') : conReps(csH.length ? cargasTxt(csH)+' kg' : (x.loadApplied || '—'));
           const difiere = !esRun && x.loadPlanned && x.loadApplied && x.loadPlanned !== x.loadApplied;
           // Si anotó varias series o un rango ("8-9", "7,8,9") mostramos lo que
           // escribió y la media debajo: el detalle dice más que el promedio.
@@ -9895,6 +11108,8 @@ async function tplDiarioLectura(athleteId, esCoach){
         });
         html += `</tbody></table>`;
       }
+      if(state.editCargas === idx) html += tplEditorCargas(e, idx);
+      else if((e.exercises||[]).some(x=>x.tipo !== 'running')) html += `<div class="row" style="margin-top:8px;align-items:center;gap:10px;"><button class="btn ghost small" data-editcargas="${idx}">✏️ Editar cargas</button>${e.cargasEditadas?`<span class="ec-etq">Cargas corregidas por ${e.cargasEditadas.por==='atleta'?'el atleta':'el entrenador'} el ${e.cargasEditadas.fecha}</span>`:''}</div>`;
       if(e.drills && e.drills.length){
         html += `<table class="tabla-comp"><thead><tr><th>Drill</th><th>Intentos</th><th>Acierto</th><th>Sens.</th></tr></thead><tbody>`;
         e.drills.forEach(x=>{
@@ -9939,6 +11154,43 @@ async function tplDiarioLectura(athleteId, esCoach){
   html += `</div>`;
   return html;
 }
+// ---------- Evolución de cada pregunta del cuestionario semanal ----------
+function fechaCortaISO(iso){ const m = String(iso||'').match(/^\d{4}-(\d{2})-(\d{2})/); return m ? `${m[2]}/${m[1]}` : String(iso||''); }
+// Serie de una pregunta a lo largo de las semanas: sólo respuestas numéricas
+// (opciones, número, escala); el texto libre no se puede dibujar.
+function serieDePregunta(responses, id, origen){
+  return (responses || []).map(r=>({ fecha: r.date || r.weekOf, v: origen === 'c' ? (r.cicloSint ? r.cicloSint[id] : undefined) : (r.answers ? r.answers[id] : undefined) }))
+    .filter(p=>p.v !== undefined && p.v !== '' && p.v !== null && !isNaN(parseFloat(p.v)))
+    .map(p=>({ fecha:p.fecha, v:parseFloat(p.v) }))
+    .sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha)));
+}
+function tplGraficaPregunta(q, serie, destacaFecha){
+  if(serie.length < 2) return `<div class="q-graf"><p class="q-graf-vacio">Hacen falta al menos 2 respuestas para ver la evolución.</p></div>`;
+  const vals = serie.map(p=>p.v), n = serie.length;
+  const ops = (q.type === 'opciones' && Array.isArray(q.opciones) && q.opciones.length) ? q.opciones : null;
+  let min, max;
+  if(ops){ min = 1; max = ops.length; }
+  else { min = Math.min(...vals); max = Math.max(...vals); if(min === max){ min -= 1; max += 1; } const pad = (max-min)*0.12; min -= pad; max += pad; }
+  const W = 320, H = 150, L = 34, R = 12, T = 12, B = 30;
+  const x = i=>L + (n === 1 ? 0 : (i/(n-1))*(W-L-R));
+  const y = v=>H - B - ((v-min)/(max-min || 1))*(H-T-B);
+  const niveles = ops ? ops.map((_,k)=>k+1) : [min, (min+max)/2, max];
+  const fmt = v=>String(Math.round(v*10)/10).replace('.',',');
+  let svg = `<svg viewBox="0 0 ${W} ${H}" class="q-graf-svg" role="img">`;
+  niveles.forEach(v=>{ svg += `<line x1="${L}" x2="${W-R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="var(--border)" stroke-dasharray="3 3"/><text x="${L-6}" y="${(y(v)+3.5).toFixed(1)}" text-anchor="end" font-size="9.5" fill="var(--muted)">${fmt(v)}</text>`; });
+  svg += `<polyline points="${serie.map((p,i)=>x(i).toFixed(1)+','+y(p.v).toFixed(1)).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+  serie.forEach((p,i)=>{ const dest = p.fecha === destacaFecha; svg += `<circle cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="${dest?5:3.4}" fill="${dest?'var(--accent)':'var(--panel)'}" stroke="var(--accent)" stroke-width="2"/>`; });
+  const marca = [0, Math.floor((n-1)/2), n-1].filter((v,i,a)=>a.indexOf(v) === i);
+  marca.forEach(i=>{ svg += `<text x="${x(i).toFixed(1)}" y="${H-10}" text-anchor="${i===0?'start':(i===n-1?'end':'middle')}" font-size="9.5" fill="var(--muted)">${fechaCortaISO(serie[i].fecha)}</text>`; });
+  svg += `</svg>`;
+  const ultima = vals[n-1], previas = vals.slice(0,-1), media = previas.reduce((a,b)=>a+b,0)/previas.length;
+  const palabra = v=>(ops && ops[Math.round(v)-1]) ? `${ops[Math.round(v)-1]} (${Math.round(v)})` : fmt(v)+(q.unidad ? ' '+q.unidad : '');
+  const tend = ultima > media + 0.25 ? '↑ por encima de sus semanas anteriores' : (ultima < media - 0.25 ? '↓ por debajo de sus semanas anteriores' : '→ en línea con sus semanas anteriores');
+  return `<div class="q-graf">${svg}
+    <p class="q-graf-pie"><b>Última:</b> ${escapeHtml(palabra(ultima))} · <b>media de las anteriores:</b> ${fmt(media)} · ${tend}</p>
+    ${ops ? `<p class="q-graf-pie">1 = ${escapeHtml(ops[0])} · ${ops.length} = ${escapeHtml(ops[ops.length-1])}</p>` : ''}</div>`;
+}
+
 async function tplQuestConfigAndRead(athleteId){
   const active = await getQuestConfig(athleteId);
   const raw = await safeGet('quest-'+athleteId, true);
@@ -9967,6 +11219,10 @@ async function tplQuestConfigAndRead(athleteId){
         : (sn.motivo==='mixta' ? 'semana a caballo entre fases (no se asigna)' : 'sin fase asignable');
       html += `<div style="font-size:12.5px;margin-top:6px;"><span style="color:var(--muted);">Ciclo:</span> ${CICLO_ITEMS.map(it=>`${it.corto.toLowerCase()} <b style="color:var(--accent);">${r.cicloSint[it.id]}/5</b>`).join(' · ')}<br><span style="font-size:11px;color:var(--muted);">${etiquetaFase}</span></div>`;
     }
+    if(r.cicloSint){
+      html += `<div class="q-graf-fila"><span style="color:var(--muted);font-size:11.5px;">Ver evolución:</span>${CICLO_ITEMS.map(it=>{ const k = (r.weekOf||r.date)+'|c:'+it.id; return `<button class="q-graf-btn ${state.qGraf&&state.qGraf[k]?'on':''}" data-qgraf="${escapeHtml(k)}">📈 ${escapeHtml(it.corto)}</button>`; }).join('')}</div>`;
+      CICLO_ITEMS.forEach(it=>{ const k = (r.weekOf||r.date)+'|c:'+it.id; if(state.qGraf && state.qGraf[k]) html += `<div style="font-size:12px;color:var(--muted);margin-top:6px;">${escapeHtml(it.text)}</div>` + tplGraficaPregunta({text:it.text, type:'opciones', opciones:it.opciones}, serieDePregunta(responses, it.id, 'c'), r.date||r.weekOf); });
+    }
     active.forEach(qid=>{
       const q = QUESTION_BANK.find(x=>x.id===qid); if(!q) return;
       const val = r.answers ? r.answers[qid] : undefined; if(val===undefined || val==='') return;
@@ -9978,7 +11234,9 @@ async function tplQuestConfigAndRead(athleteId){
         if(q.type==='numero') mostrado = `${val} ${escapeHtml(q.unidad||'')}`;
         else if(q.type==='opciones' && q.opciones && q.opciones[val-1]) mostrado = `${escapeHtml(q.opciones[val-1])} <span class="q-num-mini">(${val}/5)</span>`;
         else mostrado = `${val}/5`;
-        html += `<div style="font-size:13px;margin-top:6px;"><span style="color:var(--muted);">${q.text}</span> — <b style="color:var(--accent);">${mostrado}</b></div>`;
+        const kG = (r.weekOf||r.date)+'|'+qid, abiertaG = state.qGraf && state.qGraf[kG];
+        html += `<div style="font-size:13px;margin-top:6px;"><span style="color:var(--muted);">${escapeHtml(q.text)}</span> — <b style="color:var(--accent);">${mostrado}</b> <button class="q-graf-btn ${abiertaG?'on':''}" data-qgraf="${escapeHtml(kG)}" title="Ver la evolución de esta pregunta">📈</button></div>`;
+        if(abiertaG) html += tplGraficaPregunta(q, serieDePregunta(responses, qid, 'q'), r.date||r.weekOf);
         const note = r.notes ? r.notes[qid] : '';
         if(note) html += `<div style="font-size:12px;color:var(--muted);margin-left:8px;">"${escapeHtml(note)}"</div>`;
       }
@@ -10031,6 +11289,7 @@ async function tplPerfilCoachBody(athleteId){
     }
     if(cicloC.condicion) html += `<p style="font-size:12px;color:var(--muted);margin-top:8px;">Condición registrada: ${escapeHtml(cicloC.condicion)}</p>`;
     html += `</div>`;
+    html += await tplDiarioReglaCoach(athleteId);   // solo muestra algo si ella lo comparte
   }
   // Estado del Welcome Pack: para saber sin preguntarle si ya te mandó los
   // tests y las fotos del gimnasio.
@@ -10711,6 +11970,10 @@ function bindMoveEx(btn, athleteId){
 // caso hay que volver a enlazar estos botones también, o se quedan sin
 // función después del primer repintado.
 function bindJuegoBotones(root, athleteId){
+  root.querySelectorAll('.rx-t').forEach(inp=>{
+    if(inp.dataset.boundRx) return; inp.dataset.boundRx = '1';
+    inp.addEventListener('input', ()=>actualizaTotalReaccion(inp.closest('.ex-card')));
+  });
   const rehacerTarjeta = async (card, exId)=>{
     if(!card.parentNode) return; // ya la reemplazó otro cambio en curso; esa versión es la más reciente
     const d = card.dataset.day, blockKey = card.dataset.block;
@@ -10848,7 +12111,7 @@ function bindExerciseCard(card, athleteId){
       if(nueva) bindExerciseCard(nueva, athleteId);
     }));
 
-    const fields = card.querySelectorAll('input, textarea, select');
+    const fields = card.querySelectorAll('input:not([data-noautosave]), textarea:not([data-noautosave]), select:not([data-noautosave])');
     const commit = async ()=>{
       const athleteId = state.selectedId;
       const d = card.dataset.day, blockKey = card.dataset.block, exId = card.dataset.exid;
@@ -10891,9 +12154,19 @@ function bindExerciseCard(card, athleteId){
           if(r.modo !== modoAntes || r.medida !== medidaAntes) rehacerVista = true; // cambian los campos visibles
         }
         const rondasEl = card.querySelector('.ex-juego-rondas');
-        const ventanaEl = card.querySelector('.ex-juego-ventana');
-        if(rondasEl && ex.juegoCfg){ ex.juegoCfg.rondas = parseInt(rondasEl.value,10) || 15; }
-        if(ventanaEl && ex.juegoCfg){ ex.juegoCfg.ventanaMs = parseInt(ventanaEl.value,10) || 1200; }
+        if(rondasEl && ex.juegoCfg){ ex.juegoCfg.rondas = Math.min(200, Math.max(1, parseInt(rondasEl.value,10) || 15)); }
+        if(ex.juegoCfg && card.querySelector('.ex-juego-estimulo')){
+          const g = (cls, campo, mult, min, max)=>{
+            const el = card.querySelector(cls); if(!el) return;
+            const v = parseFloat(String(el.value).replace(',','.')); if(isNaN(v)) return;
+            ex.juegoCfg[campo] = Math.round(Math.min(max, Math.max(min, v))*mult);
+          };
+          g('.ex-juego-prep','prepMs',1000,0,60); g('.ex-juego-estimulo','estimuloMs',1000,0.1,10);
+          g('.ex-juego-isi','isiMs',1000,0,20); g('.ex-juego-isivar','isiVarMs',1000,0,10);
+          g('.ex-juego-series','series',1,1,20); g('.ex-juego-descseries','descSeriesMs',1000,0,600);
+          g('.ex-juego-sets','sets',1,1,20); g('.ex-juego-descsets','descSetsMs',1000,0,900);
+          delete ex.juegoCfg.ventanaMs;
+        }
         const dminEl = card.querySelector('.ex-juego-dmin');
         const dmaxEl = card.querySelector('.ex-juego-dmax');
         if(dminEl && ex.juegoCfg){ ex.juegoCfg.duracionMin = parseInt(dminEl.value,10) || 1200; }
@@ -11037,33 +12310,72 @@ function actualizaContadorDia(d){
   if(cnt) cnt.textContent = tipo + n + ' ejerc.';
 }
 
-// Anima las flechas del drill en orden y remata con el «OPEN» de cómic.
+// Anima el recorrido del drill con UN solo reloj: cada golpe dibuja su
+// trayectoria y la bola la recorre; al llegar, aparecen la punta y el aro del
+// destino; al final, el «OPEN». Si se vuelve a pulsar, la animación anterior se
+// cancela limpiamente (antes se encadenaban temporizadores que se pisaban).
 function reproducirRecorrido(wrap){
   const svg = wrap.querySelector('.pista-svg');
   if(!svg) return;
-  const flechas = [...svg.querySelectorAll('.pista-arrow')].sort((a,b)=>+a.dataset.order-+b.dataset.order);
+  if(svg.__rx){ cancelAnimationFrame(svg.__rx.raf); svg.__rx.limpia(); }
+  const ordena = sel=>[...svg.querySelectorAll(sel)].sort((a,b)=>+a.dataset.order-+b.dataset.order);
+  const flechas = ordena('.pista-arrow'), estelas = ordena('.pista-estela'), puntas = ordena('.pista-punta'), impactos = ordena('.pista-impacto');
   const open = svg.querySelector('.pista-open');
-  if(open) open.style.opacity = '0';
-  const PASO = 550;
-  flechas.forEach((f,i)=>{
-    const largo = f.getTotalLength ? f.getTotalLength() : 300;
-    f.style.transition = 'none';
-    f.setAttribute('stroke-dasharray', largo);
-    f.setAttribute('stroke-dashoffset', largo);
-    setTimeout(()=>{
-      f.style.transition = `stroke-dashoffset ${PASO*0.85}ms ease`;
-      f.setAttribute('stroke-dashoffset', '0');
-    }, 30 + i*PASO);
-  });
-  const totalTiempo = flechas.length ? 30 + flechas.length*PASO : 0;
-  if(open){
-    setTimeout(()=>{
-      open.style.transition = 'opacity .25s ease, transform .25s cubic-bezier(.3,1.6,.4,1)';
-      open.style.transformOrigin = '130px 270px';
-      open.style.transform = 'scale(1)';
-      open.style.opacity = '1';
-    }, totalTiempo + 150);
-  }
+  const tieneGeom = flechas.length && typeof flechas[0].getTotalLength === 'function';
+  const largos = flechas.map(f=>tieneGeom ? f.getTotalLength() : 300);
+  const NS = 'http://www.w3.org/2000/svg';
+  const bola = document.createElementNS(NS, 'circle');
+  bola.setAttribute('r','5.2'); bola.setAttribute('fill','#F4F2EA'); bola.setAttribute('stroke','#0E1A33'); bola.setAttribute('stroke-width','1.3'); bola.style.opacity = '0';
+  svg.appendChild(bola);
+  const oculta = ()=>{
+    flechas.forEach((f,i)=>{ f.style.transition='none'; f.setAttribute('stroke-dasharray', largos[i]); f.setAttribute('stroke-dashoffset', largos[i]); });
+    estelas.forEach(e=>{ e.style.opacity = '0'; });
+    puntas.forEach(p=>{ p.style.opacity = '0'; });
+    impactos.forEach(m=>{ m.style.opacity = '0'; m.style.transformBox = 'view-box'; m.style.transformOrigin = (m.dataset.cx || 130)+'px '+(m.dataset.cy || 270)+'px'; m.style.transform = 'scale(.4)'; });
+    if(open){ open.style.transition = 'none'; open.style.opacity = '0'; open.style.transformOrigin = '130px 270px'; open.style.transform = 'scale(.6)'; }
+    bola.style.opacity = '0';
+  };
+  const limpia = ()=>{
+    flechas.forEach(f=>{ f.setAttribute('stroke-dasharray','600'); f.setAttribute('stroke-dashoffset','0'); });
+    estelas.forEach(e=>{ e.style.opacity = ''; });
+    puntas.forEach(p=>{ p.style.opacity = ''; });
+    impactos.forEach(m=>{ m.style.opacity = ''; m.style.transform = ''; });
+    if(bola.parentNode) bola.parentNode.removeChild(bola);
+    svg.__rx = null;
+  };
+  oculta();
+  const GOLPE = 620, PAUSA = 140, t0 = performance.now();
+  const ease = t=>t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+  const estado = { raf:0, limpia };
+  svg.__rx = estado;
+  const pasoImpacto = [];
+  const frame = (ahora)=>{
+    const t = ahora - t0;
+    let acabado = true;
+    flechas.forEach((f,i)=>{
+      const p = Math.max(0, Math.min(1, (t - i*(GOLPE+PAUSA))/GOLPE)), e = ease(p);
+      f.setAttribute('stroke-dashoffset', String(largos[i]*(1-e)));
+      if(estelas[i]) estelas[i].style.opacity = p > 0 ? '1' : '0';
+      if(p > 0 && p < 1){
+        if(tieneGeom && typeof f.getPointAtLength === 'function'){ const pt = f.getPointAtLength(largos[i]*e); bola.setAttribute('cx', pt.x); bola.setAttribute('cy', pt.y); }
+        bola.style.opacity = '1';
+      }
+      if(p >= 1 && !pasoImpacto[i]){
+        pasoImpacto[i] = true;
+        if(puntas[i]) puntas[i].style.opacity = '1';
+        if(impactos[i]){ impactos[i].style.transition = 'opacity .18s ease, transform .28s cubic-bezier(.3,1.6,.4,1)'; impactos[i].style.opacity = '1'; impactos[i].style.transform = 'scale(1)'; }
+      }
+      if(p < 1) acabado = false;
+    });
+    if(!acabado){ estado.raf = requestAnimationFrame(frame); return; }
+    bola.style.opacity = '0';
+    if(open){
+      open.style.transition = 'opacity .25s ease, transform .3s cubic-bezier(.3,1.6,.4,1)';
+      open.style.opacity = '1'; open.style.transform = 'scale(1)';
+    }
+    estado.raf = 0;
+  };
+  estado.raf = requestAnimationFrame(frame);
 }
 
 // Reproductor sencillo a pantalla completa
@@ -11700,6 +13012,13 @@ async function bindDynamicEvents(){
   const backToAthletes = document.getElementById('backToAthletes');
   if(backToAthletes) backToAthletes.addEventListener('click', ()=>{ state._inAthleteDetail=false; renderScrollTop(); });
   document.querySelectorAll('[data-subtab]').forEach(b=>b.addEventListener('click', ()=>{ state.athleteSubTab=b.dataset.subtab; renderScrollTop(); }));
+  document.querySelectorAll('[data-secabrir]').forEach(b=>b.addEventListener('click', ()=>{
+    const [tab, k] = b.dataset.secabrir.split('|'); state.secActiva = state.secActiva || {};
+    const actual = state.secActiva[tab] === undefined ? ATLETA_SECCIONES[tab][0].k : state.secActiva[tab];
+    state.secActiva[tab] = actual === k ? null : k;
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-irsub]').forEach(b=>b.addEventListener('click', ()=>{ irASubTab(b.dataset.irsub); renderScrollTop(); }));
 
   // ---------- PERIODIZACIÓN: eventos ----------
   const periodSave = async (mutate)=>{
@@ -11744,6 +13063,18 @@ async function bindDynamicEvents(){
       if(!Array.isArray(m.competitions)) m.competitions = [];
       m.competitions.push({ id:uid(), name:nombre, date:fecha });
     });
+    await sincronizaCompeticiones(state.selectedId, 'macro');
+    toast('Competición vinculada a este macrociclo');
+    renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-linkcomp]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [mid, cid] = b.dataset.linkcomp.split('|');
+    const lista = await getCompeticiones(state.selectedId), mst = lista.find(x=>x.id===cid); if(!mst) return;
+    await periodSave(p=>{
+      const m = p.macros.find(x=>x.id===mid); if(!m) return;
+      if(!Array.isArray(m.competitions)) m.competitions = [];
+      if(!m.competitions.some(x=>x.compId===cid)) m.competitions.push({ id:uid(), name:mst.nombre, date:mst.fecha, compId:cid });
+    });
     toast('Competición vinculada a este macrociclo');
     renderKeepScroll();
   }));
@@ -11775,6 +13106,7 @@ async function bindDynamicEvents(){
         const m=p.macros.find(x=>x.id===inp.dataset.macro); if(!m) return;
         const c=(m.competitions||[]).find(y=>y.id===inp.dataset.comp); if(c) c[key]=inp.value;
       });
+      await sincronizaCompeticiones(state.selectedId, 'macro');
       await refreshChart(inp.dataset.macro);
       toast('Guardado');
     }));
@@ -11923,7 +13255,7 @@ async function bindDynamicEvents(){
   const clonaBloques = (dias)=>{
     const copia = {};
     BLOCKS.forEach(b=>{
-      copia[b.key] = (dias[b.key]||[]).map(ex=>({ ...ex, id: uid(), timer: {...exTimer(ex)} }));
+      copia[b.key] = (dias[b.key]||[]).map(ex=>{ const c = { ...ex, id: uid(), timer: {...exTimer(ex)} }; delete c.analisis; return c; });
     });
     return copia;
   };
@@ -12217,7 +13549,7 @@ async function bindDynamicEvents(){
     }
     const ok = await saveCompeticiones(athleteId, lista);
     toast(ok?'Guardado':'No se pudo guardar', !ok);
-    if(ok){ state.compEditId = null; renderKeepScroll(); }
+    if(ok){ await sincronizaCompeticiones(athleteId, 'maestra'); state.compEditId = null; renderKeepScroll(); }
   });
 
   // --- Ciclo menstrual ---
@@ -12272,6 +13604,7 @@ async function bindDynamicEvents(){
     toast(ok?'Eliminado':'No se pudo eliminar', !ok);
     if(ok) renderKeepScroll();
   }));
+  bindDiarioRegla(state.athleteAsId, intentaRegistrarRegla);
 
   // --- Fotos de progreso ---
   const abrirFotos = document.getElementById('abrirFotosBtn');
@@ -12926,6 +14259,7 @@ async function bindDynamicEvents(){
   // Un solo clic en el SVG entero; miramos si cayó sobre un jugador ya
   // puesto (círculo con data-jugtoque) o sobre pista vacía.
   document.querySelectorAll('.pista-editable').forEach(svg=>svg.addEventListener('click', async (evt)=>{
+    if(Date.now() - __pizarraUltimoArrastre < 600) return;   // el clic que sigue a un arrastre no es un toque
     const card = svg.closest('.drill-card');
     const dia = card.dataset.day, id = card.dataset.drillid;
     const draft = await getRoutine(athleteId, true, state.planWeek);
@@ -12951,8 +14285,11 @@ async function bindDynamicEvents(){
       // Toque en pista VACÍA con alguien seleccionado: marca su trayectoria.
       const { zona } = zonaDeToque(punto.y);
       const j = dr.jugadores.find(x=>x.numero===selActual);
-      if(j){ j.zonaDestino = zona; j.rol = 'dirige'; }
-      state.pizarraSel = null;
+      if(j){
+        const g = golpesDe(j);
+        if(g.length >= PISTA_MAX_GOLPES){ toast(`Máximo ${PISTA_MAX_GOLPES} golpes encadenados`, true); return; }
+        fijaGolpes(j, g.concat(zona)); j.rol = 'dirige';
+      }
       await saveRoutine(athleteId, true, draft, state.planWeek);
       const nuevaHtml = drillCardHtml(dr, dia);
       card.insertAdjacentHTML('afterend', nuevaHtml); card.remove(); bindDynamicEvents();
@@ -12993,10 +14330,22 @@ async function bindDynamicEvents(){
     const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
     const j = dr && dr.jugadores.find(x=>x.numero===num);
     if(!j) return;
-    j.zonaDestino = '';
+    fijaGolpes(j, []);
     await saveRoutine(athleteId, true, draft, state.planWeek);
     const nuevaHtml = drillCardHtml(dr, dia);
     card.insertAdjacentHTML('afterend', nuevaHtml); card.remove(); bindDynamicEvents();
+  }));
+  document.querySelectorAll('[data-jugquitargolpe]').forEach(b=>b.addEventListener('click', async ()=>{
+    const card = b.closest('.drill-card');
+    const dia = card.dataset.day, id = card.dataset.drillid;
+    const num = parseInt(b.dataset.jugquitargolpe,10);
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const dr = (draft.days[dia].drills||[]).find(x=>x.id===id);
+    const j = dr && dr.jugadores.find(x=>x.numero===num);
+    if(!j) return;
+    fijaGolpes(j, golpesDe(j).slice(0, -1));
+    await saveRoutine(athleteId, true, draft, state.planWeek);
+    card.insertAdjacentHTML('afterend', drillCardHtml(dr, dia)); card.remove(); bindDynamicEvents();
   }));
   document.querySelectorAll('[data-jugeliminar]').forEach(b=>b.addEventListener('click', async ()=>{
     const card = b.closest('.drill-card');
@@ -13417,7 +14766,9 @@ async function bindDynamicEvents(){
     const draft = await getRoutine(athleteId, true);
     draft.updatedAt = new Date().toISOString();
     draft.weekOf = weekOfISO();
+    const previaPub = await getRoutine(athleteId, false);
     const ok = await saveRoutine(athleteId, false, draft);
+    if(ok){ const siguen = rutinaFotosPaths(draft); for(const p of rutinaFotosPaths(previaPub)) if(!siguen.has(p)) await borrarArchivoStorage(p); }
     toast(ok ? 'Planificación compartida' : 'No se pudo compartir', !ok);
     shareRoutineBtn.textContent = ok?'Compartido ✓':'Error';
     setTimeout(()=>{ shareRoutineBtn.textContent='Compartir planificación'; render(); },1300);
@@ -13550,6 +14901,13 @@ async function bindDynamicEvents(){
     renderKeepScroll();
   }));
 
+  bindEditorCargas(athleteId);
+  bindAnalisis(athleteId);
+  bindPistaArrastre(athleteId);
+  document.querySelectorAll('[data-qgraf]').forEach(b=>b.addEventListener('click', ()=>{
+    state.qGraf = state.qGraf || {}; const k = b.dataset.qgraf;
+    state.qGraf[k] = !state.qGraf[k]; renderKeepScroll();
+  }));
   // --- Corregir y eliminar sesiones del diario ---
   document.querySelectorAll('[data-editentry]').forEach(b=>b.addEventListener('click', ()=>{
     state.editEntry = parseInt(b.dataset.editentry,10); renderKeepScroll();
