@@ -743,6 +743,26 @@
   .nutri-porque{font-size:12.5px;line-height:1.6;margin:8px 0 4px;padding:8px 10px;border-left:3px solid var(--accent);background:var(--panel3);border-radius:0 8px 8px 0;}
   .nutri-porque b{display:block;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
   .nutri-intro{font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px;}
+  .nutri-tabs{display:flex;gap:3px;background:var(--panel2);border-radius:100px;padding:3px;margin-top:8px;}
+  .nutri-tab{flex:1;white-space:nowrap;border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;font-size:12.5px;padding:8px 6px;border-radius:100px;cursor:pointer;}
+  .nutri-tab.on{background:var(--accent);color:var(--on-accent);}
+  .nutri-cab h2{margin-bottom:0;}
+  .nutri-filtros{padding:12px;}
+  .chips-scroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
+  .chips-scroll .gs-chip{flex:none;}
+  .nutri-filtro{margin-top:8px;}
+  .nutri-filtro>summary{list-style:none;cursor:pointer;font-size:12px;color:var(--muted);padding:4px 0;}
+  .nutri-filtro>summary::-webkit-details-marker{display:none;}
+  .nutri-hint{font-size:11.5px;color:var(--muted);margin-top:6px;}
+  details.nutri-fila{padding:0 !important;margin-bottom:6px !important;overflow:hidden;}
+  .nutri-fila>summary{display:flex;align-items:center;gap:8px;padding:11px 12px;cursor:pointer;list-style:none;}
+  .nutri-fila>summary::-webkit-details-marker{display:none;}
+  .nf-nom{flex:1;min-width:0;font-size:14px;font-weight:600;}
+  .nf-mac,.nf-rank{flex:none;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-align:right;}
+  .nf-rank{color:var(--accent);font-weight:600;font-size:11.5px;}
+  .nf-chev{flex:none;color:var(--accent);font-size:11px;transition:transform .2s;}
+  .nutri-fila[open] .nf-chev{transform:rotate(180deg);}
+  .nf-cuerpo{padding:0 12px 12px;border-top:1px dashed var(--border);padding-top:10px;}
   .nutri-comidas{margin-top:8px;}
   .nutri-idea{padding:8px 0;border-top:1px dashed var(--border);}
   .nutri-idea:first-of-type{border-top:none;}
@@ -750,6 +770,50 @@
   .dr-fase{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);margin:2px 0 0;}
   .dr-fila:hover{background:var(--panel2);}
   .rec-guardada{display:inline-block;margin-top:8px;font-size:12px;color:var(--accent);font-weight:600;}
+  .ex-grid input[type=checkbox],.q-config-item input[type=checkbox]{width:auto;flex:none;margin:0 6px 0 0;}
+  .vid-botones{display:flex;gap:6px;flex-wrap:wrap;}
+  .vid-chip{display:inline-flex;align-items:center;gap:6px;margin:0 8px 6px 0;}
+  .vid-fila{padding:10px 0;border-top:1px dashed var(--border);}
+  .vid-fila:first-of-type{border-top:none;}
+  .vid-ej{font-size:11.5px;color:var(--accent);}
+  .desc-det{margin:4px 0 8px;}
+  .desc-det>summary{list-style:none;cursor:pointer;font-size:11.5px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:4px;padding:2px 0;}
+  .desc-det>summary::-webkit-details-marker{display:none;}
+  .desc-det>summary::before{content:'▸';font-size:10px;}
+  .desc-det[open]>summary::before{content:'▾';}
+  .desc-det .desc-ce{display:none;} .desc-det[open] .desc-ab{display:none;} .desc-det[open] .desc-ce{display:inline;}
+  .desc-cuerpo{white-space:pre-line;font-size:13px;line-height:1.7;color:var(--ink);margin-top:4px;padding:8px 10px;background:var(--panel3);border-radius:8px;}
+  .ex-card{padding:10px 12px !important;margin-bottom:8px !important;}
+  .ex-card .ex-grid{gap:6px !important;margin-top:6px !important;}
+  .ex-card .field-label{margin-bottom:3px !important;}
+  .ex-card textarea.ex-desc{min-height:44px;}
+  .ex-mas{margin-top:8px;border-top:1px dashed var(--border);padding-top:6px;}
+  .ex-mas>summary{list-style:none;cursor:pointer;font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:4px 0;}
+  .ex-mas>summary::-webkit-details-marker{display:none;}
+  .ex-mas .mas-ico{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--accent-dim);font-size:14px;line-height:1;}
+  .ex-mas[open] .mas-ico{background:var(--accent);color:var(--on-accent);}
+  .ex-mas .mas-ins{font-weight:400;font-size:11px;color:var(--muted);}
+  .ex-mas[open] .mas-ins{display:none;}
+    .grupo-box{border:1px solid var(--accent);border-radius:10px;padding:6px 8px;margin-bottom:10px;background:var(--panel);}
+  .grupo-cab{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+  .grupo-cab .combi-tag{flex:none;}
+  .grupo-nombre{flex:1;min-width:0;font-weight:700;font-size:13px;}
+  .grupo-n{flex:none;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+  .grupo-chev{flex:none;background:var(--accent-dim);color:var(--accent);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;font-size:12px;}
+  .grupo-resumen{font-size:12px;color:var(--muted);padding:4px 2px 6px;line-height:1.5;}
+  .ex-minis{margin:6px 0 4px;}
+  .mini-row{display:flex;gap:5px;align-items:center;margin-bottom:5px;}
+  .mini-num{flex:none;width:18px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+  .mini-row .mini-name{flex:1;min-width:0;}
+  .mini-row .mini-series,.mini-row .mini-reps{flex:none;width:58px;text-align:center;}
+  .mini-x{flex:none;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:4px;}
+  .minis-lista{list-style:none;margin:6px 0 8px;padding:0;}
+  .minis-lista li{display:flex;align-items:center;gap:8px;padding:7px 10px;margin-bottom:4px;background:var(--panel3);border-radius:8px;font-size:13px;}
+  .minis-lista li::before{counter-increment:mini;content:counter(mini);font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);width:14px;}
+  .minis-lista{counter-reset:mini;}
+  .mini-nom{flex:1;min-width:0;font-weight:600;}
+  .mini-plan{flex:none;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);}
+  .mini-hecho{flex:none;width:64px;text-align:center;}
   .rd-explica{background:var(--panel3);border-radius:8px;padding:10px 12px;margin-top:10px;}
   .rd-explica b{display:block;font-size:12px;color:var(--accent);margin-bottom:4px;}
   .rd-explica p{font-size:12px;color:var(--ink);line-height:1.6;}
@@ -4615,8 +4679,10 @@ const NUTRI_PORQUE_DEFECTO = {
  }
 };
 // Por qué cada alimento está en su grupo (del documento): se enseña al filtrar por ese grupo.
+const NUTRI_GRUPO_LABEL = { 'Cerebro': 'Nootrópicos' };
+function nutriGrupoLabel(g){ return NUTRI_GRUPO_LABEL[g] || g; }
 const NUTRI_GRUPO_INTRO = {
-  'Cerebro': 'Alimentos de apoyo cognitivo, útiles también para el estudio. Lo que más pesa es la dieta en conjunto; para la mayoría de estos mecanismos, la evidencia en adultos sanos es limitada.',
+  'Cerebro': 'Nootrópicos: alimentos de apoyo cognitivo, útiles también para el estudio. Lo que más pesa es la dieta en conjunto; para la mayoría de estos mecanismos, la evidencia en adultos sanos es limitada.',
   'Sueño': 'Ordenados por su magnesio (relevante para la conciliación del sueño); donde aplica, también se indica su aporte de melatonina o de probióticos.',
   'Antiinflamatorios': 'Apoyo a la recuperación deportiva. Sirven como parte de una dieta variada: sus efectos sobre la recuperación son pequeños y de certeza baja.'
 };
@@ -4700,53 +4766,81 @@ async function getGuiaNutri(){
 async function saveGuiaNutri(items){ return safeSet('guia-nutri', JSON.stringify({items, nuevasV2:true}), true); }
 function nutriNum(n){ return (Math.round((Number(n)||0)*10)/10).toString().replace('.',','); }
 
+// ---------- GUÍA NUTRICIONAL: pestañas y filas compactas ----------
+// Cuatro pestañas (Alimentos · Comidas · Mis recetas · Consejos). Cada alimento o comida es
+// una fila con su nombre y sus macros; se toca para ver el detalle. Todo el texto largo
+// (orientación diaria, consejos, cómo leer la guía) vive en «Consejos».
+function nutriTabDe(cat){ return (cat === 'recetas' || cat === 'consejos' || cat === 'alimentos') ? cat : 'comidas'; }
+const NUTRI_SUB_COMIDAS = [{id:'todos', label:'Todas'}, {id:'cenas', label:'Cenas'}, {id:'comidas', label:'Comidas'}, {id:'snacks', label:'Snacks'}];
+async function tplNutriConsejos(athleteId, menor){
+  let h = `<div class="card"><h2>Consejos</h2><p class="nutri-hint">Toca un tema para abrirlo.</p>`;
+  if(!menor){
+    const intakeRaw = await safeGet('intake-'+athleteId, true);
+    let peso = null; try{ peso = numIntake((intakeRaw ? JSON.parse(intakeRaw) : {}).peso); }catch(e){}
+    h += `<details class="nutri-aviso nutri-consejos"><summary>📏 Cuánto comer al día (g por kg)</summary>`;
+    if(peso){
+      h += `<div class="tabla-comp-wrap"><table class="tabla-comp"><thead><tr><th></th><th>g/kg/día</th><th>Total (${nutriNum(peso)} kg)</th></tr></thead><tbody>${NUTRI_RANGOS.map(r=>`<tr><td>${r.k}</td><td>${nutriNum(r.min)}-${nutriNum(r.max)}</td><td>${Math.round(r.min*peso)}-${Math.round(r.max*peso)} g</td></tr>`).join('')}</tbody></table></div>`;
+    } else {
+      h += `<p>Añade tu peso en tus datos del Perfil y aquí verás tus cantidades.</p>`;
+    }
+    h += `<p style="font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:8px;">Son rangos orientativos e independientes: no hace falta llegar al máximo de los tres a la vez. Si entrenas mucho, los carbohidratos suben: 5-7 g/kg con un programa moderado (≈ 1 h al día) y 6-10 g/kg con 1-3 h diarias de resistencia (ACSM / Academy of Nutrition and Dietetics / Dietitians of Canada, 2016).</p></details>`;
+    const ov = await getTextosEducativos();
+    [['nutri_digestion','🍽 Digerir y absorber mejor'],['nutri_proteina','🥚 Sumar proteína fácilmente']].forEach(([k,tit])=>{
+      h += `<details class="nutri-aviso nutri-consejos"><summary>${tit}</summary><p>${formateaGuia(textoEducativo(ov,k).cuerpo)}</p></details>`;
+    });
+  }
+  h += `<details class="nutri-aviso nutri-consejos"><summary>ℹ️ Cómo leer esta guía</summary><p>${escapeHtml(NUTRI_AVISO)}</p></details></div>`;
+  return h;
+}
 async function tplGuiaNutri(athleteId){
   const items = await getGuiaNutri();
   const atl = state.athletes.find(a=>a.id===athleteId);
   const menor = esMenor(atl);
-  const cat = state.nutriCat || 'todos', mom = state.nutriMomento || '', grp = (cat === 'alimentos' || cat === 'todos') ? (state.nutriGrupo || '') : '';
+  const cat = state.nutriCat || 'alimentos', tab = nutriTabDe(cat), mom = state.nutriMomento || '';
+  const grp = tab === 'alimentos' ? (state.nutriGrupo || '') : '';
+  const tabs = [{c:'alimentos', t:'alimentos', l:'Alimentos'}, {c:'todos', t:'comidas', l:'Comidas'}, {c:'recetas', t:'recetas', l:'⭐ Recetas'}, {c:'consejos', t:'consejos', l:'Consejos'}];
   let html = `<div class="row" style="margin-bottom:12px;"><button class="btn ghost small" id="volverNutriBtn">← Perfil</button></div>
-    <div class="card"><h2>Guía nutricional</h2>
-      <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">${menor ? 'Ideas de qué comer y cuándo. No hace falta contar calorías: lo importante es comer variado y con ganas.' : 'Ideas de cenas, comidas, snacks y alimentos, con sus macros y cuándo encajan mejor.'}</p>
-      <details class="nutri-aviso"><summary>Cómo leer esta guía</summary><p>${escapeHtml(NUTRI_AVISO)}</p></details>
-      <div class="gal-secs" style="margin:12px 0 8px;"><button type="button" class="gs-chip ${cat==='todos'?'on':''}" data-nutricat="todos">Todo</button>${NUTRI_CATEGORIAS.map(c=>`<button type="button" class="gs-chip ${cat===c.id?'on':''}" data-nutricat="${c.id}">${c.label}</button>`).join('')}<button type="button" class="gs-chip ${cat==='recetas'?'on':''}" data-nutricat="recetas">⭐ Mis recetas</button></div>
-      ${cat==='recetas' ? '' : `<div class="gal-secs">${NUTRI_MOMENTOS.map(m=>`<button type="button" class="gs-chip ${mom===m?'on':''}" data-nutrimomento="${escapeHtml(m)}">${m}</button>`).join('')}</div>`}
-      ${(cat==='alimentos' || cat==='todos') ? `<label class="field-label" style="margin-top:12px;">Alimentos por grupo</label><div class="gal-secs">${NUTRI_GRUPOS.map(g=>`<button type="button" class="gs-chip ${grp===g?'on':''}" data-nutrigrupo="${escapeHtml(g)}">${g}</button>`).join('')}</div>${(grp && NUTRI_GRUPO_INTRO[grp]) ? `<p class="nutri-intro">${escapeHtml(NUTRI_GRUPO_INTRO[grp])}</p>` : ''}` : ''}
-    </div>`;
-  if(cat === 'recetas') return html + await tplMisRecetas(athleteId, menor);
-  const recsGuardadas = await getRecetas(athleteId);
-  if(!menor){
-    const intakeRaw = await safeGet('intake-'+athleteId, true);
-    let peso = null; try{ peso = numIntake((intakeRaw ? JSON.parse(intakeRaw) : {}).peso); }catch(e){}
-    html += `<div class="card"><h2>Tu orientación diaria</h2>`;
-    if(peso){
-      html += `<div class="tabla-comp-wrap"><table class="tabla-comp"><thead><tr><th></th><th>g/kg/día</th><th>Total (${nutriNum(peso)} kg)</th></tr></thead><tbody>${NUTRI_RANGOS.map(r=>`<tr><td>${r.k}</td><td>${nutriNum(r.min)}-${nutriNum(r.max)}</td><td>${Math.round(r.min*peso)}-${Math.round(r.max*peso)} g</td></tr>`).join('')}</tbody></table></div>`;
-    } else {
-      html += `<p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Añade tu peso en tus datos del Perfil y aquí verás tus cantidades.</p>`;
-    }
-    html += `<p style="font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:8px;">Son rangos orientativos e independientes: no hace falta llegar al máximo de los tres a la vez. Si entrenas mucho, los carbohidratos suben: 5-7 g/kg con un programa moderado (≈ 1 h al día) y 6-10 g/kg con 1-3 h diarias de resistencia (ACSM / Academy of Nutrition and Dietetics / Dietitians of Canada, 2016).</p></div>`;
-    const ov = await getTextosEducativos();
-    [['nutri_digestion','Consejos para digerir y absorber mejor'],['nutri_proteina','Consejos para sumar proteína fácilmente']].forEach(([k,tit])=>{
-      html += `<details class="nutri-aviso nutri-consejos"><summary>${tit}</summary><p>${formateaGuia(textoEducativo(ov,k).cuerpo)}</p></details>`;
-    });
+    <div class="card nutri-cab"><h2>Guía nutricional</h2>
+      ${menor ? '<p class="nutri-hint">No hace falta contar calorías: lo importante es comer variado y con ganas.</p>' : ''}
+      <div class="nutri-tabs">${tabs.map(x=>`<button type="button" class="nutri-tab ${tab===x.t?'on':''}" data-nutricat="${x.c}">${x.l}</button>`).join('')}</div></div>`;
+  if(tab === 'recetas') return html + await tplMisRecetas(athleteId, menor);
+  if(tab === 'consejos') return html + await tplNutriConsejos(athleteId, menor);
+
+  // Filtros: grupo (alimentos) o tipo de comida (comidas), y momento del día plegado
+  html += `<div class="card nutri-filtros">`;
+  if(tab === 'alimentos'){
+    html += `<div class="chips-scroll"><button type="button" class="gs-chip ${grp===''?'on':''}" data-nutrigrupo="">Todos</button>${NUTRI_GRUPOS.map(g=>`<button type="button" class="gs-chip ${grp===g?'on':''}" data-nutrigrupo="${escapeHtml(g)}">${escapeHtml(nutriGrupoLabel(g))}</button>`).join('')}</div>`;
+    if(grp && NUTRI_GRUPO_INTRO[grp]) html += `<p class="nutri-intro">${escapeHtml(NUTRI_GRUPO_INTRO[grp])}</p>`;
+  } else {
+    html += `<div class="chips-scroll">${NUTRI_SUB_COMIDAS.map(c=>`<button type="button" class="gs-chip ${cat===c.id?'on':''}" data-nutricat="${c.id}">${c.label}</button>`).join('')}</div>`;
   }
-  let lista = items.filter(i=>(cat==='todos' || i.cat===cat) && (!mom || (i.momentos||[]).includes(mom)) && (!grp || nutriGrupos(i).includes(grp)));
-  // Con un grupo elegido se ordena por su ranking (más a menos), como en tu documento.
+  html += `<details class="nutri-filtro" ${mom ? 'open' : ''}><summary>🕒 Momento del día${mom ? ': <b>'+escapeHtml(mom)+'</b>' : ''}</summary><div class="gal-secs" style="margin-top:8px;">${NUTRI_MOMENTOS.map(m=>`<button type="button" class="gs-chip ${mom===m?'on':''}" data-nutrimomento="${escapeHtml(m)}">${m}</button>`).join('')}</div></details></div>`;
+
+  const recsGuardadas = await getRecetas(athleteId);
+  let lista = items.filter(i=>(tab === 'alimentos' ? i.cat === 'alimentos' : (cat === 'todos' ? i.cat !== 'alimentos' : i.cat === cat)) && (!mom || (i.momentos||[]).includes(mom)) && (!grp || nutriGrupos(i).includes(grp)));
+  // Con un grupo elegido se ordena por su ranking (más a menos), como en el documento.
   if(grp) lista = lista.map((x,n)=>({x,n})).sort((a,b)=>{ const ra = a.x.rank && a.x.rank[grp], rb = b.x.rank && b.x.rank[grp]; if(ra && rb) return rb.v - ra.v; if(ra) return -1; if(rb) return 1; return a.n - b.n; }).map(o=>o.x);
   if(!lista.length) html += `<div class="card"><div class="empty">No hay nada con ese filtro.</div></div>`;
+  else html += `<p class="nutri-hint" style="margin:0 2px 8px;">${lista.length} ${tab==='alimentos' ? 'alimento' : 'idea'}${lista.length===1?'':'s'} · toca uno para ver el detalle</p>`;
   lista.forEach(i=>{
     const rk = grp && i.rank && i.rank[grp];
-    html += `<div class="card nutri-card"><b>${escapeHtml(i.nombre||'')}</b>${nutriGrupos(i).map(g=>` <span class="tipo-tag">${escapeHtml(g)}</span>`).join('')}
-      ${i.racion?`<div class="nutri-rac">${escapeHtml(i.racion)}</div>`:''}
-      ${(rk && !menor) ? `<div class="nutri-rank">📊 Ranking de ${escapeHtml(grp.toLowerCase())}: ${escapeHtml(rk.t)} por 100 g</div>` : ''}
-      ${(grp && i.porque && i.porque[grp]) ? `<div class="nutri-porque"><b>Por qué está en ${escapeHtml(grp)}</b> ${escapeHtml(i.porque[grp])}</div>` : ''}
+    const abierta = state.nutriAbiertas && state.nutriAbiertas[i.id];
+    const mac = menor ? '' : `<span class="nf-mac">${nutriNum(i.kcal)} kcal · P ${nutriNum(i.p)} · C ${nutriNum(i.c)} · G ${nutriNum(i.g)}</span>`;
+    html += `<details class="card nutri-card nutri-fila" data-nutrid="${escapeHtml(i.id)}" ${abierta ? 'open' : ''}>
+      <summary><b class="nf-nom">${escapeHtml(i.nombre||'')}</b>${(rk && !menor) ? `<span class="nf-rank">${escapeHtml(rk.t)}</span>` : mac}<span class="nf-chev">▾</span></summary>
+      <div class="nf-cuerpo">
+      <div class="gal-secs" style="margin:0 0 6px;">${nutriGrupos(i).map(g=>`<span class="tipo-tag">${escapeHtml(nutriGrupoLabel(g))}</span>`).join('')}</div>
+      ${i.racion ? `<div class="nutri-rac">${escapeHtml(i.racion)}</div>` : ''}
       ${menor ? '' : `<div class="ex-meta"><span><b>${nutriNum(i.kcal)}</b> kcal</span><span>P <b>${nutriNum(i.p)}</b> g</span><span>C <b>${nutriNum(i.c)}</b> g</span><span>G <b>${nutriNum(i.g)}</b> g</span></div>`}
+      ${(rk && !menor) ? `<div class="nutri-rank">📊 Ranking de ${escapeHtml(nutriGrupoLabel(grp).toLowerCase())}: ${escapeHtml(rk.t)} por 100 g</div>` : ''}
+      ${(grp && i.porque && i.porque[grp]) ? `<div class="nutri-porque"><b>Por qué es ${grp==='Cerebro'?'nootrópico':'de este grupo'}</b> ${escapeHtml(i.porque[grp])}</div>` : ''}
       <div class="gal-secs" style="margin:8px 0 4px;">${(i.momentos||[]).map(m=>`<span class="mom-tag">${escapeHtml(m)}</span>`).join('')}</div>
-      ${i.crono?`<div class="nutri-crono"><b>⏱ Cuándo tomarlo</b> ${escapeHtml(i.crono)}</div>`:''}
-      ${i.cat==='alimentos' ? (()=>{ const m = nutriComidasDe(i, items); if(!m.length) return '';
+      ${i.crono ? `<div class="nutri-crono"><b>⏱ Cuándo tomarlo</b> ${escapeHtml(i.crono)}</div>` : ''}
+      ${i.cat === 'alimentos' ? (()=>{ const m = nutriComidasDe(i, items); if(!m.length) return '';
         return `<details class="nutri-aviso nutri-comidas"><summary>🍽 Ideas de comidas con este alimento (${m.length})</summary>${m.map(x=>`<div class="nutri-idea"><b>${escapeHtml(x.nombre)}</b>${x.racion?`<span class="nutri-rac">${escapeHtml(x.racion)}</span>`:''}${menor?'':`<div class="ex-meta"><span><b>${nutriNum(x.kcal)}</b> kcal</span><span>P <b>${nutriNum(x.p)}</b> g</span><span>C <b>${nutriNum(x.c)}</b> g</span><span>G <b>${nutriNum(x.g)}</b> g</span></div>`}</div>`).join('')}</details>`; })() : ''}
-      ${i.cat!=='alimentos' ? (recsGuardadas.some(r=>r.origenId===i.id) ? `<span class="rec-guardada">✓ En mis recetas</span>` : `<button type="button" class="btn ghost small" data-guardarreceta="${i.id}" style="margin-top:8px;">★ Guardar en mis recetas</button>`) : ''}
-      ${i.nota?`<p class="nutri-nota">${escapeHtml(i.nota)}</p>`:''}</div>`;
+      ${i.cat !== 'alimentos' ? (recsGuardadas.some(r=>r.origenId===i.id) ? `<span class="rec-guardada">✓ En mis recetas</span>` : `<button type="button" class="btn ghost small" data-guardarreceta="${i.id}" style="margin-top:8px;">★ Guardar en mis recetas</button>`) : ''}
+      ${i.nota ? `<p class="nutri-nota">${escapeHtml(i.nota)}</p>` : ''}
+      </div></details>`;
   });
   return html;
 }
@@ -4773,7 +4867,7 @@ async function tplGuiaNutriEditor(){
         <textarea class="ne-nota" placeholder="Nota" style="min-height:52px;width:100%;margin-top:6px;">${escapeHtml(i.nota||'')}</textarea>
         ${i.cat==='alimentos' ? `<textarea class="ne-crono" placeholder="Cuándo tomarlo (crononutrición)" style="min-height:52px;width:100%;margin-top:6px;">${escapeHtml(i.crono||'')}</textarea>
         <input type="text" class="ne-claves" value="${escapeHtml((i.claves||[]).join(', '))}" placeholder="Palabras para enlazar con comidas (separadas por comas)" style="width:100%;margin-top:6px;">
-        ${nutriGrupos(i).includes('Cerebro') ? `<textarea class="ne-porque" data-grupo="Cerebro" placeholder="Por qué está en Cerebro" style="min-height:52px;width:100%;margin-top:6px;">${escapeHtml((i.porque||{}).Cerebro||'')}</textarea>` : ''}` : ''}
+        ${nutriGrupos(i).includes('Cerebro') ? `<textarea class="ne-porque" data-grupo="Cerebro"  placeholder="Por qué es nootrópico" style="min-height:52px;width:100%;margin-top:6px;">${escapeHtml((i.porque||{}).Cerebro||'')}</textarea>` : ''}` : ''}
         <div class="row" style="margin-top:8px;"><button class="btn ghost small" data-nborrar="${i.id}">Eliminar</button></div>
       </div>`;
     });
@@ -4787,7 +4881,7 @@ function bindNutri(){
   bindRecetas();
   const ab = document.getElementById('abrirNutriBtn'); if(ab) ab.addEventListener('click', ()=>{ state.verNutri = true; state.recFase = ''; state.recEdit = null; renderScrollTop(); });
   const vb = document.getElementById('volverNutriBtn'); if(vb) vb.addEventListener('click', ()=>{ state.verNutri = false; renderScrollTop(); });
-  document.querySelectorAll('[data-nutricat]').forEach(b=>b.addEventListener('click', ()=>{ if(b.dataset.nutricat === 'recetas' && state.nutriCat !== 'recetas'){ state.recFase = ''; state.recEdit = null; } state.nutriCat = b.dataset.nutricat; if(state.nutriCat !== 'alimentos' && state.nutriCat !== 'todos') state.nutriGrupo = ''; renderKeepScroll(); }));
+  document.querySelectorAll('[data-nutricat]').forEach(b=>b.addEventListener('click', ()=>{ if(b.dataset.nutricat === 'recetas' && state.nutriCat !== 'recetas'){ state.recFase = ''; state.recEdit = null; } state.nutriCat = b.dataset.nutricat; if(state.nutriCat !== 'alimentos') state.nutriGrupo = ''; renderKeepScroll(); }));
   document.querySelectorAll('[data-nutrigrupo]').forEach(b=>b.addEventListener('click', ()=>{ state.nutriGrupo = (state.nutriGrupo === b.dataset.nutrigrupo) ? '' : b.dataset.nutrigrupo; renderKeepScroll(); }));
   document.querySelectorAll('[data-nutrimomento]').forEach(b=>b.addEventListener('click', ()=>{ state.nutriMomento = (state.nutriMomento === b.dataset.nutrimomento) ? '' : b.dataset.nutrimomento; renderKeepScroll(); }));
   const ed = document.getElementById('nutriEditor');
@@ -4825,7 +4919,7 @@ function bindNutri(){
 // ---------- TIPOS DE ENTRENAMIENTO: GYM / RUNNING / TENIS ----------
 // Cada ejercicio de la parte principal se clasifica como gym (lo de siempre),
 // running o tenis. El calentamiento y la vuelta a la calma no cambian.
-const EX_TIPOS = { gym:'Gym', running:'Running', tenis:'Tenis' };
+const EX_TIPOS = { gym:'Gym', running:'Running', tenis:'Tenis', circuito:'Mini circuito' };
 const RUN_MODOS = ['Rodaje continuo','Series / intervalos','Tirada larga','Fartlek','Progresivo'];
 const RUN_ZONAS = [
   {v:'Z1', l:'Z1 · muy suave'}, {v:'Z2', l:'Z2 · aeróbica'}, {v:'Z3', l:'Z3 · tempo'},
@@ -4895,7 +4989,7 @@ function runCamposHtml(ex){
 }
 function runVistaHtml(ex){
   const t = exTimer(ex);
-  return `<div class="ex-view-card run-card"><h4>🏃 ${escapeHtml(ex.name||'Running')}</h4>${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+  return `<div class="ex-view-card run-card"><h4>🏃 ${escapeHtml(ex.name||'Running')}</h4>${tplDescripcion(ex)}
     ${runMetaHtml(ex)}
     ${t.type!=='none'?`<div class="timer-badge">${TIMER_TYPE_LABELS[t.type]}</div>`:''}
     ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
@@ -4906,7 +5000,7 @@ function tplRunSesion(ex, i){
   const ritmo = (km && min) ? ritmoTexto(min/km) : '';
   return `<div class="ex-view-card run-card ${ex.done?'done':''}" data-exi="${i}">
     <h4 data-strike="${i}" style="cursor:pointer;">🏃 ${escapeHtml(ex.name||'Running')}</h4>
-    ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+    ${tplDescripcion(ex)}
     ${runMetaHtml(ex)}
     ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
     <div class="ex-grid" style="margin-top:8px;">
@@ -4928,14 +5022,20 @@ function plantillaDe(ex){
   // día), aunque en la galería pueda estar clasificado en varias. Tomamos la
   // primera como sección de trabajo; luego se puede cambiar en el día.
   const secs = (typeof seccionesDe === 'function') ? seccionesDe(ex) : (ex.section ? [ex.section] : []);
-  return { name:ex.name||'', desc:ex.desc||'', section: secs[0] || '', turno:'', grupoId:'', grupoTipo:'',
+  return { name:ex.name||'', desc:ex.desc||'', section: secs[0] || '', patrones: patronesDe(ex), turno:'', grupoId:'', grupoTipo:'',
     pideGrabacion: !!ex.pideGrabacion, lift: ex.lift||'', unilateral: !!ex.unilateral,
     load:ex.load||'', series:ex.series||'', reps:ex.reps||'', rest:ex.rest||'',
     rir:ex.rir||'', rpeTarget:ex.rpeTarget||'', tempo:ex.tempo||'', timer:{...exTimer(ex)},
-    videoUrl:ex.videoUrl||'', videoName:ex.videoName||'',
+    videoUrl:ex.videoUrl||'', videoName:ex.videoName||'', videoId:ex.videoId||'', videos:Array.isArray(ex.videos) ? ex.videos.map(v=>({...v})) : [],
     variante: ex.variante ? {...ex.variante} : null,
+    minis: Array.isArray(ex.minis) ? ex.minis.map(m=>({...m})) : undefined,
     tipo: ex.tipo||'gym', run: ex.run ? {...ex.run} : null, objetivo: ex.objetivo||'',
     juegoCfg: ex.juegoCfg ? JSON.parse(JSON.stringify(ex.juegoCfg)) : null };
+}
+// Igual que plantillaDe pero conservando la combinación (superserie, triserie o
+// circuito) y su nombre: lo que se guarda en la galería de bloques.
+function plantillaConGrupo(ex){
+  return { ...plantillaDe(ex), grupoId: ex.grupoId || '', grupoTipo: ex.grupoTipo || '', grupoNombre: ex.grupoNombre || '' };
 }
 function desdePlantilla(pl){
   return { ...plantillaDe(pl), id: uid() };
@@ -5348,18 +5448,18 @@ async function tplRutinaAtleta(athleteId){
           g.ejercicios.forEach(ex=>{
             const t = exTimer(ex);
             if(ex.tipo==='running'){ html += runVistaHtml(ex); return; }
-            html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+            html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}${tplDescripcion(ex)}
               <div class="ex-meta"><span>Series x reps: <b>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</b></span>${ex.load?`<span>Carga: <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso: <b>${escapeHtml(ex.rest||'—')}</b></span><span>RIR: <b>${escapeHtml(ex.rir||'—')}</b></span><span>RPE objetivo: <b>${escapeHtml(ex.rpeTarget||'—')}</b></span>${ex.tempo?`<span>Tempo: <b>${escapeHtml(ex.tempo)}</b></span>`:''}</div>
               ${t.type!=='none'?`<div class="timer-badge">${TIMER_TYPE_LABELS[t.type]}</div>`:''}
               ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
-              ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:8px;">▶ Ver técnica</button>`:''}
+              ${tplVideoBtns(ex, 'margin-top:8px;', '▶ Ver técnica')}
               ${tplVarianteBadge(ex)}
             </div>`;
           });
           return;
         }
         // Serie combinada: un solo bloque con el detalle de cada ejercicio
-        const titulo = g.ejercicios.map(x=>escapeHtml(x.name||'—')).join(' + ');
+        const titulo = g.ejercicios[0].grupoNombre ? escapeHtml(g.ejercicios[0].grupoNombre) : g.ejercicios.map(x=>escapeHtml(x.name||'—')).join(' + ');
         const series = primero.series || '—';
         const descanso = primero.rest || '—';
         html += `<div class="combi">
@@ -5373,7 +5473,7 @@ async function tplRutinaAtleta(athleteId){
               <span class="combi-num">${i+1}</span>
               <div class="combi-det">
                 <b>${escapeHtml(ex.name||'—')}</b>
-                ${ex.desc?`<span class="combi-desc">${escapeHtml(ex.desc)}</span>`:''}
+                ${tplDescripcion(ex, 'combi')}
                 <div class="ex-meta">
                   <span>Reps: <b>${escapeHtml(ex.reps||'—')}</b></span>
                   ${ex.load?`<span>Carga: <b>${escapeHtml(ex.load)}</b></span>`:''}
@@ -5382,7 +5482,7 @@ async function tplRutinaAtleta(athleteId){
                   ${ex.tempo?`<span>Tempo: <b>${escapeHtml(ex.tempo)}</b></span>`:''}
                 </div>
                 ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
-                ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:8px;">▶ Ver técnica</button>`:''}
+                ${tplVideoBtns(ex, 'margin-top:8px;', '▶ Ver técnica')}
                 ${tplVarianteBadge(ex)}
               </div>
             </div>`).join('')}
@@ -5640,6 +5740,7 @@ function sessionPreviewHtml(routine, day, turno){
           <span class="combi-sub">${g.ejercicios[0].series||'—'} vueltas</span>
         </div>${g.ejercicios.map((ex,i)=>`<div class="combi-ex"><span class="combi-num">${i+1}</span>
           <div class="combi-det"><b>${escapeHtml(ex.name||'—')}</b>
+               ${tplDescripcion(ex, 'combi')}
           <div class="ex-meta"><span>${escapeHtml(ex.reps||'—')} reps</span>${ex.load?`<span>${escapeHtml(ex.load)}</span>`:''}${ex.rir?`<span>RIR ${escapeHtml(ex.rir)}</span>`:''}${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
           ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate</div>`:''}
           ${tplVarianteBadge(ex)}</div></div>`).join('')}</div>`;
@@ -5647,10 +5748,10 @@ function sessionPreviewHtml(routine, day, turno){
       }
       g.ejercicios.forEach(ex=>{
       if(ex.tipo==='running'){ html += runVistaHtml(ex); return; }
-      html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+      html += `<div class="ex-view-card"><h4>${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}${tplDescripcion(ex)}
         <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span><span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span>${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
         ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio</div>`:''}
-        ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Ver técnica</button>`:''}
+        ${tplVideoBtns(ex, 'margin-top:6px;', '▶ Ver técnica')}
         ${tplVarianteBadge(ex)}
         </div>`;
       });
@@ -5672,7 +5773,7 @@ function flattenExercises(routine, day, turno){
       .filter(ex=> turno===undefined || turno===null || (ex.turno||'')===turno)
       .forEach(ex=>{
         const n = parseInt(ex.series)||1;
-        list.push({ ...ex, block:b.key, blockLabel:b.label, setsDone: Array(n).fill(false),
+        list.push({ ...ex, minis: Array.isArray(ex.minis) ? ex.minis.map(x=>({...x, hecho:''})) : undefined, block:b.key, blockLabel:b.label, setsDone: Array(n).fill(false),
           // Detalle opcional por serie: reps, RPE y RIR de CADA serie. Vive
           // aparte del campo único de arriba; si no se usa, no molesta.
           setsData: Array(n).fill(null).map(()=>({reps:'', rpe:'', rir:'', kg:'', lado:''})),
@@ -5776,7 +5877,11 @@ document.addEventListener('click', e=>{
   try{ abrirLightboxFotos(JSON.parse(cont.dataset.fotos), parseInt(b.dataset.anfoto, 10) || 0); }catch(err){}
 });
 document.addEventListener('toggle', e=>{
-  const dt = e.target; if(!dt || !dt.dataset || !dt.dataset.anabierto) return;
+  const dt = e.target; if(!dt || !dt.dataset) return;
+  if(dt.dataset.descid){ state.descAbiertas = state.descAbiertas || {}; state.descAbiertas[dt.dataset.descid] = dt.open; return; }
+  if(dt.dataset.nutrid){ state.nutriAbiertas = state.nutriAbiertas || {}; state.nutriAbiertas[dt.dataset.nutrid] = dt.open; return; }
+  if(dt.dataset.masid){ state.exMasAbierto = state.exMasAbierto || {}; state.exMasAbierto[dt.dataset.masid] = dt.open; return; }
+  if(!dt.dataset.anabierto) return;
   state.anAbiertos = state.anAbiertos || {}; state.anAbiertos[dt.dataset.anabierto] = dt.open;
 }, true);
 
@@ -5867,6 +5972,15 @@ function bindAnalisis(athleteId){
   }));
 }
 
+// La descripción técnica del ejercicio, plegada y claramente marcada. Respeta los
+// saltos de línea y se acuerda de si el atleta la dejó abierta (la sesión en vivo
+// se repinta entera con cada serie marcada).
+function tplDescripcion(ex, clase){
+  const d = String(ex.desc || '').trim();
+  if(!d) return tplMinis(ex);
+  const id = ex.id || ex.name || '', abierta = state.descAbiertas && state.descAbiertas[id];
+  return `<details class="desc-det ${clase||''}" data-descid="${escapeHtml(id)}" ${abierta?'open':''}><summary><span class="desc-ab">Abrir descripción</span><span class="desc-ce">Cerrar descripción</span></summary><div class="desc-cuerpo">${escapeHtml(d)}</div></details>${tplMinis(ex)}`;
+}
 function tplVarianteBadge(ex){
   const analisis = tplAnalisisBadge(ex);
   if(!ex.variante || !ex.variante.nombre) return analisis;
@@ -6054,9 +6168,10 @@ function renderSessionOverlay(){
             <span class="combi-num">${n+1}</span>
             <div class="combi-det">
               <b>${escapeHtml(ex.name||'—')}</b>
+               ${tplDescripcion(ex, 'combi')}
               <div class="ex-meta"><span>${escapeHtml(ex.reps||'—')} reps</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>RIR ${escapeHtml(ex.rir||'—')}</span></div>
               ${t2.type!=='none'?`<button class="btn ghost small" data-extimer="${i}" style="margin-top:6px;">▶ ${TIMER_TYPE_LABELS[t2.type]}</button>`:''}
-              ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}" style="margin-top:6px;">▶ Técnica</button>`:''}
+              ${tplVideoBtns(ex, 'margin-top:6px;', '▶ Técnica')}
               ${tplVarianteBadge(ex)}
               ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
               ${tplDetalleSeries(ex, i)}
@@ -6080,7 +6195,7 @@ function renderSessionOverlay(){
     if(ex.juegoCfg && ex.juegoCfg.activo){
       html += `<div class="ex-view-card ${ex.done?'done':''}" data-exi="${i}">
         <h4>${escapeHtml(ex.name)} 🎮</h4>
-        ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+        ${tplDescripcion(ex)}
         ${ex.juegoResultado ? (ex.juegoCfg.modo==='cronometraje'
             ? `<div class="ex-meta"><span>Error medio <b>${ex.juegoResultado.mediaMs} ms</b></span><span>${ex.juegoResultado.aciertos} a tiempo</span><span>${ex.juegoResultado.fallos} fallos</span></div>`
             : `<div class="ex-meta"><span>RT medio <b>${ex.juegoResultado.mediaMs} ms</b></span><span>${ex.juegoResultado.aciertos} aciertos</span><span>${ex.juegoResultado.fallos} fallos</span><span>${ex.juegoResultado.falsasAlarmas} falsas alarmas</span></div>`)
@@ -6091,14 +6206,14 @@ function renderSessionOverlay(){
     }
     html += `<div class="ex-view-card ${ex.done?'done':''}" data-exi="${i}">
       <h4 data-strike="${i}" style="cursor:pointer;">${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}
-      ${ex.desc?`<p class="desc">${escapeHtml(ex.desc)}</p>`:''}
+      ${tplDescripcion(ex)}
       <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span>${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
       <div class="set-box">${ex.setsDone.map((done,si)=>`<div class="set-chip ${done?'done':''}" data-exi="${i}" data-si="${si}">S${si+1}</div>`).join('')}</div>
       ${tplDetalleSeries(ex, i)}
       ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
       <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px;">
         ${t.type!=='none'?`<button class="btn ghost small" data-extimer="${i}">▶ ${TIMER_TYPE_LABELS[t.type]}</button>`:''}
-        ${ex.videoUrl?`<button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Técnica')}">▶ Ver técnica</button>`:''}
+        ${tplVideoBtns(ex, '', '▶ Ver técnica')}
         ${tplVarianteBadge(ex)}
       </div>
       <div class="ex-grid" style="margin-top:8px;">
@@ -6237,6 +6352,10 @@ function bindSessionOverlayEvents(){
     const [url, nombre] = b.dataset.playvideo.split('|');
     abrirVideo(url, nombre);
   }));
+  document.querySelectorAll('.mini-hecho').forEach(inp=>inp.addEventListener('input', ()=>{
+    const ex = session.exercises[parseInt(inp.dataset.exi, 10)]; const m = ex && (ex.minis || []).find(x=>x.id === inp.dataset.mid);
+    if(m) m.hecho = inp.value.trim();
+  }));
   const openTimerModal = document.getElementById('openTimerModal');
   if(openTimerModal) openTimerModal.addEventListener('click', ()=>openTimer());
   document.querySelectorAll('[data-extimer]').forEach(b=>b.addEventListener('click', ()=>{
@@ -6325,7 +6444,7 @@ function bindSurveyEvents(){
     const rpeBase = (session.avgExerciseRPE && session.avgExerciseRPE > 0) ? session.avgExerciseRPE : overallRPE;
     const cargaFinal = +(rpeBase * (session.elapsedSec/60)).toFixed(1);
     const record = { date: todayISO(), day: session.day, durationSeconds: session.elapsedSec,
-      exercises: session.exercises.map(e=>({name:e.name, section:e.section||'',
+      exercises: session.exercises.map(e=>({name:e.name, patrones:patronesDe(e), tipo:e.tipo||'gym', minis:(e.tipo==='circuito' && Array.isArray(e.minis)) ? e.minis.filter(m=>m.name).map(m=>({name:m.name, series:m.series||'', reps:m.reps||'', hecho:m.hecho||''})) : undefined, section:e.section||'',
         rpeApplied:e.rpeApplied, rpeTexto:e.rpeTexto||'',
         rirApplied:e.rirApplied ?? null, rirTexto:e.rirTexto||'',
         loadPlanned:e.load||'', loadApplied:e.loadApplied||'', noteApplied:e.noteApplied||'', done:e.done,
@@ -8018,7 +8137,7 @@ async function volumenPorPatron(entries){
     semanas.forEach((sem,k)=>{
       if(entry.date >= sem.lunesIso && entry.date <= sem.domIso){
         (entry.exercises||[]).forEach(ex=>{
-          const pats = patronesPorNombre.get(claveEjercicio(ex.name)) || [];
+          const pats = patronesDe(ex).length ? patronesDe(ex) : (patronesPorNombre.get(claveEjercicio(ex.name)) || []);
           pats.forEach(p=>{ if(conteo[p]) conteo[p][k]++; });
         });
       }
@@ -8027,6 +8146,21 @@ async function volumenPorPatron(entries){
   return { patrones: enUso, conteo };
 }
 
+function tplMinisProgreso(entries){
+  const num = t=>{ const m = String(t == null ? '' : t).match(/\d+/g); return m ? Math.max(...m.map(Number)) : null; };
+  const mapa = new Map();
+  entries.slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))).forEach(e=>(e.exercises || []).forEach(x=>(x.minis || []).forEach(m=>{
+    const r = num(m.hecho); if(!m.name || r === null) return;
+    const k = claveEjercicio(m.name); if(!mapa.has(k)) mapa.set(k, { nombre:m.name, pts:[] });
+    mapa.get(k).pts.push({ fecha:e.date, reps:r });
+  })));
+  const filas = [...mapa.values()].filter(x=>x.pts.length >= 1);
+  if(!filas.length) return '';
+  return `<div class="card"><h2>Mini ejercicios</h2><p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Repeticiones que anotaste en cada mini ejercicio de tus circuitos.</p>${filas.map(x=>{
+    const u = x.pts.slice(-6), d = u.length > 1 ? u[u.length-1].reps - u[0].reps : null;
+    return `<div class="entry"><div class="entry-top"><span>${escapeHtml(x.nombre)}</span><span>${u.map(p=>p.reps).join(' → ')}${d === null ? '' : ` <b style="color:${d>=0?'var(--accent)':'var(--danger)'};">(${d>=0?'+':''}${d})</b>`}</span></div></div>`;
+  }).join('')}</div>`;
+}
 function tplVolumenPatron(vp){
   if(!vp) return '';
   const { patrones, conteo } = vp;
@@ -8432,6 +8566,7 @@ async function tplProgreso(athleteId){
   html += `</div>`;
   const vp = await volumenPorPatron(entries);
   html += tplVolumenPatron(vp);
+  html += tplMinisProgreso(entries);
   html += await tplRmContinuo(athleteId);
   html += await tplAsimetria(athleteId);
   html += await tplHyroxSimulacros(athleteId);
@@ -9869,7 +10004,7 @@ async function tplGym(athleteId, esCoach){
   }
   html += `<div class="card"><h2>Gym / Instalaciones</h2>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">${esCoach
-      ? 'Lo que suba tu atleta sobre dónde entrena. Organiza las subcarpetas a tu criterio: renómbralas, añade las que necesites o elimina las que no uses.'
+      ? 'Lo que suba tu atleta sobre dónde entrena, y lo que subas tú (fotos o vídeos de las máquinas o el material que quieres que use). Organiza las subcarpetas a tu criterio: renómbralas, añade las que necesites o elimina las que no uses.'
       : 'Sube fotos o vídeos de tu gimnasio: las instalaciones, las máquinas que tienes, las que más te gustan y las que evitas. Cuanto mejor sepa con qué cuentas, mejor te puedo programar.'}</p>
     <div class="kpi-row" style="margin-top:10px;"><div class="kpi"><b>${total}</b><span>Archivos</span></div></div>
     ${esCoach ? `<button class="btn ghost small" id="gymNuevaCarpetaBtn" style="margin-top:10px;">+ Nueva subcarpeta</button>` : ''}
@@ -9889,10 +10024,14 @@ async function tplGym(athleteId, esCoach){
       html += `<div class="day-tools">
         <input type="text" class="gym-nombre" data-carpeta="${c.id}" value="${escapeHtml(c.nombre)}" style="flex:1;min-width:120px;">
         <button class="btn ghost small" data-gymborrarcarpeta="${c.id}">Eliminar</button>
+      </div>
+      <div class="day-tools">
+        <input type="file" accept="image/*,video/*" multiple class="gym-file" data-carpeta="${c.id}" style="flex:1;min-width:0;font-size:12px;">
+        <button class="btn small" data-gymsubir="${c.id}">Subir</button>
       </div>`;
     } else {
       html += `<div class="day-tools">
-        <input type="file" accept="image/*,video/*" class="gym-file" data-carpeta="${c.id}" style="flex:1;min-width:0;font-size:12px;">
+        <input type="file" accept="image/*,video/*" multiple class="gym-file" data-carpeta="${c.id}" style="flex:1;min-width:0;font-size:12px;">
         <button class="btn small" data-gymsubir="${c.id}">Subir</button>
       </div>`;
     }
@@ -9906,7 +10045,7 @@ async function tplGym(athleteId, esCoach){
           ${it.tipo==='foto'
             ? `<img src="${escapeHtml(it.url)}" alt="${escapeHtml(it.nombre)}" loading="lazy" data-gymfoto="${escapeHtml(it.url)}|${escapeHtml(it.nombre)}">`
             : `<button class="gym-vid" data-playvideo="${escapeHtml(it.url)}|${escapeHtml(it.nombre)}">▶</button>`}
-          <span class="gym-cap">${escapeHtml(it.nombre)}</span>
+          <span class="gym-cap">${escapeHtml(it.nombre)}${it.por==='entrenador' ? ' · <i>del entrenador</i>' : ''}</span>
           <button class="btn ghost small gym-del" data-gymborrar="${c.id}|${it.id}">✕</button>
         </div>`;
       });
@@ -10790,12 +10929,45 @@ function actualizaSelectsGrupo(cardOrigen, listaBloque){
   });
 }
 
+// Lo que cada ejercicio tiene configurado, a la vista aunque «Más opciones» esté plegado.
+function exMasInsignias(ex, t){
+  const b = [];
+  if(t && t.type && t.type !== 'none') b.push(`⏱ ${TIMER_TYPE_LABELS[t.type] || t.type}`);
+  if(ex.juegoCfg && ex.juegoCfg.activo) b.push('🎮 Juego');
+  const nv = videosDe(ex).length; if(nv) b.push(`🎥 ${nv}`);
+  if(ex.pideGrabacion) b.push('📹 Grabación');
+  if((ex.analisis || []).length) b.push(`📸 ${ex.analisis.length}`);
+  if(ex.variante) b.push('↔ Variante');
+  return b.length ? `<span class="mas-ins">${b.map(x=>escapeHtml(x)).join(' · ')}</span>` : '';
+}
+// ---------- MINI CIRCUITO ----------
+// Un ejercicio normal (con descanso, RPE, temporizador, vídeo…) que por dentro se
+// divide en mini ejercicios con su nombre, series y repeticiones. Así se puede
+// medir la progresión de cada uno sin crear un ejercicio suelto por cada uno.
+function blankMini(){ return { id:'m'+uid(), name:'', series:'3', reps:'' }; }
+function tplMinisEditor(ex){
+  const ms = Array.isArray(ex.minis) ? ex.minis : [];
+  return `<div class="ex-minis"><label class="field-label">Mini ejercicios del circuito</label>
+    ${ms.map((x,i)=>`<div class="mini-row" data-miniid="${x.id}"><span class="mini-num">${i+1}</span>
+      <input type="text" class="mini-name" value="${escapeHtml(x.name||'')}" placeholder="Ejercicio (p. ej. Flexiones)">
+      <input type="text" inputmode="numeric" class="mini-series" value="${escapeHtml(x.series||'')}" placeholder="Series">
+      <input type="text" class="mini-reps" value="${escapeHtml(x.reps||'')}" placeholder="Reps">
+      <button type="button" class="mini-x" data-delmini="${x.id}" title="Quitar">✕</button></div>`).join('')}
+    <button type="button" class="btn ghost small" data-addmini="${ex.id}">+ Mini ejercicio</button></div>`;
+}
+// Lo que ve el atleta: la lista; y en la sesión, un campo para anotar lo que hizo en cada uno.
+function tplMinis(ex){
+  const ms = (ex.tipo === 'circuito' && Array.isArray(ex.minis)) ? ex.minis.filter(m=>m.name) : [];
+  if(!ms.length) return '';
+  const enSesion = ex._i !== undefined;
+  return `<ol class="minis-lista">${ms.map(m=>`<li><span class="mini-nom">${escapeHtml(m.name)}</span><span class="mini-plan">${m.series ? escapeHtml(m.series)+' × ' : ''}${escapeHtml(m.reps||'—')}</span>${enSesion ? `<input type="text" inputmode="numeric" class="mini-hecho" data-exi="${ex._i}" data-mid="${escapeHtml(m.id)}" value="${escapeHtml(m.hecho||'')}" placeholder="hechas">` : ''}</li>`).join('')}</ol>`;
+}
 function exCardHtml(ex, blockKey, d, listaBloque){
   const t = exTimer(ex);
   const draftBloqueActual = listaBloque || [];
   return `<div class="ex-card" data-exid="${ex.id}" data-block="${blockKey}" data-day="${d}">
           <span class="save-flag" data-flagfor="${ex.id}">Guardado ✓</span>
-          ${blockKey==='principal' ? `<div class="gal-secs ex-tipo-chips" style="margin-bottom:8px;">${Object.keys(EX_TIPOS).map(k=>`<button type="button" class="gs-chip ${(ex.tipo||'gym')===k?'on':''}" data-extipo="${k}">${EX_TIPOS[k]}</button>`).join('')}</div>` : ''}
+          <div class="gal-secs ex-tipo-chips" style="margin-bottom:8px;">${Object.keys(EX_TIPOS).filter(k=>blockKey==='principal' || k==='gym' || k==='circuito').map(k=>`<button type="button" class="gs-chip ${(ex.tipo||'gym')===k?'on':''}" data-extipo="${k}">${EX_TIPOS[k]}</button>`).join('')}</div>
           <div class="row" style="gap:6px;margin-bottom:6px;">
             <select class="ex-grupo" style="width:100%;font-size:12px;${ex.grupoId?'color:var(--accent);font-weight:600;':''}">
               <option value="">Sin combinar</option>
@@ -10811,9 +10983,14 @@ function exCardHtml(ex, blockKey, d, listaBloque){
             </select>
             <input type="text" class="ex-section" value="${escapeHtml(ex.section||'')}" placeholder="Sección (Fuerza, Hipertrofia…)" list="sectionSuggestions" style="flex:1;min-width:0;font-size:12px;color:var(--accent);">
           </div>
+            <select class="ex-patron" style="width:100%;font-size:12px;margin-bottom:6px;${patronesDe(ex).length?'color:var(--accent);font-weight:600;':''}">
+              <option value="">Patrón de movimiento (opcional)</option>
+              ${TEST_CATEGORIAS.patron.map(pt=>`<option value="${escapeHtml(pt)}" ${patronesDe(ex)[0]===pt?'selected':''}>${escapeHtml(pt)}</option>`).join('')}
+            </select>
           <input type="text" class="ex-name full" value="${escapeHtml(ex.name)}" placeholder="Nombre del ejercicio" style="width:100%;font-weight:700;">
           <textarea class="ex-desc" placeholder="Descripción / técnica&#10;Puedes usar varias líneas:&#10;1. Cat camel&#10;2. Zancada spiderman" style="min-height:62px;margin-top:6px;white-space:pre-wrap;">${escapeHtml(ex.desc||'')}</textarea>
-          ${(ex.tipo||'gym')==='running' ? runCamposHtml(ex) : `<div class="ex-grid">
+          ${(ex.tipo||'gym')==='circuito' ? tplMinisEditor(ex) : ''}
+        ${(ex.tipo||'gym')==='running' ? runCamposHtml(ex) : `<div class="ex-grid">
             <div><label class="field-label">Series</label><input type="number" class="ex-series" value="${ex.series||''}"></div>
             <div><label class="field-label">Reps</label><input type="text" class="ex-reps" value="${escapeHtml(ex.reps||'')}"></div>
             <div><label class="field-label">Peso / carga</label><input type="text" class="ex-load" value="${escapeHtml(ex.load||'')}" placeholder="80kg, 40>30kg, corporal"></div>
@@ -10823,6 +11000,8 @@ function exCardHtml(ex, blockKey, d, listaBloque){
             <div><label class="field-label">Tempo</label><input type="text" class="ex-tempo" value="${escapeHtml(ex.tempo||'')}" placeholder="3-1-2-0"></div>
           </div>`}
           ${(ex.tipo||'gym')!=='gym' ? `<div style="margin-top:8px;"><label class="field-label">Objetivo de la sesión</label><input type="text" class="ex-objetivo" value="${escapeHtml(ex.objetivo||'')}" placeholder="Qué buscamos con esta sesión" style="width:100%;"></div>` : ''}
+          <details class="ex-mas" data-masid="${ex.id}" ${(state.exMasAbierto && state.exMasAbierto[ex.id]) || state.analisisAbierto===ex.id || state.varianteAbierta===ex.id ? 'open' : ''}>
+          <summary><span class="mas-ico">⋯</span> Más opciones${exMasInsignias(ex, t)}</summary>
           <div class="timer-config">
             <label class="field-label">Temporizador para el atleta</label>
             <select class="ex-timer-type" style="width:100%;">
@@ -10850,14 +11029,9 @@ function exCardHtml(ex, blockKey, d, listaBloque){
           <div class="video-row">
             <label class="row" style="gap:7px;font-size:12.5px;width:100%;margin-bottom:6px;align-items:flex-start;">
               <input type="checkbox" class="ex-grabacion" ${ex.pideGrabacion?'checked':''} style="margin-top:2px;">
-              <span>Pedir grabación de la ejecución<br>
-                <span style="font-size:11px;color:var(--muted);">Para contrastar el RPE y RIR que declara con lo que se ve, y valorar técnica.</span></span>
+              <span title="Para contrastar el RPE y RIR que declara con lo que se ve, y valorar la técnica.">Pedir grabación</span>
             </label>
-            ${ex.videoUrl
-              ? `<span class="video-tag">▶ ${escapeHtml(ex.videoName||'Vídeo')}</span>
-                 <button class="btn ghost small" data-playvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Vídeo')}">Ver</button>
-                 <button class="btn ghost small" data-unlinkvideo="${ex.id}">Quitar</button>`
-              : `<button class="btn ghost small" data-pickvideo="${ex.id}">+ Vídeo de técnica</button>`}
+            ${tplVideoRowEditor(ex, false)}
           </div>
           ${tplAnalisisEditor(ex)}
           <div class="variante-box">
@@ -10872,6 +11046,7 @@ function exCardHtml(ex, blockKey, d, listaBloque){
             </div>` : ''}
           </div>
           ${(ex.tipo||'gym')==='running' ? '' : tplJuegoConfig(ex)}
+</details>
           <div class="row" style="margin-top:8px;">
             <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="up" title="Subir">↑</button>
             <button class="btn ghost small ex-move" data-moveex="${ex.id}" data-dir="down" title="Bajar">↓</button>
@@ -10975,9 +11150,21 @@ function cuerpoDia(d, draft, athleteId, esTenisOMixto){
     } else {
       BLOCKS.forEach(b=>{
         html += `<div class="block-title">${b.label}</div>`;
-        draft.days[d][b.key].forEach(ex=>{
-          html += exCardHtml(ex, b.key, d, draft.days[d][b.key]);
-        });
+        agrupaEjercicios(draft.days[d][b.key]).forEach(g=>{
+        if(!g.grupoId){ g.ejercicios.forEach(ex=>{ html += exCardHtml(ex, b.key, d, draft.days[d][b.key]); }); return; }
+        const plegado = !!(state.gruposPlegados && state.gruposPlegados[g.grupoId]);
+        const nombreG = g.ejercicios.map(x=>x.grupoNombre).find(Boolean) || '';
+        html += `<div class="grupo-box" data-grupo="${g.grupoId}">
+          <div class="grupo-cab">
+            <button type="button" class="grupo-chev" data-grupoplegar="${g.grupoId}" title="${plegado?'Abrir':'Cerrar'}">${plegado?'▸':'▾'}</button>
+            <span class="combi-tag">${GRUPO_TIPOS[g.tipo]||'Combinada'}</span>
+            <input type="text" class="grupo-nombre" data-grupoid="${g.grupoId}" data-day="${d}" data-block="${b.key}" value="${escapeHtml(nombreG)}" placeholder="Nombre (p. ej. Activación general)">
+            <span class="grupo-n">${g.ejercicios.length}</span>
+            <button type="button" class="btn ghost small" data-guardargrupo="${d}|${b.key}|${g.grupoId}" title="Guardar para reutilizarla">💾</button>
+          </div>
+          ${plegado ? `<div class="grupo-resumen">${g.ejercicios.map(x=>escapeHtml(x.name||'—')).join(' + ')}</div>` : g.ejercicios.map(ex=>exCardHtml(ex, b.key, d, draft.days[d][b.key])).join('')}
+        </div>`;
+      });
         html += `<div class="row" style="gap:8px;flex-wrap:wrap;">
           ${b.key==='principal' ? `<button class="btn ghost small" data-addex="${d}|${b.key}|gym">+ Gym</button><button class="btn ghost small" data-addex="${d}|${b.key}|running">+ Running</button><button class="btn ghost small" data-addex="${d}|${b.key}|tenis">+ Tenis</button>` : `<button class="btn ghost small" data-addex="${d}|${b.key}">+ Añadir a ${b.label.toLowerCase()}</button>`}
           <button class="btn ghost small" data-fromlib="${d}|${b.key}">Desde galería</button>
@@ -11718,6 +11905,7 @@ async function tplCaptacion(){
 // ejercicios de la galería. Insertar en una sesión sigue haciéndose desde
 // "Desde galería" dentro de cada día, como hasta ahora.
 async function tplGaleriaCoach(){
+  if(state.galVista === 'videos') return await tplGaleriaVideos();
   const lib = await getExLib();
   const secciones = await getSecciones();
   const notas = await getNotasSeccion();
@@ -11738,7 +11926,7 @@ async function tplGaleriaCoach(){
   grupos.forEach(arr=>arr.sort((a,b)=>a.name.localeCompare(b.name,'es')));
   sinSeccion.sort((a,b)=>a.name.localeCompare(b.name,'es'));
 
-  let html = `<div class="card"><h2>Galería de ejercicios</h2>
+  let html = tplGaleriaPestanas((await getVideoLib()).length) + `<div class="card"><h2>Galería de ejercicios</h2>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Guarda un ejercicio una vez y reutilízalo en cualquier atleta, semana o día. Los cambios que hagas aquí no afectan a los que ya insertaste en una rutina.</p>
     <input type="text" id="galBuscador" placeholder="Buscar ejercicio…" value="${escapeHtml(state.galFiltro||'')}" style="width:100%;margin-bottom:14px;">
     <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:6px;">
@@ -11816,11 +12004,7 @@ function tplGalItem(ex, secciones){
       </div>
     </div>
     <div class="video-row">
-      ${ex.videoUrl
-        ? `<span class="video-tag">▶ ${escapeHtml(ex.videoName||'Vídeo')}</span>
-           <button class="btn ghost small" data-galplayvideo="${escapeHtml(ex.videoUrl)}|${escapeHtml(ex.videoName||'Vídeo')}">Ver</button>
-           <button class="btn ghost small" data-galunlinkvideo="${ex.id}">Quitar vídeo</button>`
-        : `<button class="btn ghost small" data-galpickvideo="${ex.id}">+ Vídeo de técnica</button>`}
+      ${tplVideoRowEditor(ex, true)}
     </div>
   </div>`;
 }
@@ -12094,16 +12278,33 @@ function bindJuegoBotones(root, athleteId){
 
 function bindExerciseCard(card, athleteId){
     bindJuegoBotones(card, athleteId);
+    const mutaMinis = async (fn)=>{
+      const d = card.dataset.day, blockKey = card.dataset.block, exId = card.dataset.exid;
+      const draft = await getRoutine(state.selectedId, true, state.planWeek);
+      const ex = draft.days[d][blockKey].find(x=>x.id===exId); if(!ex) return;
+      if(!Array.isArray(ex.minis)) ex.minis = [];
+      fn(ex.minis);
+      draft.updatedAt = new Date().toISOString();
+      const ok = await saveRoutine(state.selectedId, true, draft, state.planWeek);
+      if(!ok){ toast('No se pudo guardar', true); return; }
+      if(!card.parentNode) return;
+      card.insertAdjacentHTML('afterend', exCardHtml(ex, blockKey, d, draft.days[d][blockKey]));
+      const nueva = card.nextElementSibling; card.remove();
+      if(nueva) bindExerciseCard(nueva, athleteId);
+    };
+    card.querySelectorAll('[data-addmini]').forEach(b=>b.addEventListener('click', ()=>mutaMinis(ms=>ms.push(blankMini()))));
+    card.querySelectorAll('[data-delmini]').forEach(b=>b.addEventListener('click', ()=>mutaMinis(ms=>{ const i = ms.findIndex(x=>x.id===b.dataset.delmini); if(i>=0) ms.splice(i,1); })));
     card.querySelectorAll('[data-extipo]').forEach(btn=>btn.addEventListener('click', async ()=>{
       const nuevoTipo = btn.dataset.extipo;
       const d = card.dataset.day, blockKey = card.dataset.block, exId = card.dataset.exid;
-      const draft = await getRoutine(state.selectedId, true);
+      const draft = await getRoutine(state.selectedId, true, state.planWeek);
       const ex = draft.days[d][blockKey].find(x=>x.id===exId);
       if(!ex || (ex.tipo||'gym') === nuevoTipo) return;
       ex.tipo = nuevoTipo;
       if(nuevoTipo === 'running' && !ex.run) ex.run = runVacio();
+      if(nuevoTipo === 'circuito' && !Array.isArray(ex.minis)) ex.minis = [blankMini(), blankMini()];
       draft.updatedAt = new Date().toISOString();
-      const ok = await saveRoutine(state.selectedId, true, draft);
+      const ok = await saveRoutine(state.selectedId, true, draft, state.planWeek);
       if(!ok){ toast('No se pudo guardar', true); return; }
       if(!card.parentNode) return;
       card.insertAdjacentHTML('afterend', exCardHtml(ex, blockKey, d, draft.days[d][blockKey]));
@@ -12123,6 +12324,8 @@ function bindExerciseCard(card, athleteId){
         ex.name = card.querySelector('.ex-name').value.trim();
         ex.desc = card.querySelector('.ex-desc').value.trim();
         ex.section = card.querySelector('.ex-section').value.trim();
+        { const pEl = card.querySelector('.ex-patron'); if(pEl) ex.patrones = pEl.value ? [pEl.value] : []; }
+        if(card.querySelector('.ex-minis')) ex.minis = [...card.querySelectorAll('.mini-row')].map(r=>({ id:r.dataset.miniid, name:r.querySelector('.mini-name').value.trim(), series:r.querySelector('.mini-series').value.trim(), reps:r.querySelector('.mini-reps').value.trim() }));
         const turnoEl = card.querySelector('.ex-turno');
         // videoUrl/videoName se asignan desde el selector de vídeo, no desde un campo
         if(turnoEl) ex.turno = turnoEl.value;
@@ -12131,12 +12334,13 @@ function bindExerciseCard(card, athleteId){
         const grupoEl = card.querySelector('.ex-grupo');
         if(grupoEl){
           const v = grupoEl.value;
-          if(!v){ ex.grupoId = ''; ex.grupoTipo = ''; }
-          else if(v.indexOf('new:') === 0){ ex.grupoId = 'g'+uid(); ex.grupoTipo = v.slice(4); }
+          if(!v){ ex.grupoId = ''; ex.grupoTipo = ''; ex.grupoNombre = ''; }
+        else if(v.indexOf('new:') === 0){ ex.grupoId = 'g'+uid(); ex.grupoTipo = v.slice(4); ex.grupoNombre = ''; }
           else {
             ex.grupoId = v;
             const hermano = draft.days[d][blockKey].find(x=>x.grupoId===v && x.id!==exId);
             ex.grupoTipo = hermano ? (hermano.grupoTipo||'superserie') : 'superserie';
+        ex.grupoNombre = hermano ? (hermano.grupoNombre||'') : '';
           }
         }
         const gv = (sel)=>{ const el = card.querySelector(sel); return el ? el.value.trim() : undefined; };
@@ -12508,8 +12712,15 @@ function bindGalItem(item){
   });
   const pick = item.querySelector('[data-galpickvideo]');
   if(pick) pick.addEventListener('click', ()=>abrirGaleriaVideoParaItem(pick.dataset.galpickvideo));
-  const play = item.querySelector('[data-galplayvideo]');
-  if(play) play.addEventListener('click', ()=>{ const [url,nombre]=play.dataset.galplayvideo.split('|'); abrirVideo(url,nombre); });
+  item.querySelectorAll('[data-galplayvideo]').forEach(play=>play.addEventListener('click', ()=>{ const [url,nombre]=play.dataset.galplayvideo.split('|'); abrirVideo(url,nombre); }));
+  item.querySelectorAll('[data-galvidquitar]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [exId, idx] = b.dataset.galvidquitar.split('|');
+    const lib = await getExLib(), ex = lib.find(x=>x.id===exId); if(!ex) return;
+    const vs = videosDe(ex); vs.splice(parseInt(idx,10), 1); fijaVideos(ex, vs);
+    const ok = await saveExLib(lib); if(!ok){ toast('No se pudo guardar', true); return; }
+    item.outerHTML = tplGalItem(ex, await getSecciones());
+    const nuevo = document.querySelector(`.gal-item[data-galid="${CSS.escape(ex.id)}"]`); if(nuevo) bindGalItem(nuevo);
+  }));
   const unlink = item.querySelector('[data-galunlinkvideo]');
   if(unlink) unlink.addEventListener('click', async ()=>{
     const lib = await getExLib();
@@ -12548,8 +12759,22 @@ async function abrirSubidaMultiple(){
   let cola = [];
   let idx = 0;          // cuál estamos nombrando
   let subiendo = false;
-
-  const cerrar = ()=>{ back.remove(); renderKeepScroll(); };
+  const seccionesMulti = await getSecciones();
+  const opciones = { seccion:'', crear:true }; let finalizado = false;
+  // Al terminar (o cerrar), cada vídeo subido recibe su sección y, si está marcado,
+  // se crea el ejercicio con el nombre que se le puso (o se añade al que ya tenga ese nombre).
+  const finaliza = async ()=>{
+    if(finalizado) return; finalizado = true;
+    const oks = cola.filter(c=>c.estado === 'ok'); if(!oks.length) return;
+    let creados = 0, anadidos = 0;
+    for(const c of oks){
+      const vids = await getVideoLib(), v = vids.find(x=>x.id === c.item.id) || c.item;
+      if(opciones.seccion && vids.includes(v)){ v.seccion = opciones.seccion; await saveVideoLib(vids); }
+      if(opciones.crear){ const r = await crearEjercicioDesdeVideo(v, opciones.seccion); if(r.creado) creados++; else anadidos++; }
+    }
+    toast(`${oks.length} vídeo${oks.length===1?'':'s'} subido${oks.length===1?'':'s'}${opciones.crear ? ` · ${creados} ejercicio${creados===1?'':'s'} creado${creados===1?'':'s'}${anadidos ? `, ${anadidos} añadido${anadidos===1?'':'s'} a uno que ya existía` : ''}` : ''}`);
+  };
+  const cerrar = async ()=>{ await finaliza(); back.remove(); renderKeepScroll(); };
 
   const pintar = ()=>{
     const subidos = cola.filter(c=>c.estado==='ok').length;
@@ -12565,6 +12790,9 @@ async function abrirSubidaMultiple(){
         Elige todos los vídeos de una vez. Se suben en fila y después los vas nombrando uno a uno, sin salir de aquí.
         Máximo ${MAX_VIDEO_MB} MB por vídeo.</p>
         <input type="file" id="multiFiles" accept="video/*" multiple style="width:100%;font-size:12.5px;margin-bottom:12px;">
+        <label class="field-label">Sección de estos vídeos</label>
+        <select id="multiSeccion" style="width:100%;margin-bottom:10px;"><option value="">Sin sección</option>${seccionesMulti.map(sx=>`<option value="${escapeHtml(sx)}">${escapeHtml(sx)}</option>`).join('')}</select>
+        <label class="q-config-item" style="align-items:flex-start;margin-bottom:12px;"><input type="checkbox" id="multiCrear" checked><span style="font-size:12.5px;line-height:1.5;">Crear el ejercicio automáticamente con el nombre que les pongas</span></label>
         <button class="btn" id="multiEmpezar" style="width:100%;">Subir todos</button>`;
     } else if(subiendo){
       html += `<div class="multi-prog">
@@ -12635,6 +12863,7 @@ async function abrirSubidaMultiple(){
       const inp = document.getElementById('multiFiles');
       const files = inp && inp.files ? [...inp.files] : [];
       if(!files.length){ toast('Elige al menos un vídeo', true); return; }
+      opciones.seccion = (document.getElementById('multiSeccion') || {}).value || ''; opciones.crear = !document.getElementById('multiCrear') || document.getElementById('multiCrear').checked;
       const grandes = files.filter(f=>f.size/(1024*1024) > MAX_VIDEO_MB);
       if(grandes.length){
         toast(`${grandes.length} vídeo(s) superan ${MAX_VIDEO_MB} MB y se omitirán`, true);
@@ -12665,13 +12894,188 @@ async function abrirSubidaMultiple(){
     if(next) next.addEventListener('click', async ()=>{
       await guardarNombre();
       if(idx < okItems.length-1){ idx++; pintar(); }
-      else { toast(`${okItems.length} vídeo(s) en la galería`); cerrar(); }
+      else { await cerrar(); }
     });
     const prev = document.getElementById('multiPrev');
     if(prev) prev.addEventListener('click', async ()=>{ await guardarNombre(); idx--; pintar(); });
     if(nombreInp) setTimeout(()=>nombreInp.focus(), 60);
   }
   pintar();
+}
+
+// ---------- VÍDEOS: galería propia, varios por ejercicio ----------
+// Un ejercicio puede llevar varios vídeos (ex.videos). «videoUrl» y «videoName»
+// siguen reflejando el primero, para todo lo que ya los leía.
+const SECCIONES_VIDEO_SUGERIDAS = ['Movilidad','Pliometría','Barra, rack o multipower','Polea','Mancuerna','Máquina específica','Material funcional'];
+function videosDe(ex){
+  if(Array.isArray(ex.videos) && ex.videos.length) return ex.videos.filter(v=>v && v.url);
+  return ex.videoUrl ? [{ id: ex.videoId || '', name: ex.videoName || '', url: ex.videoUrl }] : [];
+}
+function fijaVideos(ex, lista){
+  lista = lista.filter(v=>v && v.url);
+  ex.videos = lista.map(v=>({ id: v.id || '', name: v.name || '', url: v.url, path: v.path || '' }));
+  ex.videoUrl = lista[0] ? lista[0].url : ''; ex.videoName = lista[0] ? (lista[0].name || '') : ''; ex.videoId = lista[0] ? (lista[0].id || '') : '';
+}
+function anadeVideo(ex, v){
+  if(!v){ fijaVideos(ex, []); return; }
+  const vs = videosDe(ex);
+  if(!vs.some(x=>x.url === v.url)) vs.push({ id:v.id, name:v.name, url:v.url, path:v.path });
+  fijaVideos(ex, vs);
+}
+// Botones de vídeo para el atleta: uno si hay uno, uno por vídeo si hay varios.
+function tplVideoBtns(ex, estilo, etiqueta){
+  const vs = videosDe(ex); if(!vs.length) return '';
+  const st = estilo ? ` style="${estilo}"` : '';
+  if(vs.length === 1) return `<button class="btn ghost small" data-playvideo="${escapeHtml(vs[0].url)}|${escapeHtml(vs[0].name || 'Técnica')}"${st}>${etiqueta}</button>`;
+  return `<div class="vid-botones"${st}>${vs.map((v,i)=>{ const n = v.name || ('Vídeo '+(i+1)); return `<button class="btn ghost small" data-playvideo="${escapeHtml(v.url)}|${escapeHtml(n)}">▶ ${escapeHtml(n.slice(0,22))}</button>`; }).join('')}</div>`;
+}
+// Fila de vídeos en los editores (galería de ejercicios y tarjeta de la rutina)
+function tplVideoRowEditor(ex, galeria){
+  const vs = videosDe(ex);
+  const play = galeria ? 'data-galplayvideo' : 'data-playvideo', quitar = galeria ? 'data-galvidquitar' : 'data-vidquitar', pick = galeria ? 'data-galpickvideo' : 'data-pickvideo';
+  return vs.map((v,i)=>`<span class="vid-chip"><span class="video-tag">▶ ${escapeHtml(v.name || ('Vídeo '+(i+1)))}</span><button class="btn ghost small" ${play}="${escapeHtml(v.url)}|${escapeHtml(v.name || 'Vídeo')}">Ver</button><button class="btn ghost small" ${quitar}="${ex.id}|${i}" title="Quitar este vídeo">✕</button></span>`).join('')
+    + `<button class="btn ghost small" ${pick}="${ex.id}">${vs.length ? '+ Otro vídeo' : '+ Vídeo de técnica'}</button>`;
+}
+// El ejercicio que corresponde a un vídeo, si lo hay (por vídeo asignado o por nombre)
+function ejercicioDeVideo(lib, v){
+  return lib.find(e=>videosDe(e).some(x=>(x.id && x.id === v.id) || x.url === v.url));
+}
+// Al subir un vídeo se crea el ejercicio con ese nombre. Si ya existe uno con el
+// mismo nombre, el vídeo se añade a ese en vez de duplicarlo.
+async function crearEjercicioDesdeVideo(item, seccion){
+  const exs = await getExLib();
+  const norm = t=>nutriNorm(t).trim();
+  let ex = ejercicioDeVideo(exs, item), creado = false;
+  if(!ex) ex = exs.find(e=>norm(e.name) === norm(item.name));
+  if(ex){
+    anadeVideo(ex, item);
+    if(seccion && !seccionesDe(ex).includes(seccion)){ ex.sections = seccionesDe(ex).concat(seccion); delete ex.section; }
+  } else {
+    ex = { id: uid(), name: item.name, desc:'', sections: seccion ? [seccion] : [], load:'', series:'', reps:'', rest:'', rir:'', rpeTarget:'', timer:{type:'none'}, videoUrl:'', videoName:'' };
+    fijaVideos(ex, [item]); exs.push(ex); creado = true;
+  }
+  await saveExLib(exs);
+  const vids = await getVideoLib(), v = vids.find(x=>x.id === item.id);
+  if(v){ v.ejId = ex.id; if(seccion) v.seccion = seccion; await saveVideoLib(vids); }
+  return { ex, creado };
+}
+async function quitaVideoDeEjercicios(v){
+  const exs = await getExLib(); let cambio = false;
+  exs.forEach(e=>{ const vs = videosDe(e), resto = vs.filter(x=>!((x.id && x.id === v.id) || x.url === v.url)); if(resto.length !== vs.length){ fijaVideos(e, resto); cambio = true; } });
+  if(cambio) await saveExLib(exs);
+}
+
+// ----- Galería: pestañas Ejercicios | Vídeos -----
+function tplGaleriaPestanas(nVideos){
+  const v = state.galVista === 'videos';
+  return `<div class="sub-tabs"><button data-galvista="ejercicios" class="${v?'':'active'}">Ejercicios</button><button data-galvista="videos" class="${v?'active':''}">Vídeos (${nVideos})</button></div>`;
+}
+async function tplGaleriaVideos(){
+  const vids = await getVideoLib(), exs = await getExLib(), secciones = await getSecciones();
+  const q = nutriNorm(state.galFiltro || ''), filtro = state.vidSec || '';
+  const lista = vids.filter(v=>(!q || nutriNorm(v.name).includes(q)) && (!filtro || (filtro === '__sin__' ? !v.seccion : v.seccion === filtro)))
+    .sort((a,b)=>a.name.localeCompare(b.name, 'es'));
+  const faltan = SECCIONES_VIDEO_SUGERIDAS.filter(s=>!secciones.includes(s));
+  const cuenta = s=>vids.filter(v=>s === '__sin__' ? !v.seccion : v.seccion === s).length;
+  let html = tplGaleriaPestanas(vids.length) + `<div class="card"><h2>Galería de vídeos</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:12px;">Todos tus vídeos, solo por nombre: pulsa ▶ para verlo, cambia el nombre cuando quieras y clasifícalo por sección. Al subir un vídeo se crea su ejercicio automáticamente.</p>
+    <input type="text" id="galBuscador" placeholder="Buscar vídeo…" value="${escapeHtml(state.galFiltro||'')}" style="width:100%;margin-bottom:12px;">
+    <button class="btn" id="galSubirVariosBtn">⇈ Subir vídeos</button>
+    <div class="gal-secs" style="margin-top:12px;"><button type="button" class="gs-chip ${filtro===''?'on':''}" data-vidsec="">Todos (${vids.length})</button>
+      ${secciones.map(s=>`<button type="button" class="gs-chip ${filtro===s?'on':''}" data-vidsec="${escapeHtml(s)}">${escapeHtml(s)} (${cuenta(s)})</button>`).join('')}
+      <button type="button" class="gs-chip ${filtro==='__sin__'?'on':''}" data-vidsec="__sin__">Sin sección (${cuenta('__sin__')})</button></div>
+    ${faltan.length ? `<div class="rd-zona rd-ambar" style="margin-top:12px;"><div><b>Faltan secciones sugeridas</b><span>${faltan.map(escapeHtml).join(' · ')}</span><button type="button" class="btn small" id="vidCrearSecciones" style="margin-top:8px;">Crear las ${faltan.length} secciones</button></div></div>` : ''}</div>`;
+  if(!lista.length) return html + `<div class="card"><div class="empty">${vids.length ? 'Ningún vídeo coincide.' : 'Todavía no has subido ningún vídeo.'}</div></div>`;
+  const grupos = [...secciones, '__sin__'];
+  grupos.forEach(g=>{
+    const items = lista.filter(v=>g === '__sin__' ? (!v.seccion || !secciones.includes(v.seccion)) : v.seccion === g);
+    if(!items.length) return;
+    html += `<div class="card vid-grupo"><div class="block-title" style="margin-top:0;border-top:none;padding-top:0;">${g === '__sin__' ? 'Sin sección' : escapeHtml(g)} · ${items.length}</div>` + items.map(v=>{
+      const ex = ejercicioDeVideo(exs, v);
+      return `<div class="vid-fila" data-vidfila="${v.id}">
+        <div class="row" style="gap:8px;align-items:center;flex-wrap:nowrap;"><button type="button" class="btn small" data-vidplay="${v.id}" title="Ver el vídeo">▶</button>
+          <input type="text" class="vid-nombre" data-vid="${v.id}" value="${escapeHtml(v.name)}" style="flex:1;min-width:0;font-weight:600;"><button type="button" class="btn ghost small" data-viddel="${v.id}" title="Eliminar vídeo">✕</button></div>
+        <div class="row" style="gap:8px;margin-top:6px;align-items:center;flex-wrap:wrap;">
+          <select class="vid-sec" data-vid="${v.id}"><option value="">Sin sección</option>${secciones.map(s=>`<option value="${escapeHtml(s)}" ${v.seccion===s?'selected':''}>${escapeHtml(s)}</option>`).join('')}</select>
+          <span class="vi-size">${v.size>1024?(v.size/1024).toFixed(1)+' MB':v.size+' KB'}</span>
+          ${ex ? `<span class="vid-ej">Ejercicio: ${escapeHtml(ex.name||'sin nombre')}</span>` : `<button type="button" class="btn ghost small" data-vidcrear="${v.id}">+ Crear ejercicio</button>`}</div></div>`;
+    }).join('') + `</div>`;
+  });
+  return html;
+}
+function bindVideosGaleria(){
+  document.querySelectorAll('[data-galvista]').forEach(b=>b.addEventListener('click', ()=>{ state.galVista = b.dataset.galvista; renderScrollTop(); }));
+  document.querySelectorAll('[data-vidsec]').forEach(b=>b.addEventListener('click', ()=>{ state.vidSec = b.dataset.vidsec; renderKeepScroll(); }));
+  document.querySelectorAll('[data-vidplay]').forEach(b=>b.addEventListener('click', async ()=>{ const v = (await getVideoLib()).find(x=>x.id === b.dataset.vidplay); if(v) abrirVideo(v.url, v.name); }));
+  document.querySelectorAll('.vid-nombre').forEach(inp=>inp.addEventListener('change', async ()=>{
+    const nuevo = inp.value.trim(); if(!nuevo){ toast('El nombre no puede quedar vacío', true); renderKeepScroll(); return; }
+    const vids = await getVideoLib(), v = vids.find(x=>x.id === inp.dataset.vid); if(!v) return;
+    v.name = nuevo; await saveVideoLib(vids);
+    const exs = await getExLib(); let cambio = false;      // los ejercicios de la galería que lo usan muestran el nombre nuevo
+    exs.forEach(e=>{ const vs = videosDe(e); let toca = false; vs.forEach(x=>{ if((x.id && x.id === v.id) || x.url === v.url){ x.name = nuevo; toca = true; } }); if(toca){ fijaVideos(e, vs); cambio = true; } });
+    if(cambio) await saveExLib(exs);
+    toast('Nombre actualizado');
+  }));
+  document.querySelectorAll('.vid-sec').forEach(sel=>sel.addEventListener('change', async ()=>{
+    const vids = await getVideoLib(), v = vids.find(x=>x.id === sel.dataset.vid); if(!v) return;
+    v.seccion = sel.value; await saveVideoLib(vids);
+    if(sel.value){ const exs = await getExLib(), e = ejercicioDeVideo(exs, v);
+      if(e && !seccionesDe(e).includes(sel.value)){ e.sections = seccionesDe(e).concat(sel.value); delete e.section; await saveExLib(exs); } }
+    toast('Clasificado'); renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-viddel]').forEach(b=>b.addEventListener('click', async ()=>{
+    const v = (await getVideoLib()).find(x=>x.id === b.dataset.viddel); if(!v) return;
+    if(!confirm(`¿Eliminar "${v.name}" de la galería de vídeos?\n\nLos ejercicios de la galería dejarán de mostrarlo; las rutinas ya enviadas conservan su copia hasta que se actualicen.`)) return;
+    await quitaVideoDeEjercicios(v); await borrarVideo(v); toast('Vídeo eliminado'); renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-vidcrear]').forEach(b=>b.addEventListener('click', async ()=>{
+    const v = (await getVideoLib()).find(x=>x.id === b.dataset.vidcrear); if(!v) return;
+    const r = await crearEjercicioDesdeVideo(v, v.seccion || '');
+    toast(r.creado ? `Ejercicio «${r.ex.name}» creado` : `Vídeo añadido al ejercicio «${r.ex.name}»`); renderKeepScroll();
+  }));
+  const crear = document.getElementById('vidCrearSecciones');
+  if(crear) crear.addEventListener('click', async ()=>{
+    const sec = await getSecciones(); const ok = await saveSecciones(sec.concat(SECCIONES_VIDEO_SUGERIDAS.filter(s=>!sec.includes(s))));
+    toast(ok ? 'Secciones creadas' : 'No se pudo guardar', !ok); if(ok) renderKeepScroll();
+  });
+}
+// ----- Eliminar una sección: solo la sección, o con sus ejercicios (y vídeos) -----
+function dialogoBorrarSeccion(sec, enSec, soloAqui, vidsABorrar){
+  return new Promise(resolve=>{
+    const prev = document.getElementById('secBorrarBack'); if(prev) prev.remove();
+    const back = document.createElement('div'); back.id = 'secBorrarBack'; back.className = 'modal-back'; document.body.appendChild(back);
+    const cierra = r=>{ back.remove(); resolve(r); };
+    back.innerHTML = `<div class="modal"><h2 style="font-family:'Fraunces',serif;font-size:17px;margin-bottom:8px;">Eliminar la sección «${escapeHtml(sec)}»</h2>
+      <p style="font-size:13px;line-height:1.6;color:var(--muted);">${enSec} ejercicio${enSec===1?'':'s'} en esta sección.</p>
+      <button type="button" class="btn ghost" id="secBorrSolo" style="width:100%;margin-top:12px;text-align:left;">Solo la sección<br><span style="font-weight:400;font-size:12px;">Los ejercicios pasan a «Sin sección»; no se borra nada más.</span></button>
+      <button type="button" class="btn danger" id="secBorrTodo" style="width:100%;margin-top:10px;text-align:left;">La sección y sus ejercicios<br><span style="font-weight:400;font-size:12px;">Se borran ${soloAqui} ejercicio${soloAqui===1?'':'s'}${enSec-soloAqui ? ` (${enSec-soloAqui} que también están en otras secciones se conservan)` : ''}.</span></button>
+      ${vidsABorrar ? `<label class="q-config-item" style="margin-top:8px;align-items:flex-start;"><input type="checkbox" id="secBorrVids"><span style="font-size:12.5px;line-height:1.5;">Borrar también sus <b>${vidsABorrar} vídeo${vidsABorrar===1?'':'s'}</b> de la galería de vídeos. Solo se aplica a «La sección y sus ejercicios».</span></label>` : ''}
+      <button type="button" class="btn ghost" id="secBorrNo" style="width:100%;margin-top:12px;">Cancelar</button></div>`;
+    back.addEventListener('click', e=>{ if(e.target === back) cierra(null); });
+    document.getElementById('secBorrNo').addEventListener('click', ()=>cierra(null));
+    document.getElementById('secBorrSolo').addEventListener('click', ()=>cierra({ modo:'solo', videos:false }));
+    document.getElementById('secBorrTodo').addEventListener('click', ()=>{ const c = document.getElementById('secBorrVids'); cierra({ modo:'todo', videos: !!(c && c.checked) }); });
+  });
+}
+async function eliminarSeccionGaleria(sec){
+  const exs = await getExLib(), vids = await getVideoLib();
+  const enSec = exs.filter(e=>seccionesDe(e).includes(sec)), soloAqui = enSec.filter(e=>seccionesDe(e).length === 1), quedan = exs.filter(e=>!soloAqui.includes(e));
+  // vídeos que se irían con la sección: los clasificados en ella y los de los ejercicios borrados que ningún otro ejercicio usa
+  const usadoPorOtro = v=>quedan.some(e=>videosDe(e).some(x=>(x.id && x.id === v.id) || x.url === v.url));
+  const vidsBorrar = vids.filter(v=>v.seccion === sec || (soloAqui.some(e=>videosDe(e).some(x=>(x.id && x.id === v.id) || x.url === v.url)))).filter(v=>!usadoPorOtro(v));
+  const r = await dialogoBorrarSeccion(sec, enSec.length, soloAqui.length, vidsBorrar.length);
+  if(!r) return false;
+  const secciones = (await getSecciones()).filter(s=>s !== sec);
+  if(!(await saveSecciones(secciones))){ toast('No se pudo eliminar', true); return false; }
+  let nuevaLib = exs.filter(e=>r.modo !== 'todo' || !soloAqui.includes(e));
+  nuevaLib.forEach(e=>{ e.sections = seccionesDe(e).filter(x=>x !== sec); delete e.section; });
+  await saveExLib(nuevaLib);
+  if(r.modo === 'todo' && r.videos){ for(const v of vidsBorrar){ await borrarVideo(v); } }
+  const resto = await getVideoLib(); let cambio = false;
+  resto.forEach(v=>{ if(v.seccion === sec){ v.seccion = ''; cambio = true; } });
+  if(cambio) await saveVideoLib(resto);
+  toast(r.modo === 'todo' ? `Sección y ${soloAqui.length} ejercicio${soloAqui.length===1?'':'s'} eliminados${r.videos ? ` · ${vidsBorrar.length} vídeo${vidsBorrar.length===1?'':'s'}` : ''}` : 'Sección eliminada');
+  return true;
 }
 
 async function abrirGaleriaVideoParaItem(exLibId){
@@ -12705,7 +13109,7 @@ async function abrirGaleriaVideoParaItem(exLibId){
     const libEx = await getExLib();
     const ex = libEx.find(x=>x.id===exLibId);
     if(!ex) return;
-    ex.videoUrl = v ? v.url : ''; ex.videoName = v ? v.name : '';
+    anadeVideo(ex, v);
     const ok = await saveExLib(libEx);
     toast(ok ? (v?'Vídeo asignado':'Vídeo quitado') : 'No se pudo guardar', !ok);
     cerrar();
@@ -12747,7 +13151,7 @@ async function abrirGaleriaVideoParaItem(exLibId){
     const v = (await getVideoLib()).find(x=>x.id===b.dataset.galdel);
     if(!v) return;
     if(!confirm(`¿Eliminar "${v.name}" de la galería de vídeos?\n\nLos ejercicios que lo usen dejarán de mostrarlo.`)) return;
-    await borrarVideo(v);
+    await quitaVideoDeEjercicios(v); await borrarVideo(v);
     toast('Vídeo eliminado');
     abrirGaleriaVideoParaItem(exLibId);
   }));
@@ -12786,7 +13190,7 @@ async function abrirGaleria(exId, athleteId){
     let encontrado = false;
     DAYS.forEach(d=>BLOCKS.forEach(b=>{
       const ex = draft.days[d][b.key].find(x=>x.id===exId);
-      if(ex){ ex.videoUrl = v ? v.url : ''; ex.videoName = v ? v.name : ''; encontrado = true; }
+      if(ex){ anadeVideo(ex, v); encontrado = true; }
     }));
     if(!encontrado) return;
     const ok = await saveRoutine(athleteId, true, draft);
@@ -12821,7 +13225,7 @@ async function abrirGaleria(exId, athleteId){
     const v = (await getVideoLib()).find(x=>x.id===b.dataset.galdel);
     if(!v) return;
     if(!confirm(`¿Eliminar "${v.name}" de la galería?\n\nLos ejercicios que lo usen dejarán de mostrarlo.`)) return;
-    await borrarVideo(v);
+    await quitaVideoDeEjercicios(v); await borrarVideo(v);
     toast('Vídeo eliminado');
     abrirGaleria(exId, athleteId);
   }));
@@ -12970,7 +13374,12 @@ async function abrirGaleriaEjercicios(dia, bloque, athleteId){
         toast('No se encontró ese día en la rutina. Cierra y ábrela de nuevo.', true);
         return;
       }
-      plantillas.forEach(pl=>{ draft.days[dia][bloque].push(desdePlantilla(pl)); });
+      const nuevoGrupo = {};
+      plantillas.forEach(pl=>{
+        const ex = desdePlantilla(pl);
+        if(pl.grupoId){ nuevoGrupo[pl.grupoId] = nuevoGrupo[pl.grupoId] || ('g'+uid()); ex.grupoId = nuevoGrupo[pl.grupoId]; ex.grupoTipo = pl.grupoTipo || 'superserie'; ex.grupoNombre = pl.grupoNombre || ''; }
+        draft.days[dia][bloque].push(ex);
+      });
       const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
       toast(ok ? `${plantillas.length} ejercicio${plantillas.length===1?'':'s'} añadido${plantillas.length===1?'':'s'}` : 'No se pudo guardar: revisa la conexión', !ok);
       cerrar();
@@ -13713,18 +14122,23 @@ async function bindDynamicEvents(){
   document.querySelectorAll('[data-gymsubir]').forEach(b=>b.addEventListener('click', async ()=>{
     const carpetaId = b.dataset.gymsubir;
     const input = document.querySelector(`.gym-file[data-carpeta="${carpetaId}"]`);
-    const f = input && input.files[0];
-    if(!f){ toast('Elige una foto o vídeo primero', true); return; }
+    const files = input ? [...(input.files || [])] : [];
+    if(!files.length){ toast('Elige una foto o vídeo primero', true); return; }
     b.textContent='Subiendo…'; b.disabled=true;
     try{
-      const item = await subirArchivoGym(f);
       const gym = await getGym(athleteId);
       const c = gym.carpetas.find(x=>x.id===carpetaId);
       if(!c) throw new Error('carpeta no encontrada');
-      c.items.push(item);
+      for(let k=0;k<files.length;k++){
+        if(files.length > 1) toast(`Subiendo ${k+1} de ${files.length}…`);
+        const archivo = /^image\//.test(files[k].type || '') ? await comprimeImagen(files[k]) : files[k];
+        const item = await subirArchivoGym(archivo);
+        item.por = state.role === 'coach' ? 'entrenador' : 'atleta';
+        c.items.push(item);
+      }
       const ok = await saveGym(athleteId, gym);
       if(!ok) throw new Error('no se pudo guardar');
-      toast('Subido');
+      toast(files.length > 1 ? `${files.length} archivos subidos` : 'Subido');
       state.gymCarpetaAbierta = carpetaId;
       renderKeepScroll();
     }catch(e){
@@ -14132,31 +14546,7 @@ async function bindDynamicEvents(){
     if(nuevaAcc) bindGalSeccionAcc(nuevaAcc);
   });
   document.querySelectorAll('[data-galborrarseccion]').forEach(b=>b.addEventListener('click', async ()=>{
-    const sec = b.dataset.galborrarseccion;
-    const accSec = document.querySelector(`[data-galsec="${CSS.escape(sec)}"]`);
-    const dentro = accSec ? accSec.querySelectorAll('.gal-item').length : 0;
-    if(!confirm(`¿Eliminar la sección "${sec}"?${dentro?`\n\nLos ${dentro} ejercicios que tiene pasarán a "Sin sección", no se borran.`:''}`)) return;
-    const secciones = (await getSecciones()).filter(s=>s!==sec);
-    const ok = await saveSecciones(secciones);
-    if(!ok){ toast('No se pudo eliminar', true); return; }
-    // Los ejercicios que tuviera pasan a "Sin sección", tanto en la base
-    // (queda como sección vacía "sec" que ya no existe, se recalculará como
-    // sin sección en la próxima carga) como visualmente ahora mismo.
-    (async ()=>{
-      const lib = await getExLib();
-      lib.forEach(e=>{ const q = seccionesDe(e).filter(x=>x!==sec); e.sections = q; delete e.section; });
-      await saveExLib(lib);
-    })();
-    if(accSec){
-      const sinSecBody = document.querySelector('[data-galsec="__sin__"] .gal-lista');
-      accSec.querySelectorAll('.gal-item').forEach(item=>{
-        
-        if(sinSecBody) sinSecBody.appendChild(item);
-      });
-      accSec.remove();
-    }
-    toast('Sección eliminada');
-    actualizaContadoresGal();
+    if(await eliminarSeccionGaleria(b.dataset.galborrarseccion)) renderKeepScroll();
   }));
   // (el borrado, el vídeo y el autoguardado de cada ficha ya quedan
   // conectados por bindGalItem, más abajo — nada que enlazar aquí)
@@ -14432,6 +14822,30 @@ async function bindDynamicEvents(){
     const ok = await saveExLib(lib);
     toast(ok ? `"${encontrado.name}" guardado en la galería` : 'No se pudo guardar', !ok);
   }));
+  document.querySelectorAll('[data-grupoplegar]').forEach(b=>b.addEventListener('click', ()=>{
+    state.gruposPlegados = state.gruposPlegados || {}; const id = b.dataset.grupoplegar;
+    state.gruposPlegados[id] = !state.gruposPlegados[id]; renderKeepScroll();
+  }));
+  document.querySelectorAll('.grupo-nombre').forEach(inp=>inp.addEventListener('change', async ()=>{
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    (draft.days[inp.dataset.day][inp.dataset.block] || []).forEach(x=>{ if(x.grupoId === inp.dataset.grupoid) x.grupoNombre = inp.value.trim(); });
+    draft.updatedAt = new Date().toISOString();
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    toast(ok ? 'Nombre guardado' : 'No se pudo guardar', !ok);
+  }));
+  document.querySelectorAll('[data-guardargrupo]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [dia, bloque, gid] = b.dataset.guardargrupo.split('|');
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    const miembros = (draft.days[dia][bloque] || []).filter(x=>x.grupoId === gid);
+    if(!miembros.length) return;
+    const sugerido = miembros.map(x=>x.grupoNombre).find(Boolean) || miembros.map(x=>x.name||'—').join(' + ');
+    const nombre = prompt('Nombre para guardar esta combinación:', sugerido);
+    if(!nombre || !nombre.trim()) return;
+    const blocks = await getBlockLib();
+    blocks.push({ id: uid(), name: nombre.trim(), section: miembros[0].section || '', kind:'grupo', exercises: miembros.map(plantillaConGrupo) });
+    const ok = await saveBlockLib(blocks);
+    toast(ok ? `«${nombre.trim()}» guardada (${miembros.length} ejercicios): la encuentras en «Desde galería»` : 'No se pudo guardar', !ok);
+  }));
   document.querySelectorAll('[data-saveblock]').forEach(b=>b.addEventListener('click', async ()=>{
     const [dia, bloque] = b.dataset.saveblock.split('|');
     const draft = await getRoutine(athleteId, true, state.planWeek);
@@ -14442,7 +14856,7 @@ async function bindDynamicEvents(){
     if(!nombre || !nombre.trim()) return;
     const blocks = await getBlockLib();
     blocks.push({ id: uid(), name: nombre.trim(), section: lista[0].section||'',
-      exercises: lista.map(plantillaDe) });
+      exercises: lista.map(plantillaConGrupo) });
     const ok = await saveBlockLib(blocks);
     toast(ok ? `Bloque "${nombre.trim()}" guardado (${lista.length} ejercicios)` : 'No se pudo guardar', !ok);
   }));
@@ -14519,6 +14933,13 @@ async function bindDynamicEvents(){
   // --- Vídeos de técnica ---
   document.querySelectorAll('[data-pickvideo]').forEach(b=>b.addEventListener('click', ()=>{
     abrirGaleria(b.dataset.pickvideo, athleteId);
+  }));
+  document.querySelectorAll('[data-vidquitar]').forEach(b=>b.addEventListener('click', async ()=>{
+    const [exId, idx] = b.dataset.vidquitar.split('|');
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    DAYS.forEach(d=>BLOCKS.forEach(bl=>{ const ex = draft.days[d][bl.key].find(x=>x.id===exId); if(ex){ const vs = videosDe(ex); vs.splice(parseInt(idx,10), 1); fijaVideos(ex, vs); } }));
+    const ok = await saveRoutine(athleteId, true, draft, state.planWeek);
+    toast(ok?'Vídeo quitado':'No se pudo guardar', !ok); renderKeepScroll();
   }));
   document.querySelectorAll('[data-unlinkvideo]').forEach(b=>b.addEventListener('click', async ()=>{
     const exId = b.dataset.unlinkvideo;
@@ -14903,6 +15324,7 @@ async function bindDynamicEvents(){
 
   bindEditorCargas(athleteId);
   bindAnalisis(athleteId);
+  bindVideosGaleria();
   bindPistaArrastre(athleteId);
   document.querySelectorAll('[data-qgraf]').forEach(b=>b.addEventListener('click', ()=>{
     state.qGraf = state.qGraf || {}; const k = b.dataset.qgraf;
