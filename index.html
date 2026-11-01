@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0E1622">
+<meta id="metaThemeColor" name="theme-color" content="#F4F2EA">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Umbral">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=marca3">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=marca3">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=marca4">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=marca4">
 <title>Umbral — Seguimiento de atletas</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -431,19 +431,19 @@
   .day-tools select{padding:6px 9px;font-size:13px;}
   .chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   /* ---------- PANTALLA DE ENTRADA ---------- */
-  .splash{position:fixed;inset:0;z-index:400;background:#1B2A49;display:flex;flex-direction:column;
+  .splash{position:fixed;inset:0;z-index:400;background:#F4F2EA;display:flex;flex-direction:column;
     align-items:center;justify-content:center;gap:0;transition:opacity .45s ease, visibility .45s;}
   .splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
   .splash-mark{width:min(42vw,180px);height:auto;overflow:visible;}
-  .sp-outline{stroke:#3A4A6B;stroke-width:2.5;fill:none;}
+  .sp-outline{stroke:#CFC8B2;stroke-width:2.5;fill:none;}
   .sp-ring{fill:none;stroke:#C9A227;stroke-width:2;opacity:0;transform-origin:50px 52px;
     animation:spRipple 1.1s ease 1.35s forwards;}
   .sp-floor{opacity:0;transform-origin:50px 90px;animation:spFloor .5s cubic-bezier(.2,.8,.3,1) .1s forwards;}
   .sp-fill{transform:translateY(96px);animation:spFill 1.05s cubic-bezier(.32,.72,.24,1) .5s forwards;}
   .splash-word{margin-top:26px;font-family:'Fraunces',serif;font-size:25px;font-weight:600;
-    color:#F4F2EA;letter-spacing:0.2em;opacity:0;animation:spWord .55s ease 1.55s forwards;}
+    color:#1B2A49;letter-spacing:0.2em;opacity:0;animation:spWord .55s ease 1.55s forwards;}
   .splash-sub{margin-top:9px;font-family:'Fraunces',serif;font-style:italic;font-weight:400;
-    font-size:14.5px;color:#C9A227;letter-spacing:0.02em;opacity:0;animation:spWord .55s ease 1.85s forwards;}
+    font-size:14.5px;color:#856210;letter-spacing:0.02em;opacity:0;animation:spWord .55s ease 1.85s forwards;}
   @keyframes spFill{to{transform:translateY(0);}}
   @keyframes spFloor{from{opacity:0;transform:scaleX(0);}to{opacity:1;transform:scaleX(1);}}
   @keyframes spRipple{0%{opacity:.55;transform:scale(.55);}100%{opacity:0;transform:scale(2.2);}}
@@ -814,6 +814,92 @@
   .mini-nom{flex:1;min-width:0;font-weight:600;}
   .mini-plan{flex:none;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);}
   .mini-hecho{flex:none;width:64px;text-align:center;}
+    .omit-btn{background:transparent;border:none;color:var(--muted);font-family:inherit;font-size:12px;text-decoration:underline;cursor:pointer;padding:8px 0 2px;}
+  .omit-banner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;padding:7px 10px;background:var(--panel3);border-radius:8px;font-size:12.5px;}
+  .omit-banner>span{font-weight:700;color:var(--warn);}
+  .omit-banner select{flex:1;min-width:120px;font-size:12px;}
+  .omit-banner .omit-btn{padding:2px 4px;}
+  .omit-fuera{text-align:right;margin:-6px 4px 10px;}
+  .ex-view-card.omitido{opacity:.62;}
+  .ex-view-card.omitido h4{text-decoration:line-through;color:var(--muted);}
+    .mn-omit{margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .mn-omit .mn-motivo{display:none;flex:1;min-width:120px;font-size:12px;}
+  .ex-card.omitido .mn-motivo{display:block;}
+  .ex-card.omitido{opacity:.7;}
+    .res-fila .res-chip:last-child:nth-child(odd){grid-column:1/-1;}
+  .omit-motivos{font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .omit-alerta{font-size:12px;color:var(--warn);font-weight:600;margin:6px 0 2px;}
+  .omit-lista{margin:6px 0 0 16px;font-size:12.5px;line-height:1.7;}
+    .tend-min{font-size:11.5px;color:var(--muted);line-height:1.6;margin:8px 0 12px;}
+  
+  /* Análisis de salto por vídeo */
+  .sj-card .sj-sub,.sj-sub{font-size:12px;color:var(--muted);line-height:1.6;margin:6px 0;}
+  .sj-linea{font-size:11.5px;color:var(--muted);margin-top:3px;}
+  .sj-del{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:2px 6px;float:right;}
+  .sj-graf-tit{font-size:12px;font-weight:600;margin-bottom:4px;}
+  .sj-back{position:fixed;inset:0;z-index:260;background:var(--bg);}
+  .sj-panel{display:flex;flex-direction:column;height:100%;max-width:720px;margin:0 auto;}
+  .sj-top{display:flex;justify-content:space-between;align-items:center;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 8px;}
+  .sj-tit{font-family:'Fraunces',serif;font-size:19px;font-weight:600;}
+  .sj-x{background:var(--panel2);border:none;color:var(--ink);width:34px;height:34px;border-radius:50%;font-size:15px;cursor:pointer;}
+  .sj-pasos{display:flex;gap:6px;padding:0 16px 10px;}
+  .sj-pasos span{flex:1;display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);border-bottom:2px solid var(--border);padding-bottom:7px;}
+  .sj-pasos span.on{color:var(--accent);border-color:var(--accent);font-weight:700;}
+  .sj-pasos i{width:18px;height:18px;border-radius:50%;background:var(--panel2);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:10px;font-weight:700;}
+  .sj-pasos span.on i,.sj-pasos span.hecho i{background:var(--accent);color:var(--on-accent);}
+  .sj-cuerpo{flex:1;overflow-y:auto;padding:0 16px calc(28px + env(safe-area-inset-bottom,0px));}
+  .sj-guia{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:12px;}
+  .sj-guia>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);}
+  .sj-guia ul{margin:8px 0 2px 16px;font-size:12.5px;line-height:1.65;}
+  .sj-subir{display:flex;justify-content:center;align-items:center;gap:6px;cursor:pointer;width:100%;}
+  .sj-carga{text-align:center;padding:36px 0;color:var(--muted);font-size:13px;}
+  .sj-spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;margin:0 auto 12px;animation:sjgira .8s linear infinite;}
+  @keyframes sjgira{to{transform:rotate(360deg);}}
+  .sj-error{color:var(--danger);font-size:12.5px;line-height:1.6;margin:10px 0;}
+  .sj-visor-mini{background:#000;border-radius:12px;overflow:hidden;margin:12px 0;display:flex;justify-content:center;}
+  .sj-visor-mini video{max-width:100%;max-height:32vh;display:block;}
+  .sj-lab{font-size:13px;font-weight:700;margin-bottom:2px;}
+  .sj-fps-otro{width:76px;text-align:center;}
+  .sj-margen{font-size:12px;line-height:1.7;margin:10px 0;padding:10px 12px;background:var(--panel2);border-radius:10px;}
+  .sj-aviso-in{color:var(--warn);}
+  .sj-sig{width:100%;margin-top:6px;}
+  .sj-calidad{display:inline-block;font-size:11px;font-weight:700;border-radius:100px;padding:2px 10px;}
+  .sj-calidad.ok{background:var(--accent-dim);color:var(--accent);}
+  .sj-calidad.aviso{background:var(--panel3);color:var(--warn);}
+  .sj-calidad.mal{background:var(--panel3);color:var(--danger);}
+  .sj-visor{position:relative;background:#000;border-radius:12px;overflow:hidden;touch-action:none;}
+  .sj-slot{display:flex;align-items:center;justify-content:center;min-height:200px;max-height:44vh;overflow:hidden;}
+  .sj-slot video{max-width:100%;max-height:44vh;display:block;transform-origin:center;will-change:transform;}
+  .sj-hud{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:14px 12px 7px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#F4F2EA;background:linear-gradient(transparent,rgba(0,0,0,.7));pointer-events:none;}
+  .sj-zoom{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:10px 0 4px;font-size:11.5px;color:var(--muted);}
+  .sj-linea-tiempo{position:relative;margin:8px 0 2px;}
+  .sj-linea-tiempo input[type=range]{width:100%;accent-color:var(--accent);margin:0;}
+  .sj-ticks{position:relative;height:9px;}
+  .sj-tick{position:absolute;top:0;width:3px;height:9px;border-radius:2px;transform:translateX(-1px);}
+  .sj-tick.d{background:#3fa55a;} .sj-tick.a{background:var(--danger);} .sj-tick.c{background:var(--warn);}
+  .sj-ctrl{display:grid;grid-template-columns:1fr 1.1fr 1.5fr 1.1fr 1fr;gap:6px;margin:10px 0;}
+  .sj-ctrl button{padding:13px 2px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;cursor:pointer;}
+  .sj-ctrl .sj-play{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+  .sj-marcar{display:flex;gap:8px;margin:8px 0;}
+  .sj-m{flex:1;padding:15px 4px;border-radius:12px;border:none;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit;color:#fff;}
+  .sj-m-d{background:#3b8f55;} .sj-m-a{background:#b5483c;} .sj-m-c{background:#a9801f;}
+  .sj-estado{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;}
+  .sj-pill{border-radius:100px;padding:5px 11px;font-size:12px;font-family:'IBM Plex Mono',monospace;border:1px solid var(--border);background:var(--panel);color:var(--ink);cursor:pointer;}
+  .sj-pill.vacio{color:var(--muted);border-style:dashed;cursor:default;}
+  .sj-pill.d{border-color:#3b8f55;} .sj-pill.a{border-color:#b5483c;} .sj-pill.c{border-color:#a9801f;}
+  .sj-pill i{font-style:normal;margin-left:8px;color:var(--muted);}
+  .sj-guia-paso{font-size:12.5px;line-height:1.65;padding:10px 12px;background:var(--panel2);border-radius:10px;}
+  .sj-res-cab{text-align:center;padding:18px 10px 14px;background:var(--panel);border:1px solid var(--border);border-radius:16px;}
+  .sj-grande{font-family:'Fraunces',serif;font-size:58px;font-weight:700;color:var(--accent);line-height:1;}
+  .sj-grande span{font-size:20px;font-weight:500;color:var(--muted);}
+  .sj-pm{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin:8px 0;}
+  .sj-datos{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+  .sj-dato{background:var(--panel2);border-radius:10px;padding:10px 12px;}
+  .sj-dato b{display:block;font-family:'IBM Plex Mono',monospace;font-size:20px;color:var(--ink);}
+  .sj-dato span{font-size:11px;color:var(--muted);line-height:1.4;} .sj-dato span i{font-style:normal;color:var(--accent);}
+  .sj-nota{font-size:11.5px;color:var(--muted);line-height:1.6;margin:8px 0;}
+  .sj-aviso{font-size:12.5px;line-height:1.6;padding:9px 12px;border-radius:10px;margin-top:8px;background:var(--panel3);}
+  .sj-aviso.mal{border-left:3px solid var(--danger);} .sj-aviso.aviso{border-left:3px solid var(--warn);}
   .rd-explica{background:var(--panel3);border-radius:8px;padding:10px 12px;margin-top:10px;}
   .rd-explica b{display:block;font-size:12px;color:var(--accent);margin-bottom:4px;}
   .rd-explica p{font-size:12px;color:var(--ink);line-height:1.6;}
@@ -857,6 +943,14 @@
     }catch(e){}
   })();
 </script>
+<script>
+// El color de la barra del sistema (y del arranque en Android) sigue al tema: marino profundo en oscuro, blanco roto en claro.
+(function(){
+  const meta = document.getElementById('metaThemeColor'); if(!meta) return;
+  const aplica = ()=>{ meta.setAttribute('content', document.body.classList.contains('theme-dark') ? '#0E1622' : '#F4F2EA'); };
+  aplica(); new MutationObserver(aplica).observe(document.body, { attributes:true, attributeFilter:['class'] });
+})();
+</script>
 <div id="splash" class="splash">
   <svg class="splash-mark" viewBox="0 0 100 100" aria-hidden="true">
     <defs><clipPath id="splashU">
@@ -867,7 +961,7 @@
     <path class="sp-outline" d="M26 18 L26 62 L50 82 L50 64 L40 56 L40 18 Z"/>
     <path class="sp-outline" d="M74 18 L74 62 L50 82 L50 64 L60 56 L60 18 Z"/>
     <g clip-path="url(#splashU)"><g class="sp-fill">
-      <rect x="18" y="8" width="32" height="92" fill="#F4F2EA"/>
+      <rect x="18" y="8" width="32" height="92" fill="#1B2A49"/>
       <rect x="50" y="8" width="32" height="92" fill="#C9A227"/>
     </g></g>
     <rect class="sp-floor" x="20" y="88" width="60" height="3.5" rx="1.75" fill="#C9A227"/>
@@ -4503,7 +4597,7 @@ function cierraAcum(acum, items){
   CICLO_BLOQUES.forEach(b=>acum[b].ciclos.forEach(c=>todos.add(c)));
   return { global, bloques, patrones, ciclosConDatos: todos.size, total: CICLO_BLOQUES.reduce((s,b)=>s+acum[b].n,0) };
 }
-function calculaTendenciaCiclo(ciclo, respuestas, readinessLog){
+function calculaTendenciaCiclo(ciclo, respuestas, readinessLog, entrenos){
   const itemsS = CICLO_ITEMS.map(i=>i.id);
   const acS = nuevoAcum(itemsS);
   let pendientes = 0, mixtas = 0, sinDatos = 0;
@@ -4530,7 +4624,21 @@ function calculaTendenciaCiclo(ciclo, respuestas, readinessLog){
     acumula(acD, b, f.inicioCiclo, dia);
   });
   const diario = Object.assign(cierraAcum(acD, itemsD), { pendientes:pendD, items:itemsD });
-  return { semanal, diario, ciclos: estadisticasCiclo(ciclo) };
+
+  // Cada entreno: molestias del ciclo (antes), rendimiento frente a lo habitual y calidad (después).
+  const itemsE = CICLO_ENTRENO_ITEMS.map(i=>i.id).concat(CICLO_ENTRENO_DERIVADOS.map(i=>i.id));
+  const acE = nuevoAcum(itemsE);
+  let pendE = 0;
+  (entrenos || []).forEach(e=>{
+    const f = faseEnFecha(ciclo, e.fecha);
+    if(f.sinCicloNatural || f.sinFase) return;
+    const b = bloqueAnalisis(f.fase);
+    if(!b) return;
+    if(f.metodo === 'provisional'){ pendE++; return; }
+    acumula(acE, b, f.inicioCiclo, e.valores);
+  });
+  const sesion = Object.assign(cierraAcum(acE, itemsE), { pendientes:pendE, items:itemsE });
+  return { semanal, diario, sesion, ciclos: estadisticasCiclo(ciclo) };
 }
 
 // ---------- TEXTOS EDUCATIVOS (editables) ----------
@@ -5498,7 +5606,7 @@ async function tplRutinaAtleta(athleteId){
 
 // ---------- SESIÓN (athlete) ----------
 // Test rápido que aparece antes de la sesión si hoy no se ha hecho.
-async function tplReadiness(dia){
+async function tplReadiness(dia, cicloPre){
   const total = totalReadiness(dia);
   const z = zonaReadiness(total);
   if(dia && total !== null && !state.readinessEditar){
@@ -5515,6 +5623,7 @@ async function tplReadiness(dia){
         <div><b>${z.titulo}</b><span>${z.texto}</span></div>
       </div>
       <div class="rd-detalle">${READINESS_ITEMS.map(i=>`<span>${i.label}: <b>${dia[i.id]}</b></span>`).join('')}</div>
+        ${tplCicloPreHtml(cicloPre, false)}
       ${explicaciones.map(t=>`<div class="rd-explica"><b>${escapeHtml(t.titulo)}</b><p>${formateaGuia(t.cuerpo)}</p></div>`).join('')}
       <button class="btn ghost small" id="rdEditar" style="margin-top:12px;">Volver a responder</button>
     </div>`;
@@ -5528,6 +5637,7 @@ async function tplReadiness(dia){
       <div class="scale" data-rd="${i.id}">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${val===n?'sel':''}">${n}</button>`).join('')}</div>
       <div class="scale-labels"><span>1 · ${i.bajo}</span><span>5 · ${i.alto}</span></div></div>`;
   });
+  html += tplCicloPreHtml(cicloPre, true);
   html += `<button class="btn" id="rdGuardar">Guardar y ver la sesión</button></div>`;
   return html;
 }
@@ -5569,7 +5679,9 @@ async function tplSesionEntry(athleteId){
   const paused = await findPausedSession(athleteId);
   const rdLog = await getReadiness(athleteId);
   const rdHoy = readinessDeHoy(rdLog);
-  let html = await tplReadiness(rdHoy);
+  const cicloPre = { aplica: await cicloEntrenoAplica(athleteId) };
+  if(cicloPre.aplica){ const lg = await getCicloEntreno(athleteId); cicloPre.valor = (lg[todayISO()] || {}).molestias; }
+  let html = await tplReadiness(rdHoy, cicloPre);
   html += await tplGlosarioSesion();
   if(paused){
     const hechos = paused.exercises.filter(e=>e.done).length;
@@ -5658,9 +5770,11 @@ function drScale5(key,label){
 
 // Registro de una sesión ya entrenada: sin cronómetro, rellenando a mano.
 async function tplRegistroManual(athleteId, source, selDay){
-  const lista = flattenExercises(source, selDay);
+  const turnos = turnosDelDia(source, selDay), turnoSel = turnoActivo(source, selDay);
+  const lista = flattenExercises(source, selDay, turnoSel);
   const m = state.manual || {};
-  let html = `<div class="card" id="manualCard" style="border-color:var(--accent);">
+  const cicloApl = await cicloEntrenoAplica(athleteId);
+  let html = `<div class="card" id="manualCard" data-ciclo="${cicloApl?1:0}" data-turnosel="${escapeHtml(turnoSel || '')}" style="border-color:var(--accent);">
     <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px;">
       <h2 style="margin:0;">Registrar sesión ya hecha</h2>
       <button class="btn ghost small" id="cancelManualBtn">Cancelar</button>
@@ -5675,6 +5789,9 @@ async function tplRegistroManual(athleteId, source, selDay){
       </div>
     </div>`;
 
+  if(turnos.length >= 2){
+    html += `<div class="day-tools" style="margin:6px 0 10px;"><span class="day-tools-label">Sesión de</span>${turnos.map(t=>`<button type="button" class="btn ${turnoSel===t?'':'ghost'} small" data-mnturno="${escapeHtml(t)}">${t||'Única'}</button>`).join('')}</div>`;
+  }
   if(!lista.length){
     html += `<div class="empty">Ese día no tiene ejercicios planificados. Elige otro arriba o registra sólo la valoración general.</div>`;
   } else {
@@ -5691,8 +5808,10 @@ async function tplRegistroManual(athleteId, source, selDay){
           <div><label class="field-label">RPE</label><input type="text" inputmode="decimal" class="mn-rpe" placeholder="8 · 8-9 · 7,8,9"></div>
           <div><label class="field-label">RIR</label><input type="text" inputmode="decimal" class="mn-rir" value="${escapeHtml(ex.rir||'')}" placeholder="2 · 1-2"></div>
           <div class="full"><label class="field-label">Nota</label><input type="text" class="mn-note" placeholder="Sensación, molestia, ajuste…"></div>
-        </div>
-      </div>`;
+      </div>
+      <div class="mn-omit"><button type="button" class="omit-btn" data-mnomitir="${i}">Omití este ejercicio</button>
+        <select class="mn-motivo"><option value="">Motivo (opcional)</option>${OMIT_MOTIVOS.filter(Boolean).map(m=>`<option value="${escapeHtml(m)}">${m}</option>`).join('')}</select></div>
+    </div>`;
     });
   }
 
@@ -5704,6 +5823,7 @@ async function tplRegistroManual(athleteId, source, selDay){
     ${mnScale5('calidad','Calidad del entreno')}
     ${mnScale5('hidratacion','Control de la hidratación')}
     ${mnScale5('satisfaccion','Satisfacción con el entrenamiento')}
+    ${cicloApl ? mnScale5('molestias', 'Ese día, por el ciclo, ¿cómo notabas el cuerpo?') + mnScale5('rendsesion', CICLO_ENTRENO_ITEMS[1].text) : ''}
     <div class="q-item"><p>Notas del diario</p><textarea id="mnNotes" style="min-height:56px;" placeholder="Sensaciones, molestias, lo que quieras contarle a tu entrenador"></textarea></div>
     <button class="btn" id="saveManualBtn">Guardar en el diario</button>
   </div>`;
@@ -5736,8 +5856,8 @@ function sessionPreviewHtml(routine, day, turno){
       if(g.tipo && g.ejercicios.length >= 2){
         html += `<div class="combi"><div class="combi-cab">
           <span class="combi-tag">${GRUPO_TIPOS[g.tipo]||'Combinada'}</span>
-          <b>${g.ejercicios.map(x=>escapeHtml(x.name||'—')).join(' + ')}</b>
-          <span class="combi-sub">${g.ejercicios[0].series||'—'} vueltas</span>
+          <b>${g.ejercicios[0].grupoNombre ? escapeHtml(g.ejercicios[0].grupoNombre) : g.ejercicios.map(x=>escapeHtml(x.name||'—')).join(' + ')}</b>
+        <span class="combi-sub">${g.ejercicios[0].series||'—'} vueltas</span>
         </div>${g.ejercicios.map((ex,i)=>`<div class="combi-ex"><span class="combi-num">${i+1}</span>
           <div class="combi-det"><b>${escapeHtml(ex.name||'—')}</b>
                ${tplDescripcion(ex, 'combi')}
@@ -6122,6 +6242,15 @@ function recalculaDesdeDetalle(ex){
   ex.patronCarga = patronCarga(ex.setsData);
 }
 
+// «Omití este ejercicio»: no lo hice. Queda anotado en el diario (con el motivo, si
+// lo cuenta) y no cuenta para el progreso ni para el volumen por patrón.
+const OMIT_MOTIVOS = ['', 'Molestia o dolor', 'Sin tiempo', 'Sin material', 'Cansancio', 'Otro'];
+function tplOmitir(ex, i){
+  if(ex.omitido){
+    return `<div class="omit-banner"><span>Omitido</span><select class="omit-motivo" data-exi="${i}"><option value="">Motivo (opcional)</option>${OMIT_MOTIVOS.filter(Boolean).map(m=>`<option value="${escapeHtml(m)}" ${ex.omitidoMotivo===m?'selected':''}>${m}</option>`).join('')}</select><button type="button" class="omit-btn" data-omitir="${i}">Deshacer</button></div>`;
+  }
+  return `<button type="button" class="omit-btn" data-omitir="${i}">Omití este ejercicio</button>`;
+}
 function renderSessionOverlay(){
   const overlay = document.getElementById('sessionOverlay');
   if(!overlay || !session) return;
@@ -6139,6 +6268,7 @@ function renderSessionOverlay(){
   // Agrupamos manteniendo el índice real de cada ejercicio: las vueltas se
   // marcan en conjunto, pero cada ejercicio guarda su propio registro para que
   // el progreso de cada uno se pueda seguir por separado.
+  session.exercises.forEach(e=>{ if(e.omitido && (e.setsDone || []).some(Boolean)) e.omitido = false; });
   const conIndice = session.exercises.map((ex,i)=>({...ex, _i:i}));
   agrupaEjercicios(conIndice).forEach(g=>{
     const primero = g.ejercicios[0];
@@ -6152,12 +6282,12 @@ function renderSessionOverlay(){
       const idxs = g.ejercicios.map(x=>x._i);
       const vueltas = session.exercises[idxs[0]].setsDone.length;
       const hechas = session.exercises[idxs[0]].setsDone;
-      const todoHecho = idxs.every(i=>session.exercises[i].done);
+      const todoHecho = idxs.every(i=>session.exercises[i].done || session.exercises[i].omitido);
       html += `<div class="combi ${todoHecho?'done':''}">
         <div class="combi-cab">
           <span class="combi-tag">${GRUPO_TIPOS[g.tipo]||'Combinada'}</span>
-          <b>${g.ejercicios.map(x=>escapeHtml(x.name||'—')).join(' + ')}</b>
-          <span class="combi-sub">${vueltas} vueltas · descanso ${escapeHtml(primero.rest||'—')}</span>
+          <b>${g.ejercicios[0].grupoNombre ? escapeHtml(g.ejercicios[0].grupoNombre) : g.ejercicios.map(x=>escapeHtml(x.name||'—')).join(' + ')}</b>
+        <span class="combi-sub">${vueltas} vueltas · descanso ${escapeHtml(primero.rest||'—')}</span>
           <div class="set-box" style="margin-top:9px;">${hechas.map((done,si)=>
             `<div class="set-chip ${done?'done':''}" data-grupo="${idxs.join(',')}" data-si="${si}">V${si+1}</div>`).join('')}</div>
         </div>
@@ -6174,7 +6304,8 @@ function renderSessionOverlay(){
               ${tplVideoBtns(ex, 'margin-top:6px;', '▶ Técnica')}
               ${tplVarianteBadge(ex)}
               ${ex.pideGrabacion?`<div class="grabar-badge">🎥 Grábate en este ejercicio y mándamelo</div>`:''}
-              ${tplDetalleSeries(ex, i)}
+        ${tplOmitir(ex, i)}
+        ${tplDetalleSeries(ex, i)}
               <div class="ex-grid" style="margin-top:8px;">
                 <div><label class="field-label">RPE ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9" ${ex.verDetalle?'readonly':''}></div>
                 <div><label class="field-label">Carga usada ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}" ${ex.verDetalle?'readonly':''}></div>
@@ -6191,7 +6322,7 @@ function renderSessionOverlay(){
     g.ejercicios.forEach(exg=>{
     const ex = exg; const i = exg._i;
     const t = exTimer(ex);
-    if(ex.tipo==='running'){ html += tplRunSesion(ex, i); return; }
+    if(ex.tipo==='running'){ html += tplRunSesion(ex, i) + `<div class="omit-fuera">${tplOmitir(ex, i)}</div>`; return; }
     if(ex.juegoCfg && ex.juegoCfg.activo){
       html += `<div class="ex-view-card ${ex.done?'done':''}" data-exi="${i}">
         <h4>${escapeHtml(ex.name)} 🎮</h4>
@@ -6201,11 +6332,12 @@ function renderSessionOverlay(){
             : `<div class="ex-meta"><span>RT medio <b>${ex.juegoResultado.mediaMs} ms</b></span><span>${ex.juegoResultado.aciertos} aciertos</span><span>${ex.juegoResultado.fallos} fallos</span><span>${ex.juegoResultado.falsasAlarmas} falsas alarmas</span></div>`)
           : ''}
         <button class="btn" data-jugarejercicio="${i}" style="width:100%;margin-top:10px;">${ex.juegoResultado?'🎮 Jugar de nuevo':'🎮 Jugar'}</button>
+      ${tplOmitir(ex, i)}
       </div>`;
       return;
     }
-    html += `<div class="ex-view-card ${ex.done?'done':''}" data-exi="${i}">
-      <h4 data-strike="${i}" style="cursor:pointer;">${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}
+    html += `<div class="ex-view-card ${ex.done?'done':''} ${ex.omitido?'omitido':''}" data-exi="${i}">
+        <h4 data-strike="${i}" style="cursor:pointer;">${escapeHtml(ex.name)}</h4>${tipoEtiquetaHtml(ex)}
       ${tplDescripcion(ex)}
       <div class="ex-meta"><span>${ex.series||'—'} x ${escapeHtml(ex.reps||'—')}</span>${ex.load?`<span>Carga <b>${escapeHtml(ex.load)}</b></span>`:''}<span>Descanso ${escapeHtml(ex.rest||'—')}</span><span>RIR ${escapeHtml(ex.rir||'—')}</span><span>RPE obj. ${escapeHtml(ex.rpeTarget||'—')}</span>${ex.tempo?`<span>Tempo ${escapeHtml(ex.tempo)}</span>`:''}</div>
       <div class="set-box">${ex.setsDone.map((done,si)=>`<div class="set-chip ${done?'done':''}" data-exi="${i}" data-si="${si}">S${si+1}</div>`).join('')}</div>
@@ -6216,6 +6348,7 @@ function renderSessionOverlay(){
         ${tplVideoBtns(ex, '', '▶ Ver técnica')}
         ${tplVarianteBadge(ex)}
       </div>
+      ${tplOmitir(ex, i)}
       <div class="ex-grid" style="margin-top:8px;">
         <div><label class="field-label">RPE aplicado ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" inputmode="decimal" class="rpe-applied-input" data-exi="${i}" value="${escapeHtml(ex.rpeTexto || (ex.rpeApplied ?? ''))}" placeholder="8 · 8-9 · 7,8,9" ${ex.verDetalle?'readonly':''}></div>
         <div><label class="field-label">Carga usada ${ex.verDetalle?'<span class=\'sd-calc\'>(de tus series)</span>':''}</label><input type="text" class="load-applied-input" data-exi="${i}" value="${escapeHtml(ex.loadApplied||'')}" placeholder="${escapeHtml(ex.load||'kg')}" ${ex.verDetalle?'readonly':''}></div>
@@ -6352,6 +6485,16 @@ function bindSessionOverlayEvents(){
     const [url, nombre] = b.dataset.playvideo.split('|');
     abrirVideo(url, nombre);
   }));
+  document.querySelectorAll('[data-omitir]').forEach(b=>b.addEventListener('click', ()=>{
+    const ex = session.exercises[parseInt(b.dataset.omitir, 10)]; if(!ex) return;
+    ex.omitido = !ex.omitido;
+    if(ex.omitido){ ex.done = false; ex.setsDone = (ex.setsDone || []).map(()=>false); ex.omitidoMotivo = ex.omitidoMotivo || ''; }
+    else ex.omitidoMotivo = '';
+    renderSessionOverlay();
+  }));
+  document.querySelectorAll('.omit-motivo').forEach(sel=>sel.addEventListener('change', ()=>{
+    const ex = session.exercises[parseInt(sel.dataset.exi, 10)]; if(ex) ex.omitidoMotivo = sel.value;
+  }));
   document.querySelectorAll('.mini-hecho').forEach(inp=>inp.addEventListener('input', ()=>{
     const ex = session.exercises[parseInt(inp.dataset.exi, 10)]; const m = ex && (ex.minis || []).find(x=>x.id === inp.dataset.mid);
     if(m) m.hecho = inp.value.trim();
@@ -6387,6 +6530,64 @@ function bindSessionOverlayEvents(){
   });
   bindSurveyEvents();
 }
+// ---------- EL CICLO EN CADA ENTRENO (antes y después) ----------
+// Dos preguntas rápidas, solo para atletas con ciclo natural: una antes de entrenar
+// (molestias del ciclo) y otra después (rendimiento frente a lo habitual). Se guardan por
+// día con el resto de datos del ciclo y alimentan el cuadro «Cada entreno» de las
+// tendencias por fase, junto con la calidad del entreno que ya se anota en el diario.
+const CICLO_ENTRENO_ITEMS = [
+  { id:'molestias',  corto:'Molestias del ciclo (antes)', text:'Hoy, por el ciclo, ¿cómo notas el cuerpo?',
+    opciones:['Muy molesto, me limita','Bastante molesto','Algo molesto','Casi nada','Nada, me siento perfecta'] },
+  { id:'rendsesion', corto:'Rendimiento vs lo habitual (después)', text:'Comparado con tu nivel habitual, hoy has rendido…',
+    opciones:['Mucho menos de lo habitual','Algo menos','Como siempre','Algo más','Mucho más de lo habitual'] }
+];
+const CICLO_ENTRENO_DERIVADOS = [{ id:'calidad', corto:'Calidad del entreno (después)' }];
+const CICLO_ENTRENO_MIN = 6;   // entrenos por fase para fiarse del cuadro: orientativo, no un umbral científico
+async function cicloEntrenoAplica(athleteId){
+  if(!athleteId) return false;
+  const raw = await safeGet('intake-'+athleteId, true); let genero = '';
+  try{ genero = raw ? (JSON.parse(raw).genero || '') : ''; }catch(e){}
+  if(genero !== 'Mujer') return false;
+  const ciclo = await getCiclo(athleteId);
+  return ciclo.anticonceptivo !== 'combinado';
+}
+async function getCicloEntreno(athleteId){
+  const raw = await safeGet('ciclo-dia-'+athleteId, true);
+  try{ const o = raw ? JSON.parse(raw) : {}; return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }catch(e){ return {}; }
+}
+async function guardaCicloEntreno(athleteId, fecha, parcial){
+  const log = await getCicloEntreno(athleteId);
+  log[fecha] = Object.assign({}, log[fecha] || {}, parcial);
+  return safeSet('ciclo-dia-'+athleteId, JSON.stringify(log), true);
+}
+// Un valor por día, listo para el motor de tendencias.
+function entrenosParaCiclo(cicloDia, journal){
+  const porFecha = {};
+  Object.keys(cicloDia || {}).forEach(f=>{ porFecha[f] = Object.assign({}, cicloDia[f]); });
+  const cal = {};
+  (journal || []).forEach(e=>{
+    if(!e.date) return;
+    if(typeof e.calidad === 'number'){ (cal[e.date] = cal[e.date] || []).push(e.calidad); }
+    if(typeof e.rendsesion === 'number'){ porFecha[e.date] = porFecha[e.date] || {}; if(typeof porFecha[e.date].rendsesion !== 'number') porFecha[e.date].rendsesion = e.rendsesion; }
+  });
+  Object.keys(cal).forEach(f=>{ porFecha[f] = porFecha[f] || {}; porFecha[f].calidad = cal[f].reduce((a,b)=>a+b,0)/cal[f].length; });
+  return Object.keys(porFecha).sort().map(f=>({ fecha:f, valores:porFecha[f] }));
+}
+// Pregunta previa dentro del check-in «Cómo llegas hoy»
+function tplCicloPreHtml(cp, enForm){
+  if(!cp || !cp.aplica) return '';
+  const it = CICLO_ENTRENO_ITEMS[0];
+  if(!enForm){
+    if(typeof cp.valor === 'number') return `<div class="rd-detalle"><span>Ciclo: <b>${cp.valor}</b> · ${escapeHtml(it.opciones[cp.valor-1])}</span></div>`;
+    return `<div class="q-item" id="cicloPreCard" style="margin-top:12px;"><p><b>Una más, por tu ciclo.</b> ${it.text}</p>
+      <div class="scale" data-rdciclo="molestias">${[1,2,3,4,5].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div>
+      <div class="scale-labels"><span>1 · ${escapeHtml(it.opciones[0])}</span><span>5 · ${escapeHtml(it.opciones[4])}</span></div>
+      <button class="btn ghost small" id="rdCicloGuardar" style="margin-top:8px;">Guardar</button></div>`;
+  }
+  return `<div class="q-item"><p>${it.text}</p>
+    <div class="scale" data-rdciclo="molestias">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${cp.valor===n?'sel':''}">${n}</button>`).join('')}</div>
+    <div class="scale-labels"><span>1 · ${escapeHtml(it.opciones[0])}</span><span>5 · ${escapeHtml(it.opciones[4])}</span></div></div>`;
+}
 function tplPostSurvey(){
   return `<div class="card" id="surveyCard" style="margin-top:18px;">
     <h2>Diario de la sesión</h2>
@@ -6399,6 +6600,7 @@ function tplPostSurvey(){
     ${surveyScale5('calidad','Calidad del entreno')}
     ${surveyScale5('hidratacion','Control de la hidratación')}
     ${surveyScale5('satisfaccion','Satisfacción con el entrenamiento')}
+    ${session.cicloAplica ? surveyScale5('rendsesion', CICLO_ENTRENO_ITEMS[1].text) : ''}
     <div class="q-item"><p>Notas adicionales</p><textarea id="surveyNotes" style="min-height:56px;"></textarea></div>
     <button class="btn" id="saveSurvey">Guardar sesión en el diario</button>
   </div>`;
@@ -6410,7 +6612,9 @@ const SURVEY_ETIQUETAS = {
   fatiga:       ['Reventado','Muy cansado','Cansancio normal','Poco cansado','Como si no hubiera entrenado'],
   calidad:      ['Muy mala, no salió nada','Floja','Normal','Buena','Muy buena, todo salió'],
   hidratacion:  ['No bebí casi nada','Poco','Lo normal','Bien','Muy bien, bebí de sobra'],
-  satisfaccion: ['Nada satisfecho','Poco','Normal','Contento','Muy contento']
+  satisfaccion: ['Nada satisfecho','Poco','Normal','Contento','Muy contento'],
+  molestias:    CICLO_ENTRENO_ITEMS[0].opciones,
+  rendsesion:   CICLO_ENTRENO_ITEMS[1].opciones
 };
 function surveyScale5(key,label){
   const et = SURVEY_ETIQUETAS[key];
@@ -6437,14 +6641,15 @@ function bindSurveyEvents(){
     const athleteId = state.athleteAsId || state.selectedId;
     const getVal = (key)=>{ const sc=document.querySelector(`#surveyCard [data-survey="${key}"]`); const sel=sc&&sc.querySelector('button.sel'); return sel?parseInt(sel.dataset.val,10):null; };
     const overallRPE=getVal('overallRPE'), fatiga=getVal('fatiga'), calidad=getVal('calidad'), hidratacion=getVal('hidratacion'), satisfaccion=getVal('satisfaccion');
-    if([overallRPE,fatiga,calidad,hidratacion,satisfaccion].some(v=>v===null)){ alert('Completa todas las escalas antes de guardar.'); return; }
+    const rendsesion = session.cicloAplica ? getVal('rendsesion') : null;
+    if([overallRPE,fatiga,calidad,hidratacion,satisfaccion].some(v=>v===null) || (session.cicloAplica && rendsesion === null)){ alert('Completa todas las escalas antes de guardar.'); return; }
     const notes = document.getElementById('surveyNotes').value.trim();
     // Sin RPE por ejercicio la carga salía 0 pese a haber entrenado. El RPE
     // general sí es obligatorio, así que sirve de base cuando falta el otro.
     const rpeBase = (session.avgExerciseRPE && session.avgExerciseRPE > 0) ? session.avgExerciseRPE : overallRPE;
     const cargaFinal = +(rpeBase * (session.elapsedSec/60)).toFixed(1);
-    const record = { date: todayISO(), day: session.day, durationSeconds: session.elapsedSec,
-      exercises: session.exercises.map(e=>({name:e.name, patrones:patronesDe(e), tipo:e.tipo||'gym', minis:(e.tipo==='circuito' && Array.isArray(e.minis)) ? e.minis.filter(m=>m.name).map(m=>({name:m.name, series:m.series||'', reps:m.reps||'', hecho:m.hecho||''})) : undefined, section:e.section||'',
+    const record = { date: todayISO(), day: session.day, turno: session.turno || '', durationSeconds: session.elapsedSec,
+      exercises: session.exercises.map(e=>({name:e.name, omitido: !!e.omitido, motivo: e.omitido ? (e.omitidoMotivo||'') : '', patrones:patronesDe(e), tipo:e.tipo||'gym', minis:(e.tipo==='circuito' && Array.isArray(e.minis)) ? e.minis.filter(m=>m.name).map(m=>({name:m.name, series:m.series||'', reps:m.reps||'', hecho:m.hecho||''})) : undefined, section:e.section||'',
         rpeApplied:e.rpeApplied, rpeTexto:e.rpeTexto||'',
         rirApplied:e.rirApplied ?? null, rirTexto:e.rirTexto||'',
         loadPlanned:e.load||'', loadApplied:e.loadApplied||'', noteApplied:e.noteApplied||'', done:e.done,
@@ -6462,10 +6667,12 @@ function bindSurveyEvents(){
       cargaDesdeRPEGeneral: !(session.avgExerciseRPE > 0),
       tipoSesion: session.tipoSesion || '',
       overallRPE, fatiga, calidad, hidratacion, satisfaccion, notes };
+    if(session.cicloAplica && rendsesion !== null) record.rendsesion = rendsesion;
     const raw = await safeGet('journal-'+athleteId, true);
     const entries = raw ? JSON.parse(raw) : [];
     entries.push(record);
     await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
+    if(session.cicloAplica && rendsesion !== null) await guardaCicloEntreno(athleteId, record.date, { rendsesion });
     // 1RM continuo: cualquier serie cercana al fallo en un ejercicio marcado
     // como sentadilla/banca/muerto en la galería aporta un punto más a la
     // misma curva que alimentan los tests dedicados — no hace falta esperar
@@ -8073,7 +8280,7 @@ function extraeSeries(entries){
   const porEjercicio = new Map();   // clave normalizada -> { nombre, datos }
   entries.forEach((e, ei)=>{
     (e.exercises||[]).forEach(ex=>{
-      if(!ex.name) return;
+      if(!ex.name || ex.omitido) return;
       const clave = claveEjercicio(ex.name);
       if(!clave) return;
       if(!porEjercicio.has(clave)) porEjercicio.set(clave, { nombre: ex.name.trim(), datos: [] });
@@ -8137,7 +8344,8 @@ async function volumenPorPatron(entries){
     semanas.forEach((sem,k)=>{
       if(entry.date >= sem.lunesIso && entry.date <= sem.domIso){
         (entry.exercises||[]).forEach(ex=>{
-          const pats = patronesDe(ex).length ? patronesDe(ex) : (patronesPorNombre.get(claveEjercicio(ex.name)) || []);
+        if(ex.omitido) return;
+        const pats = patronesDe(ex).length ? patronesDe(ex) : (patronesPorNombre.get(claveEjercicio(ex.name)) || []);
           pats.forEach(p=>{ if(conteo[p]) conteo[p][k]++; });
         });
       }
@@ -9137,6 +9345,7 @@ async function tplResumenAtleta(athleteId){
   const rawQ = await safeGet('quest-'+athleteId, true); let q = []; try{ q = rawQ ? JSON.parse(rawQ) : []; }catch(e){}
   const rawC = await safeGet('call-'+athleteId, true); let call = {}; try{ call = rawC ? JSON.parse(rawC) : {}; }catch(e){}
   const comps = (await getCompeticiones(athleteId)).filter(c=>c.fecha && c.fecha >= hoy).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+    const omit = await omitidosDeAtleta(athleteId, 7);
   const ult = j.length ? j[j.length-1] : null, ultQ = q.length ? q[q.length-1] : null, prox = comps[0];
   const chip = (sub, etq, val)=>`<button type="button" class="res-chip" ${sub?`data-irsub="${sub}"`:''}><span>${etq}</span><b>${val}</b></button>`;
   return `<div class="res-fila">
@@ -9144,6 +9353,7 @@ async function tplResumenAtleta(athleteId){
     ${chip('periodizacion','Próxima competición', prox ? `${escapeHtml(prox.nombre||'Sin nombre')} · ${diasEntre(hoy, prox.fecha)===0?'hoy':'en '+diasEntre(hoy, prox.fecha)+' d'}` : '—')}
     ${chip('cuestionarios','Cuestionario semanal', ultQ ? fechaCortaISO(ultQ.date || ultQ.weekOf) : '—')}
     ${chip('', 'Próxima videollamada', call.nextDate ? fechaCortaISO(call.nextDate) : '—')}
+    ${omit.length ? chip('diario', 'Omitidos (7 días)', `${omit.length} ejercicio${omit.length===1?'':'s'}`) : ''}
   </div>`;
 }
 async function contenidoSeccion(athleteId, k){
@@ -9932,7 +10142,9 @@ async function tplTendenciaCiclo(athleteId, esCoach){
   const rawQ = await safeGet('quest-'+athleteId, true);
   let resp = []; try{ resp = rawQ ? JSON.parse(rawQ) : []; }catch(e){}
   const log = await getReadiness(athleteId);
-  const t = calculaTendenciaCiclo(ciclo, resp, log);
+  const rawJ = await safeGet('journal-'+athleteId, true); let diarioJ = []; try{ diarioJ = rawJ ? JSON.parse(rawJ) : []; }catch(e){}
+  const entrenos = entrenosParaCiclo(await getCicloEntreno(athleteId), diarioJ);
+  const t = calculaTendenciaCiclo(ciclo, resp, log, entrenos);
   const overrides = await getTextosEducativos();
   const metodo = textoEducativo(overrides, 'ciclo_metodo');
   const nota = (n)=>n.toFixed(1).replace('.',',');
@@ -9947,9 +10159,10 @@ async function tplTendenciaCiclo(athleteId, esCoach){
       <div class="kpi"><b>${t.ciclos.nValidos}</b><span>Ciclos válidos</span></div>
       <div class="kpi"><b>${t.semanal.total}</b><span>Semanas validadas</span></div>
       <div class="kpi"><b>${t.diario.total}</b><span>Días con check-in</span></div>
-      <div class="kpi"><b>${t.semanal.pendientes + t.diario.pendientes}</b><span>Pendientes</span></div>
+      <div class="kpi"><b>${t.sesion.total}</b><span>Entrenos con datos</span></div>
+      <div class="kpi"><b>${t.semanal.pendientes + t.diario.pendientes + t.sesion.pendientes}</b><span>Pendientes</span></div>
     </div>`;
-    if(t.semanal.pendientes || t.diario.pendientes){
+    if(t.semanal.pendientes || t.diario.pendientes || t.sesion.pendientes){
       html += `<p style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Lo del ciclo en curso queda <b>pendiente</b> hasta que ${esCoach?'ella registre':'registres'} la próxima regla: sólo entonces se puede situar la ovulación hacia atrás con fiabilidad.</p>`;
     }
     const tabla = (titulo, items, etiqueta, datos, unidad, aviso)=>{
@@ -9969,16 +10182,23 @@ async function tplTendenciaCiclo(athleteId, esCoach){
     };
     html += tabla('Sensaciones semanales', t.semanal.items, k=>CICLO_ITEMS.find(i=>i.id===k).corto, t.semanal, 'sem.', '1 = peor, 5 = mejor.');
     html += tabla('Check-in diario (datos del día, sin sesgo de recuerdo)', t.diario.items, k=>READINESS_ITEMS.find(i=>i.id===k).label, t.diario, 'días', '1 = peor, 5 = mejor. Es la fuente más fiable.');
+      const etiquetaE = k=>(CICLO_ENTRENO_ITEMS.concat(CICLO_ENTRENO_DERIVADOS).find(i=>i.id===k) || {corto:k}).corto;
+      html += tabla('Cada entreno (antes y después)', t.sesion.items, etiquetaE, t.sesion, 'entrenos', '1 = peor, 5 = mejor. En rendimiento, 3 es «como siempre».');
+      if(t.sesion.total){
+        const falta = CICLO_BLOQUES.filter(b=>t.sesion.bloques[b].n < CICLO_ENTRENO_MIN);
+        html += `<p class="tend-min">${falta.length ? 'Para fiarse de este cuadro faltan entrenos en: '+falta.map(b=>`<b>${CICLO_BLOQUE_LABEL[b].toLowerCase()}</b> (${t.sesion.bloques[b].n}/${CICLO_ENTRENO_MIN})`).join(', ')+'.' : 'Ya hay entrenos suficientes en las tres fases.'} El mínimo de ${CICLO_ENTRENO_MIN} por fase es orientativo, no un umbral científico.</p>`;
+      }
 
     const patrones = [].concat(
       t.semanal.patrones.map(p=>Object.assign({fuente:'semanal'}, p)),
-      t.diario.patrones.map(p=>Object.assign({fuente:'diario'}, p))
+      t.diario.patrones.map(p=>Object.assign({fuente:'diario'}, p)),
+      t.sesion.patrones.map(p=>Object.assign({fuente:'sesion'}, p))
     );
-    const ciclosMax = Math.max(t.semanal.ciclosConDatos, t.diario.ciclosConDatos);
+    const ciclosMax = Math.max(t.semanal.ciclosConDatos, t.diario.ciclosConDatos, t.sesion.ciclosConDatos);
     html += `<div class="block-title">Patrones</div>`;
     if(patrones.length){
       html += patrones.map(p=>{
-        const lab = p.fuente==='semanal' ? CICLO_ITEMS.find(i=>i.id===p.item).corto : READINESS_ITEMS.find(i=>i.id===p.item).label;
+        const lab = p.fuente==='semanal' ? CICLO_ITEMS.find(i=>i.id===p.item).corto : (p.fuente==='sesion' ? etiquetaE(p.item) : READINESS_ITEMS.find(i=>i.id===p.item).label);
         return `<p style="font-size:13px;margin-bottom:6px;"><b>${escapeHtml(lab)}</b>: ${p.diff<0?'peor':'mejor'} en fase ${CICLO_BLOQUE_LABEL[p.bloque].toLowerCase()} (${nota(p.media)} frente a ${esCoach?'su':'tu'} media de ${nota(p.global)}).</p>`;
       }).join('');
     } else if(ciclosMax >= 2){
@@ -10101,12 +10321,451 @@ function tplWelcomePack(w, compacto, at){
 }
 
 // ---------- TESTS: PANTALLA DEL ATLETA ----------
+// ---------- ANÁLISIS DE SALTO POR VÍDEO: la parte científica ----------
+// Método de tiempo de vuelo (Bosco, Luhtanen y Komi, 1983): si el cuerpo despega y aterriza
+// en la misma posición, sube y baja con la misma duración y su centro de masas sigue una
+// parábola simétrica. Con eso la altura sale SOLO del tiempo que pasa en el aire:
+//        h = g · t² / 8        (t = tiempo de vuelo, g = 9,80665 m/s²)
+// No hace falta calibrar distancias ni la posición de la cámara: lo que manda es medir el
+// tiempo con fotogramas, y por eso la tasa de fotogramas (fps) es una variable obligatoria
+// y condiciona la precisión (un fotograma a 30 fps son 33 ms).
+const G_SALTO = 9.80665;
+const FPS_ESTANDAR = [24, 25, 30, 50, 60, 100, 120, 200, 240];
+function alturaPorVuelo(tf){ return tf > 0 ? G_SALTO*tf*tf/8 : 0; }          // metros
+function velocidadDespegue(tf){ return G_SALTO*tf/2; }                       // m/s
+function tiempoAlApice(tf){ return tf/2; }                                    // s
+// Las dos marcas (despegue y aterrizaje) pueden estar corridas hasta medio fotograma cada
+// una, así que el tiempo de vuelo real cae dentro de ±1 fotograma: de ahí el margen de error.
+function incertidumbreAltura(tf, fps){
+  const dt = 1/fps, lo = alturaPorVuelo(Math.max(0, tf-dt)), hi = alturaPorVuelo(tf+dt);
+  return { min:lo, max:hi, mas:(hi-lo)/2 };
+}
+// Fórmulas de estimación de la potencia pico a partir de la altura (cm) y la masa (kg):
+// Sayers et al. (1999) para SJ y CMJ, y Harman et al. (1991) para salto con brazos. Tienen
+// un error típico de cientos de vatios: sirven para comparar a la MISMA persona en el
+// tiempo, no como valor absoluto.
+function potenciaPico(tipo, hCm, masaKg){
+  if(!(hCm > 0) || !(masaKg > 0)) return null;
+  if(tipo === 'sj')  return { w: 60.7*hCm + 45.3*masaKg - 2055, formula:'Sayers 1999 (SJ)' };
+  if(tipo === 'cmj') return { w: 51.9*hCm + 48.9*masaKg - 2007, formula:'Sayers 1999 (CMJ)' };
+  if(tipo === 'abk') return { w: 61.9*hCm + 36.0*masaKg - 1822, formula:'Harman 1991 (con brazos)' };
+  return null;
+}
+// Impulso neto vertical: lo que cambia la cantidad de movimiento hasta el despegue = m · v.
+function impulsoNeto(masaKg, tf){ return masaKg > 0 ? masaKg*velocidadDespegue(tf) : null; }
+// Índice de fuerza reactiva del drop jump: altura de rebote / tiempo de contacto (m/s).
+function indiceFuerzaReactiva(hM, tc){ return (tc > 0 && hM > 0) ? hM/tc : null; }
+function fpsEstandarCercano(f){
+  if(!(f > 0)) return null;
+  const c = FPS_ESTANDAR.reduce((a,b)=>Math.abs(b-f) < Math.abs(a-f) ? b : a);
+  return Math.abs(c-f)/c <= 0.04 ? c : Math.round(f*100)/100;
+}
+function calidadMedicion(fps){
+  if(fps >= 240) return { nivel:'excelente', clase:'ok',   txt:'Cada fotograma son ≈ 4 ms.' };
+  if(fps >= 120) return { nivel:'muy buena', clase:'ok',   txt:'Cada fotograma son ≈ 8 ms.' };
+  if(fps >= 60)  return { nivel:'aceptable', clase:'aviso', txt:'Cada fotograma son ≈ 17 ms.' };
+  return { nivel:'limitada', clase:'mal', txt:`Cada fotograma son ≈ ${Math.round(1000/fps)} ms.` };
+}
+function resumenIntentos(hs){
+  const v = (hs || []).filter(x=>typeof x === 'number' && isFinite(x));
+  if(!v.length) return null;
+  const media = v.reduce((a,b)=>a+b,0)/v.length;
+  const sd = v.length > 1 ? Math.sqrt(v.reduce((a,b)=>a+(b-media)*(b-media),0)/(v.length-1)) : null;
+  return { n:v.length, mejor:Math.max(...v), media, sd, cv: sd !== null && media > 0 ? sd/media*100 : null };
+}
+// El resultado completo de UN salto a partir de las marcas de fotograma.
+// m = { fps, nDespegue, nAterrizaje, nContacto?, masa?, caidaCm?, tipo }
+function calculaSalto(m){
+  const fps = +m.fps, dt = 1/fps, tipo = m.tipo || 'cmj';
+  const avisos = [];
+  if(!(fps > 0)) return { error:'Falta la tasa de fotogramas.' };
+  if(!(m.nDespegue >= 0) || !(m.nAterrizaje >= 0)) return { error:'Marca el despegue y el aterrizaje.' };
+  if(m.nAterrizaje <= m.nDespegue) return { error:'El aterrizaje tiene que ir después del despegue.' };
+  const tf = (m.nAterrizaje - m.nDespegue)*dt, h = alturaPorVuelo(tf), hCm = h*100, u = incertidumbreAltura(tf, fps);
+  const q = calidadMedicion(fps);
+  if(fps < 60) avisos.push({ clase:'mal', txt:`A ${nFmtS(fps,0)} fps cada fotograma son ${Math.round(1000/fps)} ms y la altura puede variar ±${nFmtS(u.mas*100,1)} cm. Para un test serio graba en cámara lenta (120-240 fps).` });
+  else if(u.mas*100 > 2) avisos.push({ clase:'aviso', txt:`Con ${nFmtS(fps,0)} fps la medida tiene un margen de ±${nFmtS(u.mas*100,1)} cm. A 120-240 fps baja a ±${nFmtS(incertidumbreAltura(tf,120).mas*100,1)}-${nFmtS(incertidumbreAltura(tf,240).mas*100,1)} cm.` });
+  if(tf < 0.2) avisos.push({ clase:'mal', txt:'Un vuelo de menos de 0,20 s (menos de 5 cm) suele ser un error al marcar. Revisa los fotogramas.' });
+  if(tf > 0.95) avisos.push({ clase:'mal', txt:'Un vuelo de más de 0,95 s (más de 110 cm) es poco realista. Revisa que el aterrizaje sea el primer contacto con el suelo.' });
+  const r = { tf, h, hCm, hMin:u.min*100, hMax:u.max*100, mas:u.mas*100, vo:velocidadDespegue(tf), tApice:tiempoAlApice(tf), fps, calidad:q, tipo, avisos };
+  const masa = +m.masa;
+  if(masa > 0){
+    r.masa = masa; r.impulso = impulsoNeto(masa, tf);
+    const pp = potenciaPico(tipo, hCm, masa);
+    if(pp){ r.potencia = pp.w; r.potenciaRel = pp.w/masa; r.potenciaFormula = pp.formula; }
+  }
+  if(tipo === 'dj'){
+    if(m.nContacto >= 0 && m.nContacto < m.nDespegue){
+      r.tc = (m.nDespegue - m.nContacto)*dt; r.rsi = indiceFuerzaReactiva(h, r.tc);
+      if(r.tc < 0.08 || r.tc > 0.6) avisos.push({ clase:'aviso', txt:`Un contacto de ${nFmtS(r.tc*1000,0)} ms es inusual en un drop jump (lo normal: 150-300 ms). Comprueba el fotograma de contacto.` });
+    } else avisos.push({ clase:'aviso', txt:'Para el índice de fuerza reactiva marca también el primer contacto con el suelo, antes del despegue.' });
+    if(m.caidaCm > 0) r.caidaCm = +m.caidaCm;
+  }
+  return r;
+}
+function nFmtS(x, d){ if(x === null || x === undefined || !isFinite(x)) return '—'; return (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toFixed(d).replace('.',','); }
+// ---------- ANÁLISIS DE SALTO POR VÍDEO: registro, analizador e integración ----------
+const SJ_TIPOS = [
+  { id:'cmj', l:'CMJ · con contramovimiento, manos en la cadera' },
+  { id:'abk', l:'Abalakov · con contramovimiento y brazos' },
+  { id:'sj',  l:'SJ · desde sentadilla, sin contramovimiento' },
+  { id:'dj',  l:'Drop jump · caída desde un cajón' },
+  { id:'otro', l:'Otro salto vertical' }
+];
+const sjTipoCorto = id=>({cmj:'CMJ', abk:'Abalakov', sj:'SJ', dj:'Drop jump', otro:'Salto'}[id] || 'Salto');
+async function getSaltos(athleteId){
+  const raw = await safeGet('saltos-'+athleteId, true);
+  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }catch(e){ return []; }
+}
+async function saveSaltos(athleteId, lista){ return safeSet('saltos-'+athleteId, JSON.stringify(lista), true); }
+
+// Evolución del mejor salto de cada día (por tipo), con el margen de error de cada medida.
+function tplGraficaSalto(lista, tipo){
+  const porDia = {};
+  lista.filter(s=>s.tipo === tipo).forEach(s=>{ if(!porDia[s.fecha] || s.h > porDia[s.fecha].h) porDia[s.fecha] = s; });
+  const pts = Object.keys(porDia).sort().map(f=>porDia[f]);
+  if(pts.length < 2) return '';
+  const W = 320, H = 130, Lm = 34, R = 10, T = 12, B = 24;
+  const lo = Math.min(...pts.map(p=>p.h - (p.mas||0))), hi = Math.max(...pts.map(p=>p.h + (p.mas||0)));
+  const min = Math.floor((lo - 1)), max = Math.ceil((hi + 1)), rg = (max - min) || 1;
+  const x = i=>Lm + (pts.length === 1 ? 0 : i/(pts.length-1)*(W-Lm-R)), y = v=>H - B - (v-min)/rg*(H-T-B);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" class="q-graf-svg" role="img">`;
+  [min, (min+max)/2, max].forEach(v=>{ svg += `<line x1="${Lm}" x2="${W-R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="var(--border)" stroke-dasharray="3 3"/><text x="${Lm-6}" y="${(y(v)+3.5).toFixed(1)}" text-anchor="end" font-size="9.5" fill="var(--muted)">${Math.round(v)}</text>`; });
+  pts.forEach((p,i)=>{ if(p.mas) svg += `<line x1="${x(i).toFixed(1)}" x2="${x(i).toFixed(1)}" y1="${y(p.h+p.mas).toFixed(1)}" y2="${y(p.h-p.mas).toFixed(1)}" stroke="var(--accent)" stroke-opacity=".4" stroke-width="3" stroke-linecap="round"/>`; });
+  svg += `<polyline points="${pts.map((p,i)=>x(i).toFixed(1)+','+y(p.h).toFixed(1)).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+  pts.forEach((p,i)=>{ svg += `<circle cx="${x(i).toFixed(1)}" cy="${y(p.h).toFixed(1)}" r="3.6" fill="var(--panel)" stroke="var(--accent)" stroke-width="2"/>`; });
+  [0, pts.length-1].filter((v,i,a)=>a.indexOf(v) === i).forEach(i=>{ svg += `<text x="${x(i).toFixed(1)}" y="${H-8}" text-anchor="${i===0?'start':'end'}" font-size="9.5" fill="var(--muted)">${fechaCortaISO(pts[i].fecha)}</text>`; });
+  return `<div class="q-graf"><p class="sj-graf-tit">Evolución del ${sjTipoCorto(tipo)} (mejor salto de cada día, cm)</p>${svg}<p class="q-graf-pie">La barra vertical es el margen de error de cada medida.</p></div>`;
+}
+async function tplSaltosCard(athleteId, esCoach){
+  const lista = (await getSaltos(athleteId)).slice().sort((a,b)=>String(b.fecha+b.id).localeCompare(String(a.fecha+a.id)));
+  const tipos = [...new Set(lista.map(s=>s.tipo))];
+  let h = `<div class="card sj-card"><div class="row" style="justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;"><h2 style="margin:0;">Mis saltos</h2><button type="button" class="btn small" data-abrirsalto="${athleteId}">📐 Medir un salto con vídeo</button></div>
+    <p class="sj-sub">${esCoach ? 'Mide la altura de un salto a partir de un vídeo.' : 'Mide tu salto con el móvil.'} Se cuenta el tiempo que pasas en el aire y de ahí sale la altura.</p>`;
+  if(!lista.length) h += `<div class="empty">Aún no hay saltos medidos.</div>`;
+  else {
+    tipos.forEach(t=>{ h += tplGraficaSalto(lista, t); });
+    h += `<div class="block-title">Últimos saltos</div>` + lista.slice(0, 8).map(s=>`<div class="entry"><div class="entry-top"><span>${fechaCortaISO(s.fecha)} · ${sjTipoCorto(s.tipo)}</span><span><b>${nFmtS(s.h,1)} cm</b>${s.mas ? ` ±${nFmtS(s.mas,1)}` : ''}</span></div>
+      <div class="sj-linea">${nFmtS(s.fps,0)} fps · vuelo ${nFmtS(s.tf*1000,0)} ms${s.potencia ? ` · ${Math.round(s.potencia)} W est.` : ''}${s.rsi ? ` · RSI ${nFmtS(s.rsi,2)}` : ''} <button type="button" class="sj-del" data-delsalto="${athleteId}|${s.id}" title="Borrar">✕</button></div></div>`).join('');
+    if(lista.length > 8) h += `<p class="sj-linea">y ${lista.length-8} más.</p>`;
+  }
+  return h + `</div>`;
+}
+
+// ---------- Fuente de vídeo ----------
+// Cuenta fotogramas, no segundos del reproductor: se avanza de uno en uno y el tiempo se
+// calcula con la tasa de grabación que se confirma en el paso 1. Así también funciona con
+// vídeos en cámara lenta, cuya línea de tiempo está ralentizada.
+async function detectaFpsVideo(video){
+  if(!video.requestVideoFrameCallback) return null;
+  return new Promise(resolve=>{
+    const t = []; let acabado = false;
+    const fin = ()=>{
+      if(acabado) return; acabado = true;
+      try{ video.pause(); video.currentTime = 0; }catch(e){}
+      if(t.length < 6) return resolve(null);
+      const d = []; for(let i=1;i<t.length;i++) d.push(t[i]-t[i-1]);
+      const ord = d.slice().sort((a,b)=>a-b), med = ord[Math.floor(ord.length/2)];
+      if(!(med > 0)) return resolve(null);
+      resolve({ fps: 1/med, uniforme: (ord[ord.length-1]-ord[0])/med < 0.2 });
+    };
+    const cb = (now, meta)=>{ t.push(meta.mediaTime); if(t.length >= 16) fin(); else video.requestVideoFrameCallback(cb); };
+    video.requestVideoFrameCallback(cb);
+    const p = video.play(); if(p && p.catch) p.catch(()=>{ fin(); });
+    setTimeout(fin, 2500);
+  });
+}
+async function crearFuenteSalto(origen){
+  if(window.__saltoFuenteMock) return window.__saltoFuenteMock(origen);
+  const video = document.createElement('video');
+  video.muted = true; video.playsInline = true; video.preload = 'auto'; video.setAttribute('playsinline', ''); video.className = 'sj-video';
+  const url = typeof origen === 'string' ? origen : URL.createObjectURL(origen);
+  video.src = url;
+  await new Promise((ok, ko)=>{ video.onloadedmetadata = ok; video.onerror = ()=>ko(new Error('No se pudo abrir ese vídeo. Prueba con otro formato (MP4 o MOV).')); });
+  const det = await detectaFpsVideo(video);
+  const fuente = {
+    video, url, duracion: video.duration, fpsArchivo: det ? det.fps : null, uniforme: det ? det.uniforme : null, puedeReproducir: true,
+    async ir(n, fpsArch){
+      const t = Math.min(Math.max(0, (n + 0.5)/fpsArch), Math.max(0, video.duration - 0.0005));
+      await new Promise(r=>{ const f = ()=>{ video.removeEventListener('seeked', f); r(); }; video.addEventListener('seeked', f); video.currentTime = t; setTimeout(r, 900); });
+    },
+    reproduce(vel){ video.playbackRate = vel; return video.play(); },
+    pausa(){ video.pause(); },
+    tiempo(){ return video.currentTime; },
+    destruye(){ try{ video.pause(); video.removeAttribute('src'); video.load(); if(typeof origen !== 'string') URL.revokeObjectURL(url); }catch(e){} }
+  };
+  return fuente;
+}
+
+// ---------- Analizador ----------
+let sj = null;
+const SJ_GUIA = [
+  'Cámara <b>fija</b> (trípode o apoyada), de <b>lado</b>, a unos 3-4 m y a la altura de la cadera. Que se vea el cuerpo entero y el suelo.',
+  '<b>Cámara lenta</b> (120 o 240 fps) si tu móvil la tiene: es lo que más mejora la precisión. A 30 fps el margen de error es de varios cm.',
+  'CMJ: <b>manos en la cadera</b>, salta lo más alto posible y cae con las <b>piernas estiradas</b>. Si flexionas al caer, el vuelo se alarga y la altura sale inflada.',
+  'Hazlo 3 veces con 30-60 s de descanso. Con buena luz y ropa que contraste con el fondo, los pies se ven mejor.',
+  'No hace falta medir distancias ni calibrar nada: solo se cuenta el <b>tiempo en el aire</b> con los fotogramas.'
+];
+function sjFrames(){ return Math.max(1, Math.floor(sj.fuente.duracion * (sj.fpsArch || sj.fps))); }
+async function abrirAnalizadorSalto(op){
+  op = op || {};
+  cerrarAnalizadorSalto();
+  let masa = '';
+  if(op.athleteId){ try{ const raw = await safeGet('intake-'+op.athleteId, true); masa = raw ? (parseFloat(String(JSON.parse(raw).peso||'').replace(',','.')) || '') : ''; }catch(e){} }
+  sj = { op, paso:1, fuente:null, fps:null, fpsArch:null, frame:0, marcas:{}, tipo: op.tipo || 'cmj', masa, caida:'', zoom:1, pan:{x:0,y:0}, intentos:[], guardado:null, cargando:false, error:'' };
+  const back = document.createElement('div'); back.id = 'saltoModal'; back.className = 'sj-back'; document.body.appendChild(back);
+  document.body.style.overflow = 'hidden';
+  renderSalto();
+  if(op.url) cargaVideoSalto(op.url);
+}
+function cerrarAnalizadorSalto(){
+  if(sj && sj.fuente){ try{ sj.fuente.destruye(); }catch(e){} }
+  const m = document.getElementById('saltoModal'); if(m) m.remove();
+  document.body.style.overflow = ''; sj = null;
+}
+async function cargaVideoSalto(origen){
+  if(!sj) return;
+  sj.cargando = true; sj.error = ''; renderSalto();
+  try{
+    if(sj.fuente){ try{ sj.fuente.destruye(); }catch(e){} }
+    const f = await crearFuenteSalto(origen);
+    if(!sj) { f.destruye(); return; }
+    sj.fuente = f; sj.fpsArch = f.fpsArchivo || null;
+    sj.fps = sj.fps || fpsEstandarCercano(f.fpsArchivo) || 30;
+    sj.marcas = {}; sj.frame = 0; sj.guardado = null; sj.zoom = 1; sj.pan = {x:0,y:0};
+  }catch(e){ if(sj) sj.error = e.message || 'No se pudo abrir el vídeo.'; }
+  if(sj){ sj.cargando = false; renderSalto(); }
+}
+function sjMargenTxt(){
+  const tf = 0.5, u = incertidumbreAltura(tf, sj.fps), q = calidadMedicion(sj.fps);
+  return `<span class="sj-calidad ${q.clase}">Precisión ${q.nivel}</span> ${q.txt} En un salto de ≈ 31 cm (0,5 s de vuelo), el margen es de <b>±${nFmtS(u.mas*100,1)} cm</b>.`;
+}
+function renderSalto(){
+  const back = document.getElementById('saltoModal'); if(!back || !sj) return;
+  const pasos = ['Vídeo','Marcar','Resultado'];
+  back.innerHTML = `<div class="sj-panel">
+    <div class="sj-top"><div class="sj-tit">📐 Análisis de salto</div><button type="button" class="sj-x" id="saltoCerrar" aria-label="Cerrar">✕</button></div>
+    <div class="sj-pasos">${pasos.map((p,i)=>`<span class="${sj.paso===i+1?'on':''} ${sj.paso>i+1?'hecho':''}"><i>${sj.paso>i+1?'✓':i+1}</i>${p}</span>`).join('')}</div>
+    <div class="sj-cuerpo" id="saltoCuerpo">${sj.paso===1 ? sjPaso1() : (sj.paso===2 ? sjPaso2() : sjPaso3())}</div></div>`;
+  enlazaSalto();
+  if(sj.paso <= 2 && sj.fuente){
+    const slot = document.getElementById('sjVideoSlot'); if(slot) slot.appendChild(sj.fuente.video);
+    if(sj.paso === 2) aplicaZoomSalto();
+  }
+}
+function sjPaso1(){
+  const f = sj.fuente;
+  let h = `<details class="sj-guia" ${f?'':'open'}><summary>Cómo grabar para medir bien</summary><ul>${SJ_GUIA.map(x=>`<li>${x}</li>`).join('')}</ul></details>`;
+  if(sj.cargando) return h + `<div class="sj-carga"><div class="sj-spin"></div><p>Abriendo el vídeo y detectando sus fotogramas…</p></div>`;
+  h += `<label class="btn ${f?'ghost':''} sj-subir">🎥 ${f ? 'Cambiar de vídeo' : 'Elegir el vídeo del salto'}<input type="file" accept="video/*" id="saltoArchivo" hidden></label>`;
+  if(sj.error) h += `<p class="sj-error">${escapeHtml(sj.error)}</p>`;
+  if(!f) return h + `<p class="sj-sub" style="margin-top:12px;">Elige un vídeo grabado desde el móvil o de la galería.</p>`;
+  const det = f.fpsArchivo ? `${nFmtS(f.fpsArchivo,2)} fps${f.uniforme === false ? ' <span class="sj-aviso-in">⚠ no es constante</span>' : ''}` : 'no se ha podido detectar';
+  h += `<div class="sj-visor-mini" id="sjVideoSlot"></div>
+    <div class="sj-fps"><p class="sj-lab">¿A cuántos fotogramas por segundo (fps) se grabó?</p>
+      <p class="sj-sub">La línea de tiempo del archivo va a <b>${det}</b>. Si grabaste en cámara lenta, indica los fps reales de grabación (normalmente 120 o 240).</p>
+      <div class="gal-secs">${[24,30,60,120,240].map(v=>`<button type="button" class="gs-chip ${sj.fps===v?'on':''}" data-sjfps="${v}">${v}</button>`).join('')}<input type="number" id="sjFpsOtro" class="sj-fps-otro" min="10" max="1000" step="any" placeholder="otro" value="${[24,30,60,120,240].includes(sj.fps)?'':(sj.fps||'')}"></div>
+      <p class="sj-margen" id="sjMargen">${sjMargenTxt()}</p>
+      ${f.uniforme === false ? `<p class="sj-error">Este vídeo tiene tramos a distinta velocidad (típico de la cámara lenta de iPhone al exportarla desde Fotos). Usa el vídeo original, sin editar, o el resultado no será fiable.</p>` : ''}</div>
+    <button type="button" class="btn sj-sig" id="saltoSig1">Marcar despegue y aterrizaje →</button>`;
+  return h;
+}
+function sjPaso2(){
+  const n = sjFrames(), tipoDJ = sj.tipo === 'dj';
+  return `<div class="sj-visor" id="sjVisor"><div id="sjVideoSlot" class="sj-slot"></div>
+      <div class="sj-hud"><span>Fotograma <b id="sjN">${sj.frame}</b> / ${n-1}</span><span id="sjT">${nFmtS(sj.frame/sj.fps,3)} s</span></div></div>
+    <div class="sj-zoom"><span>Zoom</span>${[1,2,3,4].map(z=>`<button type="button" class="gs-chip ${sj.zoom===z?'on':''}" data-sjzoom="${z}">${z}×</button>`).join('')}<span class="sj-sub">arrastra el vídeo para centrar los pies</span></div>
+    <div class="sj-linea-tiempo"><input type="range" id="sjSlider" min="0" max="${n-1}" value="${sj.frame}" step="1"><div class="sj-ticks" id="sjTicks"></div></div>
+    <div class="sj-ctrl">
+      <button type="button" data-sjpaso="-10">−10</button><button type="button" data-sjpaso="-1">◀ 1</button>
+      <button type="button" id="sjPlay" class="sj-play" ${sj.fuente.puedeReproducir?'':'disabled'}>▶ lento</button>
+      <button type="button" data-sjpaso="1">1 ▶</button><button type="button" data-sjpaso="10">+10</button></div>
+    <div class="sj-marcar">
+      ${tipoDJ ? `<button type="button" id="sjMarcaContacto" class="sj-m sj-m-c">📍 Contacto</button>` : ''}
+      <button type="button" id="sjMarcaDespegue" class="sj-m sj-m-d">📍 Despegue</button>
+      <button type="button" id="sjMarcaAterrizaje" class="sj-m sj-m-a">📍 Aterrizaje</button></div>
+    <div class="sj-estado" id="sjEstado"></div>
+    <p class="sj-guia-paso" id="sjGuiaPaso"></p>
+    <div class="row" style="gap:8px;margin-top:10px;"><button type="button" class="btn ghost" id="saltoAtras2">← Vídeo</button><button type="button" class="btn" id="saltoSig2" style="flex:1;">Ver resultado →</button></div>`;
+}
+function sjEstadoSalto(){
+  const m = sj.marcas, pill = (k, etq, clase)=>m[k] !== undefined ? `<button type="button" class="sj-pill ${clase}" data-sjir="${k}">${etq} · ${m[k]}<i data-sjquita="${k}">✕</i></button>` : `<span class="sj-pill vacio">${etq} · sin marcar</span>`;
+  const ok = m.despegue !== undefined && m.aterrizaje !== undefined && m.aterrizaje > m.despegue;
+  const el = document.getElementById('sjEstado');
+  if(el) el.innerHTML = (sj.tipo==='dj' ? pill('contacto','Contacto','c') : '') + pill('despegue','Despegue','d') + pill('aterrizaje','Aterrizaje','a');
+  const tick = document.getElementById('sjTicks');
+  if(tick){ const n = sjFrames()-1 || 1; tick.innerHTML = ['contacto','despegue','aterrizaje'].filter(k=>m[k]!==undefined).map(k=>`<i class="sj-tick ${k[0]}" style="left:${(m[k]/n*100).toFixed(2)}%"></i>`).join(''); }
+  const sig = document.getElementById('saltoSig2'); if(sig) sig.disabled = !ok;
+  const g = document.getElementById('sjGuiaPaso');
+  if(g){
+    g.innerHTML = m.despegue === undefined ? '<b>1.</b> Avanza con ◀ 1 / 1 ▶ hasta el <b>primer fotograma en que los pies ya no tocan el suelo</b> y pulsa «Despegue».'
+      : (m.aterrizaje === undefined ? '<b>2.</b> Ahora busca el <b>primer fotograma en que un pie vuelve a tocar el suelo</b> y pulsa «Aterrizaje».'
+      : (m.aterrizaje <= m.despegue ? '⚠ El aterrizaje debe ir después del despegue.' : `<b>Listo:</b> ${m.aterrizaje - m.despegue} fotogramas en el aire. Revísalo con ◀ 1 / 1 ▶ y toca una marca para ir a ella.`));
+  }
+}
+function aplicaZoomSalto(){
+  const v = sj && sj.fuente && sj.fuente.video; if(!v) return;
+  v.style.transform = `translate(${sj.pan.x}px, ${sj.pan.y}px) scale(${sj.zoom})`;
+}
+async function irAFotograma(n){
+  if(!sj || !sj.fuente) return;
+  const max = sjFrames()-1; n = Math.max(0, Math.min(max, Math.round(n)));
+  sj.pendiente = n;
+  if(sj.buscando) return;
+  sj.buscando = true;
+  while(sj && sj.pendiente !== null && sj.pendiente !== undefined){
+    const objetivo = sj.pendiente; sj.pendiente = null;
+    try{ await sj.fuente.ir(objetivo, sj.fpsArch || sj.fps); }catch(e){}
+    if(!sj) return;
+    sj.frame = objetivo;
+    const a = document.getElementById('sjN'), t = document.getElementById('sjT'), s = document.getElementById('sjSlider');
+    if(a) a.textContent = objetivo; if(t) t.textContent = nFmtS(objetivo/sj.fps, 3)+' s'; if(s) s.value = objetivo;
+  }
+  if(sj) sj.buscando = false;
+}
+function sjCalculo(){
+  return calculaSalto({ fps:sj.fps, nDespegue:sj.marcas.despegue, nAterrizaje:sj.marcas.aterrizaje, nContacto:sj.marcas.contacto, masa:sj.masa, caidaCm:sj.caida, tipo:sj.tipo });
+}
+function sjPaso3(){
+  const r = sjCalculo();
+  if(r.error) return `<p class="sj-error">${escapeHtml(r.error)}</p><button type="button" class="btn" id="saltoAtras3">← Volver a marcar</button>`;
+  const caja = (v, etq, u)=>`<div class="sj-dato"><b>${v}</b><span>${etq}${u ? ' <i>'+u+'</i>' : ''}</span></div>`;
+  let h = `<div class="sj-res-cab"><div class="sj-grande">${nFmtS(r.hCm,1)}<span> cm</span></div>
+      <div class="sj-pm">± ${nFmtS(r.mas,1)} cm · entre ${nFmtS(r.hMin,1)} y ${nFmtS(r.hMax,1)} cm</div>
+      <div class="sj-calidad ${r.calidad.clase}">Precisión ${r.calidad.nivel} · ${nFmtS(r.fps,0)} fps</div></div>
+    <div class="sj-datos">${caja(nFmtS(r.tf*1000,0), 'Tiempo de vuelo', 'ms')}${caja(nFmtS(r.vo,2), 'Velocidad de despegue', 'm/s')}${caja(nFmtS(r.tApice*1000,0), 'Tiempo hasta el punto más alto', 'ms')}${caja(sj.marcas.aterrizaje - sj.marcas.despegue, 'Fotogramas en el aire', '')}</div>
+    <div class="ex-grid" style="margin-top:12px;">
+      <div class="full"><label class="field-label">Tipo de salto</label><select id="sjTipo" style="width:100%;">${SJ_TIPOS.map(t=>`<option value="${t.id}" ${sj.tipo===t.id?'selected':''}>${t.l}</option>`).join('')}</select></div>
+      <div><label class="field-label">Masa corporal (kg)</label><input type="number" id="sjMasa" min="20" max="250" step="0.1" inputmode="decimal" value="${sj.masa||''}" placeholder="opcional"></div>
+      ${sj.tipo==='dj' ? `<div><label class="field-label">Altura de caída (cm)</label><input type="number" id="sjCaida" min="5" max="120" step="1" inputmode="decimal" value="${sj.caida||''}" placeholder="p. ej. 30"></div>` : ''}
+    </div>`;
+  const der = [];
+  if(r.potencia !== undefined) der.push(caja(Math.round(r.potencia), 'Potencia pico estimada', 'W') + caja(nFmtS(r.potenciaRel,1), 'Potencia relativa', 'W/kg'));
+  if(r.impulso !== undefined && r.impulso !== null) der.push(caja(nFmtS(r.impulso,0), 'Impulso neto vertical', 'N·s'));
+  if(r.tc !== undefined) der.push(caja(nFmtS(r.tc*1000,0), 'Tiempo de contacto', 'ms') + (r.rsi ? caja(nFmtS(r.rsi,2), 'Índice de fuerza reactiva', 'm/s') : ''));
+  if(der.length) h += `<div class="sj-datos" style="margin-top:12px;">${der.join('')}</div>` + (r.potencia !== undefined ? `<p class="sj-nota">Potencia: ${r.potenciaFormula}. Es una estimación con un error de cientos de vatios: úsala para comparar a la misma persona en el tiempo, no como valor absoluto.</p>` : '');
+  else if(['cmj','abk','sj'].includes(sj.tipo)) h += `<p class="sj-nota">Añade la masa corporal para estimar la potencia pico y el impulso.</p>`;
+  h += r.avisos.map(a=>`<div class="sj-aviso ${a.clase}">${escapeHtml(a.txt)}</div>`).join('');
+  const clave = JSON.stringify([sj.fps, sj.marcas, sj.tipo]);
+  const guardado = sj.guardado === clave;
+  h += `<div class="row" style="gap:8px;margin-top:14px;flex-wrap:wrap;">
+      <button type="button" class="btn" id="sjGuardar" ${guardado?'disabled':''} style="flex:1;">${guardado ? 'Guardado ✓' : 'Guardar este salto'}</button>
+      <button type="button" class="btn ghost" id="sjOtro">Otro salto de este vídeo</button></div>
+    <div class="row" style="gap:8px;margin-top:8px;"><button type="button" class="btn ghost small" id="saltoAtras3">← Ajustar marcas</button><button type="button" class="btn ghost small" id="sjOtroVideo">Otro vídeo</button></div>`;
+  if(sj.op.onUsar) h += `<button type="button" class="btn" id="sjUsar" style="width:100%;margin-top:10px;">Usar ${nFmtS(r.hCm,1)} cm en el test</button>`;
+  if(sj.intentos.length){
+    const rs = resumenIntentos(sj.intentos.filter(x=>x.tipo===sj.tipo).map(x=>x.h));
+    h += `<div class="block-title">Intentos de esta sesión</div><div class="tabla-comp-wrap"><table class="tabla-comp"><thead><tr><th>#</th><th>Altura</th><th>Vuelo</th></tr></thead><tbody>${sj.intentos.map((x,i)=>`<tr><td>${i+1}</td><td><b>${nFmtS(x.h,1)} cm</b> ±${nFmtS(x.mas,1)}</td><td>${nFmtS(x.tf*1000,0)} ms</td></tr>`).join('')}</tbody></table></div>`;
+    if(rs && rs.n > 1) h += `<p class="sj-nota">Mejor <b>${nFmtS(rs.mejor,1)} cm</b> · media ${nFmtS(rs.media,1)} cm · variación (CV) ${nFmtS(rs.cv,1)} %${rs.cv > 5 ? ' · <span style="color:var(--warn);">alta: repite el salto con más calma</span>' : ''}.</p>`;
+  }
+  h += `<details class="sj-guia" style="margin-top:14px;"><summary>Cómo se calcula y sus límites</summary><ul>
+    <li><b>Altura</b> = g · t² / 8, con t el tiempo de vuelo (Bosco, Luhtanen y Komi, 1983) y g = 9,80665 m/s². Supone que despegas y aterrizas con el cuerpo en la misma posición.</li>
+    <li><b>Despegue</b>: primer fotograma sin contacto. <b>Aterrizaje</b>: primer fotograma con contacto. Cada marca puede estar corrida hasta medio fotograma, por eso el margen es de ±1 fotograma en el tiempo de vuelo.</li>
+    <li>Si caes con las rodillas flexionadas el vuelo se alarga y la altura sale <b>sobreestimada</b>. Los saltos con brazos o con un balanceo distinto no son comparables con un CMJ de manos en la cadera.</li>
+    <li>Comparado con una plataforma de fuerzas o un sistema óptico, un móvil a 240 fps da resultados muy parecidos para controlar la evolución de una persona (Balsalobre-Fernández, Glaister y Lockey, 2015); a 30 fps el error por fotograma es grande.</li>
+    <li>RSI del drop jump = altura de salto / tiempo de contacto (Flanagan y Comyns, 2008).</li></ul></details>`;
+  return h;
+}
+async function guardaSaltoActual(){
+  const r = sjCalculo(); if(r.error || !sj) return;
+  const reg = { id:uid(), fecha:todayISO(), tipo:sj.tipo, fps:r.fps, tf:r.tf, h:r.hCm, mas:r.mas, hMin:r.hMin, hMax:r.hMax, vo:r.vo,
+    masa:r.masa, potencia:r.potencia, rsi:r.rsi, tc:r.tc, caida:r.caidaCm, nDespegue:sj.marcas.despegue, nAterrizaje:sj.marcas.aterrizaje, nContacto:sj.marcas.contacto, fuente:'video', origen:sj.op.origen||'' };
+  Object.keys(reg).forEach(k=>{ if(reg[k] === undefined || reg[k] === null || reg[k] === '') delete reg[k]; });
+  sj.intentos.push(reg);
+  sj.guardado = JSON.stringify([sj.fps, sj.marcas, sj.tipo]);
+  if(sj.op.athleteId){
+    const lista = await getSaltos(sj.op.athleteId); lista.push(reg);
+    const ok = await saveSaltos(sj.op.athleteId, lista);
+    toast(ok ? 'Salto guardado' : 'No se pudo guardar', !ok);
+  }
+  renderSalto();
+}
+function enlazaSalto(){
+  const q = id=>document.getElementById(id);
+  if(q('saltoCerrar')) q('saltoCerrar').addEventListener('click', ()=>{ cerrarAnalizadorSalto(); if(typeof renderKeepScroll === 'function') renderKeepScroll(); });
+  const arch = q('saltoArchivo');
+  if(arch) arch.addEventListener('change', ()=>{ const f = arch.files && arch.files[0]; if(f) cargaVideoSalto(f); });
+  document.querySelectorAll('[data-sjfps]').forEach(b=>b.addEventListener('click', ()=>{ sj.fps = parseFloat(b.dataset.sjfps); renderSalto(); }));
+  const otro = q('sjFpsOtro');
+  if(otro) otro.addEventListener('change', ()=>{ const v = parseFloat(otro.value); if(v >= 10 && v <= 1000){ sj.fps = v; const m = q('sjMargen'); if(m) m.innerHTML = sjMargenTxt(); document.querySelectorAll('[data-sjfps]').forEach(b=>b.classList.remove('on')); } });
+  if(q('saltoSig1')) q('saltoSig1').addEventListener('click', ()=>{ if(!(sj.fps > 0)){ toast('Indica los fotogramas por segundo', true); return; } sj.paso = 2; sj.frame = Math.min(sj.frame, sjFrames()-1); renderSalto(); sjEstadoSalto(); irAFotograma(sj.frame); });
+  if(q('saltoAtras2')) q('saltoAtras2').addEventListener('click', ()=>{ if(sj.fuente) sj.fuente.pausa && sj.fuente.pausa(); sj.paso = 1; renderSalto(); });
+  if(q('saltoSig2')) q('saltoSig2').addEventListener('click', ()=>{ if(sj.fuente && sj.fuente.pausa) sj.fuente.pausa(); sj.paso = 3; renderSalto(); });
+  document.querySelectorAll('#saltoAtras3').forEach(b=>b.addEventListener('click', ()=>{ sj.paso = 2; renderSalto(); sjEstadoSalto(); irAFotograma(sj.frame); }));
+  document.querySelectorAll('[data-sjpaso]').forEach(b=>b.addEventListener('click', ()=>{ if(sj.fuente.pausa) sj.fuente.pausa(); irAFotograma(sj.frame + parseInt(b.dataset.sjpaso, 10)); }));
+  const sl = q('sjSlider'); if(sl) sl.addEventListener('input', ()=>irAFotograma(parseInt(sl.value, 10)));
+  document.querySelectorAll('[data-sjzoom]').forEach(b=>b.addEventListener('click', ()=>{ sj.zoom = parseInt(b.dataset.sjzoom, 10); if(sj.zoom === 1) sj.pan = {x:0,y:0}; document.querySelectorAll('[data-sjzoom]').forEach(x=>x.classList.toggle('on', x === b)); aplicaZoomSalto(); }));
+  const vis = q('sjVisor');
+  if(vis){
+    let arr = null;
+    vis.addEventListener('pointerdown', e=>{ if(sj.zoom > 1){ arr = { x:e.clientX - sj.pan.x, y:e.clientY - sj.pan.y }; } });
+    vis.addEventListener('pointermove', e=>{ if(arr){ sj.pan = { x:e.clientX - arr.x, y:e.clientY - arr.y }; aplicaZoomSalto(); } });
+    ['pointerup','pointercancel','pointerleave'].forEach(t=>vis.addEventListener(t, ()=>{ arr = null; }));
+  }
+  const play = q('sjPlay');
+  if(play) play.addEventListener('click', ()=>{
+    const f = sj.fuente; if(!f || !f.puedeReproducir) return;
+    if(sj.sonando){ f.pausa(); sj.sonando = false; play.textContent = '▶ lento'; return; }
+    sj.sonando = true; play.textContent = '⏸ pausa';
+    f.reproduce(0.25);
+    const paso = ()=>{ if(!sj || !sj.sonando) return; const n = Math.round(f.tiempo()*(sj.fpsArch || sj.fps) - 0.5); sj.frame = Math.max(0, n); const a = q('sjN'), t = q('sjT'), s = q('sjSlider'); if(a) a.textContent = sj.frame; if(t) t.textContent = nFmtS(sj.frame/sj.fps,3)+' s'; if(s) s.value = sj.frame; requestAnimationFrame(paso); };
+    requestAnimationFrame(paso);
+  });
+  const marca = (k)=>()=>{ if(sj.fuente.pausa) sj.fuente.pausa(); sj.sonando = false; const p = q('sjPlay'); if(p) p.textContent = '▶ lento'; sj.marcas[k] = sj.frame; sjEstadoSalto(); };
+  if(q('sjMarcaContacto')) q('sjMarcaContacto').addEventListener('click', marca('contacto'));
+  if(q('sjMarcaDespegue')) q('sjMarcaDespegue').addEventListener('click', marca('despegue'));
+  if(q('sjMarcaAterrizaje')) q('sjMarcaAterrizaje').addEventListener('click', marca('aterrizaje'));
+  document.querySelectorAll('#sjEstado').forEach(el=>el.addEventListener('click', e=>{
+    const quita = e.target.closest('[data-sjquita]'); if(quita){ delete sj.marcas[quita.dataset.sjquita]; sjEstadoSalto(); return; }
+    const ir = e.target.closest('[data-sjir]'); if(ir) irAFotograma(sj.marcas[ir.dataset.sjir]);
+  }));
+  if(q('sjTipo')) q('sjTipo').addEventListener('change', ()=>{ sj.tipo = q('sjTipo').value; renderSalto(); });
+  if(q('sjMasa')) q('sjMasa').addEventListener('change', ()=>{ sj.masa = parseFloat(q('sjMasa').value) || ''; renderSalto(); });
+  if(q('sjCaida')) q('sjCaida').addEventListener('change', ()=>{ sj.caida = parseFloat(q('sjCaida').value) || ''; renderSalto(); });
+  if(q('sjGuardar')) q('sjGuardar').addEventListener('click', guardaSaltoActual);
+  if(q('sjOtro')) q('sjOtro').addEventListener('click', ()=>{ sj.marcas = {}; sj.guardado = null; sj.paso = 2; renderSalto(); sjEstadoSalto(); });
+  if(q('sjOtroVideo')) q('sjOtroVideo').addEventListener('click', ()=>{ sj.marcas = {}; sj.guardado = null; sj.paso = 1; renderSalto(); });
+  if(q('sjUsar')) q('sjUsar').addEventListener('click', ()=>{ const r = sjCalculo(); if(r.error) return; const cb = sj.op.onUsar; cerrarAnalizadorSalto(); cb(Math.round(r.hCm*10)/10); });
+}
+// Teclado: ← → un fotograma (con Mayús, diez).
+document.addEventListener('keydown', e=>{
+  if(!sj || sj.paso !== 2) return;
+  if(e.key === 'ArrowLeft' || e.key === 'ArrowRight'){ e.preventDefault(); if(sj.fuente.pausa) sj.fuente.pausa(); irAFotograma(sj.frame + (e.key === 'ArrowRight' ? 1 : -1) * (e.shiftKey ? 10 : 1)); }
+  if(e.key === 'Escape'){ cerrarAnalizadorSalto(); }
+});
+// Botones de «medir un salto» y de borrar, en cualquier pantalla.
+function rellenaIntentoTest(i, cm){
+  const c1 = document.querySelector(`.test-campo[data-testidx="${i}"][data-campo="intento1"]`), c2 = document.querySelector(`.test-campo[data-testidx="${i}"][data-campo="intento2"]`);
+  let dest = c1;
+  if(c1 && c1.value !== '' && c2){ dest = (c2.value === '' || parseFloat(c2.value) < parseFloat(c1.value)) ? c2 : c1; }
+  if(!dest){ toast(`Altura: ${nFmtS(cm,1)} cm`); return; }
+  dest.value = cm; dest.dispatchEvent(new Event('input', {bubbles:true})); dest.dispatchEvent(new Event('change', {bubbles:true}));
+  toast(`${nFmtS(cm,1)} cm anotados en «${dest.dataset.campo === 'intento1' ? 'Intento 1' : 'Intento 2'}»`);
+}
+document.addEventListener('click', async e=>{
+  const b = e.target.closest && e.target.closest('[data-abrirsalto]');
+  if(b){
+    const test = b.dataset.saltotest;
+    abrirAnalizadorSalto({ athleteId:b.dataset.abrirsalto || null, url:b.dataset.saltourl || null, tipo:b.dataset.saltotipo || 'cmj', origen:b.dataset.saltoorigen || '',
+      onUsar: test !== undefined ? (cm)=>rellenaIntentoTest(parseInt(test, 10), cm) : null });
+    return;
+  }
+  const d = e.target.closest && e.target.closest('[data-delsalto]');
+  if(d){
+    const [aid, id] = d.dataset.delsalto.split('|');
+    if(!confirm('¿Borrar este salto?')) return;
+    const ok = await saveSaltos(aid, (await getSaltos(aid)).filter(s=>s.id !== id));
+    toast(ok ? 'Borrado' : 'No se pudo borrar', !ok); if(ok && typeof renderKeepScroll === 'function') renderKeepScroll();
+  }
+});
+
 async function tplTestsAtleta(athleteId){
   await getTestsPropios();          // para que reconozca tus tests propios
   const bat = await getBateria(athleteId);
   const historial = await getHistorialTests(athleteId);
   const intakeRaw = await safeGet('intake-'+athleteId, true);
   const intake = intakeRaw ? JSON.parse(intakeRaw) : {};
+  const saltosCard = await tplSaltosCard(athleteId, false);
 
   // Si no hay batería activa pero sí historial, mostramos su evolución: es lo
   // que más engancha de repetir los tests pasados unos meses.
@@ -10120,7 +10779,8 @@ async function tplTestsAtleta(athleteId){
     });
     return `<div class="row" style="margin-bottom:12px;"><button class="btn ghost small" id="volverPerfilBtn">← Perfil</button></div>
       <div class="card"><h2>Tests</h2><div class="empty">No tienes ninguna batería pendiente ahora mismo.</div></div>
-      ${ev ? `<div class="block-title">Tu evolución</div>` + ev : ''}`;
+${saltosCard}
+${ev ? `<div class="block-title">Tu evolución</div>` + ev : ''}`;
   }
 
   const total = bat.tests.length;
@@ -10129,7 +10789,7 @@ async function tplTestsAtleta(athleteId){
     <div class="card"><h2>Tu batería de tests</h2>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Tómatelos con calma: no es una prueba que aprobar, es la foto de partida para ajustar tu plan. Lee las instrucciones, grábate como se indica y anota los datos con honestidad — un dato inflado solo sirve para que te programe mal.</p>
     <div class="kpi-row" style="margin-top:12px;"><div class="kpi"><b>${hechos}/${total}</b><span>Completados</span></div></div>
-  </div>`;
+</div>${saltosCard}`;
 
   bat.tests.forEach((t,i)=>{
     const def = testPorId(t.testId);
@@ -10151,6 +10811,9 @@ async function tplTestsAtleta(athleteId){
       html += `<button class="btn ghost small" data-playvideo="${escapeHtml(def.videoUrl)}|${escapeHtml(def.nombre)}" style="margin-bottom:12px;">▶ Ver cómo se hace</button>`;
     }
 
+    if(def.id === 'vertical_jump'){
+      html += `<button type="button" class="btn ghost small" data-abrirsalto="${athleteId}" data-saltotest="${i}" data-saltotipo="cmj" data-saltoorigen="test" style="margin-bottom:12px;">📐 Medir mi salto con vídeo</button>`;
+    }
     // Campos a rellenar
     html += `<div class="ex-grid">`;
     (def.campos||[]).forEach(c=>{
@@ -10229,7 +10892,7 @@ async function tplTestsCoach(athleteId){
   const intakeRaw = await safeGet('intake-'+athleteId, true);
   const intake = intakeRaw ? JSON.parse(intakeRaw) : {};
 
-  let html = '';
+  let html = await tplSaltosCard(athleteId, true);
 
   // --- Batería en curso o resultados por revisar ---
   if(bat){
@@ -10299,7 +10962,7 @@ async function tplTestsCoach(athleteId){
       // Vídeos que subió
       if(Array.isArray(t.videos) && t.videos.length){
         html += `<div class="video-row">${t.videos.map(v=>
-          `<button class="btn ghost small" data-playvideo="${escapeHtml(v.url)}|${escapeHtml(v.plano||'Vídeo')}">▶ ${escapeHtml(v.plano||'Vídeo')}</button>`).join('')}</div>`;
+          `<button class="btn ghost small" data-playvideo="${escapeHtml(v.url)}|${escapeHtml(v.plano||'Vídeo')}">▶ ${escapeHtml(v.plano||'Vídeo')}</button>${def.id==='vertical_jump' ? `<button type="button" class="btn ghost small" data-abrirsalto="${athleteId}" data-saltourl="${escapeHtml(v.url)}" data-saltotipo="cmj" data-saltoorigen="test">📐 Medir salto</button>` : ''}`).join('')}</div>`;
       }
       // Tus tres valoraciones
       html += `<div class="block-title">Tu valoración</div>`;
@@ -11239,7 +11902,7 @@ async function tplDiarioLectura(athleteId, esCoach){
     const abierto = state.diarioAbierto === idx;
     const tieneDetalle = (e.exercises && e.exercises.length) || (e.drills && e.drills.length);
     html += `<div class="entry"><div class="entry-top diario-cab" data-diario="${idx}" style="cursor:pointer;">
-        <span>${abierto?'▾':'▸'} ${e.date} · ${e.day}${e.tipoSesion?` · ${escapeHtml(e.tipoSesion)}`:''}</span>
+        <span>${abierto?'▾':'▸'} ${e.date} · ${e.day}${e.turno?` · ${escapeHtml(e.turno)}`:''}${e.tipoSesion?` · ${escapeHtml(e.tipoSesion)}`:''}</span>
         <span class="pill" style="background:${rpeColor(e.overallRPE)};color:#FFFFFF;">RPE ${e.overallRPE}</span></div>
       <div style="font-size:12.5px;color:var(--muted);margin-top:6px;">Duración ${fmtTime(e.durationSeconds)} · carga ${e.fatigueScore}
         ${e.fatiga?` · fatiga ${e.fatiga}/5`:''}${e.calidad?` · calidad ${e.calidad}/5`:''}${e.hidratacion?` · hidratación ${e.hidratacion}/5`:''}${e.satisfaccion?` · satisfacción ${e.satisfaccion}/5`:''}</div>
@@ -11256,7 +11919,7 @@ async function tplDiarioLectura(athleteId, esCoach){
           const esRun = x.tipo === 'running';
           const prev = esRun ? escapeHtml(x.runPlan || '—') : conReps(x.loadPlanned || '—');
           const csH = esRun ? [] : cargasEjercicio(x);
-          const hecho = esRun ? escapeHtml(x.runHecho || '—') : conReps(csH.length ? cargasTxt(csH)+' kg' : (x.loadApplied || '—'));
+          const hecho = x.omitido ? `<i>Omitido${x.motivo ? ': '+escapeHtml(x.motivo) : ''}</i>` : esRun ? escapeHtml(x.runHecho || '—') : conReps(csH.length ? cargasTxt(csH)+' kg' : (x.loadApplied || '—'));
           const difiere = !esRun && x.loadPlanned && x.loadApplied && x.loadPlanned !== x.loadApplied;
           // Si anotó varias series o un rango ("8-9", "7,8,9") mostramos lo que
           // escribió y la media debajo: el detalle dice más que el promedio.
@@ -12065,14 +12728,39 @@ async function tplTextosEducativos(){
   return html;
 }
 
+// ---------- RESUMEN DE EJERCICIOS OMITIDOS ----------
+// Lo que cada atleta dijo «omití este ejercicio» en los últimos días, con el motivo.
+async function omitidosDeAtleta(athleteId, dias){
+  const raw = await safeGet('journal-'+athleteId, true); let j = [];
+  try{ j = raw ? JSON.parse(raw) : []; }catch(e){}
+  const desde = sumaDiasISO(todayISO(), -((dias || 7) - 1)), out = [];
+  j.forEach(e=>{
+    if(!e.date || e.date < desde) return;
+    (e.exercises || []).forEach(x=>{ if(x.omitido) out.push({ fecha:e.date, turno:e.turno || '', nombre:x.name || '—', motivo:x.motivo || '' }); });
+  });
+  return out.sort((a,b)=>b.fecha.localeCompare(a.fecha));
+}
+function omitidosResumenHtml(lista){
+  if(!lista.length) return '';
+  const porMotivo = {}; lista.forEach(a=>a.items.forEach(x=>{ const k = x.motivo || 'Sin motivo'; porMotivo[k] = (porMotivo[k] || 0) + 1; }));
+  let h = `<p class="omit-motivos">${Object.keys(porMotivo).sort((a,b)=>porMotivo[b]-porMotivo[a]).map(k=>`${escapeHtml(k)} <b>${porMotivo[k]}</b>`).join(' · ')}</p>`;
+  lista.sort((a,b)=>b.items.length-a.items.length).forEach(a=>{
+    const molestias = a.items.filter(x=>x.motivo === 'Molestia o dolor').length;
+    h += `<div class="entry"><div class="entry-top"><span>${escapeHtml(a.name)}</span><span>${a.items.length} omitido${a.items.length===1?'':'s'}</span></div>
+      ${molestias >= 2 ? `<div class="omit-alerta">⚠ ${molestias} por molestia o dolor: conviene preguntarle cómo está.</div>` : ''}
+      <ul class="omit-lista">${a.items.map(x=>`<li><b>${escapeHtml(x.nombre)}</b> · ${x.motivo ? escapeHtml(x.motivo) : '<i>sin motivo</i>'} · ${fechaCortaISO(x.fecha)}${x.turno ? ' · '+escapeHtml(x.turno) : ''}</li>`).join('')}</ul></div>`;
+  });
+  return h;
+}
 async function tplResumen(){
   const now = new Date();
-  const upcomingList = [], unpaidList = [], riskList = [];
+  const upcomingList = [], unpaidList = [], riskList = [], omitList = [];
   for(const a of state.athletes){
     const callRaw = await safeGet('call-'+a.id, true);
     if(callRaw){ const c = JSON.parse(callRaw); if(c.nextDate){ const days=(new Date(c.nextDate)-now)/86400000; if(days>=0 && days<=14) upcomingList.push({id:a.id, name:a.name, date:c.nextDate}); } }
     const profRaw = await safeGet('profile-'+a.id, true);
     if(profRaw){ const p = JSON.parse(profRaw); if(p.pagado==='No' || p.pagado==='Pendiente') unpaidList.push({id:a.id, name:a.name, estado:p.pagado}); }
+    const omA = await omitidosDeAtleta(a.id, 7); if(omA.length) omitList.push({ id:a.id, name:a.name, items:omA });
     const jRaw = await safeGet('journal-'+a.id, true);
     if(jRaw){
       const entries = JSON.parse(jRaw);
@@ -12088,6 +12776,7 @@ async function tplResumen(){
   const sections = [
     { key:'calls', title:'Próximas videollamadas', count:upcomingList.length, rows: upcomingList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>${u.date}</span></div></div>`).join('') },
     { key:'unpaid', title:'Pagos pendientes', count:unpaidList.length, rows: unpaidList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>${escapeHtml(u.estado)}</span></div></div>`).join('') },
+    { key:'omit', title:'Ejercicios omitidos (7 días)', count:omitList.reduce((n,a)=>n+a.items.length,0), rows: omitidosResumenHtml(omitList) },
     { key:'risk', title:'Riesgo por ACWR', count:riskList.length, rows: riskList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>ACWR ${u.acwr}</span></div></div>`).join('') },
     { key:'all', title:'Todos los atletas', count:state.athletes.length, rows: state.athletes.map(a=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(a.name)}</span></div></div>`).join('') }
   ];
@@ -15499,17 +16188,28 @@ async function bindDynamicEvents(){
       if(!sel){ faltan = true; return; }
       dia[i.id] = parseInt(sel.dataset.val,10);
     });
-    if(faltan){ toast('Responde las cuatro escalas', true); return; }
+    const cicloSel = card.querySelector('[data-rdciclo="molestias"] button.sel');
+    if(card.querySelector('[data-rdciclo]') && !cicloSel) faltan = true;
+    if(faltan){ toast(card.querySelector('[data-rdciclo]') ? 'Responde las cinco escalas' : 'Responde las cuatro escalas', true); return; }
     const log = await getReadiness(athleteId);
     log[todayISO()] = dia;
     const ok = await safeSet('readiness-'+athleteId, JSON.stringify(log), true);
     if(!ok){ toast('No se pudo guardar', true); return; }
+    if(cicloSel) await guardaCicloEntreno(athleteId, todayISO(), { molestias: parseInt(cicloSel.dataset.val, 10) });
     const z = zonaReadiness(totalReadiness(dia));
     toast(z ? z.titulo : 'Guardado');
     state.readinessEditar = false;
     renderKeepScroll();
   });
 
+  document.querySelectorAll('[data-rdciclo]').forEach(sc=>sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); })));
+  const rdCicloGuardar = document.getElementById('rdCicloGuardar');
+  if(rdCicloGuardar) rdCicloGuardar.addEventListener('click', async ()=>{
+    const sel = document.querySelector('#cicloPreCard [data-rdciclo] button.sel');
+    if(!sel){ toast('Marca una opción', true); return; }
+    const ok = await guardaCicloEntreno(athleteId, todayISO(), { molestias: parseInt(sel.dataset.val, 10) });
+    toast(ok ? 'Guardado' : 'No se pudo guardar', !ok); if(ok) renderKeepScroll();
+  });
   const sessionDaySelect = document.getElementById('sessionDay');
   // Al cambiar de día o semana hay que rehacer también el selector de turno
   // (mañana/tarde), no sólo la lista: por eso re-renderizamos la pestaña.
@@ -15529,7 +16229,7 @@ async function bindDynamicEvents(){
     const paused = await findPausedSession(athleteId);
     if(!paused){ toast('Ya no está disponible', true); render(); return; }
     session = { day: paused.day, elapsedSec: paused.elapsedSec||0, exercises: paused.exercises,
-      fullscreen:true, showSurvey: !!paused.showSurvey, startedAt: paused.startedAt,
+      fullscreen:true, showSurvey: !!paused.showSurvey, startedAt: paused.startedAt, turno: paused.turno || '', cicloAplica: (paused.cicloAplica !== undefined ? paused.cicloAplica : await cicloEntrenoAplica(athleteId)),
       avgExerciseRPE: paused.avgExerciseRPE, fatigueScore: paused.fatigueScore };
     arrancarCronometro();
     keepAwake(true);
@@ -15563,6 +16263,14 @@ async function bindDynamicEvents(){
     state.sessionDay = mnDay.value;
     renderKeepScroll();
   });
+  document.querySelectorAll('[data-mnturno]').forEach(b=>b.addEventListener('click', ()=>{
+    state.manual = { date:(document.getElementById('mnDate')||{}).value || todayISO(), min: parseInt((document.getElementById('mnMin')||{}).value,10) || 60 };
+    state.sessionTurno = b.dataset.mnturno; renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-mnomitir]').forEach(b=>b.addEventListener('click', ()=>{
+    const card = b.closest('.ex-card'); const on = card.classList.toggle('omitido');
+    b.textContent = on ? 'Deshacer' : 'Omití este ejercicio';
+  }));
   const cancelManual = document.getElementById('cancelManualBtn');
   if(cancelManual) cancelManual.addEventListener('click', ()=>{ state.manualSession = false; state.manual=null; renderKeepScroll(); });
   document.querySelectorAll('[data-mnscale]').forEach(sc=>{
@@ -15578,6 +16286,8 @@ async function bindDynamicEvents(){
       const val = k=>{ const sc=card.querySelector(`[data-mnscale="${k}"]`); const sel=sc&&sc.querySelector('button.sel'); return sel?parseInt(sel.dataset.val,10):null; };
       const overallRPE = val('overallRPE');
       if(overallRPE===null){ toast('Marca al menos el RPE general', true); return; }
+      const molestiasM = val('molestias'), rendM = val('rendsesion');
+      if(card.dataset.ciclo === '1' && (molestiasM === null || rendM === null)){ toast('Responde también las dos preguntas del ciclo', true); return; }
       const fecha = card.querySelector('#mnDate').value || todayISO();
       const mins = Math.max(1, parseInt(card.querySelector('#mnMin').value,10) || 60);
       const selDia = card.querySelector('#mnDay');
@@ -15595,9 +16305,11 @@ async function bindDynamicEvents(){
         const pRir = parseEsfuerzo(rirTxt);
         if(pRpe && pRpe.media>=1 && pRpe.media<=10) rpes.push(pRpe.media);
         const nota = fila.querySelector('.mn-note') ? fila.querySelector('.mn-note').value.trim() : '';
-        ejercicios.push({ name:nombre, rpeApplied:(pRpe?pRpe.media:null), rpeTexto:rpeTxt,
-          loadApplied:carga, seriesDone:series,
-          rirApplied:(pRir?pRir.media:null), rirTexto:rirTxt, noteApplied:nota, done:true });
+      const omit = fila.classList.contains('omitido'), motivo = omit && fila.querySelector('.mn-motivo') ? fila.querySelector('.mn-motivo').value : '';
+      if(omit){ ejercicios.push({ name:nombre, omitido:true, motivo, rpeApplied:null, rpeTexto:'', loadApplied:'', seriesDone:'', rirApplied:null, rirTexto:'', noteApplied:nota, done:false }); return; }
+      ejercicios.push({ name:nombre, rpeApplied:(pRpe?pRpe.media:null), rpeTexto:rpeTxt,
+        loadApplied:carga, seriesDone:series,
+        rirApplied:(pRir?pRir.media:null), rirTexto:rirTxt, noteApplied:nota, done:true });
       });
       // El tipo de sesión hay que leerlo de la rutina de la SEMANA de esa
       // fecha (puede ser pasada), no de una variable del ámbito de la vista:
@@ -15613,7 +16325,7 @@ async function bindDynamicEvents(){
       const carga = +(base * mins).toFixed(1);
 
       const registro = {
-        date: fecha, day: dia, durationSeconds: mins*60, exercises: ejercicios,
+        date: fecha, day: dia, turno: card.dataset.turnosel || '', durationSeconds: mins*60, exercises: ejercicios, rendsesion: (card.dataset.ciclo === '1' && rendM !== null) ? rendM : undefined,
         avgExerciseRPE: avg, fatigueScore: carga, cargaDesdeRPEGeneral: !(avg>0),
         overallRPE,
         descanso: val('descanso'), fatiga: val('fatiga'), calidad: val('calidad'),
@@ -15628,6 +16340,7 @@ async function bindDynamicEvents(){
       entries.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
       const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
       if(!ok){ toast('No se pudo guardar', true); return; }
+      if(card.dataset.ciclo === '1') await guardaCicloEntreno(athleteId, fecha, { molestias: molestiasM, rendsesion: rendM });
       toast('Sesión registrada en el diario');
       state.manualSession = false; state.manual = null;
       state.tab = 'progreso'; render();
@@ -15650,7 +16363,7 @@ async function bindDynamicEvents(){
     }
     const list = flattenExercises(routine, day, turnoActivo(routine, day));
     if(!list.length){ toast('No hay ejercicios programados para ese día', true); return; }
-    session = { day, elapsedSec:0, exercises:list, fullscreen:true, showSurvey:false, avgExerciseRPE:null, fatigueScore:null, startedAt:Date.now(), tipoSesion: (routine.days[day] && routine.days[day].tipo) || '' };
+    session = { day, elapsedSec:0, exercises:list, fullscreen:true, showSurvey:false, avgExerciseRPE:null, fatigueScore:null, startedAt:Date.now(), cicloAplica: await cicloEntrenoAplica(state.athleteAsId), turno: turnoActivo(routine, day) || '', tipoSesion: (routine.days[day] && routine.days[day].tipo) || '' };
     ensureAudio();
     keepAwake(true);
     persistSession();
