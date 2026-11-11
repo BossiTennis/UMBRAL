@@ -900,6 +900,17 @@
   .sj-nota{font-size:11.5px;color:var(--muted);line-height:1.6;margin:8px 0;}
   .sj-aviso{font-size:12.5px;line-height:1.6;padding:9px 12px;border-radius:10px;margin-top:8px;background:var(--panel3);}
   .sj-aviso.mal{border-left:3px solid var(--danger);} .sj-aviso.aviso{border-left:3px solid var(--warn);}
+  
+  /* Planes, ciclo y entrada */
+  .plan-tag{font-weight:700;} .plan-health{background:var(--accent-dim);color:var(--accent);} .plan-alto_rendimiento{background:var(--accent);color:var(--on-accent);}
+  .plan-lista{margin:8px 0 2px 16px;font-size:12.5px;line-height:1.7;}
+  .pipe-card.pipe-alerta{border-color:var(--danger);} .pipe-card.pipe-cerrado{opacity:.55;}
+  .pipe-etapas{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}
+  .pipe-etapas span{font-size:11px;padding:4px 8px;border-radius:100px;background:var(--panel2);color:var(--muted);display:inline-flex;gap:5px;align-items:center;}
+  .pipe-etapas span i{font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:.8;}
+  .pipe-etapas span.hecha{color:var(--ink);} .pipe-etapas span.actual{background:var(--accent);color:var(--on-accent);font-weight:700;}
+  .pipe-sem{width:12px;height:12px;border-radius:50%;display:inline-block;} .pipe-verde{background:#3b8f55;} .pipe-amarillo{background:#d4a73a;} .pipe-rojo{background:var(--danger);}
+  .pipe-msg{font-size:12.5px;line-height:1.65;white-space:pre-wrap;margin-top:8px;}
   .rd-explica{background:var(--panel3);border-radius:8px;padding:10px 12px;margin-top:10px;}
   .rd-explica b{display:block;font-size:12px;color:var(--accent);margin-bottom:4px;}
   .rd-explica p{font-size:12px;color:var(--ink);line-height:1.6;}
@@ -1156,10 +1167,16 @@ async function safeSet(key, value, shared){
 const VIDEO_BUCKET = 'umbral-videos';
 const MAX_VIDEO_MB = 60;
 
+// Datos guardados que no sean objetos (huecos, nulos, textos sueltos) se descartan al cargar, y un
+// elemento sin identificador recibe uno: así ninguna pantalla se encuentra con datos que no esperaba.
+function limpiaLista(l, pref){
+  return (Array.isArray(l) ? l : []).filter(x=>x && typeof x === 'object' && !Array.isArray(x))
+    .map((x,i)=>(x.id === undefined || x.id === null || x.id === '') ? Object.assign({}, x, { id: pref+'-'+i }) : x);
+}
 async function getVideoLib(){
   const raw = await safeGet('video-library', true);
-  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
-  catch(e){ return []; }
+try{ return limpiaLista(raw ? JSON.parse(raw) : [], 'vid'); }
+catch(e){ return []; }
 }
 async function saveVideoLib(lib){ return safeSet('video-library', JSON.stringify(lib), true); }
 function videoPublicUrl(path){
@@ -1395,6 +1412,63 @@ const INTAKE_FIELDS_MENOR = [
   {id:'comoLlego', label:'¿Cómo llegasteis a mí?', type:'select', options:['Recomendación','Redes sociales','Otro'], group:G_SAL}
 ];
 
+// ---------- PLANES ----------
+// Todo lo que cambia entre planes vive en esta constante: se edita aquí, no en la lógica.
+// Un atleta sin plan asignado cuenta como High Performance (así siguen tus atletas actuales).
+const PLAN_DEFECTO = 'alto_rendimiento';
+const PLANES = {
+  health: {
+    id:'health', nombre:'Health', corto:'Health', precio:65,
+    cuestionario:'semanal', ajustesDias:15, ajustesTxt:'cada 15 días',
+    videos:{ min:3, max:5 }, respuestaVideo:'en fin de semana', respuestaVideoHoras:null,
+    tests:{ n:8, nivel:'básicos' }, retestSemanas:8,
+    informe:false, informeSemanas:0,
+    videollamadaArranque:true, videollamadaMensual:false,
+    competicion:false, avisoCambioHoras:48,
+    whatsapp:'24-48 h laborables', orientacionCiclo:'general',
+    incluye:[
+      'Cuestionario de seguimiento semanal',
+      'Ajustes de tu entrenamiento cada 15 días',
+      '8 tests básicos y retest cada 8 semanas',
+      'Entre 3 y 5 vídeos a la semana, con respuesta en fin de semana',
+      'Videollamada de arranque',
+      'Orientación nutricional general ligada al ciclo',
+      'WhatsApp: respuesta en 24-48 h laborables'
+    ]
+  },
+  alto_rendimiento: {
+    id:'alto_rendimiento', nombre:'High Performance', corto:'HP', precio:95,
+    cuestionario:'semanal', ajustesDias:7, ajustesTxt:'cada semana',
+    videos:{ min:5, max:8 }, respuestaVideo:'en 24 h', respuestaVideoHoras:24,
+    tests:{ n:15, nivel:'completos' }, retestSemanas:8,
+    informe:true, informeSemanas:8,
+    videollamadaArranque:true, videollamadaMensual:true,
+    competicion:true, avisoCambioHoras:24,
+    whatsapp:'24-48 h laborables', orientacionCiclo:'individualizada',
+    incluye:[
+      'Cuestionario de seguimiento semanal',
+      'Ajustes de tu entrenamiento cada semana',
+      'Batería completa de tests (más de 15) y retest cada 8 semanas',
+      'Entre 5 y 8 vídeos a la semana, con respuesta en 24 h',
+      'Videollamada de arranque y una al mes',
+      'Informe de evolución cada 8 semanas, comentado en videollamada',
+      'Preparación de competición',
+      'Orientación nutricional individualizada ligada al ciclo',
+      'WhatsApp: respuesta en 24-48 h laborables'
+    ]
+  }
+};
+function planDe(atleta){ return PLANES[atleta && atleta.plan] || PLANES[PLAN_DEFECTO]; }
+function tplPlanTag(atleta){ const p = planDe(atleta); return `<span class="mod-tag plan-tag plan-${p.id}">${escapeHtml(p.corto)}</span>`; }
+function tplAvisoCompeticion(at){
+  const p = planDe(at);
+  return `<div class="card"><h2>Competición</h2><div class="empty">La preparación de competición es parte de High Performance. ${escapeHtml((at && at.name) || 'Esta atleta')} está en ${escapeHtml(p.nombre)}. Si cambia de plan, aquí volverán a aparecer sus competiciones y su periodización: lo que haya guardado no se pierde.</div></div>`;
+}
+async function tplPlanAtletaCard(atleta){
+  const p = planDe(atleta);
+  return `<div class="card plan-card"><div class="row" style="justify-content:space-between;align-items:center;"><h2 style="margin:0;">Tu plan</h2>${tplPlanTag(atleta)}</div>
+    <p class="sj-sub"><b>${escapeHtml(p.nombre)}</b>: esto es lo que incluye.</p><ul class="plan-lista">${p.incluye.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>`;
+}
 function esMenor(atleta){ return !!atleta && tienePerfil(atleta, 'menor'); }
 function intakeCamposDe(atleta){ return camposIntakeEfectivos(esMenor(atleta) ? 'menor' : 'adulto'); }
 function optVal(o){ return typeof o === 'string' ? o : o.v; }
@@ -2166,7 +2240,7 @@ function saturdayOfWeek(){ const d=new Date(); const day=d.getDay()||7; d.setDat
 function fmtTime(sec){ const m=Math.floor(sec/60), s=Math.abs(sec%60); return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
 // Colores del RPE dentro de la paleta: verde sobrio, mostaza y granate.
 function rpeColor(rpe){ if(rpe<=3) return '#2F7355'; if(rpe<=6) return '#856210'; return '#A83A2E'; }
-function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c)); }
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c)); }
 
 async function loadAthletes(){ const raw=await safeGet('athletes-list', true); state.athletes = raw?JSON.parse(raw):[]; }
 
@@ -2603,6 +2677,7 @@ function renderCoachAtletas(){
     html += `<button class="athlete-row" data-openathlete="${a.id}"><span class="name">${escapeHtml(a.name)}</span>
       <span class="row" style="gap:7px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
         ${a.esDemo?`<span class="mod-tag demo-badge">Muestra</span>`:''}
+${tplPlanTag(a)}
         ${TENIS_ACTIVO?`<span class="mod-tag mod-${a.modalidad||'gym'}">${modEtq}</span>`:''}
         ${perfilesAt.map(pid=>`<span class="mod-tag mod-perfil">${escapeHtml((PERFILES_ATLETA.find(x=>x.id===pid)||{}).label||pid)}</span>`).join('')}
         <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">PIN ${a.pin}</span>
@@ -2611,6 +2686,7 @@ function renderCoachAtletas(){
   html += `</div><div class="row" style="margin-top:12px;">
     <input type="text" id="newAthleteName" placeholder="Nombre del nuevo atleta">
     <label class="row" style="gap:6px;font-size:12.5px;white-space:nowrap;"><input type="checkbox" id="newAthleteMenor"> Menor de edad</label>
+<select id="newAthletePlan" style="min-width:110px;"><option value="health">Health</option><option value="alto_rendimiento">High Performance</option></select>
     ${TENIS_ACTIVO?`<select id="newAthleteModalidad" style="min-width:100px;">
       <option value="gym">Gym</option>
       <option value="tenis">Tenis</option>
@@ -2773,7 +2849,7 @@ async function bindShellEvents(){
     }
     if(!pin){ toast('No quedan PINs libres de 4 dígitos', true); return; }
     const modalidad = (document.getElementById('newAthleteModalidad')||{}).value || 'gym';
-    const newAthlete = { id: uid(), name, pin, modalidad };
+    const newAthlete = { id: uid(), name, pin, modalidad, plan: ((document.getElementById('newAthletePlan')||{}).value || 'health'), fechaInicio: todayISO() };
     const esMenorNuevo = !!(document.getElementById('newAthleteMenor') || {}).checked;
     if(esMenorNuevo) newAthlete.perfiles = ['menor'];
     state.athletes.push(newAthlete);
@@ -3823,130 +3899,24 @@ function formateaGuia(txt){
     .replace(/\n/g, '<br>');
 }
 
-// ---------- CAPTACIÓN: CUESTIONARIO DE FILTRADO ----------
-// Dos puntuaciones distintas y deliberadamente separadas:
-//  · POTENCIAL: cuánto encaja como cliente rentable (objetivo, material,
-//    disponibilidad, aceptación del precio).
-//  · ALINEACIÓN: cuánto encaja con cómo trabajas (compromiso con el registro,
-//    por qué te eligió a ti, expectativas).
-// Alguien puede tener 9 de potencial y 3 de alineación: pagaría, pero no
-// seguiría el método. Verlo por separado evita perder tiempo con esos.
-const FILTRO_PREGUNTAS = [
-  { id:'nombre', tipo:'texto', obligatoria:true, seccion:'Sobre ti',
-    label:'Nombre y apellidos' },
-  { id:'edad', tipo:'numero', obligatoria:true, seccion:'Sobre ti',
-    label:'Edad' },
-  { id:'genero', tipo:'opcion', obligatoria:true, seccion:'Sobre ti',
-    label:'Género', opciones:['Mujer','Hombre','Otro / prefiero no decirlo'] },
-  { id:'contacto', tipo:'texto', obligatoria:true, seccion:'Sobre ti',
-    label:'Teléfono o email de contacto' },
-  { id:'comoConociste', tipo:'texto', obligatoria:true, seccion:'Sobre ti',
-    label:'¿Cómo me conociste?', ayuda:'Instagram, un amigo, el club…' },
-
-  { id:'objetivo', tipo:'opcion', obligatoria:true, seccion:'Tu objetivo',
-    label:'¿Cuál es tu objetivo principal ahora mismo?',
-    opciones:['Competir en HYROX','Rendimiento en tenis','Recomposición corporal',
-              'Ganancia de masa muscular','Rendimiento en carrera','Preparación física general'],
-    permiteOtro:true,
-    puntos:{ 'Competir en HYROX':10, 'Rendimiento en tenis':10, 'Recomposición corporal':8,
-             'Ganancia de masa muscular':8, 'Rendimiento en carrera':7, 'Preparación física general':5 },
-    eje:'potencial' },
-  { id:'fecha', tipo:'texto', obligatoria:false, seccion:'Tu objetivo',
-    label:'¿Hay alguna fecha o competición concreta a la que apuntes?',
-    ayuda:'Si no la hay, dilo sin problema.',
-    puntosTexto:{ conTexto:9, vacio:4 }, eje:'potencial' },
-  { id:'experiencia', tipo:'opcion', obligatoria:true, seccion:'Tu objetivo',
-    label:'¿Cuánto tiempo llevas entrenando de forma continuada?',
-    opciones:['Menos de 6 meses','6 meses – 1 año','1 – 2 años','2 – 5 años','Más de 5 años'],
-    permiteOtro:true,
-    puntos:{ 'Menos de 6 meses':3, '6 meses – 1 año':6, '1 – 2 años':8, '2 – 5 años':10, 'Más de 5 años':10 },
-    eje:'potencial' },
-
-  { id:'material', tipo:'multi', obligatoria:true, seccion:'Tu contexto',
-    label:'¿A qué material tienes acceso?',
-    opciones:['Gimnasio comercial','Home gym','Solo mancuernas / bandas','Pista de tenis','Espacio para correr'],
-    permiteOtro:true, pideNotas:true,
-    notasLabel:'Cuéntame más: qué gimnasio es, o qué tienes en casa',
-    puntos:{ 'Gimnasio comercial':10, 'Home gym':7, 'Solo mancuernas / bandas':4,
-             'Pista de tenis':8, 'Espacio para correr':7 },
-    eje:'potencial' },
-  { id:'disponibilidad', tipo:'texto', obligatoria:true, seccion:'Tu contexto',
-    label:'¿Cuántos días a la semana puedes entrenar de forma realista? ¿En qué franjas?',
-    ayuda:'Realista, no ideal.', eje:'potencial', revisionManual:true },
-
-  { id:'compromiso', tipo:'escala', obligatoria:true, seccion:'Cómo trabajamos',
-    label:'Del 1 al 10, ¿cómo de dispuesto estás a registrar cada sesión y tus hábitos diarios en una app?',
-    min:1, max:10, eje:'alineacion', pesoEscala:true },
-  { id:'porQueYo', tipo:'texto', obligatoria:true, seccion:'Cómo trabajamos',
-    label:'¿Por qué quieres entrenar conmigo y no con otro preparador?',
-    largo:true, eje:'alineacion', revisionManual:true },
-  { id:'precio', tipo:'opcion', obligatoria:true, seccion:'Cómo trabajamos',
-    label:'El servicio tiene un coste de 130 €/mes e incluye planificación individualizada, seguimiento diario en Umbral, correcciones técnicas por vídeo y llamada cada 3 semanas. ¿Encaja con lo que tenías en mente?',
-    opciones:['Sí, encaja','Me encaja pero necesito ajustar fechas','Me parece caro, quiero saber más','No es mi momento'],
-    permiteOtro:true,
-    puntos:{ 'Sí, encaja':10, 'Me encaja pero necesito ajustar fechas':7,
-             'Me parece caro, quiero saber más':4, 'No es mi momento':1 },
-    eje:'potencial' }
+// ---------- CAPTACIÓN = AFINIDAD: UN SOLO CUESTIONARIO ----------
+// El cuestionario antiguo (potencial / alineación) ya no existe. Sus respuestas se siguen viendo
+// y se valoran con las mismas reglas que el nuevo, traduciendo lo que sí coincide.
+const LEGACY_PREGUNTAS = [
+  {id:'nombre', label:'Nombre y apellidos'}, {id:'edad', label:'Edad'}, {id:'genero', label:'Género'},
+  {id:'contacto', label:'Teléfono o email de contacto'}, {id:'comoConociste', label:'¿Cómo me conociste?'},
+  {id:'objetivo', label:'Objetivo principal'}, {id:'fecha', label:'Fecha o competición concreta'},
+  {id:'experiencia', label:'Tiempo entrenando de forma continuada'}, {id:'material', label:'Material al que tiene acceso'},
+  {id:'disponibilidad', label:'Días y franjas que puede entrenar'}, {id:'compromiso', label:'Disposición a registrar sesiones y hábitos (1-10)'},
+  {id:'porQueYo', label:'¿Por qué quiere entrenar contigo?'}, {id:'precio', label:'¿Le encajaba el precio? (cuestionario anterior)'}
 ];
-
-// Calcula las dos puntuaciones y marca qué necesita que lo leas tú.
-function evaluaRespuesta(resp, preguntas){
-  preguntas = preguntas || FILTRO_PREGUNTAS;
-  const ejes = { potencial:[], alineacion:[] };
-  const revisar = [];
-
-  preguntas.forEach(q=>{
-    if(!q.eje) return;
-    const v = resp[q.id];
-    const esOtro = resp[q.id+'__otro'];
-
-    // Texto libre o respuesta "Otro": no se puntúa sola, la lees tú.
-    if(esOtro || (q.revisionManual && v)){
-      revisar.push({ id:q.id, label:q.label, valor: esOtro || v });
-      return;
-    }
-    if(v === undefined || v === '' || v === null) return;
-
-    if(q.tipo==='escala' && q.pesoEscala){
-      ejes[q.eje].push(Math.max(1, Math.min(10, parseInt(v,10)||1)));
-      return;
-    }
-    if(q.puntosTexto){
-      ejes[q.eje].push(String(v).trim() ? q.puntosTexto.conTexto : q.puntosTexto.vacio);
-      return;
-    }
-    if(q.tipo==='multi' && Array.isArray(v) && v.length){
-      // Nos quedamos con el mejor material disponible, no con la media.
-      const mejor = Math.max(...v.map(o=>(q.puntos&&q.puntos[o])||5));
-      ejes[q.eje].push(mejor);
-      return;
-    }
-    if(q.puntos && q.puntos[v] !== undefined){
-      ejes[q.eje].push(q.puntos[v]);
-      return;
-    }
-    if(q.tipo==='texto' && String(v).trim()){
-      revisar.push({ id:q.id, label:q.label, valor:v });
-    }
-  });
-
-  const media = arr => arr.length ? Math.round((arr.reduce((a,b)=>a+b,0)/arr.length)*10)/10 : null;
-  return {
-    potencial: media(ejes.potencial),
-    alineacion: media(ejes.alineacion),
-    revisar
-  };
-}
-
-// Prioridad de la llamada de venta. Una alineación baja pesa más que un
-// potencial alto: alguien que paga pero no sigue el método acaba yéndose.
-function prioridadLead(ev){
-  const p = ev.potencial, a = ev.alineacion;
-  if(p === null || a === null) return { nivel:'incompleto', texto:'Respuestas incompletas' };
-  if(a < 5) return { nivel:'baja', texto:'Poco alineado con tu forma de trabajar, aunque pudiera pagarlo. Antes de invertir tiempo, valora si merece la llamada.' };
-  if(p >= 8 && a >= 8) return { nivel:'alta', texto:'Encaja bien por objetivo y por forma de trabajar. Prioriza esta llamada.' };
-  if(p >= 6 && a >= 6) return { nivel:'media', texto:'Encaje razonable. Merece la llamada, con alguna cosa que aclarar.' };
-  return { nivel:'baja', texto:'Encaje flojo. Lee sus respuestas antes de decidir.' };
+function legacyClaves(r){
+  const e = r.experiencia, p = r.precio, k = {};
+  k.meses = !e ? '' : (e === 'Menos de 6 meses' ? '<6' : (e === '6 meses – 1 año' ? '6-12' : (e === '1 – 2 años' ? '1-3' : '>3')));
+  k.precio = !p ? '' : (p === 'Sí, encaja' ? 'si' : (p === 'Me encaja pero necesito ajustar fechas' ? 'fechas' : 'no'));
+  k.objetivo = { 'Competir en HYROX':'competir', 'Rendimiento en tenis':'deporte', 'Rendimiento en carrera':'deporte', 'Recomposición corporal':'composicion', 'Ganancia de masa muscular':'fuerza', 'Preparación física general':'salud' }[r.objetivo] || '';
+  Object.keys(k).forEach(id=>{ if(!k[id]) delete k[id]; });
+  return k;
 }
 
 async function getLeads(){
@@ -3955,15 +3925,189 @@ async function getLeads(){
   catch(e){ return []; }
 }
 async function saveLeads(lista){ return safeSet('leads', JSON.stringify(lista), true); }
-async function getFiltroPreguntas(){
-  const raw = await safeGet('filtro-preguntas', true);
-  try{
-    const l = raw ? JSON.parse(raw) : null;
-    if(Array.isArray(l) && l.length) return l;
-  }catch(e){}
-  return FILTRO_PREGUNTAS;
+// ---------- CAPTACIÓN: CUESTIONARIO DE AFINIDAD ----------
+// Textos y preguntas viven aquí como valores por defecto, y TODO se puede editar desde Leads →
+// «Editar cuestionario» (se guarda aparte, sin tocar el código). Las reglas del semáforo se apoyan
+// en la POSICIÓN de cada opción (campo `claves`), no en su texto: puedes reescribir una opción sin
+// romper la lógica.
+function textoPlanesDefecto(){
+  return Object.keys(PLANES).map(k=>{ const p = PLANES[k];
+    return `**${p.nombre} · ${p.precio} €/mes${p.id === 'alto_rendimiento' ? ' (precio de lanzamiento)' : ''}.** ${p.incluye.join('. ')}.`;
+  }).join('\n\n');
 }
-async function saveFiltroPreguntas(lista){ return safeSet('filtro-preguntas', JSON.stringify(lista), true); }
+const FILTRO2_TEXTOS_META = [
+  {k:'titulo', l:'Título del formulario'},
+  {k:'intro1', l:'Introducción (primer párrafo)', largo:70},
+  {k:'intro2', l:'Introducción (segundo párrafo)', largo:70},
+  {k:'planes', l:'Texto de los dos planes (sale antes de la pregunta del plan)', largo:200, ayuda:'Por defecto se genera con los precios y lo que incluye cada plan. Si lo escribes a mano, ya no se actualiza solo cuando cambien los planes.'},
+  {k:'enviar', l:'Texto del botón de enviar'},
+  {k:'pie', l:'Texto bajo el botón', largo:56},
+  {k:'graciasTitulo', l:'Pantalla final: título'},
+  {k:'gracias1', l:'Pantalla final: texto', largo:56},
+  {k:'gracias2', l:'Pantalla final: segundo texto', largo:56},
+  {k:'msgAceptar', l:'Mensaje al aceptar (usa {nombre})', largo:84},
+  {k:'msgEspera', l:'Mensaje de lista de espera', largo:84},
+  {k:'msgDeclinar', l:'Mensaje al declinar', largo:84},
+  {k:'msgLesion', l:'Mensaje si hay lesión sin valorar', largo:84}
+];
+const FILTRO2_TEXTOS = {
+  titulo:'Cuéntame un poco de ti',
+  intro1:'Son unas 20 preguntas y te llevará menos de 3 minutos. Con tus respuestas veo si puedo ayudarte y qué plan te encajaría mejor.',
+  intro2:'Contesta con sinceridad, incluso en lo que creas que «queda mal». No escribas aquí nada de tu historial médico: eso va en el cuestionario inicial, si trabajamos juntos.',
+  planes: textoPlanesDefecto(),
+  enviar:'Enviar respuestas',
+  pie:'Tus datos solo los uso para valorar si puedo ayudarte. No se comparten con nadie y puedes pedirme que los borre cuando quieras.',
+  graciasTitulo:'Gracias',
+  gracias1:'He recibido tus respuestas. Te respondo en 48 h.',
+  gracias2:'Si veo que ahora mismo no soy tu mejor opción, te lo diré igualmente: prefiero eso a que pierdas tiempo y dinero.',
+  msgAceptar:'Hola {nombre}, gracias por rellenar el cuestionario. Creo que puedo ayudarte y me encantaría trabajar contigo. El siguiente paso es un cuestionario inicial breve y una llamada de 15 minutos para conocernos. ¿Te lo paso?',
+  msgEspera:'Hola {nombre}, gracias por tu interés. Ahora mismo tengo las plazas completas, pero me gustaría tenerte en cuenta: te apunto en la lista de espera y te escribo en cuanto se libere una plaza.',
+  msgDeclinar:'Hola {nombre}, gracias por tu tiempo y por la confianza. Después de leer tu cuestionario creo que ahora mismo no soy la mejor opción para lo que buscas, y prefiero decírtelo con sinceridad antes que prometerte algo que no encaje. Te deseo mucho éxito con tu objetivo.',
+  msgLesion:'Hola {nombre}, gracias por escribirme. Antes de empezar necesito que te valore un profesional sanitario (médico o fisioterapeuta) esa molestia. Cuando lo tengas, me lo cuentas y seguimos.'
+};
+const FILTRO2_PREGUNTAS = [
+  { id:'nombre', tipo:'texto', obligatoria:true, seccion:'Sobre ti', label:'Nombre' },
+  { id:'contacto', tipo:'texto', obligatoria:true, seccion:'Sobre ti', label:'Tu Instagram o WhatsApp', ayuda:'Para poder responderte.' },
+  { id:'menor', tipo:'opcion', obligatoria:true, seccion:'Sobre ti', label:'¿Eres menor de 18 años?', opciones:['Sí','No'], claves:['si','no'] },
+  { id:'edad', tipo:'numero', obligatoria:true, seccion:'Sobre ti', label:'Edad' },
+  { id:'tutorNombre', tipo:'texto', obligatoria:true, seccion:'Sobre ti', label:'Nombre de tu madre, padre o tutor/a legal', mostrarSi:{ id:'menor', es:['si'] } },
+  { id:'tutorContacto', tipo:'texto', obligatoria:true, seccion:'Sobre ti', label:'Su WhatsApp o email', mostrarSi:{ id:'menor', es:['si'] } },
+  { id:'tutorConsent', tipo:'opcion', obligatoria:true, seccion:'Sobre ti', label:'Consentimiento del tutor/a', opciones:['Soy su madre, padre o tutor/a legal y doy mi consentimiento para que rellene este cuestionario y, si encajamos, entrene conmigo'], claves:['si'], mostrarSi:{ id:'menor', es:['si'] } },
+
+  { id:'objetivo', tipo:'opcion', obligatoria:true, seccion:'Tu objetivo', label:'¿Cuál es tu objetivo principal ahora mismo?',
+    opciones:['Salud y hábitos con gimnasio','Fuerza','Composición corporal','Competir (tenis, HYROX, carrera, otro)','Mejorar en mi deporte con físico'],
+    claves:['salud','fuerza','composicion','competir','deporte'] },
+  { id:'deporte', tipo:'texto', obligatoria:true, seccion:'Tu objetivo', label:'Deporte que practicas', ayuda:'Si ninguno, escribe «ninguno».' },
+  { id:'fechaPrueba', tipo:'texto', obligatoria:false, seccion:'Tu objetivo', label:'Fecha de tu próxima prueba', ayuda:'Si la tienes.', mostrarSi:{ id:'objetivo', es:['competir','deporte'] } },
+
+  { id:'meses', tipo:'opcion', obligatoria:true, seccion:'Tu entrenamiento', label:'¿Cuánto tiempo llevas entrenando con regularidad?',
+    opciones:['Menos de 6 meses','6-12 meses','1-3 años','Más de 3 años'], claves:['<6','6-12','1-3','>3'] },
+  { id:'dias', tipo:'opcion', obligatoria:true, seccion:'Tu entrenamiento', label:'¿Cuántos días por semana puedes entrenar de forma realista?', ayuda:'Realista, no ideal.',
+    opciones:['2','3','4','5','6 o más'] },
+  { id:'donde', tipo:'multi', obligatoria:true, seccion:'Tu entrenamiento', label:'¿Dónde entrenas?', opciones:['Gimnasio','Casa','Otro'] },
+
+  { id:'cuestSem', tipo:'opcion', obligatoria:true, seccion:'Cómo trabajamos', label:'¿Podrás rellenar un cuestionario de seguimiento cada semana (unos 3 minutos)?',
+    opciones:['Sí, cada semana','No'], claves:['si','no'] },
+  { id:'videos', tipo:'opcion', obligatoria:true, seccion:'Cómo trabajamos', label:'¿Podrás grabarte en vídeo y enviármelos cuando te los pida?',
+    opciones:['Sí, hasta 3-5 vídeos por semana','Sí, hasta 5-8 vídeos por semana','Prefiero pocos'], claves:['3-5','5-8','pocos'] },
+  { id:'tests', tipo:'opcion', obligatoria:true, seccion:'Cómo trabajamos', label:'¿Podrás hacer los tests iniciales y repetirlos cada 8 semanas?',
+    opciones:['Sí','Tengo dudas'], claves:['si','dudo'] },
+  { id:'registro', tipo:'escala', obligatoria:true, seccion:'Cómo trabajamos', label:'Del 1 al 10, ¿cuánto te cuesta registrar tus sesiones?', min:1, max:10, minLabel:'Nada', maxLabel:'Muchísimo' },
+
+  { id:'ciclo', tipo:'opcion', obligatoria:false, seccion:'Salud', label:'¿Quieres observar tu ciclo menstrual junto a tu entrenamiento?', ayuda:'Opcional. Son datos de salud: solo los vemos tú y yo.',
+    opciones:['Sí','No','No me aplica'], claves:['si','no','na'], mostrarSi:{ id:'menor', es:['no'] } },
+  { id:'lesion', tipo:'opcion', obligatoria:true, seccion:'Salud', label:'¿Tienes alguna lesión o molestia que no haya valorado un profesional sanitario?', ayuda:'Sin detalles aquí.',
+    opciones:['Sí','No'], claves:['si','no'] },
+
+  { id:'planElegido', tipo:'opcion', obligatoria:true, seccion:'Tu plan', label:'¿Qué plan te interesa?', antesKey:'planes',
+    opciones:['Health','High Performance','No lo sé'], claves:['health','hp','nose'] },
+  { id:'precio', tipo:'opcion', obligatoria:true, seccion:'Tu plan', label:'El precio del plan que te interesa es {precio}. ¿Te encaja?',
+    opciones:['Sí','Sí, pero necesito ajustar fechas','No'], claves:['si','fechas','no'] },
+  { id:'plazo', tipo:'opcion', obligatoria:true, seccion:'Tu plan', label:'¿En cuánto tiempo esperas notar resultados?',
+    opciones:['Menos de 4 semanas','1-3 meses','3-6 meses','Más de 6 meses'], claves:['<4s','1-3m','3-6m','>6m'] },
+
+  { id:'esperas', tipo:'texto', obligatoria:true, seccion:'Para terminar', label:'¿Qué esperas conseguir?', largo:true },
+  { id:'porQueYo', tipo:'texto', obligatoria:true, seccion:'Para terminar', label:'¿Por qué quieres entrenar conmigo?', largo:true },
+  { id:'comoConociste', tipo:'opcion', obligatoria:true, seccion:'Para terminar', label:'¿Cómo me conociste?', opciones:['Instagram','Recomendación'], permiteOtro:true },
+  { id:'rgpd', tipo:'opcion', obligatoria:true, seccion:'Para terminar', label:'Consentimiento',
+    opciones:['Acepto que Mario trate estos datos para valorar mi solicitud. Puedo pedir que se borren cuando quiera.'], claves:['si'] }
+];
+async function getFiltroTextos(){
+  const raw = await safeGet('filtro2-textos', true); let o = {};
+  try{ o = raw ? JSON.parse(raw) : {}; }catch(e){}
+  const r = Object.assign({}, FILTRO2_TEXTOS);
+  Object.keys(o || {}).forEach(k=>{ if(typeof o[k] === 'string' && o[k].trim() !== '' && k in r) r[k] = o[k]; });
+  return r;
+}
+async function getFiltroPreguntas(){
+  const raw = await safeGet('filtro2-preguntas', true); let ov = {};
+  try{ ov = raw ? JSON.parse(raw) : {}; }catch(e){}
+  return FILTRO2_PREGUNTAS.map(q=>{
+    const o = (ov && ov[q.id]) || {}, r = Object.assign({}, q);
+    if(o.label) r.label = o.label;
+    if(typeof o.ayuda === 'string') r.ayuda = o.ayuda;
+    if(Array.isArray(o.opciones) && q.opciones) r.opciones = q.opciones.map((t,i)=>o.opciones[i] || t);
+    if(typeof o.obligatoria === 'boolean') r.obligatoria = o.obligatoria;
+    if(typeof o.oculta === 'boolean') r.oculta = o.oculta;
+    if(o.minLabel) r.minLabel = o.minLabel;
+    if(o.maxLabel) r.maxLabel = o.maxLabel;
+    return r;
+  });
+}
+function claveDe(preguntas, id, r){
+  if(r && r.__claves && r.__claves[id]) return r.__claves[id];
+  const q = preguntas.find(x=>x.id === id), v = r ? r[id] : undefined;
+  if(!q || v === undefined || v === '' || v === null) return '';
+  if(q.claves && q.opciones){ const i = q.opciones.indexOf(v); return i >= 0 ? q.claves[i] : ''; }
+  return String(v);
+}
+function preguntaVisible(q, r, preguntas){
+  if(q.oculta) return false;
+  const c = q.mostrarSi; if(!c) return true;
+  return c.es.includes(claveDe(preguntas, c.id, r || {}));
+}
+// Plan sugerido, semáforo y banderas: tus reglas, sin que la persona vea nada de esto.
+function evaluaAfinidad(r, preguntas){
+  const k = id=>claveDe(preguntas, id, r);
+  const edad = parseInt(r.edad, 10), menor = k('menor') === 'si' || (edad > 0 && edad < 18);
+  const rojo = [], amarillo = [];
+  if(k('meses') === '<6') rojo.push('Menos de 6 meses de base');
+  if(k('cuestSem') === 'no') rojo.push('No acepta el registro semanal');
+  if(k('precio') === 'no') rojo.push('El precio no encaja');
+  if(k('plazo') === '<4s') rojo.push('Espera resultados en pocas semanas');
+  const obj = k('objetivo'), vid = k('videos');
+  let plan = 'revisar';
+  if(rojo.length) plan = 'ninguno';
+  else if(['competir','deporte'].includes(obj) && k('cuestSem') === 'si' && vid === '5-8') plan = 'alto_rendimiento';
+  else if(['salud','fuerza','composicion'].includes(obj) && vid && vid !== 'pocos') plan = 'health';
+  if(menor) amarillo.push('Menor de edad: consentimiento del tutor, sin ciclo ni guía de proteína');
+  if(k('lesion') === 'si') amarillo.push('Lesión o molestia sin valorar: pedir valoración sanitaria antes de empezar');
+  const elegido = { health:'health', hp:'alto_rendimiento' }[k('planElegido')];
+  if(elegido && PLANES[plan] && elegido !== plan) amarillo.push(`Eligió ${PLANES[elegido].nombre} y encaja ${PLANES[plan].nombre}`);
+  const revisar = [];
+  ['esperas','porQueYo','fechaPrueba'].forEach(id=>{ const q = preguntas.find(x=>x.id === id), v = r[id]; if(q && v && String(v).trim()) revisar.push({ id, label:q.label, valor:v }); });
+  preguntas.forEach(q=>{ if(r[q.id+'__otro']) revisar.push({ id:q.id, label:q.label, valor:'Otro: '+r[q.id+'__otro'] }); });
+  return { plan, semaforo: rojo.length ? 'rojo' : (amarillo.length ? 'amarillo' : 'verde'), rojo, amarillo, menor, revisar };
+}
+function leadEvalua(l, preguntas){
+  if(l.v === 2){
+    const ev = evaluaAfinidad(l.respuestas || {}, preguntas);
+    return { ...l, ev, prio:{ nivel:{ verde:'alta', amarillo:'media', rojo:'baja' }[ev.semaforo], texto:'' }, preguntasUsadas: preguntas };
+  }
+  // Respuestas del cuestionario anterior: mismas reglas, con lo que coincide.
+  const r = Object.assign({}, l.respuestas || {}, { __claves: legacyClaves(l.respuestas || {}) });
+  const ev = evaluaAfinidad(r, preguntas);
+  ev.legacy = true;
+  ['fecha','disponibilidad'].forEach(id=>{ if(r[id] && String(r[id]).trim()) ev.revisar.push({ id, label:(LEGACY_PREGUNTAS.find(x=>x.id === id) || {}).label || id, valor:r[id] }); });
+  if(!ev.rojo.length){
+    ev.amarillo.push('Respondió el cuestionario anterior: faltan datos (vídeos, registro semanal, ciclo…) para sugerir plan');
+    ev.semaforo = 'amarillo';
+  }
+  return { ...l, ev, prio:{ nivel:{ verde:'alta', amarillo:'media', rojo:'baja' }[ev.semaforo], texto:'' }, preguntasUsadas: LEGACY_PREGUNTAS };
+}
+function precioDePlan(id){ const p = PLANES[id]; return `${p.precio} €/mes${id === 'alto_rendimiento' ? ' (precio de lanzamiento)' : ''}`; }
+// {precio} se sustituye por el precio REAL del plan que haya elegido (sale de PLANES, no de un texto escrito a mano).
+function resuelveLabel(q, r, preguntas){
+  if(!q.label || !q.label.includes('{precio}')) return q.label;
+  const el = claveDe(preguntas, 'planElegido', r || {});
+  const t = el === 'health' ? precioDePlan('health') : (el === 'hp' ? precioDePlan('alto_rendimiento') : `Health ${precioDePlan('health')} · High Performance ${precioDePlan('alto_rendimiento')}`);
+  return q.label.split('{precio}').join(t);
+}
+function tplPlanSugeridoTag(plan){
+  if(PLANES[plan]) return `<span class="mod-tag plan-tag plan-${plan}">${escapeHtml(PLANES[plan].corto)}</span>`;
+  return `<span class="mod-tag">${plan === 'ninguno' ? 'Ninguno' : 'Revisar'}</span>`;
+}
+async function pasarLeadAEntrada(leadId){
+  const leads = await getLeads(), l = leads.find(x=>x.id === leadId); if(!l) return false;
+  const preguntas = await getFiltroPreguntas(), ev = evaluaAfinidad(l.respuestas || {}, preguntas), r = l.respuestas || {};
+  const pipe = await getPipeline(), ahora = new Date().toISOString();
+  const p = { id:uid(), nombre:r.nombre || 'Sin nombre', contacto:r.contacto || '', plan: PLANES[ev.plan] ? ev.plan : '', semaforo:ev.semaforo,
+    etapa:'afinidad', fechas:{ afinidad:ahora }, resultado: l.decision || '', notas: ev.rojo.concat(ev.amarillo).join(' · '), leadId:l.id };
+  pipe.push(p); l.pipelineId = p.id; if(l.estado === 'nuevo') l.estado = 'contactado';
+  const ok = await savePipeline(pipe) && await saveLeads(leads);
+  return ok;
+}
+
 
 // ---------- TAREAS (sistema generalizado, sustituye a mandar cosas sueltas) ----------
 // El molde para TODO lo que quieras mandarle a un atleta cuando te parezca:
@@ -4266,7 +4410,8 @@ async function getSecciones(){
   const raw = await safeGet('galeria-secciones', true);
   try{
     const l = raw ? JSON.parse(raw) : null;
-    return (Array.isArray(l) && l.length) ? l : SECCIONES_DEFECTO.slice();
+    const lim = Array.isArray(l) ? l.filter(x=>typeof x === 'string' && x.trim()) : [];
+return lim.length ? lim : SECCIONES_DEFECTO.slice();
   }catch(e){ return SECCIONES_DEFECTO.slice(); }
 }
 async function saveSecciones(lista){ return safeSet('galeria-secciones', JSON.stringify(lista), true); }
@@ -4348,8 +4493,9 @@ async function getCiclo(athleteId){
     duracionRegla: o.duracionRegla || 5,
     anticonceptivo: o.anticonceptivo || 'ninguno',
     condicion: o.condicion || '',
-    historial: derivaHistorial(inicios)
-  };
+    historial: derivaHistorial(inicios),
+consent: (o.consent && typeof o.consent==='object') ? o.consent : null
+};
 }
 async function saveCiclo(athleteId, c){ return safeSet('ciclo-'+athleteId, JSON.stringify(c), true); }
 
@@ -4713,7 +4859,7 @@ function mismaSeccion(ex, sec){ return seccionesDe(ex).includes(sec); }
 
 async function getNotasSeccion(){
   const raw = await safeGet('galeria-notas', true);
-  try{ const o = raw ? JSON.parse(raw) : null; return (o && typeof o==='object') ? o : {}; }
+  try{ const o = raw ? JSON.parse(raw) : null; const r = {}; if(o && typeof o==='object' && !Array.isArray(o)) Object.keys(o).forEach(k=>{ r[k] = typeof o[k] === 'string' ? o[k] : (o[k] == null ? '' : String(o[k])); }); return r; }
   catch(e){ return {}; }
 }
 async function saveNotasSeccion(obj){ return safeSet('galeria-notas', JSON.stringify(obj), true); }
@@ -4722,14 +4868,14 @@ async function saveNotasSeccion(obj){ return safeSet('galeria-notas', JSON.strin
 // día. Los bloques son grupos completos (un circuito, un calentamiento tipo).
 async function getExLib(){
   const raw = await safeGet('exercise-library', true);
-  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
-  catch(e){ return []; }
+try{ return limpiaLista(raw ? JSON.parse(raw) : [], 'ex'); }
+catch(e){ return []; }
 }
 async function saveExLib(lib){ return safeSet('exercise-library', JSON.stringify(lib), true); }
 async function getBlockLib(){
   const raw = await safeGet('block-library', true);
-  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }
-  catch(e){ return []; }
+try{ return limpiaLista(raw ? JSON.parse(raw) : [], 'blk'); }
+catch(e){ return []; }
 }
 async function saveBlockLib(lib){ return safeSet('block-library', JSON.stringify(lib), true); }
 
@@ -6549,7 +6695,8 @@ async function cicloEntrenoAplica(athleteId){
   try{ genero = raw ? (JSON.parse(raw).genero || '') : ''; }catch(e){}
   if(genero !== 'Mujer') return false;
   const ciclo = await getCiclo(athleteId);
-  return ciclo.anticonceptivo !== 'combinado';
+  if(esMenor(state.athletes.find(a=>a.id===athleteId))) return false;
+  return consentCicloDe(ciclo) === 'si' && ciclo.anticonceptivo !== 'combinado';
 }
 async function getCicloEntreno(athleteId){
   const raw = await safeGet('ciclo-dia-'+athleteId, true);
@@ -8061,7 +8208,7 @@ async function tplQuestForm(athleteId, existing, semanaKey){
   const intakeRaw = await safeGet('intake-'+athleteId, true);
   let generoAtleta = ''; try{ generoAtleta = intakeRaw ? (JSON.parse(intakeRaw).genero||'') : ''; }catch(e){}
   const cicloAtleta = await getCiclo(athleteId);
-  const mostrarCiclo = generoAtleta === 'Mujer' && cicloAtleta.anticonceptivo !== 'combinado';
+  const mostrarCiclo = generoAtleta === 'Mujer' && cicloAtleta.anticonceptivo !== 'combinado' && consentCicloDe(cicloAtleta) === 'si' && !esMenor(state.athletes.find(a=>a.id===athleteId));
   if(!active.length && !mostrarCiclo){
     return `<div class="empty" style="padding:18px 0;">Tu entrenador no ha activado ninguna pregunta para este cuestionario todavía. Cuando lo haga, aparecerá aquí.</div>`;
   }
@@ -9094,7 +9241,8 @@ async function tplHabitosCoach(athleteId){
   return html;
 }
 
-async function tplPerfilAtleta(athleteId){
+async function tplPerfilAtleta(athleteId){ return await tplPlanAtletaCard(state.athletes.find(a=>a.id===athleteId)) + await tplPerfilAtletaBase(athleteId); }
+async function tplPerfilAtletaBase(athleteId){
   const me = state.athletes.find(a=>a.id===athleteId);
   const raw = await safeGet('intake-'+athleteId, true);
   const data = raw ? JSON.parse(raw) : null;
@@ -9163,16 +9311,17 @@ async function tplPerfilAtleta(athleteId){
   </button>`;
   // Banner de ciclo menstrual: sólo si el atleta se identificó como mujer en
   // su ficha inicial. No se ofrece a nadie más.
-  if(data && data.genero === 'Mujer'){
-    const cicloAt = await getCiclo(athleteId);
-    const faseAt = faseCiclo(cicloAt, todayISO());
+  if(data && data.genero === 'Mujer' && !esMenor(state.athletes.find(a=>a.id===athleteId)) && consentCicloDe(await getCiclo(athleteId)) !== 'no_aplica'){
+const cicloAt = await getCiclo(athleteId);
+const consAt = consentCicloDe(cicloAt);
+const faseAt = consAt === 'si' ? faseCiclo(cicloAt, todayISO()) : null;
     html += `<button class="task-banner ${faseAt?'done':''}" id="abrirCicloBtn" style="margin-top:10px;">
       <span class="task-ic">${icCalendar()}</span>
       <span class="task-txt">
         <b>Ciclo menstrual</b>
-        <span>${faseAt
-          ? (faseAt.sinCicloNatural ? 'Con anticonceptivo combinado · toca para más info' : (faseAt.sinFase ? 'Revisa tu ciclo · toca para ver' : `Fase ${FASES_CICLO[faseAt.fase].label}${faseAt.metodo==='provisional'?' (estimada)':''} · día ${faseAt.diaCiclo}`))
-          : 'Regístralo para adaptar tu carga a tu fase'}</span>
+        <span>${consAt !== 'si' ? 'Opcional · observar tu ciclo junto a tu entrenamiento' : faseAt
+? (faseAt.sinCicloNatural ? 'Con anticonceptivo combinado · toca para más info' : (faseAt.sinFase ? 'Revisa tu ciclo · toca para ver' : `Fase ${FASES_CICLO[faseAt.fase].label}${faseAt.metodo==='provisional'?' (estimada)':''} · día ${faseAt.diaCiclo}`))
+          : 'Regístralo para observar tus patrones'}</span>
       </span>
       <span class="task-arrow">${faseAt?'✓':'›'}</span>
     </button>`;
@@ -9358,8 +9507,8 @@ async function tplResumenAtleta(athleteId){
 }
 async function contenidoSeccion(athleteId, k){
   if(k === 'semana') return await tplPlanificacionCoach(athleteId);
-  if(k === 'periodizacion'){
-    if(state.compEditId) return await tplCompeticiones(athleteId, true);
+  if(k === 'periodizacion'){ { const atP = state.athletes.find(x=>x.id===athleteId); if(!planDe(atP).competicion) return tplAvisoCompeticion(atP); }
+if(state.compEditId) return await tplCompeticiones(athleteId, true);
     return await tplCompeticiones(athleteId, true) + await tplPeriodizacion(athleteId);
   }
   if(k === 'progreso') return await tplProgreso(athleteId);
@@ -9389,8 +9538,8 @@ async function tplAthleteDetail(athleteId){
   if(SUBTAB_LEGACY[state.athleteSubTab]) irASubTab(state.athleteSubTab);
   const tab = ATLETA_SECCIONES[state.athleteSubTab] || state.athleteSubTab === 'perfil' ? state.athleteSubTab : 'plan';
   let html = `<div class="row" style="justify-content:space-between;margin-bottom:14px;">
-    <span style="font-family:'Fraunces',serif;font-size:19px;font-weight:600;">${escapeHtml(a?a.name:'')}</span>
-    <button class="btn ghost small" id="backToAthletes">← Atletas</button>
+    <span style="font-family:'Fraunces',serif;font-size:19px;font-weight:600;">${escapeHtml(a?a.name:'')} ${tplPlanTag(a)}</span>
+<button class="btn ghost small" id="backToAthletes">← Atletas</button>
   </div>
   <div class="sub-tabs">${ATLETA_TABS.map(t=>`<button data-subtab="${t.k}" class="${tab===t.k?'active':''}">${t.l}</button>`).join('')}</div>`;
   if(tab === 'perfil') return html + await tplPerfilCoachBody(athleteId);
@@ -10040,7 +10189,79 @@ function bindRecetas(){
   }));
 }
 
+// ---------- CONSENTIMIENTO Y BORRADO DEL CICLO ----------
+// Datos de salud: solo se observan si la atleta lo acepta antes. Lo que ya tenía registrado
+// antes de existir este permiso cuenta como aceptado, para no perder datos.
+function consentCicloDe(c){
+  if(c && c.consent && c.consent.estado) return c.consent.estado;       // 'si' | 'no' | 'no_aplica'
+  return (c && c.inicios && c.inicios.length) ? 'si' : 'pendiente';
+}
+async function guardaConsentCiclo(athleteId, estado){
+  const c = await getCiclo(athleteId);
+  c.consent = { estado, fecha: todayISO() };
+  return saveCiclo(athleteId, c);
+}
+async function borraDatosCiclo(athleteId){
+  const hoy = todayISO();
+  await safeSet('ciclo-'+athleteId, JSON.stringify({ consent:{ estado:'no', fecha:hoy, borrado:hoy } }), true);
+  await safeSet('ciclo-dia-'+athleteId, '{}', true);
+  await safeSet('ciclo-diario-'+athleteId, '{}', true);
+  try{ const j = JSON.parse((await safeGet('journal-'+athleteId, true)) || '[]'); j.forEach(e=>{ delete e.rendsesion; }); await safeSet('journal-'+athleteId, JSON.stringify(j), true); }catch(e){}
+  try{ const q = JSON.parse((await safeGet('quest-'+athleteId, true)) || '[]'); q.forEach(r=>{ delete r.cicloSint; if(r.answers){ delete r.answers.cycle_phase; delete r.answers.cycle_impact; } if(r.notes){ delete r.notes.cycle_phase; delete r.notes.cycle_impact; } }); await safeSet('quest-'+athleteId, JSON.stringify(q), true); }catch(e){}
+  return true;
+}
+function tplCicloConsentimiento(est){
+  return `<div class="row" style="margin-bottom:12px;"><button class="btn ghost small" id="volverPerfilCicloBtn">← Perfil</button></div>
+  <div class="card"><h2>Observar tu ciclo (opcional)</h2>
+    <p class="sj-sub" style="font-size:13px;">Si quieres, puedes anotar cuándo empieza tu regla y cómo te sientes. Con el tiempo, la app te enseña si aparecen patrones entre tu ciclo y tus sesiones.</p>
+    <ul class="plan-lista"><li>Son <b>datos de salud</b>: solo los ven tu entrenador y tú. No salen en ningún listado general.</li>
+      <li>Puedes dejar de observarlo o <b>borrar todos tus datos del ciclo</b> cuando quieras, desde esta pantalla o pidiéndoselo a tu entrenador.</li>
+      <li>Es una estimación por calendario, no un diagnóstico. No cambia tu plan si decides no usarlo.</li></ul>
+    ${est === 'no' ? '<p class="sj-sub">Ahora mismo está desactivado.</p>' : ''}
+    <div class="row" style="gap:8px;flex-direction:column;align-items:stretch;margin-top:12px;">
+      <button type="button" class="btn" data-cicloconsent="si">Sí, quiero observarlo</button>
+      <button type="button" class="btn ghost" data-cicloconsent="no">Ahora no</button>
+      <button type="button" class="btn ghost" data-cicloconsent="no_aplica">No me aplica</button></div></div>`;
+}
 async function tplCiclo(athleteId, esCoach){
+  const c = await getCiclo(athleteId), at = state.athletes.find(a=>a.id===athleteId);
+  if(esMenor(at)) return `<div class="card"><div class="empty">El seguimiento del ciclo no está disponible en este perfil.</div></div>`;
+  const est = consentCicloDe(c);
+  if(est !== 'si') return esCoach ? `<div class="card"><div class="empty">Esta atleta no ha activado el seguimiento del ciclo.</div></div>` : tplCicloConsentimiento(est);
+  return await tplCicloContenido(athleteId, esCoach) + (esCoach ? '' : `<div class="card"><h2>Tus datos</h2>
+    <p class="sj-sub">Solo los ven tu entrenador y tú. Puedes pararlo o borrarlo todo cuando quieras.</p>
+    <div class="row" style="gap:8px;flex-wrap:wrap;"><button type="button" class="btn ghost small" data-cicloconsent="no">Dejar de observar mi ciclo</button>
+    <button type="button" class="btn ghost danger small" data-borrarciclo="${athleteId}">Borrar todos mis datos del ciclo</button></div></div>`);
+}
+async function tplCicloCoachCard(athleteId){
+  const at = state.athletes.find(a=>a.id===athleteId); if(!at || esMenor(at)) return '';
+  const raw = await safeGet('intake-'+athleteId, true); let genero = ''; try{ genero = raw ? (JSON.parse(raw).genero || '') : ''; }catch(e){}
+  if(genero !== 'Mujer') return '';
+  const c = await getCiclo(athleteId), est = consentCicloDe(c);
+  const txt = { si:'Activado por la atleta', no:'Desactivado', no_aplica:'Marcó «no me aplica»', pendiente:'Aún no se lo ha planteado' }[est] || est;
+  return `<div class="card"><h2>Ciclo menstrual (datos de salud)</h2>
+    <p class="sj-sub">Estado: <b>${txt}</b>${c.consent && c.consent.fecha ? ' · ' + fechaCortaISO(c.consent.fecha) : ''}. Solo lo veis ella y tú.</p>
+    <button type="button" class="btn ghost danger small" data-borrarciclo="${athleteId}">Borrar los datos del ciclo (a petición de la atleta)</button></div>`;
+}
+document.addEventListener('click', async e=>{
+  const c = e.target.closest && e.target.closest('[data-cicloconsent]');
+  if(c){
+    const id = state.athleteAsId; if(!id) return;
+    const est = c.dataset.cicloconsent, ok = await guardaConsentCiclo(id, est);
+    toast(ok ? (est === 'si' ? 'Seguimiento activado' : 'Guardado') : 'No se pudo guardar', !ok);
+    if(est !== 'si') state.verCiclo = false;
+    if(ok) renderKeepScroll();
+    return;
+  }
+  const b = e.target.closest && e.target.closest('[data-borrarciclo]');
+  if(b){
+    if(!confirm('Se borrarán todos los datos del ciclo de esta atleta: fechas de regla, diario y sensaciones. No se puede deshacer. ¿Continuar?')) return;
+    const ok = await borraDatosCiclo(b.dataset.borrarciclo);
+    toast(ok ? 'Datos del ciclo borrados' : 'No se pudo borrar', !ok);
+    state.verCiclo = false; if(ok) renderKeepScroll();
+  }
+});
+async function tplCicloContenido(athleteId, esCoach){
   const ciclo = await getCiclo(athleteId);
   const info = faseCiclo(ciclo, todayISO());
   const est = estadisticasCiclo(ciclo);
@@ -10052,7 +10273,7 @@ async function tplCiclo(athleteId, esCoach){
   html += `<div class="card"><h2>Ciclo menstrual</h2>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">${esCoach
       ? 'Para adaptar la carga a su fase, no para nada más. Sólo tú y ella lo veis.'
-      : 'Esto ayuda a tu entrenador a adaptar tu carga a cómo te sientes en cada fase — no hace falta que expliques nada, solo que lo mantengas al día.'}</p>
+      : 'Sirve para observar si aparecen patrones entre tu ciclo y cómo te sientes al entrenar. Es una estimación por calendario, no un diagnóstico.'}</p>
   </div>`;
 
   // Resultado actual, arriba del todo
@@ -10138,7 +10359,7 @@ async function tplCiclo(athleteId, esCoach){
 // comparación contra la media de la propia persona.
 async function tplTendenciaCiclo(athleteId, esCoach){
   const ciclo = await getCiclo(athleteId);
-  if(ciclo.anticonceptivo === 'combinado') return '';
+  if(ciclo.anticonceptivo === 'combinado' || consentCicloDe(ciclo) !== 'si' || esMenor(state.athletes.find(a=>a.id===athleteId))) return '';
   const rawQ = await safeGet('quest-'+athleteId, true);
   let resp = []; try{ resp = rawQ ? JSON.parse(rawQ) : []; }catch(e){}
   const log = await getReadiness(athleteId);
@@ -12107,7 +12328,8 @@ async function tplPerfilCoachPicker(){
   html += `<div id="perfilCoachBody"></div>`;
   return html;
 }
-async function tplPerfilCoachBody(athleteId){
+async function tplPerfilCoachBody(athleteId){ return await tplPerfilCoachBodyBase(athleteId) + await tplCicloCoachCard(athleteId); }
+async function tplPerfilCoachBodyBase(athleteId){
   const wpCoach = await getWelcome(athleteId);
   const a = state.athletes.find(x=>x.id===athleteId);
   const raw = await safeGet('profile-'+athleteId, true);
@@ -12161,7 +12383,10 @@ async function tplPerfilCoachBody(athleteId){
         <option value="tenis" ${a&&a.modalidad==='tenis'?'selected':''}>Tenis</option>
         <option value="mixto" ${a&&a.modalidad==='mixto'?'selected':''}>Mixto (gym + tenis)</option>
       </select></div>`:''}
-      <div class="full"><label class="field-label">Perfiles <span style="font-weight:400;text-transform:none;letter-spacing:0;">— puedes marcar varios</span></label>
+      <div class="full"><label class="field-label">Plan</label>
+<select id="editAthPlan" style="width:100%;">${Object.keys(PLANES).map(k=>`<option value="${k}" ${planDe(a).id===k?'selected':''}>${PLANES[k].nombre} · ${PLANES[k].precio} €/mes</option>`).join('')}</select>
+<p style="font-size:11px;color:var(--muted);margin-top:6px;">${a && !a.plan ? 'Sin plan asignado: cuenta como High Performance. ' : ''}Activa o desactiva la competición, el informe y los topes de vídeos según el plan.</p></div>
+<div class="full"><label class="field-label">Perfiles <span style="font-weight:400;text-transform:none;letter-spacing:0;">— puedes marcar varios</span></label>
         <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">Cada uno desbloquea sus propias pantallas (pista y drills, estaciones Hyrox, mediciones corporales…). Lo común — rutina, diario, tests generales — se ve siempre, lleve el perfil que lleve.</p>
         <div class="gal-secs" id="editAthPerfiles">
           ${PERFILES_ATLETA.map(pf=>`<button type="button" class="gs-chip ${a&&tienePerfil(a,pf.id)?'on':''}" data-perfilpick="${pf.id}">${escapeHtml(pf.label)}</button>`).join('')}
@@ -12343,20 +12568,23 @@ function bindFormularioFiltro(){
     const r = state.filtroResp || {};
     // Comprobamos lo obligatorio antes de enviar
     const faltan = preguntas.filter(q=>{
-      if(!q.obligatoria) return false;
+if(!q.obligatoria || !preguntaVisible(q, r, preguntas)) return false;
       const v = r[q.id], otro = r[q.id+'__otro'];
       if(otro) return false;
       if(Array.isArray(v)) return v.length === 0;
       return v === undefined || v === '' || v === null;
     });
     if(faltan.length){
-      toast(`Falta responder: ${faltan[0].label.slice(0,45)}${faltan[0].label.length>45?'…':''}`, true);
+      { const lb = resuelveLabel(faltan[0], r, preguntas); toast(`Falta responder: ${lb.slice(0,45)}${lb.length>45?'…':''}`, true); }
       return;
     }
     enviar.textContent = 'Enviando…'; enviar.disabled = true;
     try{
       const leads = await getLeads();
-      leads.push({ id: uid(), fecha: todayISO(), estado:'nuevo', nota:'', respuestas: r });
+      const claves = {}; preguntas.forEach(q=>{ if(q.claves){ const c = claveDe(preguntas, q.id, r); if(c) claves[q.id] = c; } });
+const resp = Object.assign({}, r, { __claves: claves });
+preguntas.forEach(q=>{ if(!preguntaVisible(q, r, preguntas)){ delete resp[q.id]; delete resp[q.id+'__otro']; delete resp[q.id+'__notas']; delete resp.__claves[q.id]; } });
+leads.push({ id: uid(), fecha: todayISO(), estado:'nuevo', nota:'', v:2, respuestas: resp });
       const ok = await saveLeads(leads);
       if(!ok) throw new Error('no se pudo guardar');
       state.filtroEnviado = true;
@@ -12380,184 +12608,173 @@ function renderFiltro(){
 
 // ---------- CAPTACIÓN: FORMULARIO PÚBLICO ----------
 // Se abre con ?filtro=1. No requiere PIN ni da acceso a nada más.
+// ---------- FORMULARIO PÚBLICO (afinidad) ----------
+function svgLogoFiltro(px, mb){
+  return `<svg viewBox="0 0 100 100" style="width:${px}px;height:${px}px;margin:0 auto ${mb}px;display:block;"><path d="M26 18 L26 62 L50 82 L50 64 L40 56 L40 18 Z" fill="var(--accent)"/><path d="M74 18 L74 62 L50 82 L50 64 L60 56 L60 18 Z" fill="var(--gold)"/></svg>`;
+}
 async function tplFormularioFiltro(){
-  const preguntas = await getFiltroPreguntas();
+  const preguntas = await getFiltroPreguntas(), tx = await getFiltroTextos();
   if(state.filtroEnviado){
-    return `<div class="card" style="text-align:center;padding:34px 20px;">
-      <svg viewBox="0 0 100 100" style="width:52px;height:52px;margin:0 auto 16px;display:block;">
-        <path d="M26 18 L26 62 L50 82 L50 64 L40 56 L40 18 Z" fill="var(--accent)"/>
-        <path d="M74 18 L74 62 L50 82 L50 64 L60 56 L60 18 Z" fill="var(--gold)"/>
-      </svg>
-      <h2 style="margin-bottom:10px;">Gracias</h2>
-      <p style="font-size:13.5px;color:var(--muted);line-height:1.6;">He recibido tus respuestas. Las leo con calma y te escribo para decirte si encajamos y cómo seguiríamos.</p>
-      <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:12px;">Si tras leerlo veo que no soy la mejor opción para ti, te lo diré igualmente — prefiero eso a que pierdas tiempo y dinero.</p>
-    </div>`;
+    return `<div class="card" style="text-align:center;padding:34px 20px;">${svgLogoFiltro(52, 16)}
+      <h2 style="margin-bottom:10px;">${escapeHtml(tx.graciasTitulo)}</h2>
+      <p style="font-size:13.5px;color:var(--muted);line-height:1.6;">${escapeHtml(tx.gracias1)}</p>
+      <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:12px;">${escapeHtml(tx.gracias2)}</p></div>`;
   }
-
   const r = state.filtroResp || {};
-  let html = `<div class="card">
-    <svg viewBox="0 0 100 100" style="width:44px;height:44px;margin-bottom:14px;display:block;">
-      <path d="M26 18 L26 62 L50 82 L50 64 L40 56 L40 18 Z" fill="var(--accent)"/>
-      <path d="M74 18 L74 62 L50 82 L50 64 L60 56 L60 18 Z" fill="var(--gold)"/>
-    </svg>
-    <h2>¿Encajamos?</h2>
-    <p style="font-size:13px;color:var(--muted);line-height:1.65;">Tres o cuatro minutos. Con esto sabré si puedo ayudarte de verdad y, si es que sí, llegaré a la llamada sabiendo ya de qué hablamos.</p>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:10px;">Contesta con sinceridad, incluso en lo que creas que "queda mal". Un dato maquillado solo sirve para que te programe peor.</p>
-  </div>`;
-
+  let html = `<div class="card">${svgLogoFiltro(44, 14)}<h2>${escapeHtml(tx.titulo)}</h2>
+    <p style="font-size:13px;color:var(--muted);line-height:1.65;">${escapeHtml(tx.intro1)}</p>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:10px;">${escapeHtml(tx.intro2)}</p></div>`;
   let seccionActual = '';
   preguntas.forEach(q=>{
-    if(q.seccion && q.seccion !== seccionActual){
-      seccionActual = q.seccion;
-      html += `<div class="block-title" style="margin-top:18px;">${escapeHtml(seccionActual)}</div>`;
-    }
-    const v = r[q.id];
-    const otroV = r[q.id+'__otro'];
-    html += `<div class="card" style="margin-bottom:10px;">
-      <p style="font-size:14px;font-weight:600;line-height:1.5;margin-bottom:${q.ayuda?'4px':'10px'};">${escapeHtml(q.label)}${q.obligatoria?'':' <span style="font-weight:400;color:var(--muted);font-size:12px;">(opcional)</span>'}</p>
+    if(!preguntaVisible(q, r, preguntas)) return;
+    if(q.seccion && q.seccion !== seccionActual){ seccionActual = q.seccion; html += `<div class="block-title" style="margin-top:18px;">${escapeHtml(seccionActual)}</div>`; }
+    if(q.antesKey && tx[q.antesKey]) html += `<div class="card" style="margin-bottom:10px;"><p style="font-size:13px;line-height:1.75;">${formateaGuia(tx[q.antesKey])}</p></div>`;
+    const v = r[q.id], otroV = r[q.id+'__otro'];
+    html += `<div class="card" style="margin-bottom:10px;" data-fq-vis="${q.id}">
+      <p style="font-size:14px;font-weight:600;line-height:1.5;margin-bottom:${q.ayuda?'4px':'10px'};">${escapeHtml(resuelveLabel(q, r, preguntas))}${q.obligatoria?'':' <span style="font-weight:400;color:var(--muted);font-size:12px;">(opcional)</span>'}</p>
       ${q.ayuda?`<p style="font-size:12px;color:var(--muted);margin-bottom:10px;">${escapeHtml(q.ayuda)}</p>`:''}`;
-
-    if(q.tipo==='texto'){
-      html += q.largo
-        ? `<textarea class="f-campo" data-fid="${q.id}" style="min-height:76px;">${escapeHtml(v||'')}</textarea>`
-        : `<input type="text" class="f-campo" data-fid="${q.id}" value="${escapeHtml(v||'')}" style="width:100%;">`;
-    } else if(q.tipo==='numero'){
+    if(q.tipo === 'texto'){
+      html += q.largo ? `<textarea class="f-campo" data-fid="${q.id}" style="min-height:76px;">${escapeHtml(v||'')}</textarea>` : `<input type="text" class="f-campo" data-fid="${q.id}" value="${escapeHtml(v||'')}" style="width:100%;">`;
+    } else if(q.tipo === 'numero'){
       html += `<input type="number" class="f-campo" data-fid="${q.id}" value="${escapeHtml(v||'')}" style="width:100%;" inputmode="numeric">`;
-    } else if(q.tipo==='escala'){
+    } else if(q.tipo === 'escala'){
       html += `<div class="scale" data-fescala="${q.id}">${Array.from({length:q.max-q.min+1},(_,i)=>i+q.min).map(n=>`<button data-val="${n}" class="${String(v)===String(n)?'sel':''}">${n}</button>`).join('')}</div>
-        <div class="scale-labels"><span>${q.min} · nada</span><span>${q.max} · del todo</span></div>`;
-    } else if(q.tipo==='opcion'){
-      html += `<div class="f-opciones">${q.opciones.map(o=>
-        `<button class="f-op ${v===o?'on':''}" data-fop="${q.id}|${escapeHtml(o)}">${escapeHtml(o)}</button>`).join('')}
+        <div class="scale-labels"><span>${q.min} · ${escapeHtml(q.minLabel || 'nada')}</span><span>${q.max} · ${escapeHtml(q.maxLabel || 'del todo')}</span></div>`;
+    } else if(q.tipo === 'opcion'){
+      html += `<div class="f-opciones">${q.opciones.map(o=>`<button class="f-op ${v===o?'on':''}" data-fop="${q.id}|${escapeHtml(o)}">${escapeHtml(o)}</button>`).join('')}
         ${q.permiteOtro?`<button class="f-op ${otroV!==undefined?'on':''}" data-fotro="${q.id}">Otro</button>`:''}</div>`;
-      if(otroV !== undefined){
-        html += `<input type="text" class="f-otro" data-fid="${q.id}" value="${escapeHtml(otroV||'')}" placeholder="Cuéntamelo con tus palabras" style="width:100%;margin-top:8px;">`;
-      }
-    } else if(q.tipo==='multi'){
+      if(otroV !== undefined) html += `<input type="text" class="f-otro" data-fid="${q.id}" value="${escapeHtml(otroV||'')}" placeholder="Cuéntamelo con tus palabras" style="width:100%;margin-top:8px;">`;
+    } else if(q.tipo === 'multi'){
       const sel = Array.isArray(v) ? v : [];
-      html += `<div class="f-opciones">${q.opciones.map(o=>
-        `<button class="f-op ${sel.includes(o)?'on':''}" data-fmulti="${q.id}|${escapeHtml(o)}">${escapeHtml(o)}</button>`).join('')}
+      html += `<div class="f-opciones">${q.opciones.map(o=>`<button class="f-op ${sel.includes(o)?'on':''}" data-fmulti="${q.id}|${escapeHtml(o)}">${escapeHtml(o)}</button>`).join('')}
         ${q.permiteOtro?`<button class="f-op ${otroV!==undefined?'on':''}" data-fotro="${q.id}">Otro</button>`:''}</div>`;
-      if(otroV !== undefined){
-        html += `<input type="text" class="f-otro" data-fid="${q.id}" value="${escapeHtml(otroV||'')}" placeholder="Cuéntamelo con tus palabras" style="width:100%;margin-top:8px;">`;
-      }
-      if(q.pideNotas){
-        html += `<input type="text" class="f-notas" data-fid="${q.id}" value="${escapeHtml(r[q.id+'__notas']||'')}" placeholder="${escapeHtml(q.notasLabel||'Añade detalles')}" style="width:100%;margin-top:8px;">`;
-      }
+      if(otroV !== undefined) html += `<input type="text" class="f-otro" data-fid="${q.id}" value="${escapeHtml(otroV||'')}" placeholder="Cuéntamelo con tus palabras" style="width:100%;margin-top:8px;">`;
+      if(q.pideNotas) html += `<input type="text" class="f-notas" data-fid="${q.id}" value="${escapeHtml(r[q.id+'__notas']||'')}" placeholder="${escapeHtml(q.notasLabel||'Añade detalles')}" style="width:100%;margin-top:8px;">`;
     }
     html += `</div>`;
   });
-
-  html += `<div class="card">
-    <button class="btn" id="enviarFiltroBtn" style="width:100%;">Enviar respuestas</button>
-    <p style="font-size:11.5px;color:var(--muted);margin-top:10px;text-align:center;">Tus datos solo los uso para valorar si puedo ayudarte. No se comparten con nadie.</p>
-  </div>`;
+  html += `<div class="card"><button class="btn" id="enviarFiltroBtn" style="width:100%;">${escapeHtml(tx.enviar)}</button>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:10px;text-align:center;">${escapeHtml(tx.pie)}</p></div>`;
   return html;
 }
 
+// ---------- LEAD: tarjeta del cuestionario de afinidad ----------
+function tplLeadCardV2(l, tx){
+  const r = l.respuestas || {}, ev = l.ev, abierto = state.leadAbierto === l.id;
+  const estadoEtq = { nuevo:'Sin revisar', contactado:'Contactado', convertido:'Convertido', descartado:'Descartado' }[l.estado || 'nuevo'];
+  const semEtq = { verde:'Verde', amarillo:'Amarillo', rojo:'Rojo' }[ev.semaforo];
+  const nombre = (r.nombre || '').split(' ')[0] || 'Hola';
+  const textoSem = ev.semaforo === 'verde' ? 'Todo cuadra.' : ev.rojo.concat(ev.amarillo).join(' · ');
+  let h = `<div class="acc ${abierto?'open':''} lead-card ${l.estado==='descartado'?'lead-off':''}" data-leadacc="${l.id}">
+    <div class="acc-head" data-toggle-lead="${l.id}"><b style="text-transform:none;">${escapeHtml(r.nombre || 'Sin nombre')}</b><span class="chev"><span class="chev-arrow">▾</span></span>
+      <span class="lead-nums">${tplPlanSugeridoTag(ev.plan)}<span class="pipe-sem pipe-${ev.semaforo}" title="${semEtq}"></span></span></div>
+    <div class="acc-body">
+      <div class="lead-meta"><span>Plan sugerido <b>${PLANES[ev.plan] ? PLANES[ev.plan].nombre : (ev.plan === 'ninguno' ? 'Ninguno' : 'Revisar')}</b></span><span>Semáforo <b>${semEtq}</b></span><span>${l.fecha}</span><span class="lead-estado">${estadoEtq}</span></div>
+      <div class="rd-zona rd-${ev.semaforo==='verde'?'verde':(ev.semaforo==='amarillo'?'ambar':'rojo')}" style="margin-bottom:12px;"><div><b>Semáforo ${semEtq.toLowerCase()}</b><span>${escapeHtml(textoSem)}</span></div></div>`;
+  if(ev.revisar.length) h += `<div class="lead-revisar"><b>Necesita que lo leas tú</b>${ev.revisar.map(x=>`<div class="lr-item"><span>${escapeHtml(x.label)}</span><p>${escapeHtml(String(x.valor))}</p></div>`).join('')}</div>`;
+  h += `<div class="block-title">Decisión</div><div class="row" style="gap:7px;flex-wrap:wrap;">
+      ${[['aceptar','Aceptar'],['espera','Lista de espera'],['declinar','Declinar']].map(([k,e])=>`<button class="btn ${l.decision===k?'':'ghost'} small" data-leaddec="${l.id}|${k}">${e}</button>`).join('')}
+      ${l.pipelineId ? '<span class="sj-linea" style="align-self:center;">Ya está en Entrada</span>' : `<button class="btn ghost small" data-leadpipe="${l.id}">Pasar a Entrada →</button>`}</div>
+    <details class="sj-guia" style="margin-top:10px;"><summary>Mensajes para copiar</summary>
+      ${[['msgAceptar','Aceptar'],['msgEspera','Lista de espera'],['msgDeclinar','Declinar'],['msgLesion','Lesión sin valorar']].map(([k,e])=>`<div style="margin-top:10px;"><div class="row" style="justify-content:space-between;align-items:center;"><b style="font-size:12px;">${e}</b><button class="btn ghost small" data-copiarmsg="${l.id}|${k}">Copiar</button></div><p class="pipe-msg">${escapeHtml(tx[k].replace('{nombre}', nombre))}</p></div>`).join('')}</details>
+    <div class="block-title">Todas las respuestas</div><div class="tabla-comp-wrap"><table class="tabla-comp"><tbody>`;
+  (l.preguntasUsadas || []).forEach(q=>{
+    let v = r[q.id]; const otro = r[q.id+'__otro'], notas = r[q.id+'__notas'];
+    if(Array.isArray(v)) v = v.join(', ');
+    if(otro) v = (v ? v+' · ' : '') + 'Otro: ' + otro;
+    if(notas) v = (v||'') + ' — ' + notas;
+    if(v === undefined || v === '' || v === null) return;
+    h += `<tr><td style="max-width:45%;">${escapeHtml(resuelveLabel(q, r, l.preguntasUsadas))}</td><td><b>${escapeHtml(String(v))}</b></td></tr>`;
+  });
+  h += `</tbody></table></div>
+    <div class="block-title">Tus notas</div><textarea class="lead-nota" data-leadid="${l.id}" style="min-height:52px;" placeholder="Qué te ha llamado la atención, qué preguntar en la llamada…">${escapeHtml(l.nota||'')}</textarea>
+    <div class="row" style="gap:7px;flex-wrap:wrap;margin-top:10px;">${['nuevo','contactado','convertido','descartado'].map(e=>`<button class="btn ${l.estado===e?'':'ghost'} small" data-leadestado="${l.id}|${e}">${({nuevo:'Sin revisar',contactado:'Contactado',convertido:'Convertido',descartado:'Descartado'})[e]}</button>`).join('')}</div>
+    <button class="btn ghost small" data-leadborrar="${l.id}" style="margin-top:10px;">Eliminar</button></div></div>`;
+  return h;
+}
+
+// ---------- EDITOR DEL CUESTIONARIO ----------
+async function tplEditorFiltro(){
+  const preguntas = await getFiltroPreguntas(), tx = await getFiltroTextos();
+  let h = `<div class="card"><div class="row" style="justify-content:space-between;align-items:center;gap:8px;"><h2 style="margin:0;">Editar cuestionario</h2><button class="btn ghost small" id="filtroEditorCerrar">← Leads</button></div>
+    <p class="sj-sub">Todo lo que lee quien rellena el formulario se puede cambiar aquí: textos, preguntas, ayudas y opciones. Vale para los formularios nuevos; las respuestas ya recibidas no se tocan. El semáforo se aplica por la <b>posición</b> de cada opción, así que puedes reescribirlas sin romper la lógica (no se pueden añadir ni quitar opciones).</p>
+    <div class="row" style="gap:8px;margin-top:10px;"><button class="btn" id="filtroGuardar">Guardar cambios</button><button class="btn ghost danger small" id="filtroRestaurar">Restaurar originales</button></div></div>
+    <div class="card"><h2>Textos del formulario</h2>${FILTRO2_TEXTOS_META.map(m=>`<div class="q-item"><label class="field-label">${m.l}</label>${m.ayuda ? `<p class="sj-sub" style="margin:2px 0 6px;">${m.ayuda}</p>` : ''}${m.largo ? `<textarea data-ftexto="${m.k}" style="min-height:${m.largo}px;">${escapeHtml(tx[m.k])}</textarea>` : `<input type="text" data-ftexto="${m.k}" value="${escapeHtml(tx[m.k])}" style="width:100%;">`}</div>`).join('')}</div>
+    <div class="block-title" style="margin-top:6px;">Preguntas</div>`;
+  let sec = '';
+  preguntas.forEach(q=>{
+    if(q.seccion !== sec){ sec = q.seccion; h += `<div class="q-cat">${escapeHtml(sec)}</div>`; }
+    const cond = q.mostrarSi ? 'Solo se muestra según una respuesta anterior' : '';
+    h += `<div class="card fq" data-fqid="${q.id}"><div class="sj-linea">${{texto:'Texto',numero:'Número',opcion:'Una opción',multi:'Varias opciones',escala:'Escala 1-10'}[q.tipo] || q.tipo}${cond ? ' · '+cond : ''}${q.claves ? ' · cuenta para el semáforo' : ''}</div>
+      <label class="field-label" style="margin-top:6px;">Pregunta</label><textarea data-fq="label" style="min-height:44px;">${escapeHtml(q.label)}</textarea>${q.label.includes('{precio}') ? '<p class="sj-sub" style="margin:2px 0 0;">{precio} se sustituye por el precio real del plan que haya elegido (sale de los planes). Déjalo escrito así para que no se desactualice.</p>' : ''}
+      <label class="field-label" style="margin-top:6px;">Ayuda (opcional)</label><input type="text" data-fq="ayuda" value="${escapeHtml(q.ayuda || '')}" style="width:100%;">
+      ${(q.opciones || []).map((o,i)=>`<label class="field-label" style="margin-top:6px;">Opción ${i+1}</label><input type="text" data-fqop="${i}" value="${escapeHtml(o)}" style="width:100%;">`).join('')}
+      ${q.tipo === 'escala' ? `<div class="ex-grid" style="margin-top:6px;"><div><label class="field-label">Extremo bajo</label><input type="text" data-fq="minLabel" value="${escapeHtml(q.minLabel || '')}"></div><div><label class="field-label">Extremo alto</label><input type="text" data-fq="maxLabel" value="${escapeHtml(q.maxLabel || '')}"></div></div>` : ''}
+      <div class="row" style="gap:16px;margin-top:8px;flex-wrap:wrap;"><label class="row" style="gap:6px;font-size:12.5px;"><input type="checkbox" data-fq="obligatoria" ${q.obligatoria?'checked':''}> Obligatoria</label>
+        <label class="row" style="gap:6px;font-size:12.5px;"><input type="checkbox" data-fq="oculta" ${q.oculta?'checked':''}> No mostrar</label></div></div>`;
+  });
+  return h + `<div class="card"><button class="btn" id="filtroGuardar2" style="width:100%;">Guardar cambios</button><p class="sj-sub">Si ocultas una pregunta que cuenta para el semáforo, esa regla deja de aplicarse.</p></div>`;
+}
+async function guardaEditorFiltro(){
+  const ov = {}, tx = {};
+  document.querySelectorAll('.fq').forEach(card=>{
+    const o = {}, g = s=>card.querySelector(s);
+    o.label = g('[data-fq="label"]').value.trim(); o.ayuda = g('[data-fq="ayuda"]').value.trim();
+    const ops = [...card.querySelectorAll('[data-fqop]')].map(i=>i.value.trim().replace(/\|/g, '/'));
+    if(ops.length) o.opciones = ops;
+    o.obligatoria = g('[data-fq="obligatoria"]').checked; o.oculta = g('[data-fq="oculta"]').checked;
+    if(g('[data-fq="minLabel"]')){ o.minLabel = g('[data-fq="minLabel"]').value.trim(); o.maxLabel = g('[data-fq="maxLabel"]').value.trim(); }
+    ov[card.dataset.fqid] = o;
+  });
+  document.querySelectorAll('[data-ftexto]').forEach(el=>{ tx[el.dataset.ftexto] = el.value; });
+  return (await safeSet('filtro2-preguntas', JSON.stringify(ov), true)) && (await safeSet('filtro2-textos', JSON.stringify(tx), true));
+}
+document.addEventListener('click', async e=>{
+  const t = e.target && e.target.closest ? e.target : null; if(!t) return;
+  if(t.closest('#editarFiltroBtn')){ state.filtroEditor = true; renderScrollTop(); return; }
+  if(t.closest('#filtroEditorCerrar')){ state.filtroEditor = false; renderScrollTop(); return; }
+  if(t.closest('#filtroGuardar') || t.closest('#filtroGuardar2')){ const ok = await guardaEditorFiltro(); toast(ok ? 'Cuestionario guardado' : 'No se pudo guardar', !ok); return; }
+  if(t.closest('#filtroRestaurar')){
+    if(!confirm('Se restaurarán todos los textos y preguntas originales. Las respuestas ya recibidas no se tocan. ¿Continuar?')) return;
+    await safeSet('filtro2-preguntas', '', true); await safeSet('filtro2-textos', '', true); toast('Originales restaurados'); renderKeepScroll(); return;
+  }
+  const dec = t.closest('[data-leaddec]');
+  if(dec){
+    const [id, k] = dec.dataset.leaddec.split('|'), leads = await getLeads(), l = leads.find(x=>x.id === id); if(!l) return;
+    l.decision = l.decision === k ? '' : k; l.decisionFecha = l.decision ? todayISO() : '';
+    if(await saveLeads(leads)){ state.leadAbierto = id; renderKeepScroll(); } return;
+  }
+  const pip = t.closest('[data-leadpipe]');
+  if(pip){ const ok = await pasarLeadAEntrada(pip.dataset.leadpipe); toast(ok ? 'Añadida a Agenda → Entrada' : 'No se pudo pasar', !ok); if(ok){ state.leadAbierto = pip.dataset.leadpipe; renderKeepScroll(); } return; }
+  const cp = t.closest('[data-copiarmsg]');
+  if(cp){
+    const [id, k] = cp.dataset.copiarmsg.split('|'), l = (await getLeads()).find(x=>x.id === id), tx = await getFiltroTextos();
+    const msg = tx[k].replace('{nombre}', ((l && l.respuestas && l.respuestas.nombre) || '').split(' ')[0] || 'Hola');
+    try{ await navigator.clipboard.writeText(msg); toast('Mensaje copiado'); }catch(err){ toast('Selecciona el texto y cópialo', true); }
+  }
+});
+
 // ---------- CAPTACIÓN: PANTALLA DEL ENTRENADOR ----------
 async function tplCaptacion(){
-  const leads = await getLeads();
-  const preguntas = await getFiltroPreguntas();
-
-  // Enlace público: el mismo que la app, con un parámetro que abre sólo el
-  // formulario. No da acceso a ningún perfil ni a la app.
+  if(state.filtroEditor) return await tplEditorFiltro();
+  const leads = await getLeads(), preguntas = await getFiltroPreguntas(), tx = await getFiltroTextos();
   const enlace = (typeof location !== 'undefined' ? location.origin + location.pathname : '') + '?filtro=1';
-
-  const evaluados = leads.map(l=>{
-    const ev = evaluaRespuesta(l.respuestas, preguntas);
-    return { ...l, ev, prio: prioridadLead(ev) };
-  });
-  const orden = { alta:0, media:1, baja:2, incompleto:3 };
+  const evaluados = leads.map(l=>leadEvalua(l, preguntas));
+  const orden = { alta:0, media:1, baja:2 }, est = { nuevo:0, contactado:1, convertido:2, descartado:3 };
   evaluados.sort((a,b)=>{
-    if(a.estado !== b.estado){
-      // Los pendientes primero; descartados y convertidos al final.
-      const e = { nuevo:0, contactado:1, convertido:2, descartado:3 };
-      return (e[a.estado]??0) - (e[b.estado]??0);
-    }
-    const d = orden[a.prio.nivel] - orden[b.prio.nivel];
-    if(d !== 0) return d;
-    return (b.ev.potencial||0) - (a.ev.potencial||0);
+    if(a.estado !== b.estado) return (est[a.estado] ?? 0) - (est[b.estado] ?? 0);
+    const d = orden[a.prio.nivel] - orden[b.prio.nivel]; if(d !== 0) return d;
+    return String(b.fecha).localeCompare(String(a.fecha));
   });
-
-  const nuevos = evaluados.filter(l=>l.estado==='nuevo').length;
-
-  let html = `<div class="card"><h2>Captación</h2>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Comparte este enlace por DM. Quien lo rellene aparecerá aquí con dos puntuaciones: <b>potencial</b> (si encaja como cliente) y <b>alineación</b> (si encaja con tu forma de trabajar). No da acceso a la app.</p>
-    <div class="day-tools" style="margin-top:12px;">
-      <input type="text" id="enlaceFiltro" value="${escapeHtml(enlace)}" readonly style="flex:1;min-width:0;font-size:12px;font-family:'IBM Plex Mono',monospace;">
-      <button class="btn small" id="copiarEnlaceBtn">Copiar</button>
-    </div>
-    <div class="kpi-row" style="margin-top:14px;">
-      <div class="kpi"><b>${nuevos}</b><span>Sin revisar</span></div>
-      <div class="kpi"><b>${leads.length}</b><span>Total</span></div>
-      <div class="kpi"><b>${evaluados.filter(l=>l.prio.nivel==='alta'&&l.estado==='nuevo').length}</b><span>Prioritarios</span></div>
-    </div>
-    <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap;">
-      <button class="btn ghost small" id="editarFiltroBtn">Editar cuestionario</button>
-      <button class="btn ghost small" id="verFiltroBtn">Ver como lo ve el cliente</button>
-    </div>
-  </div>`;
-
-  if(!evaluados.length){
-    html += `<div class="card"><div class="empty">Aún no ha respondido nadie. Comparte el enlace y las respuestas aparecerán aquí.</div></div>`;
-    return html;
-  }
-
-  evaluados.forEach((l,i)=>{
-    const abierto = state.leadAbierto === l.id;
-    const r = l.respuestas || {};
-    const badge = { alta:'lead-alta', media:'lead-media', baja:'lead-baja', incompleto:'lead-baja' }[l.prio.nivel];
-    const estadoEtq = { nuevo:'Sin revisar', contactado:'Contactado', convertido:'Convertido', descartado:'Descartado' }[l.estado||'nuevo'];
-    html += `<div class="acc ${abierto?'open':''} lead-card ${l.estado==='descartado'?'lead-off':''}" data-leadacc="${l.id}">
-      <div class="acc-head" data-toggle-lead="${l.id}">
-        <b style="text-transform:none;">${escapeHtml(r.nombre||'Sin nombre')}</b>
-        <span class="chev"><span class="chev-arrow">▾</span></span>
-        <span class="lead-nums">
-          <span class="lead-num ${badge}">${l.ev.potencial ?? '—'}</span>
-          <span class="lead-num ${badge}">${l.ev.alineacion ?? '—'}</span>
-        </span>
-      </div>
-      <div class="acc-body">
-        <div class="lead-meta">
-          <span>Potencial <b>${l.ev.potencial ?? '—'}/10</b></span>
-          <span>Alineación <b>${l.ev.alineacion ?? '—'}/10</b></span>
-          <span>${l.fecha}</span>
-          <span class="lead-estado">${estadoEtq}</span>
-        </div>
-        <div class="rd-zona rd-${l.prio.nivel==='alta'?'verde':(l.prio.nivel==='media'?'ambar':'rojo')}" style="margin-bottom:12px;">
-          <div><b>Prioridad ${l.prio.nivel}</b><span>${escapeHtml(l.prio.texto)}</span></div>
-        </div>`;
-
-    if(l.ev.revisar.length){
-      html += `<div class="lead-revisar">
-        <b>Necesita que lo leas tú</b>
-        ${l.ev.revisar.map(x=>`<div class="lr-item"><span>${escapeHtml(x.label)}</span><p>${escapeHtml(String(x.valor))}</p></div>`).join('')}
-      </div>`;
-    }
-
-    html += `<div class="block-title">Todas las respuestas</div><div class="tabla-comp-wrap"><table class="tabla-comp"><tbody>`;
-    preguntas.forEach(q=>{
-      let v = r[q.id];
-      const otro = r[q.id+'__otro'];
-      if(Array.isArray(v)) v = v.join(', ');
-      if(otro) v = (v ? v+' · ' : '') + 'Otro: ' + otro;
-      const notas = r[q.id+'__notas'];
-      if(notas) v = (v||'') + ' — ' + notas;
-      if(v === undefined || v === '' || v === null) return;
-      html += `<tr><td style="max-width:45%;">${escapeHtml(q.label)}</td><td><b>${escapeHtml(String(v))}</b></td></tr>`;
-    });
-    html += `</tbody></table></div>`;
-
-    html += `<div class="block-title">Tus notas</div>
-      <textarea class="lead-nota" data-leadid="${l.id}" style="min-height:52px;" placeholder="Qué te ha llamado la atención, qué preguntar en la llamada…">${escapeHtml(l.nota||'')}</textarea>
-      <div class="row" style="gap:7px;flex-wrap:wrap;margin-top:10px;">
-        ${['nuevo','contactado','convertido','descartado'].map(e=>
-          `<button class="btn ${l.estado===e?'':'ghost'} small" data-leadestado="${l.id}|${e}">${({nuevo:'Sin revisar',contactado:'Contactado',convertido:'Convertido',descartado:'Descartado'})[e]}</button>`).join('')}
-      </div>
-      <button class="btn ghost small" data-leadborrar="${l.id}" style="margin-top:10px;">Eliminar</button>
-      </div></div>`;
-  });
+  const nuevos = evaluados.filter(l=>l.estado === 'nuevo').length;
+  let html = `<div class="card"><h2>Cuestionario de afinidad</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Es el cuestionario de captación y de afinidad: uno solo. Comparte este enlace por DM. Quien lo rellene aparecerá aquí con un <b>semáforo</b> (verde, amarillo o rojo), el <b>plan</b> que le encaja (Health o High Performance) y los motivos. La persona nunca ve esta valoración. Todos los textos y preguntas se editan en «Editar cuestionario».</p>
+    <div class="day-tools" style="margin-top:12px;"><input type="text" id="enlaceFiltro" value="${escapeHtml(enlace)}" readonly style="flex:1;min-width:0;font-size:12px;font-family:'IBM Plex Mono',monospace;"><button class="btn small" id="copiarEnlaceBtn">Copiar</button></div>
+    <div class="kpi-row" style="margin-top:14px;"><div class="kpi"><b>${nuevos}</b><span>Sin revisar</span></div><div class="kpi"><b>${leads.length}</b><span>Total</span></div>
+      <div class="kpi"><b>${evaluados.filter(l=>l.prio.nivel === 'alta' && l.estado === 'nuevo').length}</b><span>Verdes sin revisar</span></div></div>
+    <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap;"><button class="btn ghost small" id="editarFiltroBtn">Editar cuestionario</button><button class="btn ghost small" id="verFiltroBtn">Ver como lo ve el cliente</button></div></div>`;
+  if(!evaluados.length) return html + `<div class="card"><div class="empty">Aún no ha respondido nadie. Comparte el enlace y las respuestas aparecerán aquí.</div></div>`;
+  evaluados.forEach(l=>{ html += tplLeadCardV2(l, tx); });
   return html;
 }
 
@@ -12586,8 +12803,8 @@ async function tplGaleriaCoach(){
     if(suyas.length) suyas.forEach(sec=>grupos.get(sec).push(e));
     else sinSeccion.push(e);
   });
-  grupos.forEach(arr=>arr.sort((a,b)=>a.name.localeCompare(b.name,'es')));
-  sinSeccion.sort((a,b)=>a.name.localeCompare(b.name,'es'));
+  grupos.forEach(arr=>arr.sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),'es')));
+  sinSeccion.sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),'es'));
 
   let html = tplGaleriaPestanas((await getVideoLib()).length) + `<div class="card"><h2>Galería de ejercicios</h2>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Guarda un ejercicio una vez y reutilízalo en cualquier atleta, semana o día. Los cambios que hagas aquí no afectan a los que ya insertaste en una rutina.</p>
@@ -12609,7 +12826,7 @@ async function tplGaleriaCoach(){
     const abierta = state.galSeccionAbierta === '__sin__';
     html += `<div class="acc ${abierta?'open':''}" data-galsec="__sin__">
       <div class="acc-head" data-toggle-gal="__sin__"><b>Sin sección</b><span class="chev"><span class="chev-arrow">▾</span></span><span class="chev-count">${sinSeccion.length}</span></div>
-      <div class="acc-body"><div class="gal-lista">${sinSeccion.map(e=>tplGalItem(e, secciones)).join('') || '<div class="empty">Nada aquí.</div>'}</div></div>
+      <div class="acc-body"><div class="gal-lista">${sinSeccion.map(e=>tplGalItemSeguro(e, secciones)).join('') || '<div class="empty">Nada aquí.</div>'}</div></div>
     </div>`;
   }
   return html;
@@ -12625,11 +12842,15 @@ function tplGalSeccionAcc(sec, items, secciones, abierta, nota){
         <textarea class="gal-nota-sec" data-notasec="${escapeHtml(sec)}" placeholder="Pesos oficiales, estándares, material necesario…&#10;Ej: Sled push 102 kg · Sled pull 78 kg · Wall ball 4 kg a 2,70 m" style="min-height:${tieneNota?'92px':'52px'};">${escapeHtml(nota||'')}</textarea>
         <span class="save-flag" data-flagsec="${escapeHtml(sec)}">Guardado ✓</span>
       </div>
-      <div class="gal-lista">${items.length ? items.map(e=>tplGalItem(e, secciones)).join('') : '<div class="empty">Sin ejercicios en esta sección.</div>'}</div>
+      <div class="gal-lista">${items.length ? items.map(e=>tplGalItemSeguro(e, secciones)).join('') : '<div class="empty">Sin ejercicios en esta sección.</div>'}</div>
       <button class="btn ghost small" data-galnuevoen="${escapeHtml(sec)}" style="margin-top:8px;">+ Añadir aquí</button>
       <button class="btn ghost small" data-galborrarseccion="${escapeHtml(sec)}" style="margin-top:8px;">Eliminar sección</button>
     </div>
   </div>`;
+}
+function tplGalItemSeguro(ex, secciones){
+  try{ return tplGalItem(ex, secciones); }
+  catch(e){ return `<div class="gal-item"><div class="empty">Este ejercicio tiene datos que no se pueden mostrar${ex && ex.id ? ' ('+escapeHtml(ex.id)+')' : ''}. ${ex && ex.id ? `<button class="btn ghost small" data-galexdel="${escapeHtml(ex.id)}">Eliminarlo</button>` : ''}</div></div>`; }
 }
 function tplGalItem(ex, secciones){
   return `<div class="gal-item" data-galid="${ex.id}">
@@ -12674,18 +12895,136 @@ function tplGalItem(ex, secciones){
 
 // Agenda: Resumen, Tareas y Calendario en una sola pantalla con subpestañas.
 // Arranca en Resumen, que es la vista de "qué requiere mi atención hoy".
+// ---------- ENTRADA DE NUEVAS ATLETAS (pipeline) ----------
+const PIPE_ETAPAS = [
+  {id:'afinidad', l:'Afinidad'}, {id:'inicial', l:'Inicial'}, {id:'llamada', l:'Llamada'},
+  {id:'tests', l:'Tests'}, {id:'prueba', l:'Prueba'}, {id:'decision', l:'Decisión'}, {id:'activo', l:'Activo'}
+];
+// Horas en un mismo paso, sin avanzar, a partir de las cuales salta la alerta (48 h en general).
+const PIPE_ALERTA_H = { afinidad:48, inicial:48, llamada:48, tests:96, prueba:192, decision:48 };
+const PIPE_SEMAFORO = { verde:'Verde', amarillo:'Amarillo', rojo:'Rojo' };
+const PIPE_MSG = {
+  aceptar: 'Hola {nombre}, gracias por rellenar el cuestionario. Creo que puedo ayudarte y me encantaría trabajar contigo. El siguiente paso es un cuestionario inicial breve y una llamada de 15 minutos para conocernos. ¿Te lo paso?',
+  espera: 'Hola {nombre}, gracias por tu interés. Ahora mismo tengo las plazas completas, pero me gustaría tenerte en cuenta: te apunto en la lista de espera y te escribo en cuanto se libere una plaza.',
+  declinar: 'Hola {nombre}, gracias por tu tiempo y por la confianza. Después de leer tu cuestionario creo que ahora mismo no soy la mejor opción para lo que buscas, y prefiero decírtelo con sinceridad antes que prometerte algo que no encaje. Te deseo mucho éxito con tu objetivo.'
+};
+async function getPipeline(){
+  const raw = await safeGet('pipeline', true);
+  try{ const l = raw ? JSON.parse(raw) : []; return Array.isArray(l) ? l : []; }catch(e){ return []; }
+}
+async function savePipeline(l){ return safeSet('pipeline', JSON.stringify(l), true); }
+function pipeAlerta(p){
+  if(!p || p.etapa === 'activo' || p.resultado === 'declinar' || p.resultado === 'espera') return false;
+  const lim = PIPE_ALERTA_H[p.etapa], f = p.fechas && p.fechas[p.etapa];
+  if(!lim || !f) return false;
+  return (Date.now() - new Date(f).getTime())/3600000 > lim;
+}
+async function tplEntrada(){
+  const lista = await getPipeline(), filtro = state.pipeFiltro || 'todas';
+  const cuenta = id=>lista.filter(p=>p.etapa === id && p.resultado !== 'declinar').length;
+  let h = `<div class="card"><h2>Entrada de nuevas atletas</h2>
+    <p class="sj-sub">Afinidad → Inicial → Llamada → Tests → Prueba → Decisión → Activo. Salta una alerta cuando alguien lleva demasiado tiempo en un paso sin respuesta (48 h en la mayoría).</p>
+    <div class="gal-secs">${[{id:'todas', l:'Todas'}].concat(PIPE_ETAPAS).map(e=>`<button type="button" class="gs-chip ${filtro===e.id?'on':''}" data-pipefiltro="${e.id}">${e.l}${e.id==='todas' ? '' : ' '+cuenta(e.id)}</button>`).join('')}</div>
+    <div class="ex-grid" style="margin-top:12px;">
+      <div class="full"><label class="field-label">Nombre</label><input type="text" id="pipeNombre" style="width:100%;"></div>
+      <div class="full"><label class="field-label">Instagram o WhatsApp</label><input type="text" id="pipeContacto" style="width:100%;"></div>
+      <div><label class="field-label">Plan sugerido</label><select id="pipePlan" style="width:100%;"><option value="">—</option><option value="health">Health</option><option value="alto_rendimiento">High Performance</option></select></div>
+      <div><label class="field-label">Semáforo</label><select id="pipeSemaforo" style="width:100%;"><option value="">—</option><option value="verde">Verde</option><option value="amarillo">Amarillo</option><option value="rojo">Rojo</option></select></div>
+    </div><button type="button" class="btn" id="pipeAddBtn" style="margin-top:10px;">+ Añadir a la entrada</button></div>`;
+  const vis = lista.filter(p=>filtro === 'todas' || p.etapa === filtro)
+    .sort((a,b)=>(pipeAlerta(b)?1:0) - (pipeAlerta(a)?1:0) || String(a.fechas[a.etapa] || '').localeCompare(String(b.fechas[b.etapa] || '')));
+  if(!vis.length) h += `<div class="empty">Nadie en este paso.</div>`;
+  vis.forEach(p=>{
+    const i = PIPE_ETAPAS.findIndex(e=>e.id === p.etapa), sig = PIPE_ETAPAS[i+1], al = pipeAlerta(p), cerrado = p.resultado === 'declinar';
+    h += `<div class="card pipe-card ${al?'pipe-alerta':''} ${cerrado?'pipe-cerrado':''}">
+      <div class="row" style="justify-content:space-between;align-items:flex-start;gap:8px;"><div><b style="font-family:'Fraunces',serif;font-size:16px;">${escapeHtml(p.nombre)}</b><div class="sj-linea">${escapeHtml(p.contacto || '')}</div></div>
+        <div class="row" style="gap:6px;align-items:center;">${p.plan && PLANES[p.plan] ? `<span class="mod-tag plan-tag plan-${p.plan}">${escapeHtml(PLANES[p.plan].corto)}</span>` : ''}${p.semaforo ? `<span class="pipe-sem pipe-${p.semaforo}" title="${PIPE_SEMAFORO[p.semaforo]}"></span>` : ''}<button type="button" class="sj-del" data-pipedel="${p.id}" title="Quitar">✕</button></div></div>
+      <div class="pipe-etapas">${PIPE_ETAPAS.map((e,k)=>`<span class="${k<i?'hecha':''} ${k===i?'actual':''}">${e.l}${p.fechas[e.id] ? `<i>${fechaCortaISO(String(p.fechas[e.id]).slice(0,10))}</i>` : ''}</span>`).join('')}</div>
+      ${al ? `<div class="omit-alerta">⏰ Lleva más de ${PIPE_ALERTA_H[p.etapa]} h en «${PIPE_ETAPAS[i].l}» sin respuesta.</div>` : ''}
+      ${p.resultado ? `<p class="sj-sub">Decisión: <b>${{aceptar:'Aceptada', espera:'Lista de espera', declinar:'Declinada'}[p.resultado]}</b></p>` : ''}
+      <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:8px;">
+        ${i > 0 && !cerrado ? `<button type="button" class="btn ghost small" data-pipeback="${p.id}">← ${PIPE_ETAPAS[i-1].l}</button>` : ''}
+        ${sig && !cerrado ? `<button type="button" class="btn small" data-pipenext="${p.id}">${sig.l} →</button>` : ''}
+        ${p.etapa === 'decision' && !p.resultado ? ['aceptar','espera','declinar'].map(r=>`<button type="button" class="btn ghost small" data-pipedec="${p.id}|${r}">${{aceptar:'Aceptar', espera:'Lista de espera', declinar:'Declinar'}[r]}</button>`).join('') : ''}
+        ${p.resultado === 'aceptar' && !p.atletaId ? `<button type="button" class="btn small" data-pipecrear="${p.id}">Crear atleta</button>` : ''}
+      </div>
+      ${p.resultado ? `<details class="sj-guia" style="margin-top:8px;"><summary>Mensaje para copiar</summary><p class="pipe-msg">${escapeHtml(PIPE_MSG[p.resultado].replace('{nombre}', (p.nombre || '').split(' ')[0]))}</p></details>` : ''}
+      <textarea data-pipenota="${p.id}" placeholder="Notas (objetivo, lo que dijo en la llamada…)" style="min-height:44px;margin-top:8px;">${escapeHtml(p.notas || '')}</textarea></div>`;
+  });
+  return h;
+}
+function pipeCambia(lista, id, fn){ const p = lista.find(x=>x.id === id); if(p) fn(p); return p; }
+document.addEventListener('click', async e=>{
+  const t = e.target && e.target.closest ? e.target : null; if(!t) return;
+  const q = sel=>t.closest(sel);
+  const fil = q('[data-pipefiltro]'); if(fil){ state.pipeFiltro = fil.dataset.pipefiltro; renderKeepScroll(); return; }
+  if(q('#pipeAddBtn')){
+    const nombre = (document.getElementById('pipeNombre').value || '').trim(); if(!nombre){ toast('Pon un nombre', true); return; }
+    const lista = await getPipeline(), ahora = new Date().toISOString();
+    lista.push({ id:uid(), nombre, contacto:(document.getElementById('pipeContacto').value || '').trim(), plan:document.getElementById('pipePlan').value, semaforo:document.getElementById('pipeSemaforo').value,
+      etapa:'afinidad', fechas:{ afinidad:ahora }, resultado:'', notas:'', creado:ahora });
+    const ok = await savePipeline(lista); toast(ok ? 'Añadida a la entrada' : 'No se pudo guardar', !ok); if(ok) renderKeepScroll(); return;
+  }
+  const mover = q('[data-pipenext]') || q('[data-pipeback]');
+  if(mover){
+    const id = mover.dataset.pipenext || mover.dataset.pipeback, avanza = !!mover.dataset.pipenext, lista = await getPipeline();
+    pipeCambia(lista, id, p=>{ const i = PIPE_ETAPAS.findIndex(x=>x.id === p.etapa), n = PIPE_ETAPAS[i + (avanza ? 1 : -1)]; if(!n) return; p.etapa = n.id; p.fechas[n.id] = new Date().toISOString(); });
+    if(await savePipeline(lista)) renderKeepScroll(); return;
+  }
+  const dec = q('[data-pipedec]');
+  if(dec){
+    const [id, r] = dec.dataset.pipedec.split('|'), lista = await getPipeline();
+    pipeCambia(lista, id, p=>{ p.resultado = r; p.fechas.decision = p.fechas.decision || new Date().toISOString(); });
+    if(await savePipeline(lista)) renderKeepScroll(); return;
+  }
+  const cre = q('[data-pipecrear]');
+  if(cre){
+    const lista = await getPipeline(), p = lista.find(x=>x.id === cre.dataset.pipecrear); if(!p) return;
+    const usados = new Set(state.athletes.map(a=>String(a.pin))); let pin = null;
+    for(let i=0;i<9000;i++){ const c = String(Math.floor(1000+Math.random()*9000)); if(!usados.has(c)){ pin = c; break; } }
+    if(!pin){ toast('No quedan PINs libres de 4 dígitos', true); return; }
+    const at = { id:uid(), name:p.nombre, pin, modalidad:'gym', plan:(PLANES[p.plan] ? p.plan : 'health'), fechaInicio:todayISO() };
+    state.athletes.push(at);
+    const ok = await safeSet('athletes-list', JSON.stringify(state.athletes), true);
+    p.atletaId = at.id; p.etapa = 'activo'; p.fechas.activo = new Date().toISOString();
+    await savePipeline(lista);
+    toast(ok ? `${p.nombre} creada · PIN ${pin}` : 'No se pudo guardar', !ok); if(ok) renderKeepScroll(); return;
+  }
+  const del = q('[data-pipedel]');
+  if(del){ if(!confirm('¿Quitar a esta persona de la entrada?')) return; const lista = (await getPipeline()).filter(x=>x.id !== del.dataset.pipedel); if(await savePipeline(lista)) renderKeepScroll(); }
+});
+document.addEventListener('change', async e=>{
+  const n = e.target && e.target.matches && e.target.matches('[data-pipenota]') ? e.target : null; if(!n) return;
+  const lista = await getPipeline(); pipeCambia(lista, n.dataset.pipenota, p=>{ p.notas = n.value; }); await savePipeline(lista);
+});
+
+// ---------- RETESTS ----------
+// Último test hecho + semanas del plan (8) = cuándo toca repetirlos.
+async function retestInfo(athleteId){
+  const at = state.athletes.find(a=>a.id === athleteId); if(!at) return null;
+  const plan = planDe(at), fechas = [];
+  try{ const b = JSON.parse((await safeGet('bateria-'+athleteId, true)) || 'null'); if(b && b.fecha) fechas.push(String(b.fecha).slice(0,10)); }catch(e){}
+  try{ const h = JSON.parse((await safeGet('tests-historial-'+athleteId, true)) || '[]'); (Array.isArray(h) ? h : []).forEach(x=>{ if(x && x.fecha) fechas.push(String(x.fecha).slice(0,10)); }); }catch(e){}
+  if(!fechas.length) return null;
+  const ultima = fechas.sort().pop(), proxima = sumaDiasISO(ultima, plan.retestSemanas * 7);
+  const dias = Math.round((new Date(proxima+'T00:00:00') - new Date(todayISO()+'T00:00:00'))/86400000);
+  return { ultima, proxima, dias, vencido: dias <= 7, plan };
+}
+
 async function tplAgenda(){
   const sub = state.agendaSub || 'resumen';
   let html = `<div class="sub-tabs">
     <button data-agendasub="resumen" class="${sub==='resumen'?'active':''}">Resumen</button>
     <button data-agendasub="tareas" class="${sub==='tareas'?'active':''}">Tareas</button>
     <button data-agendasub="calendario" class="${sub==='calendario'?'active':''}">Calendario</button>
+<button data-agendasub="entrada" class="${sub==='entrada'?'active':''}">Entrada</button>
     <button data-agendasub="nutricion" class="${sub==='nutricion'?'active':''}">Nutrición</button>
     <button data-agendasub="textos" class="${sub==='textos'?'active':''}">Textos</button>
     <button data-agendasub="contenido" class="${sub==='contenido'?'active':''}">Contenido</button>
   </div>`;
   if(sub==='tareas') html += await tplTareas();
   else if(sub==='calendario') html += await tplCalendarioCoach();
+else if(sub==='entrada') html += await tplEntrada();
   else if(sub==='nutricion') html += await tplGuiaNutriEditor();
   else if(sub==='textos') html += await tplTextosEducativos();
   else if(sub==='contenido') html += await tplContenidoEditor();
@@ -12754,12 +13093,13 @@ function omitidosResumenHtml(lista){
 }
 async function tplResumen(){
   const now = new Date();
-  const upcomingList = [], unpaidList = [], riskList = [], omitList = [];
+  const upcomingList = [], unpaidList = [], riskList = [], omitList = [], retestList = [];
   for(const a of state.athletes){
     const callRaw = await safeGet('call-'+a.id, true);
     if(callRaw){ const c = JSON.parse(callRaw); if(c.nextDate){ const days=(new Date(c.nextDate)-now)/86400000; if(days>=0 && days<=14) upcomingList.push({id:a.id, name:a.name, date:c.nextDate}); } }
     const profRaw = await safeGet('profile-'+a.id, true);
     if(profRaw){ const p = JSON.parse(profRaw); if(p.pagado==='No' || p.pagado==='Pendiente') unpaidList.push({id:a.id, name:a.name, estado:p.pagado}); }
+    { const rt = await retestInfo(a.id); if(rt && rt.vencido) retestList.push({ name:a.name, ...rt }); }
     const omA = await omitidosDeAtleta(a.id, 7); if(omA.length) omitList.push({ id:a.id, name:a.name, items:omA });
     const jRaw = await safeGet('journal-'+a.id, true);
     if(jRaw){
@@ -12773,9 +13113,12 @@ async function tplResumen(){
     }
   }
   upcomingList.sort((x,y)=>x.date.localeCompare(y.date));
+  const pipeAl = (await getPipeline()).filter(pipeAlerta);
   const sections = [
     { key:'calls', title:'Próximas videollamadas', count:upcomingList.length, rows: upcomingList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>${u.date}</span></div></div>`).join('') },
     { key:'unpaid', title:'Pagos pendientes', count:unpaidList.length, rows: unpaidList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>${escapeHtml(u.estado)}</span></div></div>`).join('') },
+    { key:'entrada', title:'Entrada: sin respuesta', count:pipeAl.length, rows: pipeAl.map(p=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(p.nombre)}</span><span>${(PIPE_ETAPAS.find(e=>e.id===p.etapa)||{}).l}</span></div><div class="omit-alerta">Más de ${PIPE_ALERTA_H[p.etapa]} h en este paso.</div></div>`).join('') },
+    { key:'retests', title:'Retests (cada 8 semanas)', count:retestList.length, rows: retestList.map(r=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(r.name)}</span><span>${r.dias < 0 ? 'hace '+(-r.dias)+' d' : 'en '+r.dias+' d'}</span></div><div class="sj-linea">Último test ${fechaCortaISO(r.ultima)} · toca repetirlos el ${fechaCortaISO(r.proxima)} (${escapeHtml(r.plan.nombre)}).</div></div>`).join('') },
     { key:'omit', title:'Ejercicios omitidos (7 días)', count:omitList.reduce((n,a)=>n+a.items.length,0), rows: omitidosResumenHtml(omitList) },
     { key:'risk', title:'Riesgo por ACWR', count:riskList.length, rows: riskList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>ACWR ${u.acwr}</span></div></div>`).join('') },
     { key:'all', title:'Todos los atletas', count:state.athletes.length, rows: state.athletes.map(a=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(a.name)}</span></div></div>`).join('') }
@@ -16094,6 +16437,7 @@ async function bindDynamicEvents(){
     const modalidad = modEl ? modEl.value : (at ? at.modalidad : 'gym');
     const perfiles = [...document.querySelectorAll('[data-perfilpick].on')].map(b=>b.dataset.perfilpick);
     at.name = nuevoNombre; at.pin = nuevoPin; at.modalidad = modalidad; at.perfiles = perfiles;
+  { const pe = document.getElementById('editAthPlan'); if(pe && PLANES[pe.value]) at.plan = pe.value; if(!at.fechaInicio) at.fechaInicio = todayISO(); }
     const ok = await safeSet('athletes-list', JSON.stringify(state.athletes), true);
     toast(ok ? 'Datos actualizados' : 'No se pudo guardar', !ok);
     if(ok) render();
@@ -16108,7 +16452,7 @@ async function bindDynamicEvents(){
     const aviso = `¿Eliminar a ${at.name}?\n\nSe borrarán su ficha, rutinas, historial, diario, cuestionarios, periodización y tareas asociadas.\n\nEsta acción no se puede deshacer. Exporta una copia antes si quieres conservarlo.`;
     if(!confirm(aviso)) return;
     try{
-      for(const p of ['intake','profile','routine','routine-draft','routine-history','journal','quest','quest-config','call','plan','tutorial','session-activa','habits','habits-config']){
+      for(const p of ['intake','profile','routine','routine-draft','routine-history','journal','quest','quest-config','call','plan','tutorial','session-activa','habits','habits-config','ciclo','ciclo-dia','ciclo-diario','saltos','readiness','bateria','tests-historial']){
         await safeSet(p+'-'+id, '', true);
       }
       const tareas = await getTasks();
