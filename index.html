@@ -183,6 +183,112 @@
   .interval-display.idle{background:var(--panel2);color:var(--muted);}
   .amrap-count{font-family:'IBM Plex Mono',monospace;font-size:40px;text-align:center;color:var(--accent);margin:10px 0;}
 
+
+  .snack-dia.cheat b{background:transparent;border:2px dashed var(--gold);color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:11px;}
+  .snack-cheat{font-size:11.5px;color:var(--muted);margin:-6px 0 12px;}
+  .snack-cheat b{color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.05em;text-transform:uppercase;margin-right:4px;}
+  .confeti{position:fixed;inset:0;z-index:300;pointer-events:none;overflow:hidden;}
+  .confeti i{position:absolute;top:-24px;display:block;opacity:0;animation-name:confetiCae;animation-timing-function:cubic-bezier(.25,.6,.5,1);animation-fill-mode:forwards;}
+  @keyframes confetiCae{0%{opacity:1;transform:translate3d(0,0,0) rotate(0deg);}85%{opacity:1;}100%{opacity:0;transform:translate3d(var(--dx),105vh,0) rotate(var(--giro));}}
+  .diario-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+  @media (min-width:640px){ .diario-grid{grid-template-columns:repeat(3,1fr);} }
+  .diario-tile{position:relative;padding:10px 10px 9px;}
+  .diario-tile.on{border-color:var(--gold);background:var(--gold-dim);}
+  .diario-tile b{padding-right:54px;}
+  .diario-tile small{display:block;font-size:11px;color:var(--muted);margin-top:3px;}
+  .diario-tile .dt-stats em{font-style:normal;margin-right:7px;white-space:nowrap;}
+  .diario-tile .dt-stats em b{display:inline;font-size:11px;padding:0;margin:0;color:var(--ink);}
+  .diario-tile .dt-rpe{position:absolute;top:9px;right:9px;font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#fff;border-radius:10px;padding:2px 7px;}
+  .ex-ultima:empty{display:none;}
+  .ex-ultima{margin-top:6px;padding:7px 9px;border-left:2px solid var(--gold);background:var(--panel2);border-radius:0 6px 6px 0;font-size:12px;line-height:1.5;}
+  .uv-linea span{font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin-right:4px;}
+  .uv-linea b{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--muted);margin-right:3px;}
+  .uv-nota{font-size:11.5px;color:var(--muted);font-style:italic;}
+  .uv-mas summary{font-size:11px;color:var(--muted);cursor:pointer;margin-top:3px;}
+  .rec-fila{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+  .rec-fila label{font-size:13px;display:flex;align-items:center;gap:7px;}
+  .rec-fila b{font-weight:600;}
+  /* ---- Snack de movimiento ---- */
+  .snack-card{border-color:var(--gold);}
+  .snack-card.hecho{border-color:var(--border);}
+  .snack-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+  .snack-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.09em;text-transform:uppercase;color:var(--gold);}
+  .snack-racha{display:flex;flex-direction:column;align-items:center;min-width:58px;padding:8px 10px;border-radius:10px;background:var(--panel2);color:var(--muted);line-height:1;}
+  .snack-racha.viva{background:var(--gold-dim);color:var(--gold);}
+  .snack-racha b{font-family:'IBM Plex Mono',monospace;font-size:22px;margin:3px 0 2px;color:var(--ink);}
+  .snack-racha span{font-size:10px;letter-spacing:0.04em;}
+  .snack-racha.grande{margin:0 auto 12px;width:130px;padding:16px;}
+  .snack-racha.grande b{font-size:44px;}
+  .snack-racha.grande svg{width:34px;height:34px;}
+  .snack-racha.mini{flex-direction:row;gap:4px;min-width:0;padding:4px 8px;}
+  .snack-racha.mini b{font-size:14px;margin:0;}
+  .snack-racha.mini svg{width:14px;height:14px;}
+  .snack-sem{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:14px 0 10px;}
+  .snack-dia{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .snack-dia i{font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
+  .snack-dia b{width:100%;max-width:38px;aspect-ratio:1;border-radius:50%;border:1px solid var(--border);background:var(--panel2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--on-accent);}
+  .snack-dia.hecho b{background:var(--gold);border-color:var(--gold);}
+  .snack-dia.hoy b{border:2px solid var(--gold);}
+  .snack-dia.futuro b{opacity:0.45;}
+  .snack-estado{font-size:12.5px;color:var(--muted);margin-bottom:12px;}
+  .snack-nota{font-size:11.5px;color:var(--muted);line-height:1.55;margin-top:10px;}
+  .snack-ov{position:fixed;inset:0;z-index:180;background:var(--bg);overflow-y:auto;}
+  .snack-in{max-width:560px;margin:0 auto;padding:18px 18px 34px;min-height:100%;}
+  .snack-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;}
+  .snack-h{font-family:'Fraunces',serif;font-size:24px;margin:4px 0 12px;}
+  .snack-h span{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-left:8px;}
+  .snack-niveles{display:flex;gap:6px;margin-bottom:12px;}
+  .snack-niveles button,.snack-chip{flex:1;background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px;border-radius:7px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:'Manrope',sans-serif;}
+  .snack-niveles button.on,.snack-chip.on{background:var(--gold-dim);color:var(--gold);border-color:var(--gold);}
+  .snack-chip{flex:0 0 auto;}
+  .snack-lista{list-style:none;margin:0;padding:0;}
+  .snack-lista li{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--border);}
+  .snack-lista li b{display:block;font-size:14px;}
+  .snack-lista li small{display:block;font-size:11.5px;color:var(--muted);margin-top:2px;}
+  .snack-lista li div{flex:1;min-width:0;}
+  .snack-n{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);width:18px;text-align:center;}
+  .snack-cambia{background:none;border:1px solid var(--border);color:var(--muted);border-radius:7px;width:34px;height:34px;font-size:16px;cursor:pointer;}
+  .snack-musica{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:12.5px;color:var(--muted);flex-wrap:wrap;}
+  .snack-run{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:100vh;}
+  .snack-run .snack-bar{width:100%;}
+  .snack-fase{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;letter-spacing:0.14em;margin-top:6vh;color:var(--muted);}
+  .snack-reloj{font-family:'IBM Plex Mono',monospace;font-size:120px;font-weight:600;line-height:1.05;color:var(--ink);}
+  .paso-work .snack-fase,.paso-work .snack-reloj{color:var(--gold);}
+  .paso-prep .snack-reloj{color:var(--danger);}
+  .snack-ej{font-family:'Fraunces',serif;font-size:27px;line-height:1.2;margin-top:8px;min-height:66px;}
+  .snack-cue{font-size:13.5px;color:var(--muted);min-height:22px;margin-top:6px;}
+  .paso-rest .snack-cue,.paso-prep .snack-cue{order:-1;}
+  .snack-puntos{display:flex;gap:7px;margin-top:22px;}
+  .snack-puntos i{width:22px;height:6px;border-radius:3px;background:var(--panel3);}
+  .snack-puntos i.ok{background:var(--gold);}
+  .snack-puntos i.on{background:var(--ink);}
+  .snack-sig{font-size:12.5px;color:var(--muted);margin-top:14px;min-height:18px;}
+  .snack-fin{padding:20px 0 6px;}
+  .snack-preg{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-top:10px;}
+  .snack-horas button{min-width:44px;}
+  .snack-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .snack-kpis div{background:var(--panel2);border-radius:8px;padding:10px 6px;text-align:center;}
+  .snack-kpis b{display:block;font-family:'IBM Plex Mono',monospace;font-size:17px;}
+  .snack-kpis span{font-size:10.5px;color:var(--muted);}
+  .snack-tabla-wrap{overflow-x:auto;}
+  .snack-tabla{width:100%;border-collapse:collapse;font-size:12px;min-width:430px;}
+  .snack-tabla th{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);text-align:left;padding:6px 4px;border-bottom:1px solid var(--border);}
+  .snack-tabla td{padding:7px 4px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  .snb{display:inline-block;width:38px;height:6px;border-radius:3px;background:var(--panel3);margin-right:6px;vertical-align:middle;overflow:hidden;}
+  .snb i{display:block;height:100%;background:var(--gold);}
+  .snack-obs{margin:0;padding-left:18px;font-size:13px;line-height:1.6;}
+  .snack-fila-at{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+  .snack-fila-at>span:first-child{font-weight:700;font-size:13.5px;flex:1;}
+  .snack-fila-at small{flex-basis:100%;font-size:11.5px;color:var(--muted);}
+  .snack-cancion{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);}
+  .snack-cancion small{font-size:11px;color:var(--muted);white-space:nowrap;}
+  .snack-fam{border:1px solid var(--border);border-radius:8px;padding:4px 10px;margin-bottom:8px;}
+  .snack-ex{display:flex;align-items:center;gap:10px;padding:7px 0;cursor:pointer;}
+  .snack-ex.off{opacity:0.5;}
+  .snack-ex span{flex:1;min-width:0;}
+  .snack-ex b{display:block;font-size:13px;font-weight:600;}
+  .snack-ex small{font-size:11px;color:var(--muted);}
+  @media (max-width:380px){ .snack-reloj{font-size:96px;} .snack-ej{font-size:23px;} }
   .cal-banner{background:var(--accent);color:var(--on-accent);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13.5px;}
   .cal-banner.muted{background:var(--panel2);color:var(--muted);}
   .cal-banner b{color:inherit;}
@@ -911,7 +1017,39 @@
   .pipe-etapas span.hecha{color:var(--ink);} .pipe-etapas span.actual{background:var(--accent);color:var(--on-accent);font-weight:700;}
   .pipe-sem{width:12px;height:12px;border-radius:50%;display:inline-block;} .pipe-verde{background:#3b8f55;} .pipe-amarillo{background:#d4a73a;} .pipe-rojo{background:var(--danger);}
   .pipe-msg{font-size:12.5px;line-height:1.65;white-space:pre-wrap;margin-top:8px;}
-  .rd-explica{background:var(--panel3);border-radius:8px;padding:10px 12px;margin-top:10px;}
+    /* Informe de seguimiento */
+  .inf-sec{background:var(--panel);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;}
+  .inf-sec>summary{cursor:pointer;padding:13px 14px;font-family:'Fraunces',serif;font-weight:600;font-size:15px;list-style:none;display:flex;align-items:center;gap:10px;}
+  .inf-sec>summary::-webkit-details-marker{display:none;}
+  .inf-sec>summary i{font-style:normal;background:var(--accent);color:var(--on-accent);border-radius:50%;min-width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-family:'IBM Plex Mono',monospace;}
+  .inf-guia{margin:0 14px;padding:9px 12px;background:var(--panel3);border-radius:8px;font-size:12.5px;line-height:1.6;}
+  .inf-cuerpo{padding:12px 14px 14px;} .inf-cuerpo .q-item p small{display:block;color:var(--muted);font-size:11.5px;font-weight:400;margin-top:2px;}
+  .inf-tabla{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0;}
+  .inf-tabla th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--border);}
+  .inf-tabla td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:top;} .inf-tabla small{display:block;color:var(--muted);font-size:10.5px;}
+  .inf-bien{color:#2f7a4a;font-weight:700;} .inf-mal{color:var(--danger);font-weight:700;} .inf-neu{color:var(--muted);}
+  .inf-fila{padding:10px 0;border-bottom:1px dashed var(--border);display:flex;flex-direction:column;gap:6px;}
+  .inf-prev{font-size:11.5px;color:var(--muted);margin-top:4px;}
+  .inf-guion{display:flex;gap:10px;font-size:12.5px;padding:5px 0;} .inf-guion>b{min-width:62px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);}
+  .inf-vence{border-color:var(--warn);}
+  .inf-doc{background:#fff;color:#1B2A49;border-radius:8px;padding:26px 24px;font-family:'Manrope',sans-serif;font-size:13px;line-height:1.6;}
+  .inf-doc .inf-cab{display:flex;gap:14px;align-items:center;border-bottom:3px solid #C9A227;padding-bottom:12px;margin-bottom:12px;}
+  .inf-logo{width:46px;height:46px;} .inf-marca{font-family:'IBM Plex Mono',monospace;letter-spacing:.2em;font-size:11px;color:#856210;}
+  .inf-doc h2{font-family:'Fraunces',serif;font-size:22px;margin:0;color:#1B2A49;}
+  .inf-doc h3{font-family:'Fraunces',serif;font-size:15px;margin:20px 0 6px;color:#1B2A49;display:flex;align-items:center;gap:8px;border-bottom:1px solid #E2DBCB;padding-bottom:4px;}
+  .inf-doc h3 i{font-style:normal;background:#1B2A49;color:#fff;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;}
+  .inf-meta{width:100%;border-collapse:collapse;margin-bottom:6px;} .inf-meta td{padding:4px 8px 4px 0;vertical-align:top;}
+  .inf-meta small{display:block;color:#856210;font-size:10px;text-transform:uppercase;letter-spacing:.06em;} .inf-meta b{font-size:13px;}
+  .inf-doc .inf-tabla th{color:#856210;border-color:#E2DBCB;} .inf-doc .inf-tabla td{border-color:#EFE9DA;color:#1B2A49;} .inf-doc .inf-neu{color:#7a7468;}
+  .inf-sub{color:#7a7468;font-size:12px;margin:0 0 4px;} .inf-p{margin:8px 0;}
+  .inf-aviso{font-size:11px;color:#7a7468;border-left:3px solid #C9A227;padding-left:10px;margin-top:8px;}
+  .inf-caja{border:1px dashed #C9BFA6;min-height:70px;border-radius:6px;} .inf-pie{margin-top:22px;font-size:10.5px;color:#7a7468;text-align:center;}
+  #infPrintWrap{display:none;}
+  @media print{ body.print-informe > *:not(#infPrintWrap){display:none!important;} body.print-informe #infPrintWrap{display:block!important;} body.print-informe{background:#fff!important;} body.print-informe .inf-doc{padding:0;} @page{size:A4;margin:14mm;} .inf-tabla{page-break-inside:avoid;} .inf-doc h3{page-break-after:avoid;} }
+    .sj-fps-sug{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+  .sj-ok{color:#2f7a4a;font-weight:700;font-size:12px;} .sj-no{color:var(--muted);font-size:12px;}
+  .rd-explica{
+background:var(--panel3);border-radius:8px;padding:10px 12px;margin-top:10px;}
   .rd-explica b{display:block;font-size:12px;color:var(--accent);margin-bottom:4px;}
   .rd-explica p{font-size:12px;color:var(--ink);line-height:1.6;}
   .rc-cabecera{display:flex;align-items:center;gap:13px;background:var(--panel2);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
@@ -1126,9 +1264,24 @@ async function safeGet(key, shared){
   if(state.modoDemo && shared && demoStore.has(key)) return demoStore.get(key);
   // Lo no compartido es de este dispositivo: nunca sale a la nube.
   if(!shared) return readLocal(key, false);
+  // Una pantalla pide decenas de claves y al cambiar de pestaña se repetían todas contra el servidor.
+  // Lo leído hace unos segundos se reutiliza; dos lecturas simultáneas de la misma clave comparten petición.
+  const rec = lecturaCache.get(key);
+  if(rec && Date.now() - rec.t < LECTURA_TTL) return rec.v;
+  if(lecturaVuelo.has(key)) return lecturaVuelo.get(key);
+  const pet = safeGetRed(key);
+  lecturaVuelo.set(key, pet);
+  try{ return await pet; } finally{ lecturaVuelo.delete(key); }
+}
+let LECTURA_TTL = (typeof window !== 'undefined' && typeof window.__LECTURA_TTL === 'number') ? window.__LECTURA_TTL : 12000;
+const lecturaCache = new Map(), lecturaVuelo = new Map();
+if(typeof document !== 'undefined') document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState === 'visible') lecturaCache.clear(); });
+async function safeGetRed(key){
+  const shared = true;
   try{
     const v = await supaGet(key);
     storageMode = 'nube'; storageBroken = false;
+    lecturaCache.set(key, { v:(v !== null && v !== undefined) ? v : null, t:Date.now() });
     if(v !== null && v !== undefined){ cacheLocal(key, true, v); return v; }
     return null;
   }catch(e){
@@ -1148,6 +1301,7 @@ async function safeSet(key, value, shared){
     return true;
   }
   if(!shared){ cacheLocal(key, false, value); return true; }
+  lecturaCache.set(key, { v:value, t:Date.now() });
   cacheLocal(key, true, value);   // guardamos siempre en local primero
   try{
     await supaSet(key, value);
@@ -1412,6 +1566,30 @@ const INTAKE_FIELDS_MENOR = [
   {id:'comoLlego', label:'¿Cómo llegasteis a mí?', type:'select', options:['Recomendación','Redes sociales','Otro'], group:G_SAL}
 ];
 
+// Aviso con «Deshacer» durante unos segundos: para borrados que se hacen de golpe y que no deberían dar miedo.
+function toastDeshacer(msg, fn){
+  const prev = document.getElementById('umbralToastU'); if(prev) prev.remove();
+  const t = document.createElement('div'); t.id = 'umbralToastU';
+  t.style.cssText = 'position:fixed;left:50%;bottom:calc(var(--navh) + 16px);transform:translateX(-50%);z-index:210;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;display:flex;gap:12px;align-items:center;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:92vw;';
+  t.innerHTML = `<span>${escapeHtml(msg)}</span><button type="button" style="background:transparent;border:1px solid currentColor;color:inherit;border-radius:6px;padding:4px 10px;font-weight:700;cursor:pointer;">Deshacer</button>`;
+  document.body.appendChild(t);
+  const quita = ()=>{ if(t.parentNode) t.remove(); };
+  t.querySelector('button').addEventListener('click', async ()=>{ quita(); try{ await fn(); toast('Deshecho'); }catch(e){ toast('No se pudo deshacer', true); } });
+  setTimeout(quita, 9000);
+}
+document.addEventListener('click', async e=>{
+  const b = e.target && e.target.closest ? e.target.closest('#vaciarSemanaBtn') : null; if(!b) return;
+  const athleteId = state.selectedId, semana = state.planWeek || weekOfISO(), draft = await getRoutine(athleteId, true, semana);
+  const n = DAYS.reduce((a,d)=>a + BLOCKS.reduce((b,bl)=>b + draft.days[d][bl.key].length, 0) + (Array.isArray(draft.days[d].drills) ? draft.days[d].drills.length : 0), 0);
+  if(!n) return;
+  if(!confirm(`¿Vaciar toda la semana?\n\nSe quitan los ${n} elementos del borrador. Podrás deshacerlo unos segundos.`)) return;
+  const snap = {};
+  DAYS.forEach(d=>{ snap[d] = {}; BLOCKS.forEach(bl=>{ snap[d][bl.key] = JSON.parse(JSON.stringify(draft.days[d][bl.key])); draft.days[d][bl.key] = []; }); if(Array.isArray(draft.days[d].drills)){ snap[d].drills = draft.days[d].drills; draft.days[d].drills = []; } });
+  draft.updatedAt = new Date().toISOString();
+  if(!(await saveRoutine(athleteId, true, draft, semana))){ toast('No se pudo guardar', true); return; }
+  toastDeshacer('Semana vaciada', async ()=>{ const dr = await getRoutine(athleteId, true, semana); DAYS.forEach(d=>{ BLOCKS.forEach(bl=>{ dr.days[d][bl.key] = snap[d][bl.key]; }); if(snap[d].drills) dr.days[d].drills = snap[d].drills; }); await saveRoutine(athleteId, true, dr, semana); renderKeepScroll(); });
+  renderKeepScroll();
+});
 // ---------- PLANES ----------
 // Todo lo que cambia entre planes vive en esta constante: se edita aquí, no en la lógica.
 // Un atleta sin plan asignado cuenta como High Performance (así siguen tus atletas actuales).
@@ -1441,7 +1619,7 @@ const PLANES = {
     cuestionario:'semanal', ajustesDias:7, ajustesTxt:'cada semana',
     videos:{ min:5, max:8 }, respuestaVideo:'en 24 h', respuestaVideoHoras:24,
     tests:{ n:15, nivel:'completos' }, retestSemanas:8,
-    informe:true, informeSemanas:8,
+    informe:true, informeSemanas:6,
     videollamadaArranque:true, videollamadaMensual:true,
     competicion:true, avisoCambioHoras:24,
     whatsapp:'24-48 h laborables', orientacionCiclo:'individualizada',
@@ -1451,7 +1629,7 @@ const PLANES = {
       'Batería completa de tests (más de 15) y retest cada 8 semanas',
       'Entre 5 y 8 vídeos a la semana, con respuesta en 24 h',
       'Videollamada de arranque y una al mes',
-      'Informe de evolución cada 8 semanas, comentado en videollamada',
+      'Informe de evolución cada 6 semanas, comentado en videollamada',
       'Preparación de competición',
       'Orientación nutricional individualizada ligada al ciclo',
       'WhatsApp: respuesta en 24-48 h laborables'
@@ -2922,8 +3100,9 @@ async function renderTabContent(){
         html = `<div class="sub-tabs">
           <button data-progresosub="progreso" class="${sub==='progreso'?'active':''}">Progreso</button>
           <button data-progresosub="diario" class="${sub==='diario'?'active':''}">Diario</button>
+          <button data-progresosub="snack" class="${sub==='snack'?'active':''}">Snack</button>
         </div>`;
-        html += sub==='diario' ? await tplDiarioLectura(athleteId, false) : await tplProgreso(athleteId);
+        html += sub==='diario' ? await tplDiarioLectura(athleteId, false) : (sub==='snack' ? await tplSnackStats(athleteId, false) : await tplProgreso(athleteId));
       }
       else if(state.tab==='perfil'){
         if(state.verNutri) html = await tplGuiaNutri(athleteId);
@@ -2944,6 +3123,7 @@ async function renderTabContent(){
   el.classList.remove('cargando');
   el.innerHTML = tplDemoAviso() + html;
   bindDynamicEvents();
+  bindSnack();
   renderNav();
   if(session && session.fullscreen) mountSessionOverlay(state.athleteAsId || state.selectedId);
 }
@@ -2985,6 +3165,18 @@ function normalizaRutina(r){
   });
   return r;
 }
+// La rutina del formato antiguo (una sola, sin semanas) se migra UNA vez a la primera semana, y solo si el
+// atleta no tiene ya semanas propias. Antes se copiaba en cualquier semana vacía: al abrir una semana nueva
+// reaparecía entera, y si la vaciabas volvía a aparecer.
+async function legacyYaMigrada(athleteId, draft){
+  const flag = 'routine-migrada-'+athleteId+(draft ? '-b' : '-p');
+  if(await safeGet(flag, true)) return true;
+  for(let k = 1; k <= 12; k++){
+    const sem = semanaDesplazada(-k);
+    if(await safeGet(routineKey(athleteId, false, sem), true) || await safeGet(routineKey(athleteId, true, sem), true)){ await safeSet(flag, '1', true); return true; }
+  }
+  return false;
+}
 async function getRoutine(athleteId, draft, weekOf){
   const semana = weekOf || state.planWeek || weekOfISO();
   const raw = await safeGet(routineKey(athleteId, draft, semana), true);
@@ -3007,7 +3199,8 @@ async function getRoutine(athleteId, draft, weekOf){
       if(tieneContenido(rv)){
         rv.weekOf = semana;
         await safeSet(routineKey(athleteId, draft, semana), JSON.stringify(rv), true);
-        return rv;
+await safeSet(claveVecina, '', true);   // el duplicado desplazado se retira: si vacías la semana, no vuelve
+return rv;
       }
     }catch(e){}
   }
@@ -3015,19 +3208,20 @@ async function getRoutine(athleteId, draft, weekOf){
   // Migración del formato antiguo. Antes sólo actuaba si la clave de la semana
   // no existía; bastaba con que se hubiera creado vacía para que la migración
   // quedara bloqueada y las rutinas parecieran perdidas.
-  if(semana === weekOfISO()){
-    const legacy = await safeGet((draft?'routine-draft-':'routine-')+athleteId, true);
-    if(legacy){
-      try{
-        const r = normalizaRutina(JSON.parse(legacy));
-        if(tieneContenido(r)){
-          r.weekOf = semana;
-          await safeSet(routineKey(athleteId, draft, semana), JSON.stringify(r), true);
-          return r;
-        }
-      }catch(e){}
-    }
-  }
+  if(semana === weekOfISO() && !(await legacyYaMigrada(athleteId, draft))){
+const legacy = await safeGet((draft?'routine-draft-':'routine-')+athleteId, true);
+if(legacy){
+try{
+const r = normalizaRutina(JSON.parse(legacy));
+if(tieneContenido(r)){
+r.weekOf = semana;
+await safeSet(routineKey(athleteId, draft, semana), JSON.stringify(r), true);
+await safeSet('routine-migrada-'+athleteId+(draft ? '-b' : '-p'), '1', true);
+return r;
+}
+}catch(e){}
+}
+}
   if(actual) return actual;
   const vacia = normalizaRutina(estructuraVacia());
   vacia.weekOf = semana;
@@ -3771,6 +3965,893 @@ async function subirArchivoGym(file){
   }
   return { id:uid(), tipo: esVideo?'video':'foto', url: videoPublicUrl(path), path,
            nombre: file.name.replace(/\.[^.]+$/,'').slice(0,40), fecha: todayISO() };
+}
+
+// ---------- SNACK DE MOVIMIENTO ----------
+// Mini reto diario: un Tabata corto con ejercicios sin material elegidos al azar de un banco grande,
+// música de fondo, racha de días seguidos y tres preguntas al acabar. Todo vive en 'snack-<atleta>'.
+const SNACK_CATS = { cardio:'Cardio', fuerza:'Fuerza', movilidad:'Movilidad' };
+const SNACK_NIVELES = { 1:'Suave', 2:'Media', 3:'Intensa' };
+const SNACK_CFG_DEF = { work:20, rest:10, rondas:8, prep:10, mezcla:{ cardio:3, fuerza:3, movilidad:2 } };
+const SNACK_BUCKET_DIR = 'snack/';
+const MAX_AUDIO_MB = 15;
+const SNACK_CACHE = 'umbral-snack-audio-v1';
+// Cada familia es un mismo gesto en 2-3 niveles; en un Tabata nunca salen dos variantes de la misma familia.
+const SNACK_FAMILIAS = [
+  // ----- CARDIO -----
+  ['jacks','cardio','Ritmo constante y aterrizaje suave.',[[1,'Jacks sin salto (paso lateral con brazos)'],[2,'Jumping jacks'],[3,'Jacks con sentadilla']]],
+  ['rodillas','cardio','Tronco alto, rodilla a la altura de la cadera.',[[1,'Marcha elevando rodillas'],[2,'Rodillas altas en el sitio'],[3,'Rodillas altas explosivas']]],
+  ['talones','cardio','Talón al glúteo sin arquear la espalda.',[[1,'Talones al glúteo andando'],[2,'Talones al glúteo trotando'],[3,'Talones al glúteo con salto']]],
+  ['boxeo','cardio','Puños arriba, gira la cadera en cada golpe.',[[1,'Boxeo de sombra suave'],[2,'Directos y ganchos rápidos'],[3,'Boxeo con desplazamientos y esquivas']]],
+  ['patinador','cardio','Empuja lateral y frena con la cadera, no con la rodilla.',[[1,'Pasos laterales tocando el suelo'],[2,'Patinador lateral'],[3,'Patinador con salto largo']]],
+  ['escalador','cardio','Hombros sobre las manos, cadera baja.',[[1,'Escalador lento'],[2,'Escalador'],[3,'Escalador cruzado rápido']]],
+  ['burpee','cardio','Pecho alto al subir; hazlo fluido, no a tirones.',[[1,'Burpee sin salto (paso atrás)'],[2,'Burpee'],[3,'Burpee con salto alto']]],
+  ['comba','cardio','Saltos cortos sobre la punta, muñecas sueltas.',[[1,'Comba imaginaria suave'],[2,'Comba imaginaria'],[3,'Comba imaginaria rápida a pies alternos']]],
+  ['esquiador','cardio','Pies juntos, de lado a lado, brazos acompañan.',[[1,'Esquiador suave (balanceo lateral)'],[2,'Saltos de esquiador'],[3,'Esquiador con salto amplio y toque de suelo']]],
+  ['tenis','cardio','Base baja y pasos cortos de ajuste.',[[1,'Sombra de derecha y revés'],[2,'Split-step y salida lateral'],[3,'Split-step, salida y volea']]],
+  ['oso','cardio','Rodillas a dos dedos del suelo, espalda plana.',[[1,'Gateo del oso corto y lento'],[2,'Gateo del oso adelante y atrás'],[3,'Gateo del oso lateral rápido']]],
+  ['rebotes','cardio','Tobillo elástico: poco tiempo en el suelo.',[[1,'Rebotes de tobillo'],[2,'Rebotes alternando una pierna'],[3,'Rebotes con salto vertical corto']]],
+  ['escalon','cardio','Apoya el pie entero y sube con el glúteo.',[[1,'Subida alterna a escalón o silla'],[2,'Subida a escalón con rodilla al pecho'],[3,'Subida a escalón con salto']]],
+  ['shuffle','cardio','Cadera baja, sin cruzar los pies.',[[1,'Desplazamiento lateral bajo'],[2,'Desplazamiento lateral con toque de suelo'],[3,'Desplazamiento lateral y sprint de 3 pasos']]],
+  ['tuck','cardio','Aterriza silencioso y enlaza el siguiente.',[[2,'Salto con rodillas al pecho'],[3,'Salto con rodillas al pecho continuo']]],
+  // ----- FUERZA -----
+  ['sentadilla','fuerza','Rodillas siguen la punta del pie, pecho alto.',[[1,'Sentadilla'],[2,'Sentadilla con pausa abajo (2 s)'],[3,'Sentadilla con salto']]],
+  ['zancada','fuerza','Paso largo, rodilla de atrás hacia el suelo.',[[1,'Zancada atrás alterna'],[2,'Zancada alterna hacia delante'],[3,'Zancada alterna con salto']]],
+  ['lateral','fuerza','Cadera atrás, peso en el talón.',[[1,'Zancada lateral alterna'],[2,'Zancada cruzada atrás (curtsy)'],[3,'Zancada cruzada con salto']]],
+  ['flexiones','fuerza','Cuerpo en bloque, codos a 45°.',[[1,'Flexiones inclinadas (manos en banco o pared)'],[2,'Flexiones'],[3,'Flexiones con toque de hombro']]],
+  ['puente','fuerza','Empuja con el talón y aprieta glúteo arriba.',[[1,'Puente de glúteo'],[2,'Puente de glúteo a una pierna alterna'],[3,'Puente a una pierna con pausa arriba']]],
+  ['plancha','fuerza','Costillas abajo, glúteo apretado.',[[1,'Plancha sobre antebrazos'],[2,'Plancha con toque de hombro'],[3,'Plancha con rodilla al codo']]],
+  ['deadbug','fuerza','Lumbar pegada al suelo todo el tiempo.',[[1,'Dead bug'],[2,'Dead bug con pausa de 2 s'],[3,'Hollow hold']]],
+  ['rotacion','fuerza','Gira desde las costillas, no desde el cuello.',[[1,'Bicicleta abdominal lenta'],[2,'Bicicleta abdominal'],[3,'Giros rusos con pies elevados']]],
+  ['lumbar','fuerza','Alarga el cuerpo; mirada al suelo.',[[1,'Superman'],[2,'Superman con pausa y brazos en Y'],[3,'Nadador en el suelo']]],
+  ['gemelos','fuerza','Sube hasta arriba y baja controlando.',[[1,'Elevaciones de talones'],[2,'Elevaciones de talones a una pierna'],[3,'Saltos de gemelo continuos']]],
+  ['pared','fuerza','Espalda apoyada, rodillas a 90°.',[[1,'Sentadilla isométrica en pared'],[2,'Sentadilla en pared extendiendo una pierna alterna']]],
+  ['cuadrupedia','fuerza','Cadera quieta: se mueve solo la pierna.',[[1,'Patada de glúteo en cuadrupedia'],[2,'Apertura lateral de cadera en cuadrupedia'],[3,'Patada y apertura con rodillas elevadas']]],
+  ['bisagra','fuerza','Espalda larga, la cadera va hacia atrás.',[[1,'Buenos días (bisagra de cadera)'],[2,'Peso muerto a una pierna sin peso'],[3,'Peso muerto a una pierna con toque de suelo']]],
+  ['triceps','fuerza','Hombros lejos de las orejas, codos atrás.',[[1,'Fondos en silla con rodillas flexionadas'],[2,'Fondos en silla con piernas estiradas'],[3,'Fondos en silla con una pierna elevada']]],
+  ['sumo','fuerza','Pies abiertos, rodillas hacia fuera.',[[1,'Sentadilla sumo'],[2,'Sentadilla sumo con pausa'],[3,'Sentadilla sumo con salto']]],
+  ['bulgara','fuerza','Tronco algo inclinado, baja vertical.',[[2,'Sentadilla búlgara (pie atrás en silla)'],[3,'Sentadilla búlgara lenta con pausa']]],
+  ['planchalat','fuerza','Cadera alta y en línea con hombro y tobillo.',[[1,'Plancha lateral con rodillas'],[2,'Plancha lateral'],[3,'Plancha lateral con elevación de cadera']]],
+  ['pike','fuerza','Cadera alta, la cabeza baja entre las manos.',[[1,'Pike apoyado (cadera alta, aguanta)'],[2,'Flexión pike'],[3,'Flexión pike con pies elevados']]],
+  // ----- MOVILIDAD -----
+  ['gato','movilidad','Mueve vértebra a vértebra, con la respiración.',[[1,'Gato-vaca'],[2,'Gato-vaca con balanceo hacia los talones']]],
+  ['toracica','movilidad','Sigue la mano con la mirada.',[[1,'Rotación torácica en cuadrupedia'],[2,'Pasar el hilo (rotación bajo el cuerpo)'],[3,'Rotación torácica en zancada baja']]],
+  ['wgs','movilidad','Cadera baja y pecho abierto en cada giro.',[[1,'Zancada con apertura de brazo'],[2,'Zancada profunda con rotación'],[3,'Zancada con rotación y estiramiento de isquios']]],
+  ['gusano','movilidad','Piernas largas; camina con las manos.',[[1,'Gusano corto (manos hasta plancha alta)'],[2,'Gusano con flexión'],[3,'Gusano con toque de hombro']]],
+  ['cadera','movilidad','Círculos amplios, tronco quieto.',[[1,'Círculos de cadera de pie'],[2,'90/90 de cadera cambiando de lado'],[3,'90/90 con elevación de cadera']]],
+  ['hombros','movilidad','Costillas abajo; mueve solo el hombro.',[[1,'Círculos amplios de brazos'],[2,'Ángeles en la pared'],[3,'Pase de hombros con toalla o palo']]],
+  ['profunda','movilidad','Talones apoyados, columna larga.',[[1,'Sentadilla profunda con apoyo'],[2,'Sentadilla profunda empujando rodillas con codos'],[3,'Sentadilla cosaca']]],
+  ['balanceo','movilidad','Pierna suelta, tronco firme.',[[1,'Balanceo de pierna adelante-atrás'],[2,'Balanceo de pierna lateral'],[3,'Balanceo de pierna cruzado']]],
+  ['tobillo','movilidad','Talón pegado al suelo, rodilla hacia el segundo dedo.',[[1,'Círculos de tobillo'],[2,'Rodilla a la pared (dorsiflexión)'],[3,'Rodilla a la pared con rebote suave']]],
+  ['pecho','movilidad','Abre desde el esternón, sin arquear la lumbar.',[[1,'Apertura de pecho dinámica'],[2,'Abrazo y apertura con rotación']]],
+  ['libro','movilidad','Rodillas juntas; gira solo la parte alta.',[[1,'Libro abierto tumbado de lado'],[2,'Libro abierto con brazo en círculo']]],
+  ['avion','movilidad','Cadera abre y cierra sobre la pierna de apoyo.',[[2,'Avión de cadera con apoyo'],[3,'Avión de cadera']]],
+  ['isquios','movilidad','Espalda recta; nota la parte de atrás del muslo.',[[1,'Inclinación con espalda recta'],[2,'Isquios alternos con talón adelante']]],
+  ['escapulas','movilidad','Mueve las escápulas, no los codos.',[[1,'Retracciones escapulares de pie'],[2,'Escápulas en cuadrupedia'],[3,'Y-T-W de pie']]]
+];
+const SNACK_BANCO_BASE = (()=>{
+  const l = [];
+  SNACK_FAMILIAS.forEach(([fam, cat, cue, vars])=>vars.forEach(([nivel, nom])=>l.push({ id:fam+'-'+nivel, fam, cat, nivel, nom, cue })));
+  return l;
+})();
+let snackRng = Math.random;   // sustituible en pruebas
+
+async function getSnackCfg(){
+  let o = {}; try{ o = JSON.parse(await safeGet('snack-config', true) || '{}') || {}; }catch(e){}
+  const n = (v, d, min, max)=>{ const x = parseInt(v, 10); return isNaN(x) ? d : Math.min(max, Math.max(min, x)); };
+  const m = (o.mezcla && typeof o.mezcla === 'object') ? o.mezcla : {};
+  return { work:n(o.work, 20, 5, 120), rest:n(o.rest, 10, 0, 120), rondas:n(o.rondas, 8, 2, 20), prep:n(o.prep, 10, 0, 60),
+    mezcla:{ cardio:n(m.cardio, 3, 0, 20), fuerza:n(m.fuerza, 3, 0, 20), movilidad:n(m.movilidad, 2, 0, 20) },
+    playlist:(typeof o.playlist === 'string' && /^https:\/\/(open\.spotify\.com|spotify\.link)\//.test(o.playlist.trim())) ? o.playlist.trim() : '' };
+}
+async function saveSnackCfg(c){ return safeSet('snack-config', JSON.stringify(c), true); }
+async function getSnackBancoCfg(){
+  let o = {}; try{ o = JSON.parse(await safeGet('snack-banco', true) || '{}') || {}; }catch(e){}
+  const extra = limpiaLista(o.extra, 'sx').filter(e=>typeof e.nom === 'string' && e.nom.trim() && SNACK_CATS[e.cat])
+    .map(e=>({ id:String(e.id), fam:String(e.fam || e.id), cat:e.cat, nivel:[1,2,3].includes(+e.nivel) ? +e.nivel : 2, nom:e.nom.trim(), cue:typeof e.cue === 'string' ? e.cue : '', propio:true }));
+  return { extra, off:Array.isArray(o.off) ? o.off.map(String) : [] };
+}
+async function saveSnackBancoCfg(b){ return safeSet('snack-banco', JSON.stringify({ extra:b.extra, off:b.off }), true); }
+async function snackBancoCompleto(){ const b = await getSnackBancoCfg(); return { todos:SNACK_BANCO_BASE.concat(b.extra), off:b.off }; }
+async function snackBancoActivo(){ const b = await snackBancoCompleto(); return b.todos.filter(e=>!b.off.includes(e.id)); }
+async function getSnackMusica(){
+  let l = []; try{ l = JSON.parse(await safeGet('snack-musica', true) || '[]'); }catch(e){}
+  return limpiaLista(l, 'mus').filter(m=>typeof m.url === 'string' && m.url);
+}
+async function saveSnackMusica(l){ return safeSet('snack-musica', JSON.stringify(l), true); }
+async function getSnackLog(athleteId){
+  let o = {}; try{ o = JSON.parse(await safeGet('snack-'+athleteId, true) || '{}') || {}; }catch(e){}
+  if(!o || typeof o !== 'object' || Array.isArray(o)) o = {};
+  if(!o.dias || typeof o.dias !== 'object' || Array.isArray(o.dias)) o.dias = {};
+  Object.keys(o.dias).forEach(k=>{ if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !o.dias[k] || typeof o.dias[k] !== 'object') delete o.dias[k]; });
+  if(![1,2,3].includes(o.nivel)) o.nivel = 2;
+  return o;
+}
+async function saveSnackLog(athleteId, log){ return safeSet('snack-'+athleteId, JSON.stringify(log), true); }
+
+// --- Sorteo del Tabata ---
+function snackBaraja(a){ const l = a.slice(); for(let i = l.length-1; i > 0; i--){ const j = Math.floor(snackRng()*(i+1)); [l[i], l[j]] = [l[j], l[i]]; } return l; }
+// De cada familia, la variante más cercana al nivel pedido (si empatan dos, al azar).
+function snackVariantes(banco, nivel){
+  const fams = new Map();
+  banco.forEach(e=>{ if(!fams.has(e.fam)) fams.set(e.fam, []); fams.get(e.fam).push(e); });
+  const out = [];
+  fams.forEach(vars=>{
+    const d = Math.min(...vars.map(v=>Math.abs(v.nivel - nivel)));
+    const cand = vars.filter(v=>Math.abs(v.nivel - nivel) === d);
+    out.push(cand[Math.floor(snackRng()*cand.length)]);
+  });
+  return out;
+}
+function snackCuotas(mezcla, rondas){
+  const c = { cardio:mezcla.cardio||0, fuerza:mezcla.fuerza||0, movilidad:mezcla.movilidad||0 };
+  const ks = Object.keys(c);
+  if(ks.every(k=>c[k] === 0)) ks.forEach(k=>c[k] = 1);
+  let s = ks.reduce((a,k)=>a+c[k], 0), g = 0;
+  const vivos = ks.filter(k=>c[k] > 0);
+  while(s < rondas){ c[vivos[g++ % vivos.length]]++; s++; }
+  while(s > rondas){ const k = ks.slice().sort((a,b)=>c[b]-c[a])[0]; c[k]--; s--; }
+  return c;
+}
+// Devuelve `rondas` ejercicios de familias distintas. `recientes` (familias de los últimos días) se evitan si hay de sobra.
+function snackGeneraPlan(banco, cfg, nivel, recientes){
+  const vars = snackVariantes(banco, nivel);
+  const evita = new Set(recientes || []);
+  const cuotas = snackCuotas(cfg.mezcla, cfg.rondas);
+  const usados = new Set(), plan = [];
+  const saca = (cat, n)=>{
+    const libres = snackBaraja(vars.filter(v=>(!cat || v.cat === cat) && !usados.has(v.fam)));
+    const orden = libres.filter(v=>!evita.has(v.fam)).concat(libres.filter(v=>evita.has(v.fam)));
+    orden.slice(0, n).forEach(v=>{ usados.add(v.fam); plan.push(v); });
+  };
+  Object.keys(cuotas).forEach(cat=>saca(cat, cuotas[cat]));
+  if(plan.length < cfg.rondas) saca(null, cfg.rondas - plan.length);   // una categoría se quedó corta: se completa con las demás
+  // Orden al azar, evitando en lo posible dos seguidos de la misma categoría.
+  let mejor = plan, mejorPen = Infinity;
+  for(let i = 0; i < 40 && mejorPen > 0; i++){
+    const p = snackBaraja(plan); let pen = 0;
+    for(let k = 1; k < p.length; k++) if(p[k].cat === p[k-1].cat) pen++;
+    if(pen < mejorPen){ mejor = p; mejorPen = pen; }
+  }
+  return mejor;
+}
+function snackRecientes(log, hoy, dias){
+  const fams = [];
+  for(let k = 1; k <= (dias||2); k++){
+    const d = new Date(hoy+'T00:00:00'); d.setDate(d.getDate()-k);
+    const e = log.dias[fechaLocalISO(d)];
+    if(e && Array.isArray(e.fams)) fams.push(...e.fams);
+  }
+  return fams;
+}
+// --- Racha ---
+function snackHecho(log, fecha){ const e = log.dias[fecha]; return !!(e && e.hecho); }
+// Racha con «Cheat Day»: un día saltado al mes no la rompe (se gasta solo, como el protector de racha de Duolingo).
+// Se calcula hacia delante desde el primer Snack: el Cheat Day del mes lo consume el primer fallo de ese mes.
+function snackRacha(log, hoy){
+  hoy = hoy || todayISO();
+  const paso = (iso, n)=>{ const d = new Date(iso+'T00:00:00'); d.setDate(d.getDate()+n); return fechaLocalISO(d); };
+  const fechas = Object.keys(log.dias).filter(f=>snackHecho(log, f) && f <= hoy).sort();
+  const hechoHoy = snackHecho(log, hoy);
+  let run = 0, mejor = 0; const cheats = [], usados = new Set();
+  if(fechas.length){
+    for(let f = fechas[0], g = 0; f <= hoy && g < 5000; f = paso(f, 1), g++){
+      if(snackHecho(log, f)){ run++; if(run > mejor) mejor = run; continue; }
+      if(f === hoy) break;                       // el día de hoy aún no ha terminado
+      const mes = f.slice(0, 7);
+      const sig = paso(f, 1);                    // solo se gasta si de verdad salva la racha
+      if(run > 0 && !usados.has(mes) && (sig === hoy || snackHecho(log, sig))){ usados.add(mes); cheats.push(f); }
+      else run = 0;
+    }
+  }
+  const lunes = lunesDe(hoy);
+  const semana = [0,1,2,3,4,5,6].map(i=>{ const f = paso(lunes, i); return { fecha:f, hecho:snackHecho(log, f), cheat:cheats.includes(f), hoy:f === hoy, futuro:f > hoy }; });
+  const mesHoy = hoy.slice(0, 7), cheatMes = cheats.find(f=>f.startsWith(mesHoy)) || null;
+  return { actual:run, mejor, total:fechas.length, hechoHoy, semana, cheats, cheatDisponible:!usados.has(mesHoy), cheatMes };
+}
+const SNACK_HITOS = [7, 14, 21, 30, 50, 75, 100, 150, 200, 365];
+const SNACK_HITO_TXT = { 7:'¡Una semana entera!', 21:'¡21 días seguidos!', 30:'¡Un mes entero!' };
+function snackHito(n){ return SNACK_HITOS.includes(n) ? n : null; }
+function snackSiguienteHito(n){ return SNACK_HITOS.find(h=>h > n) || null; }
+// El nivel se ajusta solo con la respuesta de esfuerzo: 3 «fácil» seguidos sube, 2 «duro» seguidos baja.
+function snackAjustaNivel(log){
+  const desde = log.nivelDesde || '';
+  const ult = Object.keys(log.dias).filter(f=>f > desde && snackHecho(log, f) && [1,2,3].includes(log.dias[f].esfuerzo)).sort().map(f=>log.dias[f].esfuerzo);
+  let cambio = 0;
+  if(ult.length >= 3 && ult.slice(-3).every(e=>e === 1) && log.nivel < 3) cambio = 1;
+  else if(ult.length >= 2 && ult.slice(-2).every(e=>e === 3) && log.nivel > 1) cambio = -1;
+  if(cambio){ log.nivel += cambio; log.nivelDesde = todayISO(); }
+  return cambio;
+}
+// --- Estadística semanal y cruces ---
+function snackMedia(l){ const v = l.filter(x=>typeof x === 'number' && !isNaN(x)); return v.length ? v.reduce((a,b)=>a+b, 0)/v.length : null; }
+function snackSemanas(log, journal, n, hoy){
+  hoy = hoy || todayISO();
+  const out = [];
+  for(let k = (n||8)-1; k >= 0; k--){
+    const d = new Date(lunesDe(hoy)+'T00:00:00'); d.setDate(d.getDate() - k*7);
+    const lunes = fechaLocalISO(d);
+    const dias = Object.keys(log.dias).filter(f=>lunesDe(f) === lunes && snackHecho(log, f)).map(f=>log.dias[f]);
+    const ses = (journal||[]).filter(e=>e && e.date && lunesDe(e.date) === lunes);
+    out.push({ lunes, snacks:dias.length, checkins:dias.filter(x=>typeof x.fatiga === 'number').length,
+      fatiga:snackMedia(dias.map(x=>x.fatiga)), sueno:snackMedia(dias.map(x=>x.sueno)), horas:snackMedia(dias.map(x=>x.horas)),
+      sesiones:ses.length, carga:Math.round(ses.reduce((a,e)=>a+(e.fatigueScore||0), 0)) });
+  }
+  return out;
+}
+// Observaciones descriptivas. Cada una exige un mínimo de datos; si no lo hay, no se dice nada.
+function snackCruces(log, semanas){
+  const obs = [], f1 = x=>(Math.round(x*10)/10).toFixed(1).replace('.', ',');
+  const dias = Object.keys(log.dias).filter(f=>snackHecho(log, f)).map(f=>log.dias[f]);
+  const conH = dias.filter(d=>typeof d.horas === 'number' && typeof d.fatiga === 'number');
+  const mas = conH.filter(d=>d.horas >= 7), menos = conH.filter(d=>d.horas < 7);
+  if(mas.length >= 4 && menos.length >= 4){
+    const a = snackMedia(mas.map(d=>d.fatiga)), b = snackMedia(menos.map(d=>d.fatiga));
+    obs.push(Math.abs(a-b) < 0.3
+      ? `Dormir 7 h o más o menos de 7 h apenas cambia tu fatiga (${f1(a)} frente a ${f1(b)} sobre 5).`
+      : `Los días que duermes 7 h o más tu fatiga puntúa ${f1(a)}/5; con menos de 7 h, ${f1(b)}/5 (más alto = menos fatiga).`);
+  }
+  const sem = semanas.filter(s=>s.checkins >= 2);
+  const alta = sem.filter(s=>s.snacks >= 5), baja = sem.filter(s=>s.snacks < 5);
+  if(alta.length >= 2 && baja.length >= 2){
+    const a = snackMedia(alta.map(s=>s.sueno)), b = snackMedia(baja.map(s=>s.sueno));
+    if(a !== null && b !== null) obs.push(`En las semanas con 5 o más Snacks tu calidad de sueño media es ${f1(a)}/5; en las de menos de 5, ${f1(b)}/5.`);
+  }
+  if(sem.length >= 4){
+    const mitad = Math.floor(sem.length/2);
+    const a = snackMedia(sem.slice(0, mitad).map(s=>s.fatiga)), b = snackMedia(sem.slice(-mitad).map(s=>s.fatiga));
+    if(a !== null && b !== null) obs.push(Math.abs(b-a) < 0.3 ? `Tu fatiga se mantiene estable en las últimas ${sem.length} semanas con datos (${f1(b)}/5).`
+      : `Tu fatiga ha pasado de ${f1(a)} a ${f1(b)} sobre 5 entre las primeras y las últimas semanas (${b > a ? 'menos fatiga' : 'más fatiga'}).`);
+  }
+  const conCarga = sem.filter(s=>s.sesiones > 0 && s.fatiga !== null);
+  if(conCarga.length >= 4){
+    const ord = conCarga.slice().sort((x,y)=>x.carga-y.carga), mitad = Math.floor(ord.length/2);
+    const a = snackMedia(ord.slice(0, mitad).map(s=>s.fatiga)), b = snackMedia(ord.slice(-mitad).map(s=>s.fatiga));
+    obs.push(`En tus semanas de más carga de entrenamiento la fatiga puntúa ${f1(b)}/5; en las de menos carga, ${f1(a)}/5.`);
+  }
+  return obs;
+}
+
+// --- Música: caché en el dispositivo para no gastar datos cada día ---
+async function snackAudioSrc(item){
+  try{
+    if(window.caches){
+      const c = await caches.open(SNACK_CACHE), r = await c.match(item.url);
+      if(r){ const b = await r.blob(); return URL.createObjectURL(b); }
+    }
+  }catch(e){}
+  return item.url;
+}
+let snackPrecargando = false;
+async function snackPrecarga(lista){
+  if(snackPrecargando || !window.caches || !lista.length) return;
+  if(navigator.connection && navigator.connection.saveData) return;
+  snackPrecargando = true;
+  try{
+    const c = await caches.open(SNACK_CACHE);
+    const urls = new Set(lista.map(m=>m.url));
+    for(const req of await c.keys()){ if(!urls.has(req.url)) await c.delete(req); }   // canciones que el entrenador ya quitó
+    for(const m of lista){
+      if(await c.match(m.url)) continue;
+      try{ const r = await fetch(m.url); if(r.ok) await c.put(m.url, r); }catch(e){}
+    }
+  }catch(e){}
+  snackPrecargando = false;
+}
+function snackPrefs(){ try{ return JSON.parse(readLocal('snack-pref', false) || '{}') || {}; }catch(e){ return {}; } }
+function snackGuardaPrefs(p){ try{ cacheLocal('snack-pref', false, JSON.stringify(p)); }catch(e){} }
+function snackEligeCancion(lista, evitaId){
+  if(!lista.length) return null;
+  const cand = lista.length > 1 ? lista.filter(m=>m.id !== evitaId) : lista;
+  return cand[Math.floor(snackRng()*cand.length)];
+}
+async function subirAudioSnack(file){
+  if(!file) throw new Error('no hay archivo');
+  const esAudio = (file.type||'').startsWith('audio') || /\.(mp3|m4a|aac|ogg|wav)$/i.test(file.name||'');
+  if(!esAudio) throw new Error('no es un archivo de audio');
+  const mb = file.size / (1024*1024);
+  if(mb > MAX_AUDIO_MB) throw new Error(`pesa ${mb.toFixed(1)} MB (máximo ${MAX_AUDIO_MB})`);
+  const ext = (file.name.split('.').pop() || 'mp3').toLowerCase().replace(/[^a-z0-9]/g,'');
+  const path = SNACK_BUCKET_DIR + Date.now() + '-' + uid() + '.' + ext;
+  const r = await fetch(SUPA_URL + '/storage/v1/object/' + VIDEO_BUCKET + '/' + path, {
+    method:'POST', headers:{ 'apikey':SUPA_KEY, 'Authorization':'Bearer '+SUPA_KEY, 'Content-Type': file.type || 'audio/mpeg' }, body:file });
+  if(!r.ok){
+    let detalle = 'HTTP ' + r.status;
+    try{ const j = await r.json(); if(j && j.message) detalle = j.message; }catch(e){}
+    if(r.status === 404) detalle = 'falta crear el almacén en Supabase';
+    throw new Error(detalle);
+  }
+  const item = { id:uid(), nombre:file.name.replace(/\.[^.]+$/,'').slice(0,60), path, url:videoPublicUrl(path), size:Math.round(file.size/1024), fecha:todayISO() };
+  const lib = await getSnackMusica(); lib.push(item); await saveSnackMusica(lib);
+  return item;
+}
+async function borrarAudioSnack(id){
+  const lib = await getSnackMusica(), item = lib.find(m=>m.id === id);
+  if(!item) return false;
+  if(item.path){ try{ await fetch(SUPA_URL + '/storage/v1/object/' + VIDEO_BUCKET + '/' + item.path, { method:'DELETE', headers:{ 'apikey':SUPA_KEY, 'Authorization':'Bearer '+SUPA_KEY } }); }catch(e){} }
+  await saveSnackMusica(lib.filter(m=>m.id !== id));
+  return true;
+}
+
+// --- Tarjeta del atleta (arriba en Rutina) ---
+function icFlama(){ return `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12.6 2.2c.5 3-1 4.700-2.600 6.400C8.400 10.300 7 12 7 14.500a5 5 0 0 0 10 0c0-1.300-.4-2.400-1-3.400-.5 1.200-1.300 1.900-2.200 2.100.700-2.300.6-6.400-1.200-11z"/></svg>`; }
+function tplSnackSemana(r){
+  return `<div class="snack-sem">${r.semana.map((d,i)=>`<span class="snack-dia ${d.hecho?'hecho':''} ${d.cheat?'cheat':''} ${d.hoy?'hoy':''} ${d.futuro?'futuro':''}"><i>${'LMXJVSD'[i]}</i><b>${d.hecho?'✓':(d.cheat?'C':'')}</b></span>`).join('')}</div>`;
+}
+async function tplSnackCard(athleteId){
+  const log = await getSnackLog(athleteId), r = snackRacha(log), cfg = await getSnackCfg();
+  const dur = cfg.rondas*cfg.work + (cfg.rondas-1)*cfg.rest;
+  const sig = snackSiguienteHito(r.actual);
+  const estado = r.hechoHoy ? `Hecho hoy${sig ? ` · te faltan ${sig - r.actual} para los ${sig} días` : ''}`
+    : (r.actual > 0 ? `Hoy toca: mantén tu racha de ${r.actual} día${r.actual===1?'':'s'}` : 'Empieza hoy tu racha');
+  return `<div class="card snack-card ${r.hechoHoy?'hecho':''}">
+    <div class="snack-top">
+      <div><span class="snack-eyebrow">Snack de movimiento</span><h2 style="margin:2px 0 0;">${Math.floor(dur/60)}:${String(dur%60).padStart(2,'0')} para activarte</h2></div>
+      <div class="snack-racha ${r.actual?'viva':''}" title="Racha actual">${icFlama()}<b id="snackRachaNum">${r.actual}</b><span>día${r.actual===1?'':'s'}</span></div>
+    </div>
+    ${tplSnackSemana(r)}
+    <p class="snack-estado">${estado}${r.mejor > r.actual ? ` · mejor racha: ${r.mejor}` : ''}</p>
+    <p class="snack-cheat ${r.cheatDisponible?'':'usado'}"><b>Cheat Day</b> ${r.cheatDisponible ? 'disponible este mes: si un día fallas, tu racha se mantiene.' : `usado el ${fechaCortaISO(r.cheatMes)}. Vuelves a tener uno el mes que viene.`}</p>
+    <button class="btn ${r.hechoHoy?'ghost':''}" id="snackAbrirBtn" style="width:100%;">${r.hechoHoy ? 'Repetir el de hoy' : 'Ver el Snack de hoy'}</button>
+  </div>`;
+}
+
+// --- Pantalla del Snack: previa → Tabata → preguntas ---
+let snackRun = null;
+// Confeti al completar: una lluvia corta cada día y una grande en los días clave (1 semana, 21 días, 1 mes…).
+function snackConfeti(grande){
+  try{
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const viejo = document.getElementById('snackConfeti'); if(viejo) viejo.remove();
+    const capa = document.createElement('div'); capa.id = 'snackConfeti'; capa.className = 'confeti';
+    const colores = ['#C9A227','#F4F2EA','#7A1F2B','#1F7A5A','#3C5A99','#E2685C'];
+    const n = grande ? 170 : 60, dur = grande ? 4200 : 2400;
+    let h = '';
+    for(let i = 0; i < n; i++){
+      const tam = 6 + Math.random()*7, ret = Math.random()*(grande ? 1400 : 500);
+      h += `<i style="left:${(Math.random()*100).toFixed(1)}%;width:${tam.toFixed(0)}px;height:${(tam*(0.4+Math.random()*0.9)).toFixed(0)}px;background:${colores[i%colores.length]};animation-duration:${(dur*(0.6+Math.random()*0.5)).toFixed(0)}ms;animation-delay:${ret.toFixed(0)}ms;--dx:${(Math.random()*160-80).toFixed(0)}px;--giro:${(Math.random()*900-450).toFixed(0)}deg;${Math.random()<0.3?'border-radius:50%;':''}"></i>`;
+    }
+    capa.innerHTML = h; document.body.appendChild(capa);
+    setTimeout(()=>capa.remove(), dur + 1900);
+  }catch(e){}
+}
+async function snackAbre(athleteId){
+  const [banco, cfg, log, musica] = [await snackBancoActivo(), await getSnackCfg(), await getSnackLog(athleteId), await getSnackMusica()];
+  const hoy = todayISO(), prefs = snackPrefs();
+  let plan = null;
+  if(log.hoy && log.hoy.fecha === hoy && Array.isArray(log.hoy.ids) && log.hoy.nivel === log.nivel){
+    const p = log.hoy.ids.map(id=>banco.find(e=>e.id === id)).filter(Boolean);
+    if(p.length === cfg.rondas) plan = p;
+  }
+  snackRun = { athleteId, banco, cfg, log, musica, hoy, plan:plan || [], fase:'previa', musicaOn:prefs.musica !== false, cancion:null, audio:null };
+  if(!plan) await snackSortea(false);
+  snackRun.cancion = snackEligeCancion(musica, prefs.ultima);
+  snackPreparaCancion();
+  snackPinta();
+  snackPrecarga(musica);
+}
+async function snackSortea(pinta){
+  const R = snackRun; if(!R) return;
+  R.plan = snackGeneraPlan(R.banco, R.cfg, R.log.nivel, snackRecientes(R.log, R.hoy, 2));
+  R.log.hoy = { fecha:R.hoy, ids:R.plan.map(e=>e.id), nivel:R.log.nivel };
+  await saveSnackLog(R.athleteId, R.log);
+  if(pinta) snackPinta();
+}
+function snackPreparaCancion(){
+  const R = snackRun; if(!R || !R.cancion) return;
+  const c = R.cancion; R.src = c.url;
+  snackAudioSrc(c).then(u=>{ if(snackRun === R && R.cancion === c && R.fase === 'previa') R.src = u; });
+}
+function snackOverlay(){
+  let o = document.getElementById('snackOverlay');
+  if(!o){ o = document.createElement('div'); o.id = 'snackOverlay'; o.className = 'snack-ov'; document.body.appendChild(o); }
+  return o;
+}
+function snackDuracionTxt(cfg){ const s = cfg.rondas*cfg.work + (cfg.rondas-1)*cfg.rest; return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; }
+function snackPinta(){
+  const R = snackRun; if(!R) return;
+  const o = snackOverlay();
+  if(R.fase === 'previa'){
+    const sinBanco = R.plan.length < 2;
+    o.innerHTML = `<div class="snack-in">
+      <div class="snack-bar"><span class="snack-eyebrow">Snack de movimiento · ${R.cfg.work}"/${R.cfg.rest}" × ${R.cfg.rondas}</span><button class="btn ghost small" id="snackCerrar">Cerrar</button></div>
+      <h2 class="snack-h">Tu Tabata de hoy <span>${snackDuracionTxt(R.cfg)}</span></h2>
+      <div class="snack-niveles">${[1,2,3].map(n=>`<button data-snacknivel="${n}" class="${R.log.nivel===n?'on':''}">${SNACK_NIVELES[n]}</button>`).join('')}</div>
+      ${sinBanco ? `<div class="empty">No hay suficientes ejercicios activos en el banco. Tu entrenador tiene que activar alguno.</div>` : `<ol class="snack-lista">${R.plan.map((e,i)=>`<li>
+        <span class="snack-n">${i+1}</span>
+        <div><b>${escapeHtml(e.nom)}</b><small class="cat-${e.cat}">${SNACK_CATS[e.cat]}${e.cue ? ' · '+escapeHtml(e.cue) : ''}</small></div>
+        <button class="snack-cambia" data-snackcambia="${i}" aria-label="Cambiar este ejercicio">↻</button></li>`).join('')}</ol>`}
+      <div class="snack-musica">
+        ${R.musica.length ? `<button class="snack-chip ${R.musicaOn?'on':''}" id="snackMusicaTgl">${R.musicaOn ? '♪ Con música' : 'Sin música'}</button>${R.musicaOn && R.cancion ? `<span>Suena: <b>${escapeHtml(R.cancion.nombre||'canción')}</b></span>` : `<span>Puedes poner la tuya en otra app.</span>`}`
+          : `<span>Pon tu música en Spotify y vuelve: los avisos suenan por encima.</span>`}
+        ${R.cfg.playlist ? `<a class="snack-chip on" href="${escapeHtml(R.cfg.playlist)}" target="_blank" rel="noopener" style="text-decoration:none;">♪ Abrir la playlist</a>` : ''}
+      </div>
+      <div class="row" style="gap:10px;margin-top:16px;">
+        <button class="btn ghost" id="snackOtro" ${sinBanco?'disabled':''}>Sortear otro</button>
+        <button class="btn" id="snackEmpezar" style="flex:1;" ${sinBanco?'disabled':''}>Empezar</button>
+      </div>
+      <p class="snack-nota">Si algo duele, cambia el ejercicio con ↻ o baja la intensidad. Deja un espacio libre de 2 × 2 m.</p>
+    </div>`;
+    o.querySelector('#snackCerrar').addEventListener('click', ()=>snackCierra());
+    o.querySelectorAll('[data-snacknivel]').forEach(b=>b.addEventListener('click', async ()=>{
+      const n = parseInt(b.dataset.snacknivel, 10); if(n === R.log.nivel) return;
+      R.log.nivel = n; R.log.nivelDesde = todayISO(); await snackSortea(true);
+    }));
+    o.querySelectorAll('[data-snackcambia]').forEach(b=>b.addEventListener('click', async ()=>{
+      const i = parseInt(b.dataset.snackcambia, 10), viejo = R.plan[i]; if(!viejo) return;
+      const usadas = new Set(R.plan.map(e=>e.fam));
+      const vars = snackVariantes(R.banco, R.log.nivel).filter(v=>!usadas.has(v.fam));
+      const cand = vars.filter(v=>v.cat === viejo.cat);
+      const pool = cand.length ? cand : vars;
+      if(!pool.length){ toast('No quedan más ejercicios distintos', true); return; }
+      R.plan[i] = pool[Math.floor(snackRng()*pool.length)];
+      R.log.hoy = { fecha:R.hoy, ids:R.plan.map(e=>e.id), nivel:R.log.nivel };
+      await saveSnackLog(R.athleteId, R.log); snackPinta();
+    }));
+    const tgl = o.querySelector('#snackMusicaTgl');
+    if(tgl) tgl.addEventListener('click', ()=>{ R.musicaOn = !R.musicaOn; const p = snackPrefs(); p.musica = R.musicaOn; snackGuardaPrefs(p); snackPinta(); });
+    o.querySelector('#snackOtro').addEventListener('click', async ()=>{ await snackSortea(false); R.cancion = snackEligeCancion(R.musica, R.cancion && R.cancion.id); snackPreparaCancion(); snackPinta(); });
+    o.querySelector('#snackEmpezar').addEventListener('click', ()=>snackEmpieza());
+    return;
+  }
+  if(R.fase === 'tabata'){
+    o.innerHTML = `<div class="snack-in snack-run" id="snackRunBox">
+      <div class="snack-bar"><span class="snack-eyebrow" id="snackRonda"></span><button class="btn ghost small" id="snackSalir">Salir</button></div>
+      <div class="snack-fase" id="snackFase"></div>
+      <div class="snack-reloj" id="snackReloj"></div>
+      <div class="snack-ej" id="snackEj"></div>
+      <div class="snack-cue" id="snackCue"></div>
+      <div class="snack-puntos" id="snackPuntos"></div>
+      <div class="snack-sig" id="snackSig"></div>
+      <div class="row" style="gap:10px;justify-content:center;margin-top:18px;">
+        <button class="btn" id="snackPausa">Pausar</button>
+        ${R.audio ? `<button class="btn ghost" id="snackMute">Silenciar música</button>` : ''}
+      </div>
+    </div>`;
+    o.querySelector('#snackSalir').addEventListener('click', ()=>{ if(confirm('¿Salir del Snack? No contará para la racha.')) snackCierra(); });
+    o.querySelector('#snackPausa').addEventListener('click', ()=>snackPausa());
+    const mu = o.querySelector('#snackMute');
+    if(mu) mu.addEventListener('click', ()=>{ if(!R.audio) return; R.audio.muted = !R.audio.muted; mu.textContent = R.audio.muted ? 'Activar música' : 'Silenciar música'; });
+    snackActualiza();
+    return;
+  }
+  // fase 'fin': racha y preguntas
+  const r = snackRacha(R.log, R.hoy), hito = snackHito(r.actual), e = R.log.dias[R.hoy] || {};
+  const escala = (id, etq, bajo, alto)=>`<div class="q-item"><p>${etq}</p>
+    <div class="scale" data-snackq="${id}">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${e[id]===n?'sel':''}">${n}</button>`).join('')}</div>
+    <div class="scale-labels"><span>1 · ${bajo}</span><span>5 · ${alto}</span></div></div>`;
+  o.innerHTML = `<div class="snack-in">
+    <div class="snack-fin">
+      <div class="snack-racha grande viva">${icFlama()}<b>${r.actual}</b><span>día${r.actual===1?'':'s'} seguido${r.actual===1?'':'s'}</span></div>
+      <h2 class="snack-h" style="text-align:center;">${hito ? (SNACK_HITO_TXT[hito] || `¡${hito} días de racha!`) : 'Snack completado'}</h2>
+      ${tplSnackSemana(r)}
+    </div>
+    <div class="snack-preg" id="snackPreg">
+      <p class="snack-nota" style="margin:0 0 12px;">Tres toques y listo. Sirven para ver cómo evolucionan tu descanso y tu fatiga semana a semana.</p>
+      ${escala('fatiga', 'Fatiga general de hoy (la del cuerpo, no la del Tabata)', 'Muy alta', 'Ninguna')}
+      ${escala('sueno', 'Calidad del sueño de anoche', 'Muy mala', 'Excelente')}
+      <div class="q-item"><p>Horas de sueño de anoche</p>
+        <div class="scale snack-horas" data-snackq="horas">${[4,5,5.5,6,6.5,7,7.5,8,8.5,9,10].map(h=>`<button data-val="${h}" class="${e.horas===h?'sel':''}">${String(h).replace('.',',')}</button>`).join('')}</div></div>
+      <div class="q-item"><p>¿Qué tal el Tabata?</p>
+        <div class="scale" data-snackq="esfuerzo">${[[1,'Fácil'],[2,'Justo'],[3,'Duro']].map(([v,t])=>`<button data-val="${v}" class="${e.esfuerzo===v?'sel':''}">${t}</button>`).join('')}</div></div>
+      <button class="btn" id="snackGuardar" style="width:100%;">Guardar</button>
+      <button class="btn ghost small" id="snackSaltar" style="width:100%;margin-top:8px;">Ahora no</button>
+    </div>
+  </div>`;
+  o.querySelectorAll('[data-snackq]').forEach(sc=>sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); })));
+  o.querySelector('#snackSaltar').addEventListener('click', ()=>snackCierra());
+  o.querySelector('#snackGuardar').addEventListener('click', async ()=>{
+    const val = id=>{ const s = o.querySelector(`[data-snackq="${id}"] button.sel`); return s ? parseFloat(s.dataset.val) : null; };
+    const fatiga = val('fatiga'), sueno = val('sueno'), horas = val('horas'), esfuerzo = val('esfuerzo');
+    if(fatiga === null || sueno === null || horas === null){ toast('Responde fatiga, calidad y horas de sueño', true); return; }
+    const log = await getSnackLog(R.athleteId);
+    const dia = log.dias[R.hoy] || { hecho:true };
+    Object.assign(dia, { fatiga, sueno, horas }); if(esfuerzo !== null) dia.esfuerzo = esfuerzo;
+    log.dias[R.hoy] = dia;
+    const cambio = snackAjustaNivel(log);
+    await saveSnackLog(R.athleteId, log);
+    toast(cambio > 0 ? 'Guardado · mañana subimos un punto la intensidad' : (cambio < 0 ? 'Guardado · mañana bajamos un punto la intensidad' : 'Guardado'));
+    snackCierra();
+  });
+}
+function snackEmpieza(){
+  const R = snackRun; if(!R || R.plan.length < 2) return;
+  ensureAudio();
+  // La música arranca dentro del propio toque: en iPhone, si no, el navegador la bloquea.
+  if(R.musicaOn && R.cancion){
+    try{
+      const a = new Audio(); a.src = R.src || R.cancion.url; a.volume = 0.75; a.preload = 'auto';
+      a.addEventListener('ended', ()=>{   // canción más corta que el Tabata: suena otra
+        if(snackRun !== R || R.fase !== 'tabata') return;
+        const otra = snackEligeCancion(R.musica, R.cancion.id); if(!otra) return;
+        R.cancion = otra; a.src = otra.url; const p = a.play(); if(p && p.catch) p.catch(()=>{});
+      });
+      const p = a.play(); if(p && p.catch) p.catch(()=>{});
+      R.audio = a;
+      const pr = snackPrefs(); pr.ultima = R.cancion.id; snackGuardaPrefs(pr);
+    }catch(e){ R.audio = null; }
+  }
+  R.fase = 'tabata'; R.idx = 0; R.pausado = false; R.ultimoCue = null;
+  if(R.cfg.prep > 0){ R.paso = 'prep'; R.faseFin = Date.now() + R.cfg.prep*1000; }
+  else { R.paso = 'work'; R.faseFin = Date.now() + R.cfg.work*1000; CUE.work(); }
+  keepAwake(true);
+  snackPinta();
+  clearInterval(R.timer);
+  R.timer = setInterval(snackTick, 200);
+}
+function snackAvanza(R){
+  if(R.paso === 'prep'){ R.paso = 'work'; R.faseFin += R.cfg.work*1000; CUE.work(); return; }
+  if(R.paso === 'work'){
+    if(R.idx >= R.plan.length-1){ R.paso = 'fin'; return; }
+    if(R.cfg.rest > 0){ R.paso = 'rest'; R.faseFin += R.cfg.rest*1000; CUE.rest(); return; }
+    R.idx++; R.faseFin += R.cfg.work*1000; CUE.work(); return;
+  }
+  R.idx++; R.paso = 'work'; R.faseFin += R.cfg.work*1000; CUE.work();
+}
+function snackTick(){
+  const R = snackRun;
+  if(!R || R.fase !== 'tabata' || R.pausado) return;
+  let g = 0;
+  while(R.paso !== 'fin' && R.faseFin - Date.now() <= 0 && g++ < 60) snackAvanza(R);
+  if(R.paso === 'fin'){ snackTermina(); return; }
+  const rem = Math.ceil((R.faseFin - Date.now())/1000);
+  const clave = R.paso+'|'+R.idx+'|'+rem;
+  if(clave !== R.ultimoCue){ R.ultimoCue = clave; cueCountdown(rem); snackActualiza(); }
+}
+function snackActualiza(){
+  const R = snackRun; if(!R || R.fase !== 'tabata') return;
+  const g = id=>document.getElementById(id); if(!g('snackReloj')) return;
+  const rem = Math.max(0, Math.ceil((R.faseFin - Date.now())/1000));
+  const ej = R.plan[R.idx], sig = R.plan[R.idx+1];
+  const mostrado = R.paso === 'rest' ? sig : ej;
+  g('snackRunBox').className = 'snack-in snack-run paso-'+R.paso;
+  g('snackRonda').textContent = `Ronda ${Math.min(R.plan.length, R.idx + (R.paso === 'rest' ? 2 : 1))} de ${R.plan.length}`;
+  g('snackFase').textContent = R.pausado ? 'EN PAUSA' : (R.paso === 'prep' ? 'PREPÁRATE' : (R.paso === 'work' ? 'TRABAJO' : 'DESCANSO'));
+  g('snackReloj').textContent = String(rem);
+  g('snackEj').textContent = mostrado ? mostrado.nom : '';
+  g('snackCue').textContent = R.paso === 'work' ? (ej.cue || '') : (R.paso === 'rest' ? 'Respira. Lo siguiente:' : 'Empiezas con:');
+  g('snackPuntos').innerHTML = R.plan.map((e,i)=>`<i class="${i < R.idx || (i === R.idx && R.paso === 'rest') ? 'ok' : (i === R.idx && R.paso === 'work' ? 'on' : '')}"></i>`).join('');
+  g('snackSig').textContent = R.paso === 'work' && sig ? `Después: ${sig.nom}` : (R.paso === 'work' ? 'Último: aprieta hasta el final' : '');
+}
+function snackPausa(){
+  const R = snackRun; if(!R || R.fase !== 'tabata') return;
+  const b = document.getElementById('snackPausa');
+  if(!R.pausado){ R.pausado = true; R.resto = R.faseFin - Date.now(); if(R.audio) try{ R.audio.pause(); }catch(e){} }
+  else { R.pausado = false; R.faseFin = Date.now() + R.resto; if(R.audio){ try{ const p = R.audio.play(); if(p && p.catch) p.catch(()=>{}); }catch(e){} } }
+  if(b) b.textContent = R.pausado ? 'Seguir' : 'Pausar';
+  R.ultimoCue = null; snackActualiza();
+}
+function snackParaAudio(suave){
+  const R = snackRun; if(!R || !R.audio) return;
+  const a = R.audio; R.audio = null;
+  if(!suave){ try{ a.pause(); }catch(e){} return; }
+  let v = a.volume; const t = setInterval(()=>{ v -= 0.08; if(v <= 0.02){ clearInterval(t); try{ a.pause(); }catch(e){} } else { try{ a.volume = v; }catch(e){} } }, 150);
+}
+async function snackTermina(){
+  const R = snackRun; if(!R || R.fase !== 'tabata') return;
+  clearInterval(R.timer); R.fase = 'fin';
+  CUE.done(); snackParaAudio(true); keepAwake(false);
+  const log = await getSnackLog(R.athleteId);
+  const previo = Object.assign({}, log.dias[R.hoy] || {});
+  log.dias[R.hoy] = Object.assign({}, previo, { hecho:true, ts:Date.now(), ids:R.plan.map(e=>e.id), fams:R.plan.map(e=>e.fam), nivel:log.nivel,
+    rondas:R.plan.length, work:R.cfg.work, rest:R.cfg.rest, veces:(previo.veces||0)+1 });
+  if(R.cancion && R.musicaOn) log.dias[R.hoy].cancion = R.cancion.nombre || '';
+  await saveSnackLog(R.athleteId, log);
+  R.log = log;
+  snackPinta();
+  if(!previo.veces) snackConfeti(!!snackHito(snackRacha(log, R.hoy).actual));
+}
+function snackCierra(){
+  const R = snackRun;
+  if(R){ clearInterval(R.timer); snackParaAudio(false); if(R.fase === 'tabata') keepAwake(false); }
+  snackRun = null;
+  const o = document.getElementById('snackOverlay'); if(o) o.remove();
+  renderKeepScroll();
+}
+
+// --- Evolución semanal (Progreso del atleta y ficha del entrenador) ---
+async function tplSnackStats(athleteId, esCoach){
+  const log = await getSnackLog(athleteId), r = snackRacha(log);
+  let journal = []; try{ journal = JSON.parse(await safeGet('journal-'+athleteId, true) || '[]') || []; }catch(e){}
+  const sem = snackSemanas(log, journal, 8);
+  const f1 = x=>x === null ? '—' : (Math.round(x*10)/10).toFixed(1).replace('.', ',');
+  const barra = (v, max)=>v === null ? '<span class="snb vacia"></span>' : `<span class="snb"><i style="width:${Math.max(4, Math.min(100, v/max*100))}%"></i></span>`;
+  let html = `<div class="card"><h2>Snack de movimiento</h2>
+    <div class="snack-kpis">
+      <div><b>${r.actual}</b><span>racha actual</span></div>
+      <div><b>${r.mejor}</b><span>mejor racha</span></div>
+      <div><b>${r.total}</b><span>Snacks hechos</span></div>
+      <div><b>${SNACK_NIVELES[log.nivel]}</b><span>intensidad</span></div>
+    </div>
+    <p class="snack-nota" style="margin-top:8px;">Cheat Day de este mes: ${r.cheatDisponible ? 'sin usar' : 'usado el '+fechaCortaISO(r.cheatMes)}${r.cheats.length ? ` · usados en total: ${r.cheats.length}` : ''}.</p>
+    ${tplSnackSemana(r)}`;
+  if(!r.total){ html += `<div class="empty" style="margin-top:12px;">${esCoach ? 'Todavía no ha hecho ningún Snack.' : 'Cuando hagas tu primer Snack verás aquí tu evolución semanal.'}</div></div>`; return html; }
+  html += `<div class="block-title">Semana a semana</div>
+    <div class="snack-tabla-wrap"><table class="snack-tabla">
+      <thead><tr><th>Semana</th><th>Snacks</th><th>Fatiga</th><th>Sueño</th><th>Horas</th><th>Sesiones</th><th>Carga</th></tr></thead>
+      <tbody>${sem.map(s=>`<tr>
+        <td>${fechaCortaISO(s.lunes)}</td>
+        <td><b>${s.snacks}</b>/7</td>
+        <td>${barra(s.fatiga, 5)}${f1(s.fatiga)}</td>
+        <td>${barra(s.sueno, 5)}${f1(s.sueno)}</td>
+        <td>${s.horas === null ? '—' : f1(s.horas)+' h'}</td>
+        <td>${s.sesiones}</td>
+        <td>${s.carga || '—'}</td></tr>`).join('')}</tbody>
+    </table></div>
+    <p class="snack-nota">Fatiga y sueño de 1 a 5 (más alto = mejor). Carga = suma de la carga de tus sesiones registradas esa semana.</p>`;
+  const obs = snackCruces(log, sem);
+  html += `<div class="block-title">Lo que se observa</div>`;
+  html += obs.length ? `<ul class="snack-obs">${obs.map(o=>`<li>${escapeHtml(o)}</li>`).join('')}</ul><p class="snack-nota">Son observaciones de ${esCoach ? 'sus' : 'tus'} propios datos, no una relación de causa y efecto.</p>`
+    : `<div class="empty">Aún faltan datos para comparar. Con unas 4 semanas respondiendo las preguntas aparecerán aquí las primeras observaciones.</div>`;
+  return html + `</div>`;
+}
+
+// --- Recordatorios: archivo de calendario con avisos que el móvil repite solo ---
+const REC_DEF = { snack:{ on:true, hora:'08:00' }, quest:{ on:true, dia:'SU', hora:'19:00' }, ciclo:{ on:false, hora:'09:00' } };
+const REC_DIAS = { MO:'Lunes', TU:'Martes', WE:'Miércoles', TH:'Jueves', FR:'Viernes', SA:'Sábado', SU:'Domingo' };
+function recPrefs(){ let p = {}; try{ p = JSON.parse(readLocal('recordatorios', false) || '{}') || {}; }catch(e){}
+  const o = {}; Object.keys(REC_DEF).forEach(k=>{ o[k] = Object.assign({}, REC_DEF[k], (p[k] && typeof p[k] === 'object') ? p[k] : {}); if(!/^\d{2}:\d{2}$/.test(o[k].hora)) o[k].hora = REC_DEF[k].hora; });
+  if(!REC_DIAS[o.quest.dia]) o.quest.dia = 'SU'; return o; }
+function recIcs(prefs, opciones){
+  opciones = opciones || {};
+  const hoy = opciones.hoy || todayISO(), url = opciones.url || '';
+  const dt = (iso, hora)=>iso.replace(/-/g,'') + 'T' + hora.replace(':','') + '00';
+  const sello = new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+  const ev = (uidEv, inicio, hora, regla, titulo, desc)=>['BEGIN:VEVENT','UID:'+uidEv+'@umbral','DTSTAMP:'+sello,'DTSTART:'+dt(inicio, hora),'DURATION:PT10M','RRULE:'+regla,
+    'SUMMARY:'+titulo,'DESCRIPTION:'+desc+(url ? ' '+url : ''), url ? 'URL:'+url : '', 'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+titulo,'TRIGGER:PT0M','END:VALARM','END:VEVENT'].filter(Boolean);
+  let l = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Umbral//Recordatorios//ES','CALSCALE:GREGORIAN'];
+  if(prefs.snack.on) l = l.concat(ev('umbral-snack', hoy, prefs.snack.hora, 'FREQ=DAILY', 'Umbral · Snack de movimiento', 'Tus 4 minutos de hoy.'));
+  if(prefs.quest.on) l = l.concat(ev('umbral-cuestionario', hoy, prefs.quest.hora, 'FREQ=WEEKLY;BYDAY='+prefs.quest.dia, 'Umbral · Cuestionario semanal', 'Dos minutos para cerrar la semana.'));
+  if(prefs.ciclo.on) l = l.concat(ev('umbral-registro', opciones.cicloInicio || hoy, prefs.ciclo.hora, 'FREQ=DAILY;INTERVAL='+(opciones.cicloDias || 28), 'Umbral · Actualiza tu registro', 'Abre tu Perfil y actualiza tu registro si toca.'));
+  l.push('END:VCALENDAR');
+  return l.join('\r\n');
+}
+async function tplRecordatorios(athleteId){
+  const p = recPrefs(), a = state.athletes.find(x=>x.id === athleteId);
+  let conCiclo = false; try{ conCiclo = !esMenor(a) && await cicloEntrenoAplica(athleteId); }catch(e){}
+  const fila = (k, titulo, extra)=>`<div class="rec-fila"><label><input type="checkbox" data-recon="${k}" ${p[k].on?'checked':''}> <b>${titulo}</b></label>
+    <span>${extra||''}<input type="time" data-rechora="${k}" value="${p[k].hora}"></span></div>`;
+  return `<div class="card" id="recCard"><h2>Recordatorios</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;">Elige qué quieres que te recuerde el móvil y a qué hora. Se añaden a tu calendario con aviso y se repiten solos; puedes borrarlos desde el calendario cuando quieras.</p>
+    ${fila('snack', 'Snack de movimiento · cada día')}
+    ${fila('quest', 'Cuestionario semanal', `<select data-recdia>${Object.keys(REC_DIAS).map(d=>`<option value="${d}" ${p.quest.dia===d?'selected':''}>${REC_DIAS[d]}</option>`).join('')}</select> `)}
+    ${conCiclo ? fila('ciclo', 'Actualizar mi registro del ciclo') : ''}
+    <button class="btn" id="recDescargar" style="width:100%;margin-top:12px;">Añadir a mi calendario</button>
+    <p class="snack-nota">Se descarga un archivo: ábrelo y acepta «Añadir». En el calendario el aviso del ciclo aparece con un nombre neutro.</p>
+  </div>`;
+}
+function bindRecordatorios(){
+  const card = document.getElementById('recCard'); if(!card) return;
+  const lee = ()=>{ const p = recPrefs();
+    card.querySelectorAll('[data-recon]').forEach(c=>{ p[c.dataset.recon].on = c.checked; });
+    card.querySelectorAll('[data-rechora]').forEach(i=>{ if(/^\d{2}:\d{2}$/.test(i.value)) p[i.dataset.rechora].hora = i.value; });
+    const d = card.querySelector('[data-recdia]'); if(d) p.quest.dia = d.value;
+    if(!card.querySelector('[data-recon="ciclo"]')) p.ciclo.on = false;
+    return p; };
+  card.querySelectorAll('input,select').forEach(i=>i.addEventListener('change', ()=>cacheLocal('recordatorios', false, JSON.stringify(lee()))));
+  card.querySelector('#recDescargar').addEventListener('click', async ()=>{
+    const p = lee(); cacheLocal('recordatorios', false, JSON.stringify(p));
+    if(!p.snack.on && !p.quest.on && !p.ciclo.on){ toast('Marca al menos un recordatorio', true); return; }
+    const op = { url:(location.protocol.startsWith('http') ? location.origin + location.pathname : '') };
+    if(p.ciclo.on){
+      try{ const c = await getCiclo(state.athleteAsId || state.selectedId), ini = c.inicios || [];
+        if(ini.length >= 2){ const media = Math.round(diasEntre(ini[0], ini[ini.length-1]) / (ini.length-1)); if(media >= 20 && media <= 45) op.cicloDias = media; }
+        if(ini.length){ let f = ini[ini.length-1]; const dias = op.cicloDias || 28, hoy = todayISO(); let g = 0;
+          while(f < hoy && g++ < 60){ const d = new Date(f+'T00:00:00'); d.setDate(d.getDate()+dias); f = fechaLocalISO(d); }
+          op.cicloInicio = f; }
+      }catch(e){}
+    }
+    const ics = recIcs(p, op);
+    try{
+      const blob = new Blob([ics], { type:'text/calendar;charset=utf-8' }), u = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = u; a.download = 'umbral-recordatorios.ics'; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(u), 4000);
+      toast('Abre el archivo y pulsa «Añadir»');
+    }catch(e){ toast('No se pudo crear el archivo', true); }
+  });
+}
+
+
+// ---------- CRUCES: todo lo que se recoge, semana a semana y en una sola tabla ----------
+// Une diario de entrenamiento (carga, RPE), check-in previo y Snack (fatiga, sueño), hábitos y Snacks hechos.
+// Las observaciones comparan semanas altas y bajas de una variable; exigen un mínimo de semanas y avisan de que no prueban causa.
+function cruceMediana(filas, x, y, minN, umbral){
+  const v = filas.filter(f=>typeof f[x] === 'number' && typeof f[y] === 'number');
+  if(v.length < (minN||5)) return null;
+  const ord = v.slice().sort((a,b)=>a[x]-b[x]), m = Math.floor(ord.length/2);
+  const bajo = ord.slice(0, m), alto = ord.slice(ord.length - m);
+  if(alto[0][x] === bajo[bajo.length-1][x]) return null;    // sin variación real entre semanas
+  const ma = mediaInf(alto.map(f=>f[y])), mb = mediaInf(bajo.map(f=>f[y]));
+  return { alto:ma, bajo:mb, dif:ma-mb, n:v.length, claro:Math.abs(ma-mb) >= (umbral||0.3) };
+}
+async function filasCruces(athleteId, n, hoy){
+  hoy = hoy || todayISO();
+  const d = await datosInforme(athleteId), sl = await getSnackLog(athleteId);
+  const out = [];
+  for(let k = (n||10)-1; k >= 0; k--){
+    const lunes = sumaDiasISO(lunesDe(hoy), -7*k), dom = sumaDiasISO(lunes, 6);
+    const m = metricasPeriodo(d, lunes, dom);
+    const sn = Object.keys(sl.dias).filter(f=>f >= lunes && f <= dom && snackHecho(sl, f)).map(f=>sl.dias[f]);
+    const comb = (a, b)=>mediaInf([a, b].filter(x=>typeof x === 'number'));
+    out.push({ lunes, ses:m.sesiones, carga:m.sesiones ? Math.round(m.carga) : null, rpe:m.sesiones ? m.rpe : null,
+      fatiga:comb(m.fatiga, mediaInf(sn.map(x=>x.fatiga))), sueno:comb(m.sueno, mediaInf(sn.map(x=>x.sueno))),
+      horas:mediaInf(sn.map(x=>x.horas)), estres:m.estres, animo:m.animo, habitos:m.habitos, snacks:sn.length });
+  }
+  return out;
+}
+function observacionesCruces(f){
+  const f1 = x=>(Math.round(x*10)/10).toFixed(1).replace('.', ',');
+  const o = [];
+  // la fatiga de la semana siguiente según la carga de la anterior
+  const pares = f.slice(0, -1).map((a, i)=>({ carga:a.carga, sig:f[i+1].fatiga })).filter(p=>p.carga !== null);
+  const c1 = cruceMediana(pares, 'carga', 'sig', 5, 0.3);
+  if(c1) o.push(c1.claro ? `Tras las semanas de más carga la fatiga de la semana siguiente puntúa ${f1(c1.alto)}/5; tras las de menos carga, ${f1(c1.bajo)}/5 (más alto = menos fatiga).`
+    : `La carga de una semana no cambia de forma clara la fatiga de la siguiente (${f1(c1.alto)} frente a ${f1(c1.bajo)} sobre 5).`);
+  const c2 = cruceMediana(f, 'sueno', 'rpe', 5, 0.5);
+  if(c2) o.push(c2.claro ? `En las semanas en que duerme mejor el RPE medio de sus sesiones es ${f1(c2.alto)}; en las de peor sueño, ${f1(c2.bajo)}.`
+    : `El sueño y el RPE de las sesiones no muestran relación clara (${f1(c2.alto)} frente a ${f1(c2.bajo)}).`);
+  const c3 = cruceMediana(f, 'habitos', 'fatiga', 5, 0.3);
+  if(c3) o.push(c3.claro ? `Con más cumplimiento de hábitos la fatiga puntúa ${f1(c3.alto)}/5; con menos, ${f1(c3.bajo)}/5.`
+    : `El cumplimiento de hábitos no cambia de forma clara la fatiga (${f1(c3.alto)} frente a ${f1(c3.bajo)}).`);
+  const c4 = cruceMediana(f, 'snacks', 'sueno', 5, 0.3);
+  if(c4) o.push(c4.claro ? `En las semanas con más Snacks el sueño puntúa ${f1(c4.alto)}/5; en las de menos, ${f1(c4.bajo)}/5.`
+    : `Hacer más o menos Snacks no cambia de forma clara su sueño (${f1(c4.alto)} frente a ${f1(c4.bajo)}).`);
+  return o;
+}
+async function tplCruces(athleteId){
+  const f = await filasCruces(athleteId, 10);
+  const con = f.filter(x=>x.ses || x.fatiga !== null || x.snacks);
+  const n1 = x=>x === null || x === undefined ? '—' : (Math.round(x*10)/10).toFixed(1).replace('.', ',');
+  let html = `<div class="card"><h2>Cruces semana a semana</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;">Entrenamiento, descanso, fatiga, hábitos y Snacks en una sola tabla. Fatiga y sueño (1-5, más alto = mejor) juntan el check-in previo a la sesión y las preguntas del Snack.</p>`;
+  if(!con.length){ return html + `<div class="empty">Todavía no hay datos que cruzar.</div></div>`; }
+  html += `<div class="snack-tabla-wrap"><table class="snack-tabla" style="min-width:560px;">
+    <thead><tr><th>Semana</th><th>Ses.</th><th>Carga</th><th>RPE</th><th>Fatiga</th><th>Sueño</th><th>Horas</th><th>Hábitos</th><th>Snacks</th></tr></thead>
+    <tbody>${f.map(x=>`<tr><td>${fechaCortaISO(x.lunes)}</td><td>${x.ses||'—'}</td><td>${x.carga === null ? '—' : x.carga}</td><td>${n1(x.rpe)}</td><td>${n1(x.fatiga)}</td><td>${n1(x.sueno)}</td><td>${x.horas === null ? '—' : n1(x.horas)+' h'}</td><td>${x.habitos === null ? '—' : Math.round(x.habitos)+'%'}</td><td>${x.snacks}/7</td></tr>`).join('')}</tbody></table></div>`;
+  const obs = observacionesCruces(f);
+  html += `<div class="block-title">Lo que se observa</div>` + (obs.length
+    ? `<ul class="snack-obs">${obs.map(o=>`<li>${escapeHtml(o)}</li>`).join('')}</ul><p class="snack-nota">Comparan sus semanas altas con las bajas. Son pistas para comentar, no una relación de causa y efecto.</p>`
+    : `<div class="empty">Hacen falta unas 5 semanas con datos para empezar a comparar.</div>`);
+  return html + `</div>`;
+}
+
+// --- Panel del entrenador (Galería → Snack) ---
+async function tplGaleriaSnack(){
+  const cfg = await getSnackCfg(), musica = await getSnackMusica(), b = await snackBancoCompleto();
+  const totalKb = musica.reduce((a,m)=>a+(m.size||0), 0);
+  const fCat = state.snackCat || 'cardio';
+  let html = tplGaleriaPestanas((await getVideoLib()).length);
+  // Rachas de un vistazo
+  html += `<div class="card"><h2>Rachas de tus atletas</h2>`;
+  const filas = [];
+  for(const a of state.athletes){ const r = snackRacha(await getSnackLog(a.id)); filas.push({ a, r }); }
+  filas.sort((x,y)=>y.r.actual - x.r.actual);
+  html += filas.length ? filas.map(({a,r})=>`<div class="snack-fila-at"><span>${escapeHtml(a.name)}</span><span class="snack-racha mini ${r.actual?'viva':''}">${icFlama()}<b>${r.actual}</b></span><small>${r.hechoHoy ? 'hecho hoy' : 'hoy pendiente'} · mejor ${r.mejor} · total ${r.total}</small></div>`).join('')
+    : `<div class="empty">Aún no hay atletas.</div>`;
+  html += `</div>`;
+  // Música
+  html += `<div class="card"><h2>Música</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:12px;">En cada Snack suena una canción al azar de esta lista. Sube archivos de audio (MP3 o M4A, máximo ${MAX_AUDIO_MB} MB cada uno) y quítalos cuando quieras renovar. Sube solo música que tengas derecho a compartir con tus atletas.</p>
+    <label class="btn ghost small" style="display:inline-block;cursor:pointer;">+ Subir canciones<input type="file" id="snackAudioInput" accept="audio/*,.mp3,.m4a,.aac,.ogg,.wav" multiple hidden></label>
+    <span id="snackSubiendo" style="font-size:12.5px;color:var(--muted);margin-left:8px;"></span>
+    <div style="margin-top:12px;">${musica.length ? musica.map(m=>`<div class="snack-cancion" data-cancion="${escapeHtml(m.id)}">
+      <button class="btn ghost small" data-snackplay="${escapeHtml(m.id)}">▶</button>
+      <input type="text" value="${escapeHtml(m.nombre||'')}" data-snacknombre="${escapeHtml(m.id)}" style="flex:1;min-width:0;">
+      <small>${((m.size||0)/1024).toFixed(1)} MB</small>
+      <button class="btn ghost small" data-snackdelcancion="${escapeHtml(m.id)}">Eliminar</button></div>`).join('')
+      : `<div class="empty">Sin canciones. El Snack funciona igual, solo con los avisos sonoros.</div>`}</div>
+    ${musica.length ? `<p class="snack-nota">${musica.length} canción${musica.length===1?'':'es'} · ${(totalKb/1024).toFixed(1)} MB en total. Cada atleta las descarga una vez y quedan guardadas en su móvil.</p>` : ''}
+  </div>`;
+  // Ajustes
+  const num = (id, etq, v)=>`<div><label class="field-label">${etq}</label><input type="number" data-snackcfg="${id}" value="${v}" style="width:100%;"></div>`;
+  html += `<div class="card"><h2>Formato del Tabata</h2>
+    <div class="ex-grid">${num('work','Trabajo (s)',cfg.work)}${num('rest','Descanso (s)',cfg.rest)}${num('rondas','Rondas',cfg.rondas)}${num('prep','Preparación (s)',cfg.prep)}
+      ${num('cardio','Ejercicios de cardio',cfg.mezcla.cardio)}${num('fuerza','Ejercicios de fuerza',cfg.mezcla.fuerza)}${num('movilidad','Ejercicios de movilidad',cfg.mezcla.movilidad)}</div>
+    <p class="snack-nota">Duración: ${snackDuracionTxt(cfg)}. Si el reparto no suma las rondas, se ajusta solo.</p>
+    <label class="field-label" style="margin-top:12px;">Playlist de Spotify para el Snack (opcional)</label>
+    <input type="url" id="snackPlaylist" value="${escapeHtml(cfg.playlist)}" placeholder="https://open.spotify.com/playlist/…" style="width:100%;">
+    <p class="snack-nota">Si pegas el enlace, cada atleta verá un botón para abrirla en su Spotify antes de empezar.</p>
+  </div>`;
+  // Banco
+  const activos = b.todos.filter(e=>!b.off.includes(e.id));
+  const fams = new Map();
+  b.todos.filter(e=>e.cat === fCat).forEach(e=>{ if(!fams.has(e.fam)) fams.set(e.fam, []); fams.get(e.fam).push(e); });
+  html += `<div class="card"><h2>Banco de ejercicios</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:12px;">${activos.length} activos de ${b.todos.length}. Cada fila es un mismo gesto en varios niveles: en un Tabata nunca salen dos de la misma fila. Desmarca los que no quieras que salgan.</p>
+    <div class="sub-tabs">${Object.keys(SNACK_CATS).map(c=>`<button data-snackcat="${c}" class="${fCat===c?'active':''}">${SNACK_CATS[c]} (${activos.filter(e=>e.cat===c).length})</button>`).join('')}</div>`;
+  fams.forEach(vars=>{
+    vars.sort((x,y)=>x.nivel-y.nivel);
+    html += `<div class="snack-fam">${vars.map(e=>`<label class="snack-ex ${b.off.includes(e.id)?'off':''}">
+      <input type="checkbox" data-snackact="${escapeHtml(e.id)}" ${b.off.includes(e.id)?'':'checked'}>
+      <span><b>${escapeHtml(e.nom)}</b><small>${SNACK_NIVELES[e.nivel]}${e.propio?' · tuyo':''}</small></span>
+      ${e.propio ? `<button class="btn ghost small" data-snackdelex="${escapeHtml(e.id)}">Eliminar</button>` : ''}</label>`).join('')}</div>`;
+  });
+  const famsCat = [...fams.entries()].map(([k, v])=>({ k, n:v[0].nom }));
+  html += `<div class="block-title">Añadir un ejercicio tuyo</div>
+    <div class="ex-grid">
+      <div class="full"><label class="field-label">Nombre</label><input type="text" id="snackNuevoNom" placeholder="Ej. Sentadilla con rotación" style="width:100%;"></div>
+      <div><label class="field-label">Categoría</label><select id="snackNuevoCat" style="width:100%;">${Object.keys(SNACK_CATS).map(c=>`<option value="${c}" ${c===fCat?'selected':''}>${SNACK_CATS[c]}</option>`).join('')}</select></div>
+      <div><label class="field-label">Nivel</label><select id="snackNuevoNivel" style="width:100%;">${[1,2,3].map(n=>`<option value="${n}" ${n===2?'selected':''}>${SNACK_NIVELES[n]}</option>`).join('')}</select></div>
+      <div class="full"><label class="field-label">Es una variante de (opcional)</label><select id="snackNuevoFam" style="width:100%;"><option value="">Ejercicio nuevo</option>${famsCat.map(f=>`<option value="${escapeHtml(f.k)}">${escapeHtml(f.n)}</option>`).join('')}</select></div>
+      <div class="full"><label class="field-label">Indicación breve (opcional)</label><input type="text" id="snackNuevoCue" placeholder="Ej. Pecho alto y rodillas hacia fuera" style="width:100%;"></div>
+    </div>
+    <button class="btn" id="snackNuevoBtn" style="margin-top:10px;">Añadir al banco</button>
+  </div>`;
+  return html;
+}
+let snackPreview = null;
+function bindSnack(){
+  const abrir = document.getElementById('snackAbrirBtn');
+  if(abrir) abrir.addEventListener('click', ()=>snackAbre(state.athleteAsId || state.selectedId));
+  // --- entrenador ---
+  const inp = document.getElementById('snackAudioInput');
+  if(inp) inp.addEventListener('change', async ()=>{
+    const files = [...inp.files]; if(!files.length) return;
+    const flag = document.getElementById('snackSubiendo'); let ok = 0; const errores = [];
+    for(let i = 0; i < files.length; i++){
+      if(flag) flag.textContent = `Subiendo ${i+1} de ${files.length}…`;
+      try{ await subirAudioSnack(files[i]); ok++; }catch(e){ errores.push(`${files[i].name}: ${e.message}`); }
+    }
+    toast(errores.length ? `${ok} subida${ok===1?'':'s'} · ${errores[0]}` : `${ok} canción${ok===1?'':'es'} subida${ok===1?'':'s'}`, errores.length > 0 && ok === 0);
+    renderKeepScroll();
+  });
+  document.querySelectorAll('[data-snackdelcancion]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(!confirm('¿Eliminar esta canción? Dejará de sonar en los Snacks.')) return;
+    if(snackPreview){ try{ snackPreview.pause(); }catch(e){} snackPreview = null; }
+    await borrarAudioSnack(b.dataset.snackdelcancion); toast('Canción eliminada'); renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-snackplay]').forEach(b=>b.addEventListener('click', async ()=>{
+    const sonando = snackPreview && snackPreview._id === b.dataset.snackplay;
+    if(snackPreview){ try{ snackPreview.pause(); }catch(e){} snackPreview = null; document.querySelectorAll('[data-snackplay]').forEach(x=>x.textContent = '▶'); }
+    if(sonando) return;
+    const m = (await getSnackMusica()).find(x=>x.id === b.dataset.snackplay); if(!m) return;
+    try{ const a = new Audio(m.url); a._id = m.id; const p = a.play(); if(p && p.catch) p.catch(()=>toast('No se pudo reproducir', true)); snackPreview = a; b.textContent = '■'; }catch(e){ toast('No se pudo reproducir', true); }
+  }));
+  document.querySelectorAll('[data-snacknombre]').forEach(i=>i.addEventListener('change', async ()=>{
+    const lib = await getSnackMusica(), m = lib.find(x=>x.id === i.dataset.snacknombre); if(!m) return;
+    m.nombre = i.value.trim().slice(0,60) || m.nombre; await saveSnackMusica(lib); toast('Nombre guardado');
+  }));
+  document.querySelectorAll('[data-snackcfg]').forEach(i=>i.addEventListener('change', async ()=>{
+    const cfg = await getSnackCfg(), k = i.dataset.snackcfg, v = parseInt(i.value, 10);
+    if(isNaN(v)) return;
+    if(k in cfg.mezcla) cfg.mezcla[k] = v; else cfg[k] = v;
+    await saveSnackCfg(cfg); toast('Guardado'); renderKeepScroll();
+  }));
+  const pl = document.getElementById('snackPlaylist');
+  if(pl) pl.addEventListener('change', async ()=>{
+    const v = pl.value.trim();
+    if(v && !/^https:\/\/(open\.spotify\.com|spotify\.link)\//.test(v)){ toast('Pega un enlace de Spotify (https://open.spotify.com/…)', true); return; }
+    const cfg = await getSnackCfg(); cfg.playlist = v; await saveSnackCfg(cfg); toast(v ? 'Playlist guardada' : 'Playlist quitada');
+  });
+  const dt = document.getElementById('diarioTodoBtn');
+  if(dt) dt.addEventListener('click', ()=>{ state.diarioTodo = true; renderKeepScroll(); });
+  bindRecordatorios();
+  document.querySelectorAll('[data-snackcat]').forEach(b=>b.addEventListener('click', ()=>{ state.snackCat = b.dataset.snackcat; renderKeepScroll(); }));
+  document.querySelectorAll('[data-snackact]').forEach(c=>c.addEventListener('change', async ()=>{
+    const b = await getSnackBancoCfg(), id = c.dataset.snackact;
+    b.off = c.checked ? b.off.filter(x=>x !== id) : b.off.concat(id).filter((x,i,l)=>l.indexOf(x) === i);
+    await saveSnackBancoCfg(b); renderKeepScroll();
+  }));
+  document.querySelectorAll('[data-snackdelex]').forEach(x=>x.addEventListener('click', async (ev)=>{
+    ev.preventDefault();
+    if(!confirm('¿Eliminar este ejercicio del banco?')) return;
+    const b = await getSnackBancoCfg(), id = x.dataset.snackdelex;
+    b.extra = b.extra.filter(e=>e.id !== id); b.off = b.off.filter(o=>o !== id);
+    await saveSnackBancoCfg(b); renderKeepScroll();
+  }));
+  const nuevo = document.getElementById('snackNuevoBtn');
+  if(nuevo) nuevo.addEventListener('click', async ()=>{
+    const nom = document.getElementById('snackNuevoNom').value.trim();
+    if(!nom){ toast('Ponle un nombre', true); return; }
+    const cat = document.getElementById('snackNuevoCat').value, id = 'sx-'+uid();
+    const b = await getSnackBancoCfg();
+    if(SNACK_BANCO_BASE.concat(b.extra).some(e=>e.nom.toLowerCase() === nom.toLowerCase())){ toast('Ya hay un ejercicio con ese nombre', true); return; }
+    const famSel = document.getElementById('snackNuevoFam').value;
+    const deFam = famSel ? SNACK_BANCO_BASE.concat(b.extra).find(e=>e.fam === famSel) : null;
+    b.extra.push({ id, fam:deFam ? famSel : id, cat:deFam ? deFam.cat : cat, nivel:parseInt(document.getElementById('snackNuevoNivel').value, 10),
+      nom:nom.slice(0,70), cue:document.getElementById('snackNuevoCue').value.trim().slice(0,90) });
+    await saveSnackBancoCfg(b); state.snackCat = cat; toast('Añadido al banco'); renderKeepScroll();
+  });
 }
 
 // ---------- WELCOME PACK ----------
@@ -5630,6 +6711,7 @@ async function tplRutinaAtleta(athleteId){
   // del Welcome Pack, con el mismo lenguaje visual.
   const tareasAt = await getTareas(athleteId);
   html += tplTareasBanner(tareasAt);
+  if(!state.wpRelectura) html += await tplSnackCard(athleteId);
   if(state.modoDemo){
     html += `<div class="card demo-intro">
       <span class="demo-tag">Modo demostración</span>
@@ -9241,7 +10323,7 @@ async function tplHabitosCoach(athleteId){
   return html;
 }
 
-async function tplPerfilAtleta(athleteId){ return await tplPlanAtletaCard(state.athletes.find(a=>a.id===athleteId)) + await tplPerfilAtletaBase(athleteId); }
+async function tplPerfilAtleta(athleteId){ return await tplPlanAtletaCard(state.athletes.find(a=>a.id===athleteId)) + await tplPerfilAtletaBase(athleteId) + await tplRecordatorios(athleteId); }
 async function tplPerfilAtletaBase(athleteId){
   const me = state.athletes.find(a=>a.id===athleteId);
   const raw = await safeGet('intake-'+athleteId, true);
@@ -9458,7 +10540,7 @@ async function sincronizaCompeticiones(athleteId, origen){
 const ATLETA_TABS = [{k:'plan',l:'Plan'},{k:'seguimiento',l:'Seguimiento'},{k:'evaluacion',l:'Evaluación'},{k:'perfil',l:'Perfil'}];
 const ATLETA_SECCIONES = {
   plan:[{k:'semana',l:'Semana'},{k:'periodizacion',l:'Periodización y competiciones'}],
-  seguimiento:[{k:'progreso',l:'Progreso'},{k:'diario',l:'Diario'},{k:'cuestionarios',l:'Cuestionarios'},{k:'habitos',l:'Hábitos'}],
+  seguimiento:[{k:'progreso',l:'Progreso'},{k:'cruces',l:'Cruces'},{k:'diario',l:'Diario'},{k:'cuestionarios',l:'Cuestionarios'},{k:'habitos',l:'Hábitos'},{k:'snack',l:'Snack de movimiento'}],
   evaluacion:[{k:'tests',l:'Tests'},{k:'gym',l:'Gym'},{k:'fotos',l:'Fotos'}]
 };
 // Los nombres de las 11 pestañas antiguas siguen valiendo para saltar a un sitio.
@@ -9480,6 +10562,7 @@ async function resumenSeccion(athleteId, k){
     const raw = await safeGet('quest-'+athleteId, true); let l = []; try{ l = raw ? JSON.parse(raw) : []; }catch(e){}
     return l.length ? `${l.length} respuestas · última ${fechaCortaISO(l[l.length-1].date || l[l.length-1].weekOf)}` : 'sin respuestas';
   }
+  if(k === 'snack'){ const r = snackRacha(await getSnackLog(athleteId)); return r.total ? `racha ${r.actual} · ${r.total} hechos` : 'sin Snacks'; }
   if(k === 'periodizacion'){
     const plan = await getPlan(athleteId), comps = await getCompeticiones(athleteId);
     return `${plan.macros.length} macrociclo${plan.macros.length===1?'':'s'} · ${comps.length} ${comps.length===1?'competición':'competiciones'}`;
@@ -9495,6 +10578,7 @@ async function tplResumenAtleta(athleteId){
   const rawC = await safeGet('call-'+athleteId, true); let call = {}; try{ call = rawC ? JSON.parse(rawC) : {}; }catch(e){}
   const comps = (await getCompeticiones(athleteId)).filter(c=>c.fecha && c.fecha >= hoy).sort((a,b)=>a.fecha.localeCompare(b.fecha));
     const omit = await omitidosDeAtleta(athleteId, 7);
+  const iiAt = await informeInfo(athleteId);
   const ult = j.length ? j[j.length-1] : null, ultQ = q.length ? q[q.length-1] : null, prox = comps[0];
   const chip = (sub, etq, val)=>`<button type="button" class="res-chip" ${sub?`data-irsub="${sub}"`:''}><span>${etq}</span><b>${val}</b></button>`;
   return `<div class="res-fila">
@@ -9503,6 +10587,7 @@ async function tplResumenAtleta(athleteId){
     ${chip('cuestionarios','Cuestionario semanal', ultQ ? fechaCortaISO(ultQ.date || ultQ.weekOf) : '—')}
     ${chip('', 'Próxima videollamada', call.nextDate ? fechaCortaISO(call.nextDate) : '—')}
     ${omit.length ? chip('diario', 'Omitidos (7 días)', `${omit.length} ejercicio${omit.length===1?'':'s'}`) : ''}
+    ${iiAt && iiAt.semana ? chip('', 'Semana activa', 'Semana '+iiAt.semana) : ''}${iiAt && iiAt.plan.informe && iiAt.proxima ? chip('', 'Videollamada de seguimiento', fechaCortaISO(iiAt.proxima)) : ''}
   </div>`;
 }
 async function contenidoSeccion(athleteId, k){
@@ -9512,9 +10597,11 @@ if(state.compEditId) return await tplCompeticiones(athleteId, true);
     return await tplCompeticiones(athleteId, true) + await tplPeriodizacion(athleteId);
   }
   if(k === 'progreso') return await tplProgreso(athleteId);
+  if(k === 'cruces') return await tplCruces(athleteId);
   if(k === 'diario') return await tplDiarioLectura(athleteId, true);
   if(k === 'cuestionarios') return await tplQuestConfigAndRead(athleteId);
   if(k === 'habitos') return await tplHabitosCoach(athleteId);
+  if(k === 'snack') return await tplSnackStats(athleteId, true);
   if(k === 'tests') return await tplTestsCoach(athleteId);
   if(k === 'gym') return await tplGym(athleteId, true);
   if(k === 'fotos') return await tplProgresoFotos(athleteId, true);
@@ -10606,8 +11693,8 @@ function calculaSalto(m){
   const q = calidadMedicion(fps);
   if(fps < 60) avisos.push({ clase:'mal', txt:`A ${nFmtS(fps,0)} fps cada fotograma son ${Math.round(1000/fps)} ms y la altura puede variar ±${nFmtS(u.mas*100,1)} cm. Para un test serio graba en cámara lenta (120-240 fps).` });
   else if(u.mas*100 > 2) avisos.push({ clase:'aviso', txt:`Con ${nFmtS(fps,0)} fps la medida tiene un margen de ±${nFmtS(u.mas*100,1)} cm. A 120-240 fps baja a ±${nFmtS(incertidumbreAltura(tf,120).mas*100,1)}-${nFmtS(incertidumbreAltura(tf,240).mas*100,1)} cm.` });
-  if(tf < 0.2) avisos.push({ clase:'mal', txt:'Un vuelo de menos de 0,20 s (menos de 5 cm) suele ser un error al marcar. Revisa los fotogramas.' });
-  if(tf > 0.95) avisos.push({ clase:'mal', txt:'Un vuelo de más de 0,95 s (más de 110 cm) es poco realista. Revisa que el aterrizaje sea el primer contacto con el suelo.' });
+  if(tf < 0.2) avisos.push({ clase:'mal', txt:'Un vuelo de menos de 0,20 s (menos de 5 cm) suele ser un error al marcar o unos fps demasiado altos (¿vídeo normal indicado como cámara lenta?). Revisa los fotogramas y los fps.' });
+  if(tf > 0.95) avisos.push({ clase:'mal', txt:'Un vuelo de más de 0,95 s (más de 110 cm) no es realista. Casi seguro los fps indicados no son los de la grabación (en cámara lenta suelen ser 120 o 240), o el aterrizaje no es el primer contacto con el suelo.' });
   const r = { tf, h, hCm, hMin:u.min*100, hMax:u.max*100, mas:u.mas*100, vo:velocidadDespegue(tf), tApice:tiempoAlApice(tf), fps, calidad:q, tipo, avisos };
   const masa = +m.masa;
   if(masa > 0){
@@ -10721,11 +11808,12 @@ async function crearFuenteSalto(origen){
 // ---------- Analizador ----------
 let sj = null;
 const SJ_GUIA = [
+  'Antes de grabar, <b>mira a cuántos fps vas a grabar y anótalo</b>: vídeo normal = 30 o 60 fps; cámara lenta = 120 o 240 fps (según el móvil). Es lo que más condiciona la altura: si luego indicas otros fps, sale una altura imposible. Más fps = más precisión.',
   'Cámara <b>fija</b> (trípode o apoyada), de <b>lado</b>, a unos 3-4 m y a la altura de la cadera. Que se vea el cuerpo entero y el suelo.',
-  '<b>Cámara lenta</b> (120 o 240 fps) si tu móvil la tiene: es lo que más mejora la precisión. A 30 fps el margen de error es de varios cm.',
   'CMJ: <b>manos en la cadera</b>, salta lo más alto posible y cae con las <b>piernas estiradas</b>. Si flexionas al caer, el vuelo se alarga y la altura sale inflada.',
-  'Hazlo 3 veces con 30-60 s de descanso. Con buena luz y ropa que contraste con el fondo, los pies se ven mejor.',
-  'No hace falta medir distancias ni calibrar nada: solo se cuenta el <b>tiempo en el aire</b> con los fotogramas.'
+  'Hazlo 3 veces con 30-60 s de descanso y <b>graba todos con los mismos fps</b>. Con buena luz y ropa que contraste con el fondo, los pies se ven mejor.',
+  'Comprobación de 1 minuto (opcional): grábate soltando una pelota desde 1 m. Marca «despegue» al soltarla y «aterrizaje» al tocar el suelo: el tiempo de vuelo tiene que salir ≈ <b>452 ms</b>. Si sale otro, los fps no son los que crees.',
+  'No hace falta medir distancias ni calibrar nada más: solo se cuenta el <b>tiempo en el aire</b> con los fotogramas.'
 ];
 function sjFrames(){ return Math.max(1, Math.floor(sj.fuente.duracion * (sj.fpsArch || sj.fps))); }
 async function abrirAnalizadorSalto(op){
@@ -10784,7 +11872,7 @@ function sjPaso1(){
   const det = f.fpsArchivo ? `${nFmtS(f.fpsArchivo,2)} fps${f.uniforme === false ? ' <span class="sj-aviso-in">⚠ no es constante</span>' : ''}` : 'no se ha podido detectar';
   h += `<div class="sj-visor-mini" id="sjVideoSlot"></div>
     <div class="sj-fps"><p class="sj-lab">¿A cuántos fotogramas por segundo (fps) se grabó?</p>
-      <p class="sj-sub">La línea de tiempo del archivo va a <b>${det}</b>. Si grabaste en cámara lenta, indica los fps reales de grabación (normalmente 120 o 240).</p>
+      <p class="sj-sub">La línea de tiempo del archivo va a <b>${det}</b>, pero <b>en cámara lenta esa cifra se queda corta</b>. Mira en tu cámara a cuántos fps grabaste (p. ej. «Cámara lenta 120» o «240») y marca <b>esos</b>. Si dudas, al ver el resultado te digo cuáles cuadran.</p>
       <div class="gal-secs">${[24,30,60,120,240].map(v=>`<button type="button" class="gs-chip ${sj.fps===v?'on':''}" data-sjfps="${v}">${v}</button>`).join('')}<input type="number" id="sjFpsOtro" class="sj-fps-otro" min="10" max="1000" step="any" placeholder="otro" value="${[24,30,60,120,240].includes(sj.fps)?'':(sj.fps||'')}"></div>
       <p class="sj-margen" id="sjMargen">${sjMargenTxt()}</p>
       ${f.uniforme === false ? `<p class="sj-error">Este vídeo tiene tramos a distinta velocidad (típico de la cámara lenta de iPhone al exportarla desde Fotos). Usa el vídeo original, sin editar, o el resultado no será fiable.</p>` : ''}</div>
@@ -10867,6 +11955,7 @@ function sjPaso3(){
   if(der.length) h += `<div class="sj-datos" style="margin-top:12px;">${der.join('')}</div>` + (r.potencia !== undefined ? `<p class="sj-nota">Potencia: ${r.potenciaFormula}. Es una estimación con un error de cientos de vatios: úsala para comparar a la misma persona en el tiempo, no como valor absoluto.</p>` : '');
   else if(['cmj','abk','sj'].includes(sj.tipo)) h += `<p class="sj-nota">Añade la masa corporal para estimar la potencia pico y el impulso.</p>`;
   h += r.avisos.map(a=>`<div class="sj-aviso ${a.clase}">${escapeHtml(a.txt)}</div>`).join('');
+  h += sjFpsHtml(r);
   const clave = JSON.stringify([sj.fps, sj.marcas, sj.tipo]);
   const guardado = sj.guardado === clave;
   h += `<div class="row" style="gap:8px;margin-top:14px;flex-wrap:wrap;">
@@ -10879,6 +11968,7 @@ function sjPaso3(){
     h += `<div class="block-title">Intentos de esta sesión</div><div class="tabla-comp-wrap"><table class="tabla-comp"><thead><tr><th>#</th><th>Altura</th><th>Vuelo</th></tr></thead><tbody>${sj.intentos.map((x,i)=>`<tr><td>${i+1}</td><td><b>${nFmtS(x.h,1)} cm</b> ±${nFmtS(x.mas,1)}</td><td>${nFmtS(x.tf*1000,0)} ms</td></tr>`).join('')}</tbody></table></div>`;
     if(rs && rs.n > 1) h += `<p class="sj-nota">Mejor <b>${nFmtS(rs.mejor,1)} cm</b> · media ${nFmtS(rs.media,1)} cm · variación (CV) ${nFmtS(rs.cv,1)} %${rs.cv > 5 ? ' · <span style="color:var(--warn);">alta: repite el salto con más calma</span>' : ''}.</p>`;
   }
+  h += sjAtipicosHtml();
   h += `<details class="sj-guia" style="margin-top:14px;"><summary>Cómo se calcula y sus límites</summary><ul>
     <li><b>Altura</b> = g · t² / 8, con t el tiempo de vuelo (Bosco, Luhtanen y Komi, 1983) y g = 9,80665 m/s². Supone que despegas y aterrizas con el cuerpo en la misma posición.</li>
     <li><b>Despegue</b>: primer fotograma sin contacto. <b>Aterrizaje</b>: primer fotograma con contacto. Cada marca puede estar corrida hasta medio fotograma, por eso el margen es de ±1 fotograma en el tiempo de vuelo.</li>
@@ -10886,6 +11976,29 @@ function sjPaso3(){
     <li>Comparado con una plataforma de fuerzas o un sistema óptico, un móvil a 240 fps da resultados muy parecidos para controlar la evolución de una persona (Balsalobre-Fernández, Glaister y Lockey, 2015); a 30 fps el error por fotograma es grande.</li>
     <li>RSI del drop jump = altura de salto / tiempo de contacto (Flanagan y Comyns, 2008).</li></ul></details>`;
   return h;
+}
+// Con un vídeo y unas marcas, la tasa de fotogramas es la gran incógnita: aquí se enseña qué altura saldría
+// con cada una y cuáles son creíbles (12-85 cm), y se puede cambiar con un toque.
+const SJ_FPS_CAND = [30, 60, 120, 240, 480, 960];
+const sjCreible = hCm=>hCm >= 12 && hCm <= 85;
+function sjFpsHtml(r){
+  const n = sj.marcas.aterrizaje - sj.marcas.despegue; if(!(n > 0)) return '';
+  const filas = SJ_FPS_CAND.map(f=>{ const h = alturaPorVuelo(n/f)*100; return { f, h, ok:sjCreible(h) }; });
+  const actualOk = sjCreible(r.hCm), otros = filas.filter(x=>x.ok && x.f !== sj.fps);
+  let h = '';
+  if(!actualOk){
+    h += `<div class="sj-aviso mal"><b>Estos fps no cuadran.</b> Con ${nFmtS(sj.fps,0)} fps este salto sale en ${nFmtS(r.hCm,1)} cm${r.hCm > 85 ? ', que no es realista' : ', demasiado poco para un salto de verdad'}. ${r.hCm > 85 ? 'Lo habitual: grabaste en cámara lenta (120 o 240 fps) y indicaste menos.' : 'Lo habitual: indicaste cámara lenta y era vídeo normal (30 o 60 fps).'}
+      ${otros.length ? `<div class="sj-fps-sug">${otros.map(x=>`<button type="button" class="btn small" data-sjusafps="${x.f}">Con ${x.f} fps: ${nFmtS(x.h,1)} cm · usar ${x.f}</button>`).join('')}</div>` : ''}</div>`;
+  }
+  h += `<details class="sj-guia" style="margin-top:10px;" ${actualOk ? '' : 'open'}><summary>¿Seguro de los fps?</summary><div class="tabla-comp-wrap"><table class="tabla-comp"><thead><tr><th>Si grabaste a</th><th>Altura</th><th></th></tr></thead><tbody>${filas.map(x=>`<tr><td>${x.f} fps${x.f === sj.fps ? ' <small>(ahora)</small>' : ''}</td><td><b>${nFmtS(x.h,1)} cm</b></td><td>${x.ok ? '<span class="sj-ok">cuadra</span>' : '<span class="sj-no">no cuadra</span>'}${x.f !== sj.fps && x.ok ? ` <button type="button" class="sj-del" data-sjusafps="${x.f}">usar</button>` : ''}</td></tr>`).join('')}</tbody></table></div>
+    <p class="sj-nota">«Cuadra» = entre 12 y 85 cm, lo normal en un salto vertical. Si dos opciones cuadran, la que coincida con lo que marca tu cámara es la buena.</p></details>`;
+  return h;
+}
+function sjAtipicosHtml(){
+  const hs = sj.intentos.filter(x=>x.tipo === sj.tipo).map(x=>x.h).filter(v=>isFinite(v)).sort((a,b)=>a-b);
+  if(hs.length < 3) return '';
+  const med = hs[Math.floor(hs.length/2)], raros = hs.filter(v=>Math.abs(v-med)/med > 0.25);
+  return raros.length ? `<p class="sj-nota" style="color:var(--warn);">${raros.length === 1 ? 'Un salto se aleja' : raros.length+' saltos se alejan'} más de un 25 % de la mediana (${nFmtS(med,1)} cm). Suele ser un fps distinto o una marca mal puesta: revísalo antes de fiarte de la media.</p>` : '';
 }
 async function guardaSaltoActual(){
   const r = sjCalculo(); if(r.error || !sj) return;
@@ -10944,6 +12057,7 @@ function enlazaSalto(){
   if(q('sjMasa')) q('sjMasa').addEventListener('change', ()=>{ sj.masa = parseFloat(q('sjMasa').value) || ''; renderSalto(); });
   if(q('sjCaida')) q('sjCaida').addEventListener('change', ()=>{ sj.caida = parseFloat(q('sjCaida').value) || ''; renderSalto(); });
   if(q('sjGuardar')) q('sjGuardar').addEventListener('click', guardaSaltoActual);
+  document.querySelectorAll('[data-sjusafps]').forEach(b=>b.addEventListener('click', ()=>{ sj.fps = parseFloat(b.dataset.sjusafps); sj.guardado = null; renderSalto(); }));
   if(q('sjOtro')) q('sjOtro').addEventListener('click', ()=>{ sj.marcas = {}; sj.guardado = null; sj.paso = 2; renderSalto(); sjEstadoSalto(); });
   if(q('sjOtroVideo')) q('sjOtroVideo').addEventListener('click', ()=>{ sj.marcas = {}; sj.guardado = null; sj.paso = 1; renderSalto(); });
   if(q('sjUsar')) q('sjUsar').addEventListener('click', ()=>{ const r = sjCalculo(); if(r.error) return; const cb = sj.op.onUsar; cerrarAnalizadorSalto(); cb(Math.round(r.hCm*10)/10); });
@@ -11872,6 +12986,7 @@ function exCardHtml(ex, blockKey, d, listaBloque){
               ${TEST_CATEGORIAS.patron.map(pt=>`<option value="${escapeHtml(pt)}" ${patronesDe(ex)[0]===pt?'selected':''}>${escapeHtml(pt)}</option>`).join('')}
             </select>
           <input type="text" class="ex-name full" value="${escapeHtml(ex.name)}" placeholder="Nombre del ejercicio" style="width:100%;font-weight:700;">
+          <div class="ex-ultima">${ultimaVezHtml(ex.name)}</div>
           <textarea class="ex-desc" placeholder="Descripción / técnica&#10;Puedes usar varias líneas:&#10;1. Cat camel&#10;2. Zancada spiderman" style="min-height:62px;margin-top:6px;white-space:pre-wrap;">${escapeHtml(ex.desc||'')}</textarea>
           ${(ex.tipo||'gym')==='circuito' ? tplMinisEditor(ex) : ''}
         ${(ex.tipo||'gym')==='running' ? runCamposHtml(ex) : `<div class="ex-grid">
@@ -12060,7 +13175,43 @@ function cuerpoDia(d, draft, athleteId, esTenisOMixto){
   return html;
 }
 
+// Lo último que hizo el atleta en cada ejercicio, a la vista mientras se programa.
+let ultimaVez = { id:null, mapa:new Map() };
+function claveEjercicio(n){ return nutriNorm(n).replace(/\s+/g, ' ').trim(); }
+async function cargaUltimaVez(athleteId){
+  let j = []; try{ j = JSON.parse(await safeGet('journal-'+athleteId, true) || '[]') || []; }catch(e){}
+  const mapa = new Map();
+  j.slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))).forEach(e=>(e.exercises||[]).forEach(x=>{
+    if(!x || !x.name || x.omitido || x.tipo === 'running') return;
+    const cs = cargasEjercicio(x);
+    const carga = cs.length ? cargasTxt(cs)+' kg' : (x.loadApplied ? String(x.loadApplied) : '');
+    const rpe = (x.rpeTexto && String(x.rpeTexto).trim()) || (x.rpeApplied != null ? String(x.rpeApplied) : '');
+    const rir = (x.rirTexto && String(x.rirTexto).trim()) || (x.rirApplied != null ? String(x.rirApplied) : '');
+    if(!carga && !rpe && !rir) return;
+    const hechas = (x.setsDone||[]).filter(Boolean).length || x.seriesPlanned || '';
+    const k = claveEjercicio(x.name);
+    if(!mapa.has(k)) mapa.set(k, []);
+    mapa.get(k).push({ fecha:e.date, series:hechas, reps:x.repsPlanned||'', carga, rpe, rir, nota:x.noteApplied||'' });
+  }));
+  ultimaVez = { id:athleteId, mapa };
+}
+function ultimaVezHtml(nombre){
+  const l = ultimaVez.mapa.get(claveEjercicio(nombre||''));
+  if(!l || !l.length) return '';
+  const fila = r=>`<b>${fechaCortaISO(r.fecha)}</b> ${r.series?escapeHtml(String(r.series))+'×':''}${escapeHtml(String(r.reps||''))}${r.carga?' · '+escapeHtml(r.carga):''}${r.rpe!==''?' · RPE '+escapeHtml(r.rpe):''}${r.rir!==''?' · RIR '+escapeHtml(r.rir):''}`;
+  const ult = l[l.length-1], antes = l.slice(-4, -1).reverse();
+  return `<div class="uv-linea"><span>Última vez</span> ${fila(ult)}</div>${ult.nota?`<div class="uv-nota">“${escapeHtml(ult.nota)}”</div>`:''}
+    ${antes.length ? `<details class="uv-mas"><summary>Anteriores (${antes.length})</summary>${antes.map(r=>`<div class="uv-linea">${fila(r)}</div>`).join('')}</details>` : ''}`;
+}
+if(typeof document !== 'undefined'){
+  const refrescaUV = ev=>{
+    const t = ev.target; if(!t || !t.classList || !t.classList.contains('ex-name')) return;
+    const caja = t.parentElement && t.parentElement.querySelector('.ex-ultima'); if(caja) caja.innerHTML = ultimaVezHtml(t.value);
+  };
+  document.addEventListener('input', refrescaUV); document.addEventListener('change', refrescaUV);
+}
 async function tplPlanificacionCoach(athleteId){
+  await cargaUltimaVez(athleteId);
   const atleta = state.athletes.find(a=>a.id===athleteId);
   const esTenisOMixto = TENIS_ACTIVO && tienePerfil(atleta,'tenis');
   // La semana se fija antes de archivar: al revés, el archivado usaba la semana
@@ -12089,13 +13240,16 @@ async function tplPlanificacionCoach(athleteId){
     BLOCKS.every(b=>draft.days[d][b.key].length===0) &&
     (!Array.isArray(draft.days[d].drills) || draft.days[d].drills.length===0)
   );
-  if(vacia && off>0){
+  if(vacia && off>=0){
     html += `<div class="day-tools" style="margin-bottom:14px;">
       <span class="day-tools-label">Semana en blanco</span>
       <button class="btn ghost small" id="copyPrevWeekBtn">Partir de la semana anterior</button>
     </div>`;
   }
-  html += `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
+  if(!vacia){
+html += `<div class="day-tools" style="margin-bottom:14px;"><span class="day-tools-label">Esta semana</span><button class="btn ghost small" id="vaciarSemanaBtn">Vaciar la semana</button></div>`;
+}
+html += `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coincide con lo que ve el atleta.' : '<b style="color:var(--accent);">Tienes cambios sin compartir.</b> El atleta sigue viendo la versión anterior.'}</span>
     <span class="row" style="gap:8px;">
       ${sameAsPublished ? '' : '<button class="btn ghost small" id="discardDraftBtn">Descartar cambios</button>'}
       <button class="btn small" id="shareRoutineBtn">Compartir planificación</button>
@@ -12117,10 +13271,30 @@ async function tplDiarioLectura(athleteId, esCoach){
   const entries = raw ? JSON.parse(raw) : [];
   let html = `<div class="card"><h2>Diario de entrenamiento</h2>`;
   if(!entries.length) html += `<div class="empty">Sin sesiones registradas todavía.</div>`;
-  else entries.slice().reverse().forEach((e, revIdx)=>{
+  else {
+    // Cuadrícula: una casilla por sesión, igual que los cuadros de arriba de Seguimiento. Al tocar una se abre su detalle debajo.
+    const tope = state.diarioTodo ? entries.length : 24;
+    const stat = (etq, v)=>v ? `<em>${etq} <b>${v}</b></em>` : '';
+    html += `<div class="diario-grid">` + entries.slice().reverse().slice(0, tope).map((e, revIdx)=>{
+      const idx = entries.length - 1 - revIdx;
+      const f = new Date(String(e.date)+'T00:00:00');
+      const dia = isNaN(f) ? String(e.day||'') : DAY_INDEX[f.getDay()];
+      return `<button type="button" class="res-chip diario-tile ${state.diarioAbierto===idx||state.editEntry===idx?'on':''}" data-diario="${idx}">
+        <span>${escapeHtml(dia)} · ${fechaCortaISO(e.date)}${e.turno?` · ${escapeHtml(e.turno)}`:''}</span>
+        <b>${escapeHtml(e.tipoSesion || (e.drills && e.drills.length ? 'Pista' : 'Sesión'))}</b>
+        <small>${fmtTime(e.durationSeconds||0)} · carga ${e.fatigueScore||0}</small>
+        <small class="dt-stats">${stat('Fat', e.fatiga)}${stat('Cal', e.calidad)}${stat('Hid', e.hidratacion)}${stat('Sat', e.satisfaccion)}</small>
+        <i class="dt-rpe" style="background:${rpeColor(e.overallRPE)};">RPE ${e.overallRPE}</i>
+      </button>`;
+    }).join('') + `</div>`;
+    if(entries.length > tope) html += `<button class="btn ghost small" id="diarioTodoBtn" style="margin-bottom:12px;">Ver las ${entries.length} sesiones</button>`;
+    if(state.diarioAbierto == null && state.editEntry == null) html += `<p class="snack-nota" style="margin-top:0;">Toca una sesión para ver el detalle ejercicio a ejercicio.</p>`;
+  }
+  entries.slice().reverse().forEach((e, revIdx)=>{
     const idx = entries.length - 1 - revIdx;   // índice real en el array
     const editando = state.editEntry === idx;
     const abierto = state.diarioAbierto === idx;
+    if(!abierto && !editando) return;
     const tieneDetalle = (e.exercises && e.exercises.length) || (e.drills && e.drills.length);
     html += `<div class="entry"><div class="entry-top diario-cab" data-diario="${idx}" style="cursor:pointer;">
         <span>${abierto?'▾':'▸'} ${e.date} · ${e.day}${e.turno?` · ${escapeHtml(e.turno)}`:''}${e.tipoSesion?` · ${escapeHtml(e.tipoSesion)}`:''}</span>
@@ -12386,6 +13560,8 @@ async function tplPerfilCoachBodyBase(athleteId){
       <div class="full"><label class="field-label">Plan</label>
 <select id="editAthPlan" style="width:100%;">${Object.keys(PLANES).map(k=>`<option value="${k}" ${planDe(a).id===k?'selected':''}>${PLANES[k].nombre} · ${PLANES[k].precio} €/mes</option>`).join('')}</select>
 <p style="font-size:11px;color:var(--muted);margin-top:6px;">${a && !a.plan ? 'Sin plan asignado: cuenta como High Performance. ' : ''}Activa o desactiva la competición, el informe y los topes de vídeos según el plan.</p></div>
+<div class="full"><label class="field-label">Fecha de inicio</label><input type="date" id="editAthInicio" value="${a && a.fechaInicio ? a.fechaInicio : ''}" style="width:100%;"><p style="font-size:11px;color:var(--muted);margin-top:6px;">Sirve para contar las semanas que lleva y saber cuándo toca la videollamada de seguimiento.</p></div>
+<div class="full"><label class="field-label">Escala de valoración</label><select id="editAthEscala" style="width:100%;"><option value="5" ${escalaDe(a)===5?'selected':''}>1-5 (recomendada al empezar)</option><option value="10" ${escalaDe(a)===10?'selected':''}>1-10 (atletas con tiempo contigo)</option></select><p style="font-size:11px;color:var(--muted);margin-top:6px;">Es la que se propone en sus informes. Puedes cambiarla cuando quieras y, dentro de cada informe, también.</p></div>
 <div class="full"><label class="field-label">Perfiles <span style="font-weight:400;text-transform:none;letter-spacing:0;">— puedes marcar varios</span></label>
         <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">Cada uno desbloquea sus propias pantallas (pista y drills, estaciones Hyrox, mediciones corporales…). Lo común — rutina, diario, tests generales — se ve siempre, lleve el perfil que lleve.</p>
         <div class="gal-secs" id="editAthPerfiles">
@@ -12786,6 +13962,7 @@ async function tplCaptacion(){
 // "Desde galería" dentro de cada día, como hasta ahora.
 async function tplGaleriaCoach(){
   if(state.galVista === 'videos') return await tplGaleriaVideos();
+  if(state.galVista === 'snack') return await tplGaleriaSnack();
   const lib = await getExLib();
   const secciones = await getSecciones();
   const notas = await getNotasSeccion();
@@ -13011,6 +14188,384 @@ async function retestInfo(athleteId){
   return { ultima, proxima, dias, vencido: dias <= 7, plan };
 }
 
+// ---------- INFORME DE SEGUIMIENTO (videollamada) ----------
+// Se rellena solo con lo que la app ya registra y deja sitio para lo que el atleta cuenta en la
+// llamada. Cada informe guarda su propia foto de los datos, para poder comparar con los anteriores
+// y con el principio. El intervalo entre videollamadas y la escala (1-5 o 1-10) se cambian cuando quieras.
+const INFORME_SEMANAS_DEFECTO = 6;
+const INF_ESTADOS_TEC = { pendiente:'Pendiente', corregida:'Corregida', mejorada:'Mejorada', igual:'Sin cambios' };
+const INF_FASES = [{id:'menstrual', l:'Menstrual'}, {id:'folicular', l:'Folicular'}, {id:'ovulatoria', l:'Ovulatoria'}, {id:'lutea', l:'Lútea'}];
+const INF_METRICAS = [
+  { k:'sueno',  l:'Calidad del sueño',               t:'esc5', nota:'check-in diario' },
+  { k:'fatiga', l:'Fatiga muscular',                 t:'esc5', nota:'check-in · más alto = menos fatiga' },
+  { k:'estres', l:'Estrés percibido',                t:'esc5', nota:'check-in · más alto = menos estrés' },
+  { k:'animo',  l:'Ánimo y motivación',              t:'esc5', nota:'check-in diario' },
+  { k:'calidad',l:'Calidad del entreno',             t:'esc5', nota:'tras cada sesión' },
+  { k:'hidrat', l:'Hidratación',                     t:'esc5', nota:'tras cada sesión' },
+  { k:'habitos',l:'Cumplimiento de hábitos',         t:'pct',  nota:'% de días cumplidos' },
+  { k:'sesSem', l:'Sesiones por semana',             t:'n1',   nota:'registradas en el diario' },
+  { k:'carga',  l:'Carga semanal (sRPE)',            t:'n0',   neutro:true, nota:'RPE × minutos' },
+  { k:'rpe',    l:'RPE medio de la sesión (1-10)',   t:'n1',   neutro:true },
+  { k:'acwr',   l:'Relación carga aguda/crónica',    t:'n2',   neutro:true, nota:'0,8-1,3 = zona óptima' }
+];
+const INF_ESCALAS = [
+  { k:'confianza',   l:'Confianza en el entrenamiento', g:'¿Cuánta confianza tienes hoy en lo que haces en cada sesión?' },
+  { k:'sensaciones', l:'Sensaciones respecto al entrenamiento', g:'¿Cómo te sientes durante y después de entrenar?' },
+  { k:'motivacion',  l:'Motivación', g:'¿Con qué ganas llegas a entrenar?' },
+  { k:'sueno',       l:'Calidad del sueño (lo que cuenta)', g:'¿Cómo duermes? ¿Algo ha cambiado en estas semanas?' },
+  { k:'fatiga',      l:'Fatiga acumulada (lo que cuenta)', g:'¿Llegas a final de semana con energía o agotada/o?' },
+  { k:'tolerancia',  l:'Tolerancia a la carga', g:'¿Cómo llevas el volumen y la intensidad actuales?' },
+  { k:'habitos',     l:'Hábitos (cómo los lleva)', g:'¿Qué hábitos te resultan fáciles y cuáles se te hacen cuesta arriba?' }
+];
+const INF_CHECK = [
+  'Revisar los datos del periodo y actualizarlos si hace falta',
+  'Mirar los vídeos pendientes de revisar y la técnica de los ejercicios clave',
+  'Releer el informe anterior y qué acordamos',
+  'Preparar 2-3 logros concretos para empezar con algo positivo',
+  'Pensar 1-2 ajustes del plan para proponer',
+  'Mandar el enlace de la videollamada y recordar la hora'
+];
+const INF_GUION = [
+  ['0-5 min', 'Apertura', 'Pregunta cómo está, no cómo va el entreno. Empieza por un logro concreto.'],
+  ['5-12 min', 'Lo que cuenta ella/él', 'Sensaciones, confianza, lo que le encanta, lo que no, inquietudes. Escucha y apunta sin interrumpir.'],
+  ['12-20 min', 'Los datos juntos', 'Enseña la tabla: principio, anterior y ahora. Que sea ella/él quien interprete primero.'],
+  ['20-26 min', 'Técnica y carga', 'Ejercicios clave: qué ha mejorado, qué sigue pendiente, qué vídeo grabar.'],
+  ['26-30 min', 'Cierre y acuerdos', 'Resume 2-3 acuerdos, el ajuste del plan y la fecha de la próxima. Pide confirmar el resumen por escrito.']
+];
+async function getInformeCfg(){
+  const raw = await safeGet('informe-config', true); let o = {};
+  try{ o = raw ? JSON.parse(raw) : {}; }catch(e){}
+  return { semanas: (o.semanas >= 2 && o.semanas <= 26) ? Math.round(o.semanas) : INFORME_SEMANAS_DEFECTO, umbral: (o.umbral > 0 && o.umbral < 50) ? o.umbral : 5 };
+}
+async function getInformes(athleteId){
+  const raw = await safeGet('informes-'+athleteId, true);
+  try{ const l = raw ? JSON.parse(raw) : []; return (Array.isArray(l) ? l : []).filter(x=>x && typeof x === 'object'); }catch(e){ return []; }
+}
+async function saveInformes(athleteId, l){ return safeSet('informes-'+athleteId, JSON.stringify(l), true); }
+const escalaDe = at=>(at && at.escala === 10) ? 10 : 5;
+// Convierte un valor de una escala a otra manteniendo la posición (3/5 → 5,5/10).
+function aEscala(v, de, a){ if(v === null || v === undefined || v === '' || isNaN(v)) return null; if(de === a) return +v; return Math.round((1 + (v-1)*(a-1)/(de-1))*10)/10; }
+const nFmt = (x, d)=>(x === null || x === undefined || !isFinite(x)) ? '—' : (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toFixed(d).replace('.', ',');
+function infPath(o, path){ return path.split('.').reduce((a,k)=>(a && a[k] !== undefined) ? a[k] : undefined, o); }
+function infSet(o, path, val){ const ks = path.split('.'); let c = o; ks.slice(0,-1).forEach(k=>{ if(!c[k] || typeof c[k] !== 'object') c[k] = {}; c = c[k]; }); c[ks[ks.length-1]] = val; }
+
+async function informeInfo(athleteId){
+  const at = state.athletes.find(a=>a.id === athleteId); if(!at) return null;
+  const cfg = await getInformeCfg(), infs = await getInformes(athleteId), hoy = todayISO();
+  let inicio = at.fechaInicio || '';
+  if(!inicio){ try{ const j = JSON.parse((await safeGet('journal-'+athleteId, true)) || '[]'); const f = (Array.isArray(j) ? j : []).map(e=>e && e.date).filter(Boolean).sort()[0]; if(f) inicio = f; }catch(e){} }
+  const ultimo = infs.filter(r=>r.estado === 'enviado').map(r=>r.fecha).sort().pop() || '';
+  const base = ultimo || inicio, proxima = base ? sumaDiasISO(base, cfg.semanas*7) : '';
+  const dia = s=>new Date(s+'T00:00:00').getTime();
+  return { at, plan:planDe(at), cfg, inicio, informes:infs, ultimo, proxima, n:infs.length+1, sinInicio:!inicio,
+    semana: inicio ? Math.max(1, Math.floor((dia(hoy) - dia(inicio))/(7*86400000)) + 1) : null,
+    dias: proxima ? Math.round((dia(proxima) - dia(hoy))/86400000) : null };
+}
+// Datos del periodo, calculados con lo que ya hay en la app.
+async function datosInforme(athleteId){
+  const rawJ = await safeGet('journal-'+athleteId, true); let j = []; try{ j = rawJ ? JSON.parse(rawJ) : []; }catch(e){}
+  const defs = await getHabitDefs(athleteId);
+  return { journal:(Array.isArray(j) ? j : []).filter(e=>e && e.date), rd: await getReadiness(athleteId), log: await getHabitLog(athleteId), defs: defs.coach.concat(defs.athlete) };
+}
+function mediaInf(a){ const v = a.filter(x=>typeof x === 'number' && isFinite(x)); return v.length ? v.reduce((s,x)=>s+x,0)/v.length : null; }
+function metricasPeriodo(d, desde, hasta){
+  const en = f=>f >= desde && f <= hasta, dias = Math.max(1, Math.round((new Date(hasta+'T00:00:00') - new Date(desde+'T00:00:00'))/86400000) + 1), sem = dias/7;
+  const js = d.journal.filter(e=>en(e.date)), rdv = Object.keys(d.rd || {}).filter(en).map(f=>d.rd[f]).filter(Boolean);
+  const m = { sesiones:js.length, sesSem:js.length/sem, rpe:mediaInf(js.map(e=>e.overallRPE)), carga:js.reduce((a,e)=>a+(e.fatigueScore || 0), 0)/sem,
+    hidrat:mediaInf(js.map(e=>e.hidratacion)), calidad:mediaInf(js.map(e=>e.calidad)),
+    sueno:mediaInf(rdv.map(x=>x.sueno)), fatiga:mediaInf(rdv.map(x=>x.fatiga)), estres:mediaInf(rdv.map(x=>x.estres)), animo:mediaInf(rdv.map(x=>x.animo)) };
+  let hechos = 0, total = 0;
+  for(let i=0;i<dias;i++){ const f = sumaDiasISO(desde, i); d.defs.forEach(def=>{ const c = habitoCumplido(def, (d.log || {})[f]); if(c === true || c === false){ total++; if(c) hechos++; } }); }
+  m.habitos = total ? hechos/total*100 : null;
+  const suma = n=>d.journal.filter(e=>e.date > sumaDiasISO(hasta, -n) && e.date <= hasta).reduce((a,e)=>a+(e.fatigueScore || 0), 0), cron = suma(28)/4;
+  m.acwr = cron > 0 ? suma(7)/cron : null;
+  return m;
+}
+// Ejercicios con más sesiones: primera carga frente a la mejor de ahora.
+function ejerciciosClave(d, n){
+  const out = [];
+  extraeSeries(d.journal).forEach(v=>{
+    const dt = v.datos.filter(x=>x.carga !== null);
+    if(dt.length >= 2){ const primera = dt[0].carga, mejor = Math.max(...dt.slice(Math.ceil(dt.length/2)).map(x=>x.carga));
+      out.push({ nombre:v.nombre, sesiones:dt.length, primera, mejor, cambio: primera > 0 ? (mejor - primera)/primera*100 : null }); }
+  });
+  return out.sort((a,b)=>b.sesiones - a.sesiones).slice(0, n || 5);
+}
+async function cicloParaInforme(athleteId){
+  const at = state.athletes.find(a=>a.id === athleteId);
+  if(!at || esMenor(at)) return null;
+  const raw = await safeGet('intake-'+athleteId, true); let genero = ''; try{ genero = raw ? (JSON.parse(raw).genero || '') : ''; }catch(e){}
+  const ciclo = await getCiclo(athleteId);
+  if(genero !== 'Mujer' || consentCicloDe(ciclo) !== 'si' || ciclo.anticonceptivo === 'combinado') return null;
+  const qraw = await safeGet('quest-'+athleteId, true); let resp = []; try{ resp = qraw ? JSON.parse(qraw) : []; }catch(e){}
+  const jraw = await safeGet('journal-'+athleteId, true); let jj = []; try{ jj = jraw ? JSON.parse(jraw) : []; }catch(e){}
+  const t = calculaTendenciaCiclo(ciclo, Array.isArray(resp) ? resp : [], await getReadiness(athleteId), entrenosParaCiclo(await getCicloEntreno(athleteId), Array.isArray(jj) ? jj : []));
+  return { t, ciclo };
+}
+function informeVacio(info, escala, previo){
+  const rep = { id:uid(), n:info.n, fecha:todayISO(), escala, estado:'borrador', creado:new Date().toISOString(), auto:null,
+    s:{ obj:{ objetivos:'', logros:'', proximos:'' }, tec:[], esc:{}, txt:{}, ciclo:{ fases:{}, nota:'' }, descarga:{ cada:'', ultima:'', notas:'' }, accion:{ ajustes:'', compromisos:'', proxima:'' }, priv:'', conf:'' }, check:{} };
+  if(previo && previo.s){
+    rep.s.tec = (previo.s.tec || []).filter(r=>r && r.ej).map(r=>({ ej:r.ej, obs:'', estado:'pendiente', val:null, prev:{ obs:r.obs || '', estado:r.estado || '', val:r.val, escala:previo.escala || 5 } }));
+    rep.s.obj.objetivos = (previo.s.accion && previo.s.accion.proxima) || '';
+  }
+  return rep;
+}
+async function calculaAutoInforme(info, rep){
+  const d = await datosInforme(info.at.id), hasta = rep.fecha;
+  const previo = info.informes.filter(r=>r.id !== rep.id && String(r.creado || r.fecha) < String(rep.creado || rep.fecha)).sort((a,b)=>String(a.creado || a.fecha).localeCompare(String(b.creado || b.fecha))).pop();
+  const ventana = sumaDiasISO(hasta, -(info.cfg.semanas*7 - 1));
+  const desde = previo ? (previo.fecha < hasta ? sumaDiasISO(previo.fecha, 1) : hasta) : ((info.inicio && info.inicio > ventana) ? info.inicio : ventana);
+  const out = { desde, hasta, periodo: metricasPeriodo(d, desde, hasta), claves: ejerciciosClave(d, 5), inicio:null };
+  if(info.inicio){ const fin = [sumaDiasISO(info.inicio, 27), sumaDiasISO(desde, -1)].sort()[0]; if(fin >= sumaDiasISO(info.inicio, 6)){ out.inicio = metricasPeriodo(d, info.inicio, fin); out.inicioHasta = fin; } }
+  const c = await cicloParaInforme(info.at.id);
+  if(c){ out.ciclo = {}; CICLO_BLOQUES.forEach(b=>{ out.ciclo[b] = { n:{ ses:c.t.sesion.bloques[b].n, dia:c.t.diario.bloques[b].n }, sesion:c.t.sesion.bloques[b].medias, diario:c.t.diario.bloques[b].medias }; }); out.cicloPatrones = c.t.sesion.patrones.length + c.t.diario.patrones.length + c.t.semanal.patrones.length; }
+  return out;
+}
+function anteriorDe(info, rep){ return info.informes.filter(r=>r.id !== rep.id && r.auto && String(r.creado || r.fecha) < String(rep.creado || rep.fecha)).sort((a,b)=>String(a.creado || a.fecha).localeCompare(String(b.creado || b.fecha))).pop() || null; }
+function fmtMetrica(m, v, esc){
+  if(v === null || v === undefined) return '—';
+  if(m.t === 'esc5') return nFmt(aEscala(v, 5, esc), 1) + '/' + esc;
+  if(m.t === 'pct') return nFmt(v, 0) + ' %';
+  return nFmt(v, m.t === 'n0' ? 0 : (m.t === 'n2' ? 2 : 1));
+}
+function cambioMetrica(m, a, b, umbral){
+  if(a === null || a === undefined || b === null || b === undefined || !isFinite(a) || !isFinite(b)) return { txt:'—', cls:'' };
+  const pct = a !== 0 ? (b - a)/Math.abs(a)*100 : null, signo = b > a ? '↑' : (b < a ? '↓' : '→');
+  const grande = pct !== null && Math.abs(pct) >= umbral;
+  return { txt: `${signo} ${pct === null ? '' : (pct > 0 ? '+' : '') + nFmt(pct, 0) + ' %'}`, cls: (!grande || m.neutro) ? 'inf-neu' : (b > a ? 'inf-bien' : 'inf-mal'), notable: grande && !m.neutro };
+}
+// Tabla de evolución: principio, informe anterior y ahora.
+function tablaEvolucion(rep, info, ant){
+  const au = rep.auto; if(!au) return '';
+  const esc = rep.escala, um = info.cfg.umbral, pa = ant && ant.auto ? ant.auto.periodo : null, ini = au.inicio, now = au.periodo;
+  const cols = [ini ? 'Principio' : null, pa ? 'Anterior' : null, 'Ahora'].filter(Boolean);
+  let h = `<table class="inf-tabla"><thead><tr><th>Indicador</th>${cols.map(c=>`<th>${c}</th>`).join('')}<th>Cambio${ini ? ' vs principio' : (pa ? ' vs anterior' : '')}</th></tr></thead><tbody>`;
+  INF_METRICAS.forEach(m=>{
+    const v = now[m.k], base = ini ? ini[m.k] : (pa ? pa[m.k] : null), c = cambioMetrica(m, base, v, um);
+    if(v === null && (ini ? ini[m.k] : null) === null && (pa ? pa[m.k] : null) === null) return;
+    h += `<tr><td>${m.l}${m.nota ? `<small>${m.nota}</small>` : ''}</td>${ini ? `<td>${fmtMetrica(m, ini[m.k], esc)}</td>` : ''}${pa ? `<td>${fmtMetrica(m, pa[m.k], esc)}</td>` : ''}<td><b>${fmtMetrica(m, v, esc)}</b></td><td class="${c.cls}">${c.txt}${c.notable ? ' · cambio notable' : ''}</td></tr>`;
+  });
+  return h + `</tbody></table>`;
+}
+function tablaCargas(rep){
+  const cl = rep.auto && rep.auto.claves ? rep.auto.claves : []; if(!cl.length) return '';
+  return `<table class="inf-tabla"><thead><tr><th>Ejercicio clave</th><th>Sesiones</th><th>Primera carga</th><th>Mejor reciente</th><th>Cambio</th></tr></thead><tbody>${cl.map(x=>`<tr><td>${escapeHtml(x.nombre)}</td><td>${x.sesiones}</td><td>${nFmt(x.primera, 1)}</td><td><b>${nFmt(x.mejor, 1)}</b></td><td class="${x.cambio > 0 ? 'inf-bien' : (x.cambio < 0 ? 'inf-mal' : 'inf-neu')}">${x.cambio === null ? '—' : (x.cambio > 0 ? '↑ +' : (x.cambio < 0 ? '↓ ' : '→ ')) + nFmt(x.cambio, 0) + ' %'}</td></tr>`).join('')}</tbody></table>`;
+}
+function tablaCiclo(rep){
+  const c = rep.auto && rep.auto.ciclo; if(!c) return '';
+  const items = [['rendsesion','Rendimiento vs lo habitual (tras entrenar)','sesion'], ['calidad','Calidad del entreno','sesion'], ['molestias','Molestias del ciclo (antes)','sesion'], ['sueno','Sueño','diario'], ['fatiga','Fatiga muscular','diario'], ['animo','Ánimo y motivación','diario']];
+  let h = `<table class="inf-tabla"><thead><tr><th>Observado (1-5)</th>${CICLO_BLOQUES.map(b=>`<th>${CICLO_BLOQUE_LABEL[b]}</th>`).join('')}</tr></thead><tbody>`;
+  items.forEach(([k,l,src])=>{ if(!CICLO_BLOQUES.some(b=>c[b][src][k] !== null && c[b][src][k] !== undefined)) return;
+    h += `<tr><td>${l}</td>${CICLO_BLOQUES.map(b=>{ const v = c[b][src][k]; return `<td>${v === null || v === undefined ? '—' : nFmt(v, 1)}</td>`; }).join('')}</tr>`; });
+  h += `<tr><td><small>Entrenos / días con datos</small></td>${CICLO_BLOQUES.map(b=>`<td><small>${c[b].n.ses} / ${c[b].n.dia}</small></td>`).join('')}</tr></tbody></table>`;
+  return h;
+}
+const AVISO_CICLO = 'Observamos patrones a partir del calendario y de lo que se ha ido anotando: es una estimación, no un diagnóstico, y se interpreta con 3 o más ciclos. No implica que entrenar de una forma u otra según la fase mejore el rendimiento.';
+
+// ---------- Editor ----------
+function infEscalaHtml(rep, path, prev){
+  const esc = rep.escala, v = infPath(rep.s, path);
+  let h = `<div class="scale inf-scale" data-infesc="${path}">${Array.from({length:esc}, (_,i)=>i+1).map(n=>`<button type="button" data-val="${n}" class="${String(v)===String(n)?'sel':''}">${n}</button>`).join('')}</div>
+    <div class="scale-labels"><span>1 · muy mal</span><span>${esc} · muy bien</span></div>`;
+  if(prev !== null && prev !== undefined) h += `<p class="inf-prev">Antes: <b>${nFmt(prev, 1)}/${esc}</b></p>`;
+  return h;
+}
+function infTxt(rep, path, label, ph, rows){
+  return `<div class="q-item"><label class="field-label">${label}</label><textarea data-inf="${path}" placeholder="${escapeHtml(ph || '')}" style="min-height:${(rows || 2)*26}px;">${escapeHtml(infPath(rep.s, path) || '')}</textarea></div>`;
+}
+function infSec(num, titulo, guia, cuerpo, abierta){
+  return `<details class="inf-sec" ${abierta ? 'open' : ''}><summary><i>${num}</i>${titulo}</summary>${guia ? `<p class="inf-guia">💬 ${guia}</p>` : ''}<div class="inf-cuerpo">${cuerpo}</div></details>`;
+}
+function infPrevEsc(prev, k, esc){ if(!prev || !prev.s || !prev.s.esc) return null; return aEscala(prev.s.esc[k], prev.escala || 5, esc); }
+async function tplInformeEditor(athleteId){
+  const info = await informeInfo(athleteId); if(!info) return `<div class="card"><div class="empty">No se encuentra a esta atleta.</div></div>`;
+  let rep = info.informes.find(r=>r.id === state.informeId);
+  if(!rep){ rep = informeVacio(info, escalaDe(info.at), info.informes.slice().sort((a,b)=>String(a.creado || a.fecha).localeCompare(String(b.creado || b.fecha))).pop()); rep.auto = await calculaAutoInforme(info, rep); info.informes.push(rep); await saveInformes(athleteId, info.informes); state.informeId = rep.id; }
+  if(!rep.auto){ rep.auto = await calculaAutoInforme(info, rep); await saveInformes(athleteId, info.informes); }
+  const ant = anteriorDe(info, rep), esc = rep.escala, s = rep.s;
+  if(state.informeVista === 'doc') return tplInformeVista(rep, info, ant);
+  const ciclo = rep.auto.ciclo ? true : false;
+  let h = `<div class="row" style="justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;"><button class="btn ghost small" id="infVolver">← Informes</button><span class="mod-tag">${rep.estado === 'enviado' ? 'Enviado' : 'Borrador'}</span></div>
+    <div class="card"><h2 style="margin-bottom:4px;">${escapeHtml(info.at.name)} · Informe nº ${rep.n}</h2>
+      <p class="sj-sub">${tplPlanTag(info.at)} Semana ${info.semana || '—'} · videollamada del <input type="date" data-infmeta="fecha" value="${rep.fecha}" style="font-size:12px;padding:3px 6px;"> · datos del ${fechaCortaISO(rep.auto.desde)} al ${fechaCortaISO(rep.auto.hasta)}</p>
+      <div class="row" style="gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px;"><span class="field-label" style="margin:0;">Escala de este informe</span>
+        ${[5,10].map(n=>`<button type="button" class="gs-chip ${esc===n?'on':''}" data-infescala="${n}">1-${n}</button>`).join('')}<span class="sj-sub" style="margin:0;">Al cambiarla se convierten los valores ya apuntados.</span></div>
+      <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:12px;"><button class="btn small" id="infVista">Ver documento</button><button class="btn ghost small" id="infActualiza">Actualizar datos</button>
+        ${info.dias !== null ? `<button class="btn ghost small" data-infprogramar="${athleteId}">Programar la videollamada</button>` : ''}</div></div>`;
+  h += infSec('·', 'Antes de la llamada', '', `${INF_CHECK.map((t,i)=>`<label class="q-config-item"><input type="checkbox" data-infcheck="${i}" ${rep.check && rep.check[i] ? 'checked' : ''}> ${t}</label>`).join('')}
+    <div class="block-title">Guion sugerido (30 min)</div>${INF_GUION.map(g=>`<div class="inf-guion"><b>${g[0]}</b><span><b>${g[1]}.</b> ${g[2]}</span></div>`).join('')}`, !rep.check || !Object.keys(rep.check).length);
+  h += infSec('1', 'Resumen y objetivos', 'Empieza por lo bueno: ¿qué has conseguido estas semanas de lo que estás orgullosa/o?',
+    infTxt(rep, 'obj.objetivos', 'Objetivos del periodo (los de la vez anterior)', '', 2) + infTxt(rep, 'obj.logros', 'Logros y cosas que han ido bien', 'Concretos y medibles: «+5 kg en sentadilla», «ha dormido mejor»…', 3), true);
+  h += infSec('2', 'Evolución: principio, anterior y ahora', 'Enséñale la tabla y deja que interprete ella/él primero.', `${tablaEvolucion(rep, info, ant)}${ant ? '' : '<p class="sj-sub">Es el primer informe: la próxima vez verás aquí la comparación con este.</p>'}`, true);
+  h += infSec('3', 'Técnica en ejercicios clave', '¿Qué ejercicio te da más confianza? ¿Cuál te cuesta más ejecutar bien?',
+    `${tablaCargas(rep)}<div class="block-title">Observaciones de técnica</div>${(s.tec || []).map((r,i)=>`<div class="inf-fila"><input type="text" data-inftec="${i}|ej" value="${escapeHtml(r.ej || '')}" placeholder="Ejercicio" style="font-weight:600;"><textarea data-inftec="${i}|obs" placeholder="Qué observas (vídeo, sesión)…" style="min-height:44px;">${escapeHtml(r.obs || '')}</textarea>
+      <div class="row" style="gap:8px;flex-wrap:wrap;align-items:center;"><select data-inftec="${i}|estado">${Object.keys(INF_ESTADOS_TEC).map(k=>`<option value="${k}" ${r.estado === k ? 'selected' : ''}>${INF_ESTADOS_TEC[k]}</option>`).join('')}</select><button type="button" class="sj-del" data-inftecdel="${i}">✕</button></div>
+      <div class="scale inf-scale" data-infesc="tec.${i}.val">${Array.from({length:esc}, (_,k)=>k+1).map(n=>`<button type="button" data-val="${n}" class="${String(r.val)===String(n)?'sel':''}">${n}</button>`).join('')}</div>
+      ${r.prev ? `<p class="inf-prev">Vez anterior: <b>${INF_ESTADOS_TEC[r.prev.estado] || '—'}</b>${r.prev.val ? ' · ' + nFmt(aEscala(r.prev.val, r.prev.escala || 5, esc), 1) + '/' + esc : ''}${r.prev.obs ? ' · ' + escapeHtml(r.prev.obs) : ''}</p>` : ''}</div>`).join('')}
+      <button type="button" class="btn ghost small" id="infTecAdd">+ Añadir ejercicio</button>`, true);
+  h += infSec('4', 'Fatiga y tolerancia a la carga', '¿Cómo llegas a final de semana? ¿Cuándo notas que necesitas bajar el ritmo?',
+    `${INF_ESCALAS.filter(e=>['fatiga','tolerancia'].includes(e.k)).map(e=>`<div class="q-item"><p>${e.l}<small>${e.g}</small></p>${infEscalaHtml(rep, 'esc.'+e.k, infPrevEsc(ant, e.k, esc))}</div>`).join('')}
+    ${infTxt(rep, 'txt.fatiga', 'Lo que cuenta de su fatiga', '', 2)}
+    <div class="block-title">Semanas de descarga</div><div class="ex-grid"><div><label class="field-label">Necesita una descarga cada…</label><select data-inf="descarga.cada"><option value="">—</option>${[3,4,5,6,8].map(n=>`<option value="${n}" ${String(s.descarga && s.descarga.cada) === String(n) ? 'selected' : ''}>cada ${n} semanas</option>`).join('')}</select></div><div><label class="field-label">Última descarga</label><input type="date" data-inf="descarga.ultima" value="${escapeHtml((s.descarga && s.descarga.ultima) || '')}"></div></div>${infTxt(rep, 'descarga.notas', 'Notas sobre la descarga', 'Qué señales avisan, cómo reacciona al bajar carga…', 2)}`, false);
+  h += infSec('5', 'Sueño y hábitos', '¿Cómo duermes? ¿Qué hábito te resulta fácil y cuál cuesta arriba?',
+    `${INF_ESCALAS.filter(e=>['sueno','habitos'].includes(e.k)).map(e=>`<div class="q-item"><p>${e.l}<small>${e.g}</small></p>${infEscalaHtml(rep, 'esc.'+e.k, infPrevEsc(ant, e.k, esc))}</div>`).join('')}${infTxt(rep, 'txt.sueno', 'Sueño: lo que cuenta', '', 2)}${infTxt(rep, 'txt.habitos', 'Hábitos: lo que cuenta', '', 2)}`, false);
+  h += infSec('6', 'Confianza y sensaciones', '¿Te sientes más fuerte/capaz que hace unas semanas? ¿Qué te gustaría que cambiara?',
+    `${INF_ESCALAS.filter(e=>['confianza','sensaciones','motivacion'].includes(e.k)).map(e=>`<div class="q-item"><p>${e.l}<small>${e.g}</small></p>${infEscalaHtml(rep, 'esc.'+e.k, infPrevEsc(ant, e.k, esc))}</div>`).join('')}${infTxt(rep, 'txt.sensaciones', 'Sensaciones respecto al entrenamiento', '', 2)}`, false);
+  if(ciclo) h += infSec('7', 'Ciclo menstrual: observar patrones', 'Solo si ella quiere comentarlo. ¿Notas diferencias en cómo entrenas según el momento del ciclo?',
+    `<p class="sj-sub">${AVISO_CICLO}</p>${tablaCiclo(rep)}<div class="block-title">¿Le afecta?</div>${INF_FASES.map(f=>`<div class="inf-fila"><b>${f.l}</b><div class="row" style="gap:8px;"><select data-inf="ciclo.fases.${f.id}.afecta"><option value="">—</option>${['No', 'Un poco', 'Sí'].map(o=>`<option ${infPath(s, 'ciclo.fases.'+f.id+'.afecta') === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div><textarea data-inf="ciclo.fases.${f.id}.nota" placeholder="Qué nota, qué le ayuda…" style="min-height:40px;">${escapeHtml(infPath(s, 'ciclo.fases.'+f.id+'.nota') || '')}</textarea></div>`).join('')}${infTxt(rep, 'ciclo.nota', 'Conclusión (en común con ella/él)', '', 2)}`, false);
+  h += infSec(ciclo ? '8' : '7', 'Lo que me cuentas', '¿Qué ejercicios te encantan? ¿Cuáles no? ¿Qué te preocupa? ¿Qué piensas de tu evolución?',
+    `${infTxt(rep, 'txt.evolucion', 'Qué piensa de su evolución', '', 3)}${infTxt(rep, 'txt.encantan', 'Ejercicios que le encantan', '', 2)}${infTxt(rep, 'txt.noGustan', 'Ejercicios que no le gustan', '', 2)}${infTxt(rep, 'txt.inquietudes', 'Inquietudes', '', 3)}`, false);
+  h += infSec(ciclo ? '9' : '8', 'Plan de acción', 'Resume 2-3 acuerdos y pide confirmación por escrito.',
+    `${infTxt(rep, 'accion.ajustes', 'Ajustes del plan', 'Qué cambias y por qué', 3)}${infTxt(rep, 'accion.compromisos', 'Compromisos de cada uno', '', 2)}${infTxt(rep, 'accion.proxima', 'Objetivos de las próximas semanas', '', 3)}<div class="q-item"><label class="field-label">Próxima videollamada</label><p class="sj-sub" style="margin:0;">${info.proxima ? fechaCortaISO(sumaDiasISO(rep.fecha, info.cfg.semanas*7)) : '—'} (cada ${info.cfg.semanas} semanas)</p></div>`, false);
+  h += infSec(ciclo ? '10' : '9', 'Comentarios de la atleta / atleta', 'Después de enviarle el documento: ¿está de acuerdo con el resumen?', infTxt(rep, 'conf', 'Su confirmación o comentarios', 'Lo que responde al leer el informe', 2), false);
+  h += infSec('🔒', 'Notas privadas', 'No salen en el documento que envías.', infTxt(rep, 'priv', 'Solo para ti', 'Impresiones, cosas a vigilar, cómo ha ido la llamada…', 3), false);
+  return h + `<div class="card"><button class="btn" id="infVista2" style="width:100%;">Ver documento para enviar</button></div>`;
+}
+
+// ---------- Documento para enviar ----------
+function infEscFila(rep, ant, k, l){
+  const v = infPath(rep.s, 'esc.'+k); if(v === null || v === undefined || v === '') return '';
+  const p = infPrevEsc(ant, k, rep.escala), c = (p !== null && p !== undefined) ? cambioMetrica({}, p, v, 0) : null;
+  return `<tr><td>${l}</td><td><b>${v}/${rep.escala}</b></td><td>${p !== null && p !== undefined ? nFmt(p, 1) + '/' + rep.escala : '—'}</td><td class="${c ? c.cls : ''}">${c ? c.txt.split(' ')[0] : '—'}</td></tr>`;
+}
+function infParrafo(titulo, txt){ return txt && String(txt).trim() ? `<p class="inf-p"><b>${titulo}</b><br>${escapeHtml(txt).replace(/\n/g, '<br>')}</p>` : ''; }
+function tplInformeDoc(rep, info, ant){
+  const s = rep.s, esc = rep.escala, at = info.at;
+  const escTabla = ks=>{ const f = ks.map(k=>infEscFila(rep, ant, k, (INF_ESCALAS.find(e=>e.k === k) || {}).l)).join(''); return f ? `<table class="inf-tabla"><thead><tr><th>Valoración (1-${esc})</th><th>Ahora</th><th>Antes</th><th></th></tr></thead><tbody>${f}</tbody></table>` : ''; };
+  const sec = (n, t, cuerpo)=>cuerpo && cuerpo.trim() ? `<h3><i>${n}</i>${t}</h3>${cuerpo}` : '';
+  let n = 0; const num = ()=>++n;
+  const tec = (s.tec || []).filter(r=>r && (r.ej || r.obs));
+  let h = `<div class="inf-doc"><div class="inf-cab"><svg viewBox="0 0 100 100" class="inf-logo"><path d="M26 18 L26 62 L50 82 L50 64 L40 56 L40 18 Z" fill="#1B2A49"/><path d="M74 18 L74 62 L50 82 L50 64 L60 56 L60 18 Z" fill="#C9A227"/></svg>
+    <div><div class="inf-marca">UMBRAL</div><h2>Informe de seguimiento nº ${rep.n}</h2></div></div>
+    <table class="inf-meta"><tr><td><small>Atleta</small><b>${escapeHtml(at.name)}</b></td><td><small>Plan</small><b>${escapeHtml(info.plan.nombre)}</b></td><td><small>Videollamada</small><b>${fechaCortaISO(rep.fecha)}</b></td><td><small>Semana</small><b>${info.semana || '—'}</b></td></tr></table>
+    <p class="inf-sub">Periodo analizado: del ${fechaCortaISO(rep.auto.desde)} al ${fechaCortaISO(rep.auto.hasta)}.</p>`;
+  h += sec(num(), 'Resumen del periodo', infParrafo('Objetivos', s.obj.objetivos) + infParrafo('Logros', s.obj.logros));
+  h += sec(num(), 'Evolución: principio, anterior y ahora', tablaEvolucion(rep, info, ant));
+  h += sec(num(), 'Técnica en ejercicios clave', tablaCargas(rep) + (tec.length ? `<table class="inf-tabla"><thead><tr><th>Ejercicio</th><th>Estado</th><th>Valoración</th><th>Observaciones</th></tr></thead><tbody>${tec.map(r=>`<tr><td><b>${escapeHtml(r.ej || '')}</b></td><td>${INF_ESTADOS_TEC[r.estado] || ''}</td><td>${r.val ? r.val + '/' + esc : '—'}</td><td>${escapeHtml(r.obs || '')}</td></tr>`).join('')}</tbody></table>` : ''));
+  const d = s.descarga || {};
+  h += sec(num(), 'Fatiga y tolerancia a la carga', escTabla(['fatiga','tolerancia']) + infParrafo('Lo que cuentas', s.txt.fatiga) + (d.cada ? infParrafo('Semanas de descarga', `Una descarga cada ${d.cada} semanas${d.ultima ? ' · última: ' + fechaCortaISO(d.ultima) : ''}${d.notas ? '. ' + d.notas : ''}.`) : infParrafo('Semanas de descarga', d.notas)));
+  h += sec(num(), 'Sueño y hábitos', escTabla(['sueno','habitos']) + infParrafo('Sueño', s.txt.sueno) + infParrafo('Hábitos', s.txt.habitos));
+  h += sec(num(), 'Confianza y sensaciones', escTabla(['confianza','sensaciones','motivacion']) + infParrafo('Sensaciones respecto al entrenamiento', s.txt.sensaciones));
+  const fasesTxt = INF_FASES.map(f=>{ const a = infPath(s, 'ciclo.fases.'+f.id+'.afecta'), t = infPath(s, 'ciclo.fases.'+f.id+'.nota'); return (a || t) ? `<tr><td><b>${f.l}</b></td><td>${a || '—'}</td><td>${escapeHtml(t || '')}</td></tr>` : ''; }).join('');
+  if(rep.auto.ciclo && (fasesTxt || (s.ciclo && s.ciclo.nota))) h += sec(num(), 'Ciclo menstrual: observar patrones', tablaCiclo(rep) + (fasesTxt ? `<table class="inf-tabla"><thead><tr><th>Fase</th><th>¿Afecta?</th><th>Lo que notas</th></tr></thead><tbody>${fasesTxt}</tbody></table>` : '') + infParrafo('Conclusión', s.ciclo.nota) + `<p class="inf-aviso">${AVISO_CICLO}</p>`);
+  h += sec(num(), 'Lo que me cuentas', infParrafo('Cómo ves tu evolución', s.txt.evolucion) + infParrafo('Ejercicios que te encantan', s.txt.encantan) + infParrafo('Ejercicios que no te gustan', s.txt.noGustan) + infParrafo('Inquietudes', s.txt.inquietudes));
+  h += sec(num(), 'Plan de acción', infParrafo('Ajustes del plan', s.accion.ajustes) + infParrafo('Compromisos', s.accion.compromisos) + infParrafo('Objetivos de las próximas semanas', s.accion.proxima) + `<p class="inf-p"><b>Próxima videollamada</b><br>${fechaCortaISO(sumaDiasISO(rep.fecha, info.cfg.semanas*7))} (cada ${info.cfg.semanas} semanas)</p>`);
+  h += sec(num(), 'Tu confirmación', `<p class="inf-p">Si estás de acuerdo con este resumen, respóndeme «de acuerdo» o cuéntame qué cambiarías.</p>${s.conf ? infParrafo('Tu respuesta', s.conf) : '<div class="inf-caja"></div>'}`);
+  return h + `<p class="inf-pie">Documento preparado para comentarlo en la videollamada. Los datos salen de lo que has ido registrando en la app y de lo que me has contado.</p></div>`;
+}
+function informeTexto(rep, info, ant){
+  const s = rep.s, esc = rep.escala, L = [], lin = (t, v)=>{ if(v && String(v).trim()) L.push(`${t}: ${String(v).trim()}`); };
+  L.push(`INFORME DE SEGUIMIENTO Nº ${rep.n} · ${info.at.name}`, `${info.plan.nombre} · semana ${info.semana || '—'} · videollamada ${fechaCortaISO(rep.fecha)}`, `Periodo: ${fechaCortaISO(rep.auto.desde)} - ${fechaCortaISO(rep.auto.hasta)}`, '');
+  lin('Objetivos', s.obj.objetivos); lin('Logros', s.obj.logros);
+  L.push('', 'EVOLUCIÓN');
+  INF_METRICAS.forEach(m=>{ const v = rep.auto.periodo[m.k]; if(v === null || v === undefined) return; const base = rep.auto.inicio ? rep.auto.inicio[m.k] : (ant && ant.auto ? ant.auto.periodo[m.k] : null); L.push(`- ${m.l}: ${fmtMetrica(m, v, esc)}${base !== null && base !== undefined ? ` (antes ${fmtMetrica(m, base, esc)})` : ''}`); });
+  const tec = (s.tec || []).filter(r=>r && (r.ej || r.obs)); if(tec.length){ L.push('', 'TÉCNICA EN EJERCICIOS CLAVE'); tec.forEach(r=>L.push(`- ${r.ej}: ${INF_ESTADOS_TEC[r.estado] || ''}${r.val ? ' · ' + r.val + '/' + esc : ''}${r.obs ? ' · ' + r.obs : ''}`)); }
+  const ev = INF_ESCALAS.filter(e=>infPath(s, 'esc.'+e.k)); if(ev.length){ L.push('', 'VALORACIONES (1-' + esc + ')'); ev.forEach(e=>{ const p = infPrevEsc(ant, e.k, esc); L.push(`- ${e.l}: ${infPath(s, 'esc.'+e.k)}/${esc}${p !== null && p !== undefined ? ` (antes ${nFmt(p, 1)})` : ''}`); }); }
+  L.push(''); lin('Evolución según tú', s.txt.evolucion); lin('Te encantan', s.txt.encantan); lin('No te gustan', s.txt.noGustan); lin('Inquietudes', s.txt.inquietudes);
+  lin('Ajustes del plan', s.accion.ajustes); lin('Compromisos', s.accion.compromisos); lin('Próximos objetivos', s.accion.proxima);
+  L.push('', `Próxima videollamada: ${fechaCortaISO(sumaDiasISO(rep.fecha, info.cfg.semanas*7))}`, '', '¿Estás de acuerdo con este resumen? Respóndeme «de acuerdo» o dime qué cambiarías.');
+  return L.join('\n');
+}
+async function tplInformeVista(rep, info, ant){
+  return `<div class="row" style="justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;"><button class="btn ghost small" id="infEditar">← Seguir editando</button>
+    <div class="row" style="gap:6px;flex-wrap:wrap;"><button class="btn small" id="infPrint">Imprimir / PDF</button><button class="btn ghost small" id="infCopiar">Copiar texto</button><button class="btn ghost small" id="infEnviado">${rep.estado === 'enviado' ? 'Reabrir' : 'Marcar como enviado'}</button></div></div>${tplInformeDoc(rep, info, ant)}`;
+}
+// ---------- Lista de informes (Agenda → Informes) ----------
+async function tplInformes(){
+  if(state.informeAtleta) return await tplInformeEditor(state.informeAtleta);
+  const cfg = await getInformeCfg();
+  let h = `<div class="card"><h2>Informes de seguimiento</h2><p class="sj-sub">Para preparar la videollamada de cada ${cfg.semanas} semanas: se rellena con los datos de la app y apuntas lo que te cuente el atleta. Puedes enviarle el documento para que lo confirme.</p>
+    <details class="sj-guia"><summary>Ajustes</summary><div class="ex-grid" style="margin-top:8px;"><div><label class="field-label">Videollamada cada (semanas)</label><input type="number" id="infCfgSemanas" min="2" max="26" value="${cfg.semanas}"></div>
+      <div><label class="field-label">Cambio «notable» a partir de (%)</label><input type="number" id="infCfgUmbral" min="1" max="49" value="${cfg.umbral}"></div></div><button class="btn small" id="infCfgGuardar" style="margin-top:8px;">Guardar</button></details></div>`;
+  const infos = (await Promise.all(state.athletes.filter(a=>!a.esDemo).map(a=>informeInfo(a.id)))).filter(Boolean);
+  infos.sort((a,b)=>(a.dias === null ? 9999 : a.dias) - (b.dias === null ? 9999 : b.dias));
+  if(!infos.length) return h + `<div class="card"><div class="empty">Aún no hay atletas.</div></div>`;
+  infos.forEach(i=>{
+    const a = i.at, vence = i.dias !== null && i.dias <= 7, borr = i.informes.find(r=>r.estado !== 'enviado');
+    h += `<div class="card ${vence && i.plan.informe ? 'inf-vence' : ''}"><div class="row" style="justify-content:space-between;align-items:center;gap:8px;"><b style="font-family:'Fraunces',serif;font-size:16px;">${escapeHtml(a.name)}</b><span>${tplPlanTag(a)}</span></div>
+      <div class="lead-meta" style="margin-top:8px;"><span>${i.semana ? 'Semana <b>'+i.semana+'</b>' : '<b>Sin fecha de inicio</b>'}</span>${i.proxima ? `<span>Videollamada <b>${fechaCortaISO(i.proxima)}</b> · ${i.dias < 0 ? 'hace '+(-i.dias)+' d' : (i.dias === 0 ? 'hoy' : 'en '+i.dias+' d')}</span>` : ''}<span>${i.informes.length} informe${i.informes.length === 1 ? '' : 's'}</span></div>
+      ${i.sinInicio ? `<div class="q-item"><label class="field-label">Fecha de inicio</label><input type="date" data-infinicio="${a.id}"></div>` : ''}
+      ${i.plan.informe ? '' : '<p class="sj-sub">Plan Health: el informe de evolución no está incluido, pero puedes hacerlo igualmente.</p>'}
+      <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:8px;"><button class="btn small" data-informeabrir="${a.id}|${borr ? borr.id : ''}">${borr ? 'Continuar el borrador' : 'Preparar informe nº '+i.n}</button>
+        ${i.informes.filter(r=>r.estado === 'enviado').sort((x,y)=>y.fecha.localeCompare(x.fecha)).slice(0,3).map(r=>`<button class="btn ghost small" data-informeabrir="${a.id}|${r.id}">Nº ${r.n} · ${fechaCortaISO(r.fecha)}</button>`).join('')}</div></div>`;
+  });
+  return h;
+}
+// ---------- Eventos ----------
+// Los guardados van de uno en uno: si apuntas varias cosas seguidas, ninguna pisa a la anterior.
+let infCola = Promise.resolve();
+function infGuarda(fn){
+  const aid = state.informeAtleta, id = state.informeId; if(!aid) return Promise.resolve(false);
+  const tarea = infCola.then(async ()=>{
+    const lista = await getInformes(aid), rep = lista.find(r=>r.id === id); if(!rep) return false;
+    fn(rep); rep.actualizado = new Date().toISOString();
+    return saveInformes(aid, lista);
+  });
+  infCola = tarea.catch(()=>false);
+  return tarea;
+}
+function infConvierteEscala(rep, a){
+  const de = rep.escala, cv = v=>{ const x = aEscala(v, de, a); return x === null ? v : Math.max(1, Math.min(a, Math.round(x))); };
+  Object.keys(rep.s.esc || {}).forEach(k=>{ if(rep.s.esc[k]) rep.s.esc[k] = cv(rep.s.esc[k]); });
+  (rep.s.tec || []).forEach(r=>{ if(r.val) r.val = cv(r.val); });
+  rep.escala = a;
+}
+let infTimer = null;
+document.addEventListener('toggle', e=>{ const d = e.target; if(d && d.classList && d.classList.contains('inf-sec')){ (state.infOpen = state.infOpen || {})[d.querySelector('summary i').textContent] = d.open; } }, true);
+async function infEntrada(e){
+  const t = e.target; if(!t || !t.dataset) return;
+  if(t.dataset.inf !== undefined){ const path = t.dataset.inf, val = t.value; clearTimeout(infTimer); const go = ()=>infGuarda(r=>infSet(r.s, path, val)); if(e.type === 'input') infTimer = setTimeout(go, 500); else await go(); return; }
+  if(t.dataset.inftec !== undefined){ const [i, campo] = t.dataset.inftec.split('|'); const val = t.value; const go = ()=>infGuarda(r=>{ if(r.s.tec[i]) r.s.tec[i][campo] = val; }); clearTimeout(infTimer); if(e.type === 'input') infTimer = setTimeout(go, 500); else await go(); return; }
+  if(e.type !== 'change') return;
+  if(t.dataset.infcheck !== undefined){ await infGuarda(r=>{ r.check = r.check || {}; r.check[t.dataset.infcheck] = t.checked; }); return; }
+  if(t.dataset.infmeta === 'fecha' && t.value){
+    const aid = state.informeAtleta, info = await informeInfo(aid); await infGuarda(r=>{ r.fecha = t.value; });
+    const l = await getInformes(aid), rep = l.find(r=>r.id === state.informeId); const inf2 = await informeInfo(aid); rep.auto = await calculaAutoInforme(inf2, rep); await saveInformes(aid, l); renderKeepScroll(); return;
+  }
+  if(t.dataset.infinicio){
+    const at = state.athletes.find(a=>a.id === t.dataset.infinicio); if(at && t.value){ at.fechaInicio = t.value; await safeSet('athletes-list', JSON.stringify(state.athletes), true); renderKeepScroll(); }
+  }
+}
+document.addEventListener('input', infEntrada);
+document.addEventListener('change', infEntrada);
+async function imprimirInforme(){
+  const aid = state.informeAtleta, info = await informeInfo(aid), rep = info.informes.find(r=>r.id === state.informeId); if(!rep) return;
+  let w = document.getElementById('infPrintWrap'); if(!w){ w = document.createElement('div'); w.id = 'infPrintWrap'; document.body.appendChild(w); }
+  w.innerHTML = tplInformeDoc(rep, info, anteriorDe(info, rep));
+  document.body.classList.add('print-informe');
+  const fin = ()=>{ document.body.classList.remove('print-informe'); window.removeEventListener('afterprint', fin); };
+  window.addEventListener('afterprint', fin);
+  if(typeof window.print === 'function'){ try{ window.print(); }catch(err){ fin(); } } else fin();
+}
+document.addEventListener('click', async e=>{
+  const t = e.target && e.target.closest ? e.target : null; if(!t) return;
+  const q = s=>t.closest(s);
+  const ab = q('[data-informeabrir]');
+  if(ab){ const [aid, id] = ab.dataset.informeabrir.split('|'); state.agendaSub = 'informes'; state.tab = 'agenda'; state.informeAtleta = aid; state.informeId = id || null; state.informeVista = null; renderScrollTop(); return; }
+  if(q('#infVolver')){ state.informeAtleta = null; state.informeId = null; state.informeVista = null; renderScrollTop(); return; }
+  if(q('#infVista') || q('#infVista2')){ state.informeVista = 'doc'; renderScrollTop(); return; }
+  if(q('#infEditar')){ state.informeVista = null; renderScrollTop(); return; }
+  if(q('#infPrint')){ await imprimirInforme(); return; }
+  if(q('#infCopiar')){ const aid = state.informeAtleta, info = await informeInfo(aid), rep = info.informes.find(r=>r.id === state.informeId); const txt = informeTexto(rep, info, anteriorDe(info, rep));
+    try{ await navigator.clipboard.writeText(txt); toast('Texto copiado'); }catch(err){ toast('No se pudo copiar', true); } return; }
+  if(q('#infEnviado')){ const ok = await infGuarda(r=>{ if(r.estado === 'enviado'){ r.estado = 'borrador'; r.enviadoFecha = ''; } else { r.estado = 'enviado'; r.enviadoFecha = todayISO(); } }); if(ok){ toast('Estado actualizado'); renderKeepScroll(); } return; }
+  if(q('#infActualiza')){ const aid = state.informeAtleta, info = await informeInfo(aid), l = info.informes, rep = l.find(r=>r.id === state.informeId); rep.auto = await calculaAutoInforme(info, rep); await saveInformes(aid, l); toast('Datos actualizados'); renderKeepScroll(); return; }
+  const esc = q('[data-infescala]');
+  if(esc){ const a = parseInt(esc.dataset.infescala, 10); if(await infGuarda(r=>{ if(r.escala !== a) infConvierteEscala(r, a); })) renderKeepScroll(); return; }
+  const eb = q('.inf-scale button');
+  if(eb){ const grp = eb.parentElement, path = grp.dataset.infesc, val = parseInt(eb.dataset.val, 10);
+    const ya = eb.classList.contains('sel'); grp.querySelectorAll('button').forEach(b=>b.classList.remove('sel')); if(!ya) eb.classList.add('sel');
+    await infGuarda(r=>{ const ks = path.split('.'); if(ks[0] === 'tec'){ if(r.s.tec[ks[1]]) r.s.tec[ks[1]].val = ya ? null : val; } else infSet(r.s, path, ya ? null : val); }); return; }
+  if(q('#infTecAdd')){ if(await infGuarda(r=>{ r.s.tec.push({ ej:'', obs:'', estado:'pendiente', val:null }); })) renderKeepScroll(); return; }
+  const td = q('[data-inftecdel]'); if(td){ if(await infGuarda(r=>{ r.s.tec.splice(parseInt(td.dataset.inftecdel, 10), 1); })) renderKeepScroll(); return; }
+  if(q('#infCfgGuardar')){ const s = parseInt(document.getElementById('infCfgSemanas').value, 10), u = parseFloat(document.getElementById('infCfgUmbral').value);
+    const ok = await safeSet('informe-config', JSON.stringify({ semanas:s, umbral:u }), true); toast(ok ? 'Ajustes guardados' : 'No se pudo guardar', !ok); if(ok) renderKeepScroll(); return; }
+  const pr = q('[data-infprogramar]');
+  if(pr){ const info = await informeInfo(pr.dataset.infprogramar), rep = info.informes.find(r=>r.id === state.informeId);
+    const fecha = rep ? rep.fecha : info.proxima; const ok = await safeSet('call-'+info.at.id, JSON.stringify({ nextDate:fecha, duration:'30 min', notes:'Videollamada de seguimiento nº '+(rep ? rep.n : info.n) }), true); toast(ok ? 'Videollamada programada en el calendario' : 'No se pudo programar', !ok); }
+});
+
 async function tplAgenda(){
   const sub = state.agendaSub || 'resumen';
   let html = `<div class="sub-tabs">
@@ -13018,6 +14573,7 @@ async function tplAgenda(){
     <button data-agendasub="tareas" class="${sub==='tareas'?'active':''}">Tareas</button>
     <button data-agendasub="calendario" class="${sub==='calendario'?'active':''}">Calendario</button>
 <button data-agendasub="entrada" class="${sub==='entrada'?'active':''}">Entrada</button>
+<button data-agendasub="informes" class="${sub==='informes'?'active':''}">Informes</button>
     <button data-agendasub="nutricion" class="${sub==='nutricion'?'active':''}">Nutrición</button>
     <button data-agendasub="textos" class="${sub==='textos'?'active':''}">Textos</button>
     <button data-agendasub="contenido" class="${sub==='contenido'?'active':''}">Contenido</button>
@@ -13025,6 +14581,7 @@ async function tplAgenda(){
   if(sub==='tareas') html += await tplTareas();
   else if(sub==='calendario') html += await tplCalendarioCoach();
 else if(sub==='entrada') html += await tplEntrada();
+else if(sub==='informes') html += await tplInformes();
   else if(sub==='nutricion') html += await tplGuiaNutriEditor();
   else if(sub==='textos') html += await tplTextosEducativos();
   else if(sub==='contenido') html += await tplContenidoEditor();
@@ -13093,13 +14650,14 @@ function omitidosResumenHtml(lista){
 }
 async function tplResumen(){
   const now = new Date();
-  const upcomingList = [], unpaidList = [], riskList = [], omitList = [], retestList = [];
+  const upcomingList = [], unpaidList = [], riskList = [], omitList = [], retestList = [], informeList = [];
   for(const a of state.athletes){
     const callRaw = await safeGet('call-'+a.id, true);
     if(callRaw){ const c = JSON.parse(callRaw); if(c.nextDate){ const days=(new Date(c.nextDate)-now)/86400000; if(days>=0 && days<=14) upcomingList.push({id:a.id, name:a.name, date:c.nextDate}); } }
     const profRaw = await safeGet('profile-'+a.id, true);
     if(profRaw){ const p = JSON.parse(profRaw); if(p.pagado==='No' || p.pagado==='Pendiente') unpaidList.push({id:a.id, name:a.name, estado:p.pagado}); }
     { const rt = await retestInfo(a.id); if(rt && rt.vencido) retestList.push({ name:a.name, ...rt }); }
+    { const ii = await informeInfo(a.id); if(ii && ii.plan.informe && ii.dias !== null && ii.dias <= 7) informeList.push({ name:a.name, ...ii }); }
     const omA = await omitidosDeAtleta(a.id, 7); if(omA.length) omitList.push({ id:a.id, name:a.name, items:omA });
     const jRaw = await safeGet('journal-'+a.id, true);
     if(jRaw){
@@ -13117,6 +14675,7 @@ async function tplResumen(){
   const sections = [
     { key:'calls', title:'Próximas videollamadas', count:upcomingList.length, rows: upcomingList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>${u.date}</span></div></div>`).join('') },
     { key:'unpaid', title:'Pagos pendientes', count:unpaidList.length, rows: unpaidList.map(u=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(u.name)}</span><span>${escapeHtml(u.estado)}</span></div></div>`).join('') },
+    { key:'seguimiento', title:'Videollamadas de seguimiento', count:informeList.length, rows: informeList.map(r=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(r.name)}</span><span>${r.dias < 0 ? 'hace '+(-r.dias)+' d' : (r.dias === 0 ? 'hoy' : 'en '+r.dias+' d')}</span></div><div class="sj-linea">Semana ${r.semana || '—'} · toca el ${fechaCortaISO(r.proxima)}.</div><button class="btn ghost small" data-informeabrir="${r.at.id}|" style="margin-top:6px;">Preparar informe</button></div>`).join('') },
     { key:'entrada', title:'Entrada: sin respuesta', count:pipeAl.length, rows: pipeAl.map(p=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(p.nombre)}</span><span>${(PIPE_ETAPAS.find(e=>e.id===p.etapa)||{}).l}</span></div><div class="omit-alerta">Más de ${PIPE_ALERTA_H[p.etapa]} h en este paso.</div></div>`).join('') },
     { key:'retests', title:'Retests (cada 8 semanas)', count:retestList.length, rows: retestList.map(r=>`<div class="entry"><div class="entry-top"><span>${escapeHtml(r.name)}</span><span>${r.dias < 0 ? 'hace '+(-r.dias)+' d' : 'en '+r.dias+' d'}</span></div><div class="sj-linea">Último test ${fechaCortaISO(r.ultima)} · toca repetirlos el ${fechaCortaISO(r.proxima)} (${escapeHtml(r.plan.nombre)}).</div></div>`).join('') },
     { key:'omit', title:'Ejercicios omitidos (7 días)', count:omitList.reduce((n,a)=>n+a.items.length,0), rows: omitidosResumenHtml(omitList) },
@@ -13999,8 +15558,8 @@ async function quitaVideoDeEjercicios(v){
 
 // ----- Galería: pestañas Ejercicios | Vídeos -----
 function tplGaleriaPestanas(nVideos){
-  const v = state.galVista === 'videos';
-  return `<div class="sub-tabs"><button data-galvista="ejercicios" class="${v?'':'active'}">Ejercicios</button><button data-galvista="videos" class="${v?'active':''}">Vídeos (${nVideos})</button></div>`;
+  const v = state.galVista === 'videos', sn = state.galVista === 'snack';
+  return `<div class="sub-tabs"><button data-galvista="ejercicios" class="${v||sn?'':'active'}">Ejercicios</button><button data-galvista="videos" class="${v?'active':''}">Vídeos (${nVideos})</button><button data-galvista="snack" class="${sn?'active':''}">Snack</button></div>`;
 }
 async function tplGaleriaVideos(){
   const vids = await getVideoLib(), exs = await getExLib(), secciones = await getSecciones();
@@ -16155,11 +17714,12 @@ async function bindDynamicEvents(){
     const n = totalDe(draft.days[d]);
     if(!n) return;
     if(!confirm(`¿Vaciar ${d}?\n\nSe quitan sus ${n} ejercicio${n===1?'':'s'} del borrador.`)) return;
-    BLOCKS.forEach(b=>{ draft.days[d][b.key] = []; });
+    const snap = {}; BLOCKS.forEach(b=>{ snap[b.key] = JSON.parse(JSON.stringify(draft.days[d][b.key])); draft.days[d][b.key] = []; });
+    const semanaDia = state.planWeek || weekOfISO();
     draft.updatedAt = new Date().toISOString();
     const ok = await saveRoutine(athleteId, true, draft);
     if(!ok){ toast('No se pudo guardar', true); return; }
-    toast(`${d} vaciado`);
+    toastDeshacer(`${d} vaciado`, async ()=>{ const dr = await getRoutine(athleteId, true, semanaDia); BLOCKS.forEach(b=>{ dr.days[d][b.key] = snap[b.key]; }); await saveRoutine(athleteId, true, dr, semanaDia); renderKeepScroll(); });
     state.openDays = {}; state.openDays[d] = true;
     renderKeepScroll();
   }));
@@ -16437,7 +17997,7 @@ async function bindDynamicEvents(){
     const modalidad = modEl ? modEl.value : (at ? at.modalidad : 'gym');
     const perfiles = [...document.querySelectorAll('[data-perfilpick].on')].map(b=>b.dataset.perfilpick);
     at.name = nuevoNombre; at.pin = nuevoPin; at.modalidad = modalidad; at.perfiles = perfiles;
-  { const pe = document.getElementById('editAthPlan'); if(pe && PLANES[pe.value]) at.plan = pe.value; if(!at.fechaInicio) at.fechaInicio = todayISO(); }
+  { const pe = document.getElementById('editAthPlan'); if(pe && PLANES[pe.value]) at.plan = pe.value; const fi = document.getElementById('editAthInicio'); if(fi && fi.value) at.fechaInicio = fi.value; const es = document.getElementById('editAthEscala'); if(es) at.escala = parseInt(es.value, 10) === 10 ? 10 : 5; }
     const ok = await safeSet('athletes-list', JSON.stringify(state.athletes), true);
     toast(ok ? 'Datos actualizados' : 'No se pudo guardar', !ok);
     if(ok) render();
