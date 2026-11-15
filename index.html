@@ -226,6 +226,62 @@
   .res-nav div{text-align:center;display:flex;flex-direction:column;gap:2px;font-size:14px;}
   .res-nav span{font-size:11px;color:var(--muted);}
   .res-texto{margin-top:12px;} .res-texto summary{cursor:pointer;font-size:12.5px;color:var(--muted);padding:6px 0;}
+
+  .sue-card{border-color:var(--gold);}
+  .sue-luna{color:var(--gold);display:flex;align-items:center;}
+  .sue-fila{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--border);}
+  .sue-fila:first-of-type{margin-top:10px;}
+  .sue-fila div{flex:1;display:flex;flex-direction:column;gap:2px;font-size:13.5px;}
+  .sue-fila div span{font-size:12px;color:var(--muted);}
+  .sue-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--border);flex:0 0 auto;}
+  .sue-fila.ok .sue-dot{background:var(--gold);border-color:var(--gold);}
+  .sue-snack{margin:10px 0 0;padding:10px 12px;border-radius:8px;background:var(--gold-dim);font-size:12.5px;line-height:1.5;display:flex;flex-direction:column;gap:8px;align-items:flex-start;}
+  .snack-info-link{display:block;margin:10px auto 0;background:none;border:none;color:var(--gold);font-family:inherit;font-size:12.5px;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px;}
+  .si-intro{font-size:14px;line-height:1.65;color:var(--muted);margin:0 0 6px;}
+  .si-bloque{border-top:1px solid var(--border);padding:18px 0 6px;}
+  .si-cab{display:flex;align-items:center;gap:10px;margin-bottom:8px;} .si-cab h3{font-family:'Fraunces',serif;font-size:18px;line-height:1.25;margin:0;}
+  .si-num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:inline-flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;}
+  .si-badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;border-radius:100px;padding:3px 9px;margin-bottom:8px;border:1px solid;}
+  .si-badge.firme{color:#1F7A5A;border-color:#1F7A5A;} .si-badge.prometedor{color:var(--gold);border-color:var(--gold);} .si-badge.matices{color:#8A3A47;border-color:#8A3A47;}
+  .si-bloque p{font-size:14.5px;line-height:1.68;margin:0 0 12px;}
+  .si-sn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:2px 0 12px;}
+  .si-sn div{border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:3px;font-size:12.5px;line-height:1.4;} .si-sn b{font-family:'Fraunces',serif;font-size:15px;} .si-sn em{font-style:normal;color:var(--muted);font-size:12px;}
+  .si-sn-a{background:var(--gold-dim);border:1px solid var(--gold);} .si-sn-b{background:var(--panel2);border:1px solid var(--border);}
+  .si-cuando{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;} .si-cuando div{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--panel);display:flex;flex-direction:column;gap:2px;font-size:13.5px;} .si-cuando span{font-size:12.5px;color:var(--muted);line-height:1.5;}
+  .si-base{margin:10px 0 6px;font-size:12.5px;color:var(--muted);} .si-base summary{cursor:pointer;padding:8px 0;font-weight:600;} .si-base ul{padding-left:18px;line-height:1.6;} .si-base p{font-size:12px;margin-top:8px;}
+  .res-ed-ov .snack-in{max-width:1120px;padding-bottom:84px;}
+  .res-ed-grid{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:20px;align-items:start;}
+  .res-ed-tabs{display:none;max-width:320px;margin:0 0 12px;}
+  .res-ed-form{display:flex;flex-direction:column;gap:10px;}
+  .ed-grupo{border:1px solid var(--border);border-radius:10px;background:var(--panel);padding:0 12px;}
+  .ed-grupo summary{cursor:pointer;font-weight:700;font-size:13.5px;padding:12px 0;}
+  .ed-grupo[open] summary{border-bottom:1px solid var(--border);margin-bottom:10px;}
+  .ed-grupo textarea,.ed-fila textarea{background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-family:inherit;font-size:13px;line-height:1.5;box-sizing:border-box;resize:vertical;}
+  .ed-secs{display:flex;flex-direction:column;gap:2px;padding-bottom:10px;}
+  .res-ed .chk{display:flex;align-items:center;gap:9px;font-size:13.5px;padding:7px 0;color:var(--ink);} .res-ed .chk small{color:var(--muted);}
+  .ed-lista{padding:0 0 14px;} .ed-tit{display:flex;align-items:center;gap:8px;margin:2px 0 8px;font-size:13px;}
+  .ed-tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:100px;padding:2px 7px;}
+  .ed-fila{display:flex;gap:6px;align-items:flex-start;margin-bottom:6px;} .ed-fila textarea{flex:1;min-width:0;}
+  .res-ed-prev{position:sticky;top:12px;max-height:calc(100vh - 100px);overflow-y:auto;padding:2px;}
+  .ed-pag{box-shadow:0 2px 14px rgba(0,0,0,.18);border-radius:3px;overflow:hidden;margin:0 auto 14px;max-width:640px;background:#fff;}
+  .res-ed-pie{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 18px;background:var(--bg);border-top:1px solid var(--border);justify-content:center;}
+  @media (max-width:860px){
+    .res-ed-tabs{display:flex;} .res-ed-grid{grid-template-columns:minmax(0,1fr);}
+    .res-ed-grid[data-ver="edit"] .res-ed-prev{display:none;} .res-ed-grid[data-ver="prev"] .res-ed-form{display:none;}
+    .res-ed-prev{position:static;max-height:none;overflow:visible;}
+  }
+  .sue-eva{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;}
+  .sue-eva button{min-width:0;padding:0;height:36px;font-size:12px;}
+  .sue-extra{margin:6px 0 16px;padding:14px 14px 2px;border:1px solid var(--gold);border-radius:12px;background:var(--gold-dim);}
+  .sue-extra .snack-eyebrow{display:block;margin-bottom:12px;}
+  .snack-preg input[type=text]{background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:7px;padding:10px 11px;font-size:14px;font-family:inherit;box-sizing:border-box;}
+  .spq-form[hidden],.spq-form [hidden]{display:none !important;}
+  .spq-fila{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border);font-size:13px;}
+  .spq-fila div{flex:1;display:flex;flex-direction:column;gap:2px;} .spq-fila div span{font-size:11.5px;color:var(--muted);} .spq-fila.pausada{opacity:.55;}
+  .spq-form{margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--panel2);display:flex;flex-direction:column;gap:8px;}
+  .spq-form input[type=text],.spq-form select{background:var(--panel);color:var(--ink);border:1px solid var(--border);border-radius:7px;padding:9px 10px;font-size:13.5px;font-family:inherit;width:100%;box-sizing:border-box;}
+  .spq-form label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px;} .spq-form label.chk{flex-direction:row;align-items:center;gap:8px;color:var(--ink);}
+  .snack-preg input[type=time]{background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:7px;padding:9px 10px;font-family:'IBM Plex Mono',monospace;font-size:15px;}
   .cruce-tabla summary{cursor:pointer;font-size:12.5px;color:var(--muted);margin:6px 0;}
   /* ---- Snack de movimiento ---- */
   .snack-card{border-color:var(--gold);}
@@ -3141,6 +3197,7 @@ async function renderTabContent(){
   bindDynamicEvents();
   bindSnack();
   bindResumen();
+  bindSueno();
   renderNav();
   if(session && session.fullscreen) mountSessionOverlay(state.athleteAsId || state.selectedId);
 }
@@ -4310,6 +4367,7 @@ async function tplSnackCard(athleteId){
     <p class="snack-estado">${estado}${r.mejor > r.actual ? ` · mejor racha: ${r.mejor}` : ''}</p>
     <p class="snack-cheat ${r.cheatDisponible?'':'usado'}"><b>Cheat Day</b> ${r.cheatDisponible ? 'disponible este mes: si un día fallas, tu racha se mantiene.' : `usado el ${fechaCortaISO(r.cheatMes)}. Vuelves a tener uno el mes que viene.`}</p>
     <button class="btn ${r.hechoHoy?'ghost':''}" id="snackAbrirBtn" style="width:100%;">${r.hechoHoy ? 'Repetir el de hoy' : 'Ver el Snack de hoy'}</button>
+    <button class="snack-info-link" data-snackinfo="1">¿Para qué sirven los Snacks?</button>
   </div>`;
 }
 
@@ -4335,12 +4393,13 @@ function snackConfeti(grande){
 async function snackAbre(athleteId){
   const [banco, cfg, log, musica] = [await snackBancoActivo(), await getSnackCfg(), await getSnackLog(athleteId), await getSnackMusica()];
   const hoy = todayISO(), prefs = snackPrefs();
+  const suenoManana = sueDerivado((await getSuenoLog(athleteId)).dias[hoy]).tieneManana;
   let plan = null;
   if(log.hoy && log.hoy.fecha === hoy && Array.isArray(log.hoy.ids) && log.hoy.nivel === log.nivel){
     const p = log.hoy.ids.map(id=>banco.find(e=>e.id === id)).filter(Boolean);
     if(p.length === cfg.rondas) plan = p;
   }
-  snackRun = { athleteId, banco, cfg, log, musica, hoy, plan:plan || [], fase:'previa', musicaOn:prefs.musica !== false, cancion:null, audio:null };
+  snackRun = { athleteId, banco, cfg, log, musica, hoy, plan:plan || [], fase:'previa', suenoManana, musicaOn:prefs.musica !== false, cancion:null, audio:null };
   if(!plan) await snackSortea(false);
   snackRun.cancion = snackEligeCancion(musica, prefs.ultima);
   snackPreparaCancion();
@@ -4373,6 +4432,7 @@ function snackPinta(){
     o.innerHTML = `<div class="snack-in">
       <div class="snack-bar"><span class="snack-eyebrow">Snack de movimiento · ${R.cfg.work}"/${R.cfg.rest}" × ${R.cfg.rondas}</span><button class="btn ghost small" id="snackCerrar">Cerrar</button></div>
       <h2 class="snack-h">Tu Tabata de hoy <span>${snackDuracionTxt(R.cfg)}</span></h2>
+      <button class="snack-info-link" data-snackinfo="1" style="margin:-6px 0 10px;">¿Para qué sirven los Snacks?</button>
       <div class="snack-niveles">${[1,2,3].map(n=>`<button data-snacknivel="${n}" class="${R.log.nivel===n?'on':''}">${SNACK_NIVELES[n]}</button>`).join('')}</div>
       ${sinBanco ? `<div class="empty">No hay suficientes ejercicios activos en el banco. Tu entrenador tiene que activar alguno.</div>` : `<ol class="snack-lista">${R.plan.map((e,i)=>`<li>
         <span class="snack-n">${i+1}</span>
@@ -4390,6 +4450,7 @@ function snackPinta(){
       <p class="snack-nota">Si algo duele, cambia el ejercicio con ↻ o baja la intensidad. Deja un espacio libre de 2 × 2 m.</p>
     </div>`;
     o.querySelector('#snackCerrar').addEventListener('click', ()=>snackCierra());
+    o.querySelectorAll('[data-snackinfo]').forEach(b=>b.addEventListener('click', snackInfoAbre));
     o.querySelectorAll('[data-snacknivel]').forEach(b=>b.addEventListener('click', async ()=>{
       const n = parseInt(b.dataset.snacknivel, 10); if(n === R.log.nivel) return;
       R.log.nivel = n; R.log.nivelDesde = todayISO(); await snackSortea(true);
@@ -4444,11 +4505,11 @@ function snackPinta(){
       ${tplSnackSemana(r)}
     </div>
     <div class="snack-preg" id="snackPreg">
-      <p class="snack-nota" style="margin:0 0 12px;">Tres toques y listo. Sirven para ver cómo evolucionan tu descanso y tu fatiga semana a semana.</p>
+      <p class="snack-nota" style="margin:0 0 12px;">${R.suenoManana ? 'Un toque y listo.' : 'Tres toques y listo.'} Sirven para ver cómo evolucionan tu descanso y tu fatiga semana a semana.</p>
       ${escala('fatiga', 'Fatiga general de hoy (la del cuerpo, no la del Tabata)', 'Muy alta', 'Ninguna')}
-      ${escala('sueno', 'Calidad del sueño de anoche', 'Muy mala', 'Excelente')}
+      ${R.suenoManana ? '' : `${escala('sueno', 'Calidad del sueño de anoche', 'Muy mala', 'Excelente')}
       <div class="q-item"><p>Horas de sueño de anoche</p>
-        <div class="scale snack-horas" data-snackq="horas">${[4,5,5.5,6,6.5,7,7.5,8,8.5,9,10].map(h=>`<button data-val="${h}" class="${e.horas===h?'sel':''}">${String(h).replace('.',',')}</button>`).join('')}</div></div>
+        <div class="scale snack-horas" data-snackq="horas">${[4,5,5.5,6,6.5,7,7.5,8,8.5,9,10].map(h=>`<button data-val="${h}" class="${e.horas===h?'sel':''}">${String(h).replace('.',',')}</button>`).join('')}</div></div>`}
       <div class="q-item"><p>¿Qué tal el Tabata?</p>
         <div class="scale" data-snackq="esfuerzo">${[[1,'Fácil'],[2,'Justo'],[3,'Duro']].map(([v,t])=>`<button data-val="${v}" class="${e.esfuerzo===v?'sel':''}">${t}</button>`).join('')}</div></div>
       <button class="btn" id="snackGuardar" style="width:100%;">Guardar</button>
@@ -4460,10 +4521,10 @@ function snackPinta(){
   o.querySelector('#snackGuardar').addEventListener('click', async ()=>{
     const val = id=>{ const s = o.querySelector(`[data-snackq="${id}"] button.sel`); return s ? parseFloat(s.dataset.val) : null; };
     const fatiga = val('fatiga'), sueno = val('sueno'), horas = val('horas'), esfuerzo = val('esfuerzo');
-    if(fatiga === null || sueno === null || horas === null){ toast('Responde fatiga, calidad y horas de sueño', true); return; }
+    if(fatiga === null || (!R.suenoManana && (sueno === null || horas === null))){ toast(R.suenoManana ? 'Responde la fatiga' : 'Responde fatiga, calidad y horas de sueño', true); return; }
     const log = await getSnackLog(R.athleteId);
     const dia = log.dias[R.hoy] || { hecho:true };
-    Object.assign(dia, { fatiga, sueno, horas }); if(esfuerzo !== null) dia.esfuerzo = esfuerzo;
+    dia.fatiga = fatiga; if(sueno !== null) dia.sueno = sueno; if(horas !== null) dia.horas = horas; if(esfuerzo !== null) dia.esfuerzo = esfuerzo;
     log.dias[R.hoy] = dia;
     const cambio = snackAjustaNivel(log);
     await saveSnackLog(R.athleteId, log);
@@ -4712,6 +4773,17 @@ async function saveResumenNota(athleteId, key, campo, valor){
   const claves = Object.keys(o).sort(); while(claves.length > 60) delete o[claves.shift()];
   return safeSet('resumen-notas-'+athleteId, JSON.stringify(o), true);
 }
+// ---- Lo que el entrenador edita antes de descargar: secciones, listas de texto y ejercicios ocultos ----
+const RES_SECCIONES = [['constancia', 'Constancia'], ['sueno', 'Sueño y descanso'], ['entreno', 'Entrenamiento y progreso'], ['extras', 'Seguimiento personalizado'], ['balance', 'Balance y lectura']];
+function resEdLimpia(r){
+  r = (r && typeof r === 'object' && !Array.isArray(r)) ? r : {};
+  const lis = a=>Array.isArray(a) ? a.map(x=>String(x == null ? '' : x).slice(0, 220)).slice(0, 12) : null, sec = {};
+  RES_SECCIONES.forEach(z=>{ if(r.sec && r.sec[z[0]] === false) sec[z[0]] = false; });
+  return { sec, dest:lis(r.dest), lec:lis(r.lec), exo:lis(r.exo), crecOff:Array.isArray(r.crecOff) ? r.crecOff.map(x=>String(x).slice(0, 80)).slice(0, 20) : [] };
+}
+function resSecOn(D, k){ return !(D.ed && D.ed.sec && D.ed.sec[k] === false); }
+function resCrecVis(D){ const off = (D.ed && D.ed.crecOff) || []; return D.crec.filter(c=>!off.includes(c.nombre)); }
+function resListaDe(D, k, auto){ return ((D.ed && Array.isArray(D.ed[k])) ? D.ed[k] : auto).map(t=>String(t).trim()).filter(Boolean); }
 async function datosResumen(athleteId, tipo, ref, hoy){
   hoy = hoy || todayISO();
   const at = state.athletes.find(a=>a.id === athleteId) || {};
@@ -4728,11 +4800,18 @@ async function datosResumen(athleteId, tipo, ref, hoy){
     if(mm > 0 && ahora.carga !== null) cargaRel = ahora.carga/mm;
   }
   const bloques = tipo === 'mes' ? resBloques(per).map(b=>Object.assign({}, b, { f:filaResumen(d, sl, b.desde, b.hasta) })) : null;
+  const sg = await getSuenoLog(athleteId), sueno = resumenSueno(sg, per.desde, per.hasta), suenoAntes = resumenSueno(sg, prev.desde, prev.hasta);
+  const suenoBloques = bloques ? bloques.map(b=>resumenSueno(sg, b.desde, b.hasta)) : null;
+  const suenoDias = tipo === 'sem' ? dias.map((x, i)=>Object.assign({ fecha:x.fecha, letra:'LMXJVSD'[i] }, sueDerivado(sg.dias[x.fecha]))) : null;
+  const obsSueno = suenoObservaciones(sg, d.journal, sl, per.hasta < hoy ? per.hasta : hoy);
   let inicio = ''; try{ const info = await informeInfo(athleteId); inicio = (info && info.inicio) || ''; }catch(e){}
   const semanaPlan = (tipo === 'sem' && inicio && per.hasta >= inicio) ? Math.floor(Math.max(0, resDiff(inicio, per.desde))/7) + 1 : null;
   const key = tipo + '-' + (tipo === 'mes' ? per.desde.slice(0,7) : per.desde), notas = (await getResumenNotas(athleteId))[key] || {};
+  const pq = await getPreguntasSueno(athleteId), limite = per.hasta < hoy ? per.hasta : hoy;
+  const extras = resumenExtras(sg, pq.items, per.desde, per.hasta, prev.desde, prev.hasta);
+  const extrasObs = extrasObservaciones(sg, pq.items, per.desde, per.hasta, prev.desde, prev.hasta, tipo === 'mes' ? 'el mes anterior' : 'la semana anterior', limite);
   return { id:athleteId, nombre:at.name || '', tipo, per, prev, ahora, antes, sn:{ dias, racha:rac, hechos:dias.filter(x=>x.hecho).length, cheats:dias.filter(x=>x.cheat).length, posibles:dias.filter(x=>!x.futuro).length },
-    sesiones, crec:ejerciciosCrecimiento(d.journal, per.desde, per.hasta, 5), cargaRel, bloques, semanaPlan, key, nota:notas.nota || '', foco:notas.foco || '', escala:escalaDe(at), generado:hoy };
+    sesiones, crec:ejerciciosCrecimiento(d.journal, per.desde, per.hasta, 5), cargaRel, bloques, sueno, suenoAntes, suenoBloques, suenoDias, obsSueno, semanaPlan, key, nota:notas.nota || '', foco:notas.foco || '', extras, extrasObs, ed:resEdLimpia(notas.edit), escala:escalaDe(at), generado:hoy };
 }
 // ---- Lectura automática (descriptiva, sin diagnosticar) ----
 function resDelta(a, b){ return (typeof a === 'number' && typeof b === 'number') ? b - a : null; }
@@ -4754,8 +4833,14 @@ function resLectura(D){
   } else o.push('No hay sesiones registradas en este periodo.');
   const e = D.escala, tr = (k, nom)=>{ const dl = resDelta(B[k], A[k]); if(dl === null || Math.abs(dl) < 0.3) return;
     o.push(`${nom} ${dl > 0 ? 'ha subido' : 'ha bajado'} ${f1(Math.abs(resEsc(dl, e)))} puntos frente ${antA}.`); };
-  tr('sueno', 'La calidad del sueño'); tr('fatiga', 'La puntuación de fatiga (más alto = menos fatiga)');
-  if(D.crec.length){ const c = D.crec[0]; o.push(`Mejora destacada: ${c.nombre}, de ${resSerieTxt(c.ini)} a ${resSerieTxt(c.fin)}.`); }
+  if(D.sueno.noches < 3) tr('sueno', 'La calidad del sueño'); tr('fatiga', 'La puntuación de fatiga (más alto = menos fatiga)');
+  const Sx = D.sueno, Sb = D.suenoAntes;
+  if(Sx.noches >= 3){
+    const dh = resDelta(Sb.horas, Sx.horas);
+    o.push(`Has dormido una media de ${f1(Sx.horas)} h${dh !== null && Sb.noches >= 3 && Math.abs(dh) >= 0.3 ? ` (${f1(Math.abs(dh))} ${dh > 0 ? 'más' : 'menos'} que ${ant})` : ''}, con ${Sx.n7} de ${Sx.noches} noches de 7 h o más${Sx.energia !== null ? ` y una energía al despertar de ${f1(aEscala(Sx.energia, 5, e))}/${e}` : ''}.`);
+  }
+  const crV = resCrecVis(D);
+  if(crV.length){ const c = crV[0]; o.push(`Mejora destacada: ${c.nombre}, de ${resSerieTxt(c.ini)} a ${resSerieTxt(c.fin)}.`); }
   return o;
 }
 function textoResumen(D){
@@ -4763,11 +4848,15 @@ function textoResumen(D){
   L.push(`*Umbral · ${mes ? 'Resumen mensual' : 'Resumen semanal'}${pri ? ' · '+pri : ''}*`, D.per.etiqueta + (D.semanaPlan ? ` (semana ${D.semanaPlan} de tu plan)` : ''), '');
   if(sn.posibles > 0 && sn.hechos > 0) L.push(`• Snacks de movimiento: ${sn.hechos} de ${sn.posibles} días${sn.racha.actual > 1 ? ` · racha actual de ${sn.racha.actual} días` : ''}.`);
   L.push(A.ses > 0 ? `• Sesiones: ${A.ses}${A.rpe !== null ? ` · RPE medio ${nFmt(A.rpe, 1)}` : ''}${A.minutos ? ` · ${A.minutos} min en total` : ''}.` : '• Sesiones: ninguna registrada.');
-  const bien = [['sueno','Sueño'], ['fatiga','Fatiga (5 = sin fatiga)'], ['animo','Ánimo'], ['estres','Estrés (5 = sin estrés)']].filter(m=>A[m[0]] !== null)
+  if(D.sueno.noches >= 1) L.push(`• Sueño: ${nFmt(D.sueno.horas, 1)} h de media${D.sueno.calidad !== null ? ` · descanso ${nFmt(aEscala(D.sueno.calidad, 5, e), 1)}/${e}` : ''}${D.sueno.energia !== null ? ` · energía ${nFmt(aEscala(D.sueno.energia, 5, e), 1)}/${e}` : ''} (${D.sueno.noches} noche${D.sueno.noches === 1 ? '' : 's'}).`);
+  const bien = [['sueno','Sueño'], ['fatiga','Fatiga (5 = sin fatiga)'], ['animo','Ánimo'], ['estres','Estrés (5 = sin estrés)']].filter(m=>A[m[0]] !== null && !(m[0] === 'sueno' && D.sueno.noches >= 1))
     .map(m=>{ const dl = resDelta(D.antes[m[0]], A[m[0]]), fl = dl === null || Math.abs(dl) < 0.2 ? '' : (dl > 0 ? ' ↑' : ' ↓'); return `${m[1]} ${nFmt(aEscala(A[m[0]], 5, e), 1)}/${e}${fl}`; });
   if(bien.length) L.push('• ' + bien.join(' · '));
   if(mes && A.carga !== null) L.push(`• Carga media: ${A.carga} por semana.`);
-  if(D.crec.length){ L.push('', mes ? '*Donde más has crecido*' : '*Mejora destacada*'); D.crec.slice(0, mes ? 5 : 1).forEach(c=>L.push(`• ${c.nombre}: ${resSerieTxt(c.ini)} → ${resSerieTxt(c.fin)}`)); }
+  const crV = resCrecVis(D);
+  if(resSecOn(D, 'extras')) D.extras.slice(0, 4).forEach(r=>{ const q = r.q; if(q.tipo === 'eva' || q.tipo === 'esc') L.push(`• ${q.corto}: ${nFmt(r.media, 1)}/${q.tipo === 'eva' ? 10 : 5} de media${r.max !== null ? ` (máx. ${nFmt(r.max, 0)})` : ''}.`);
+    else if(q.tipo === 'opc' || q.tipo === 'sino'){ const top = sueOpciones(q).map(o=>[o, r.dist[o[0]]]).sort((a, b)=>b[1] - a[1])[0]; if(top && top[1] > 0) L.push(`• ${q.corto}: «${top[0][1]}» en ${top[1]} de ${r.n} días.`); } });
+  if(crV.length){ L.push('', mes ? '*Donde más has crecido*' : '*Mejora destacada*'); crV.slice(0, mes ? 5 : 1).forEach(c=>L.push(`• ${c.nombre}: ${resSerieTxt(c.ini)} → ${resSerieTxt(c.fin)}`)); }
   if(D.nota && D.nota.trim()) L.push('', '💬 ' + D.nota.trim());
   if(mes && D.foco && D.foco.trim()) L.push('', '*Foco del próximo mes*', D.foco.trim());
   return L.join('\n');
@@ -4852,45 +4941,148 @@ function resGrafica(P, x, y, w, h, titulo, nota, vals, etiquetas, o){
   P.caja(x, y, w, h, 6, RES_COL.panel, RES_COL.borde);
   P.txt(titulo, x + 10, y + 16, { f:'sans', s:8.5, w:700 });
   if(nota) P.txt(nota, x + 10, y + 26, { f:'sans', s:6.5, c:RES_COL.suave });
-  const gx = x + 26, gw = w - 40, gy = y + 36, gh = h - 58, min = o.min, max = o.max;
-  [0, 0.5, 1].forEach(t=>{ const yy = gy + gh*(1-t); P.linea(gx, yy, gx + gw, yy, RES_COL.panel2, 0.6); P.txt(nFmt(min + (max-min)*t, o.dec || 0), gx - 5, yy + 2.2, { f:'mono', s:5.8, c:RES_COL.suave, al:'right' }); });
-  const n = vals.length, px = i=>gx + (n === 1 ? gw/2 : (gw - 12)*i/(n-1) + 6), py = v=>gy + gh*(1 - (Math.min(max, Math.max(min, v)) - min)/((max - min) || 1));
-  const c = P.c; let ab = false;
-  c.beginPath(); vals.forEach((v, i)=>{ if(v === null){ ab = false; return; } if(!ab){ c.moveTo(px(i), py(v)); ab = true; } else c.lineTo(px(i), py(v)); });
-  c.strokeStyle = o.color; c.lineWidth = 1.6; c.lineJoin = 'round'; c.stroke();
-  vals.forEach((v, i)=>{ if(v !== null){ P.circulo(px(i), py(v), 2.6, RES_COL.panel, o.color, 1.3); } P.txt(etiquetas[i], px(i), y + h - 8, { f:'mono', s:6.3, c:RES_COL.suave, al:'center' }); });
-  const ult = vals.map((v, i)=>[v, i]).filter(p=>p[0] !== null).pop();
-  if(ult) P.txt(nFmt(ult[0], o.dec || 0), px(ult[1]), py(ult[0]) - 6, { f:'mono', s:7.5, w:600, c:o.color, al:'center' });
-  else P.txt('Sin datos todavía', x + w/2, y + h/2 + 6, { f:'sans', s:8, c:RES_COL.suave, al:'center' });
+  const gx = x + 30, gw = w - 44, gy = y + 36, gh = h - 58, min = o.min, max = o.max, fmt = o.fmt || (v=>nFmt(v, o.dec || 0)), ticks = o.ticks || [min, (min + max)/2, max];
+  const py = v=>gy + gh*(1 - (Math.min(max, Math.max(min, v)) - min)/((max - min) || 1));
+  if(o.banda) P.caja(gx, py(o.banda[1]), gw, py(o.banda[0]) - py(o.banda[1]), 2, RES_COL.ok + '1F', null);
+  ticks.forEach(t=>{ const yy = py(t); P.linea(gx, yy, gx + gw, yy, RES_COL.panel2, 0.6); P.txt(fmt(t), gx - 5, yy + 2.2, { f:'mono', s:5.8, c:RES_COL.suave, al:'right' }); });
+  const n = vals.length, px = i=>gx + (n === 1 ? gw/2 : (gw - 12)*i/(n-1) + 6), c = P.c;
+  const serie = (vs, col, etiqueta)=>{
+    let ab = false; c.beginPath();
+    vs.forEach((v, i)=>{ if(v === null || v === undefined){ ab = false; return; } if(!ab){ c.moveTo(px(i), py(v)); ab = true; } else c.lineTo(px(i), py(v)); });
+    c.strokeStyle = col; c.lineWidth = 1.6; c.lineJoin = 'round'; c.stroke();
+    vs.forEach((v, i)=>{ if(v !== null && v !== undefined) P.circulo(px(i), py(v), 2.6, RES_COL.panel, col, 1.3); });
+    const ult = vs.map((v, i)=>[v, i]).filter(p=>p[0] !== null && p[0] !== undefined).pop();
+    if(ult && etiqueta) P.txt(fmt(ult[0]), px(ult[1]), py(ult[0]) - 6, { f:'mono', s:7.5, w:600, c:col, al:'center' });
+    return !!ult;
+  };
+  const hay = serie(vals, o.color, true); if(o.serie2) serie(o.serie2, o.color2, false);
+  etiquetas.forEach((t, i)=>P.txt(t, px(i), y + h - 8, { f:'mono', s:6.3, c:RES_COL.suave, al:'center' }));
+  if(!hay) P.txt('Sin datos todavía', x + w/2, y + h/2 + 6, { f:'sans', s:8, c:RES_COL.suave, al:'center' });
+}
+function resSec(P, num, titulo, y){
+  P.txt(num, 40, y + 12, { f:'serif', s:15, w:600, c:RES_COL.oroClaro });
+  const w0 = P.txt(titulo, 62, y + 12, { f:'serif', s:15, w:600 });
+  P.linea(62 + w0 + 12, y + 7, RES_W - 40, y + 7, RES_COL.borde, 0.6);
+  return y + 32;
+}
+function resCorta(s, n){ s = String(s || ''); return s.length > n ? s.slice(0, n-1).trim() + '…' : s; }
+// Frases cortas con lo mejor del periodo, para la franja «Lo destacado».
+function resDestacados(D){
+  const o = [], sn = D.sn, A = D.ahora, s = D.sueno, mes = D.tipo === 'mes', ant = mes ? 'el mes anterior' : 'la semana anterior';
+  if(sn.racha.actual >= 7) o.push(`Racha de ${sn.racha.actual} días`); else if(mes && sn.racha.mejor >= 7) o.push(`Mejor racha: ${sn.racha.mejor} días`);
+  if(!mes && sn.hechos === 7) o.push('Semana perfecta de Snacks');
+  if(mes){ const k = D.bloques.filter(b=>b.f.snacks >= 7).length; if(k >= 1) o.push(`${k} ${k === 1 ? 'semana completa' : 'semanas completas'} de Snacks`); }
+  if(s.noches >= 3 && s.n7/s.noches >= 0.6) o.push(`7 h o más en ${s.n7} de ${s.noches} noches`);
+  const dh = resDelta(D.suenoAntes.horas, s.horas); if(dh !== null && dh >= 0.4 && s.noches >= 3 && D.suenoAntes.noches >= 3) o.push(`+${nFmt(dh, 1)} h de sueño frente a ${ant}`);
+  const crV = resCrecVis(D); if(crV.length) o.push(`${resCorta(crV[0].nombre, 26)} +${nFmt(crV[0].cambio, 0)} %`);
+  if(A.habitos !== null && A.habitos >= 80) o.push(`Hábitos al ${Math.round(A.habitos)} %`);
+  return o.slice(0, 4);
+}
+function resColorDescanso(q){ return q === null || q === undefined ? RES_COL.borde : (q >= 4 ? RES_COL.ok : (q >= 3 ? RES_COL.oroClaro : RES_COL.mal)); }
+// Horas dormidas de cada noche de la semana; el color es la calidad del descanso.
+function resBarrasSueno(P, x, y, w, h, noches){
+  P.caja(x, y, w, h, 6, RES_COL.panel, RES_COL.borde);
+  const gx = x + 30, gw = w - 42, y0 = y + h - 22, esc = (h - 46)/10, cw = gw/noches.length;
+  P.caja(gx - 4, y0 - 9*esc, gw + 8, 2*esc, 2, RES_COL.ok + '1F', null);
+  [[7, '7 h'], [9, '9 h']].forEach(t=>{ P.linea(gx - 4, y0 - t[0]*esc, gx + gw + 4, y0 - t[0]*esc, RES_COL.ok + '66', 0.5, [2, 2]); P.txt(t[1], x + 22, y0 - t[0]*esc + 2.2, { f:'mono', s:6, c:RES_COL.suave, al:'right' }); });
+  P.linea(gx - 4, y0, gx + gw + 4, y0, RES_COL.borde, 0.8);
+  P.txt('HORAS DORMIDAS POR NOCHE', x + 12, y + 15, { f:'mono', s:6.3, w:500, sp:1.2, c:RES_COL.suave });
+  noches.forEach((n, i)=>{
+    const cx = gx + cw*i + cw/2;
+    if(n.horas !== null){ const hh = Math.min(10, n.horas)*esc; P.caja(cx - 10, y0 - hh, 20, hh, 3, resColorDescanso(n.calidad), null); P.txt(nFmt(n.horas, 1), cx, y0 - hh - 4, { f:'mono', s:7.2, w:600, al:'center' }); }
+    else P.caja(cx - 10, y0 - 3, 20, 3, 1.5, RES_COL.borde, null);
+    P.txt(n.letra, cx, y0 + 12, { f:'mono', s:7, c:RES_COL.suave, al:'center' });
+  });
+}
+// Una casilla por día del mes, coloreada según las horas dormidas.
+function resTiraNoches(P, x, y, w, filasDias){
+  const n = filasDias.length, porFila = Math.ceil(n/2), cw = Math.min(26, (w - 6)/porFila), cs = cw - 3;
+  filasDias.forEach((d, i)=>{
+    const cx = x + (i % porFila)*cw, cy = y + Math.floor(i/porFila)*(cs + 4);
+    const col = d.horas === null ? null : (d.horas >= 7 ? RES_COL.ok : (d.horas >= 6 ? RES_COL.oroClaro : RES_COL.mal));
+    P.caja(cx, cy, cs, cs, 3, col, col ? null : RES_COL.borde, 0.6);
+    P.txt(String(+d.fecha.slice(8)), cx + cs/2, cy + cs/2 + 2.4, { f:'mono', s:6.3, w:500, c:col ? '#FFFFFF' : RES_COL.suave, al:'center' });
+  });
+  return y + 2*(cs + 4);
+}
+// Una tarjeta por pregunta propia: valor del periodo a la izquierda y su evolución a la derecha.
+function resColorExtra(q, o){
+  if(q.tipo === 'eva') return v=>v <= 3 ? RES_COL.ok : (v <= 6 ? RES_COL.oroClaro : RES_COL.mal);
+  return ()=>RES_COL.tinta;
+}
+function resFilaExtra(P, y, r, D){
+  const q = r.q, x = 40, w = RES_W - 80, h = 64, mes = D.tipo === 'mes', num = q.tipo === 'eva' || q.tipo === 'esc', tope = q.tipo === 'eva' ? 10 : 5, gx = x + 208, gw = w - 208 - 14;
+  P.caja(x, y, w, h, 6, RES_COL.panel, RES_COL.borde);
+  P.txt(resCorta(q.corto, 50).toUpperCase(), x + 10, y + 15, { f:'mono', s:6.3, w:500, sp:1.1, c:RES_COL.suave });
+  if(num){
+    const mtxt = nFmt(r.media, 1); P.txt(mtxt, x + 10, y + 43, { f:'serif', s:24, w:600 }); const wv = P.ancho(mtxt, 'serif', 24, 600); P.txt('/' + tope, x + 12 + wv, y + 43, { f:'mono', s:8, c:RES_COL.suave });
+    const dl = (r.nAntes >= 3 && r.mediaAntes !== null) ? r.media - r.mediaAntes : null;
+    if(dl !== null && Math.abs(dl) >= 0.1) resDeltaTxt(P, x + 128, y + 42, dl, q.grupo === 'dolor' ? (dl > 0 ? RES_COL.mal : RES_COL.ok) : RES_COL.suave, z=>nFmt(Math.abs(z), 1), 'right');
+    P.txt(`media · máx. ${nFmt(r.max, 0)} · ${r.n} ${r.n === 1 ? 'día' : 'días'}`, x + 10, y + 56, { f:'sans', s:6.8, c:RES_COL.suave });
+    const mapa = {}; r.serie.forEach(z=>{ mapa[z.fecha] = z.v; });
+    const dias = []; for(let f = D.per.desde; f <= D.per.hasta; f = sumaDiasISO(f, 1)) dias.push(f);
+    const cw = gw/dias.length, bw = Math.min(16, cw - 2), base = y + h - 15, alto = h - 34, col = resColorExtra(q);
+    P.linea(gx - 2, base, gx + gw + 2, base, RES_COL.borde, 0.6);
+    dias.forEach((f, i)=>{
+      const cx = gx + cw*i + cw/2, v = mapa[f];
+      if(v === undefined) P.caja(cx - bw/2, base - 2, bw, 2, 1, RES_COL.borde, null);
+      else { const hh = Math.max(2, (q.tipo === 'eva' ? v : v - 1)/(q.tipo === 'eva' ? 10 : 4)*alto); P.caja(cx - bw/2, base - hh, bw, hh, Math.min(2.5, bw/2), col(v), null); if(!mes) P.txt(nFmt(v, 0), cx, base - hh - 3, { f:'mono', s:6.6, w:600, al:'center' }); }
+      if(!mes) P.txt('LMXJVSD'[i], cx, base + 9, { f:'mono', s:6.3, c:RES_COL.suave, al:'center' }); else if(i === 0 || (+f.slice(8)) % 5 === 0) P.txt(String(+f.slice(8)), cx, base + 9, { f:'mono', s:6, c:RES_COL.suave, al:'center' });
+    });
+  } else if(q.tipo === 'opc' || q.tipo === 'sino'){
+    const ops = sueOpciones(q), tot = r.n || 1, top = ops.map(o=>[o, r.dist[o[0]]]).sort((a, b)=>b[1] - a[1])[0];
+    const colOp = (o, i)=>({ sube:RES_COL.mal, igual:RES_COL.oroClaro, baja:RES_COL.ok, si:RES_COL.tinta, no:RES_COL.borde })[o[0]] || [RES_COL.tinta, RES_COL.oroClaro, RES_COL.ok, RES_COL.mal, RES_COL.suave, RES_COL.oro][i % 6];
+    let tt = top[0][1]; while(tt.length > 3 && P.ancho(tt, 'serif', 15, 600) > 190) tt = tt.slice(0, -2);
+    P.txt(tt, x + 10, y + 41, { f:'serif', s:15, w:600 }); P.txt(`más frecuente · ${top[1]} de ${r.n} ${r.n === 1 ? 'día' : 'días'}`, x + 10, y + 56, { f:'sans', s:6.8, c:RES_COL.suave });
+    let bx = gx; ops.forEach((o, i)=>{ const n = r.dist[o[0]]; if(!n) return; const bw = gw*n/tot; P.caja(bx, y + 22, Math.max(2, bw - 1.5), 12, 3, colOp(o, i), colOp(o, i) === RES_COL.borde ? RES_COL.borde : null); bx += bw; });
+    let lx = gx; ops.forEach((o, i)=>{ const t = `${o[1]} ${r.dist[o[0]]}`, tw = P.ancho(t, 'sans', 6.8, 500) + 14; if(lx + tw > gx + gw + 10){ return; } P.caja(lx, y + 43, 7, 7, 2, colOp(o, i), colOp(o, i) === RES_COL.borde ? RES_COL.borde : null); P.txt(t, lx + 10, y + 49.5, { f:'sans', s:6.8, w:500, c:RES_COL.suave }); lx += tw + 6; });
+  } else {
+    P.txt(String(r.n), x + 10, y + 43, { f:'serif', s:24, w:600 }); P.txt(r.n === 1 ? 'respuesta' : 'respuestas', x + 10 + P.ancho(String(r.n), 'serif', 24, 600) + 5, y + 43, { f:'sans', s:7.6, c:RES_COL.suave });
+    P.parr('«' + resCorta(r.serie[r.serie.length - 1].v, 150) + '»', gx, y + 26, gw, 10.5, { f:'sans', s:8, c:RES_COL.tinta, max:3 });
+  }
+  return y + h;
 }
 // Calcula las páginas del documento (lienzos) a partir de los datos.
 async function resDibuja(D){
   await resFuentes();
-  const paginas = [], e = D.escala, A = D.ahora, B = D.antes, mes = D.tipo === 'mes', f1 = x=>nFmt(x, 1);
+  const paginas = [], e = D.escala, A = D.ahora, B = D.antes, S = D.sueno, SB = D.suenoAntes, mes = D.tipo === 'mes', f1 = x=>nFmt(x, 1), ant = mes ? 'el mes anterior' : 'la semana anterior';
   let P = null, y = 0;
   const nueva = ()=>{ P = resPintor(); paginas.push(P); y = resCabecera(P, D, paginas.length === 1); };
   const asegura = h=>{ if(y + h > 788) nueva(); };
+  const salto = (min)=>{ if(y > (min || 170)) nueva(); };
   nueva();
-  const sn = D.sn;
+  const sn = D.sn, hayS = S.noches > 0 || S.nNoche > 0;
+  const on = k=>resSecOn(D, k), crV = resCrecVis(D); let nSec = 0; const nn = ()=>String(++nSec).padStart(2, '0');
   // --- Tarjetas principales ---
+  const sueTxt = S.horas !== null ? f1(S.horas) + ' h' : '—', sueSub = S.noches ? `${S.noches} noche${S.noches === 1 ? '' : 's'} registrada${S.noches === 1 ? '' : 's'}` : 'sin registro';
   const tarjetas = mes ? [
     ['Snacks', `${sn.hechos}/${sn.posibles}`, sn.posibles ? `${Math.round(sn.hechos/sn.posibles*100)} % de los días` : ''],
-    ['Mejor racha', String(sn.racha.mejor), sn.racha.actual ? `racha actual: ${sn.racha.actual}` : ''],
+    ['Sueño', sueTxt, sueSub],
     ['Sesiones', String(A.ses), A.rpe !== null ? `RPE medio ${f1(A.rpe)}` : ''],
     ['Carga media', A.carga !== null ? String(A.carga) : '—', 'por semana (sRPE)'],
     ['Hábitos', A.habitos !== null ? Math.round(A.habitos) + ' %' : '—', 'días cumplidos']
   ] : [
     ['Snacks', `${sn.hechos}/${sn.posibles || 7}`, sn.racha.actual > 1 ? `racha de ${sn.racha.actual} días` : 'de movimiento'],
+    ['Sueño', sueTxt, sueSub],
     ['Sesiones', String(A.ses), A.rpe !== null ? `RPE medio ${f1(A.rpe)}` : (A.ses ? '' : 'ninguna registrada')],
     ['Carga', A.carga !== null ? String(A.carga) : '—', D.cargaRel !== null ? `×${f1(D.cargaRel)} de tu media` : 'sRPE de la semana'],
     ['Hábitos', A.habitos !== null ? Math.round(A.habitos) + ' %' : '—', 'días cumplidos']
   ];
   const nT = tarjetas.length, gap = 8, wT = (RES_W - 80 - gap*(nT-1))/nT;
   tarjetas.forEach((t, i)=>resTarjeta(P, 40 + i*(wT + gap), y, wT, 70, t[0], t[1], t[2]));
-  y += 70 + 22;
+  y += 70 + 14;
+  // --- Lo destacado ---
+  const dest = resListaDe(D, 'dest', resDestacados(D));
+  if(dest.length){
+    let x = 40; P.txt('LO DESTACADO', 40, y + 8, { f:'mono', s:6.5, w:500, sp:1.8, c:RES_COL.oro }); x = 40 + 92;
+    dest.forEach(t=>{ const w = P.ancho(t, 'sans', 7.6, 600) + 18; if(x + w > RES_W - 40){ x = 40; y += 20; } P.caja(x, y, w, 15, 7.5, RES_COL.oroClaro + '26', RES_COL.oroClaro, 0.6); P.txt(t, x + 9, y + 10.4, { f:'sans', s:7.6, w:600, c:RES_COL.tinta }); x += w + 6; });
+    y += 15 + 18;
+  } else y += 6;
+
+  // ===== Constancia =====
+  if(on('constancia')){
+  y = resSec(P, nn(), 'Constancia', y);
   if(!mes){
-    // --- Tu semana ---
-    y = resTitulo(P, 'Tu semana', y); y += 4;
     const wC = (RES_W - 80)/7;
     P.caja(40, y, RES_W - 80, 92, 6, RES_COL.panel, RES_COL.borde);
     sn.dias.forEach((dd, i)=>{
@@ -4906,15 +5098,12 @@ async function resDibuja(D){
       if(s.length){ P.caja(cx - 22, y + 71, 44, 14, 7, RES_COL.oroClaro + '33', RES_COL.oroClaro, 0.6); P.txt(s.length > 1 ? `${s.length} ses.` : (s[0].rpe !== null ? 'RPE ' + nFmt(s[0].rpe, 0) : 'Sesión'), cx, y + 81, { f:'mono', s:6.8, w:500, c:RES_COL.oro, al:'center' }); }
     });
     y += 92 + 8;
-    y += 6; P.circulo(48, y + 4, 4, RES_COL.tinta); P.txt('Snack hecho', 56, y + 7, { f:'sans', s:7, c:RES_COL.suave });
+    P.circulo(48, y + 4, 4, RES_COL.tinta); P.txt('Snack hecho', 56, y + 7, { f:'sans', s:7, c:RES_COL.suave });
     P.circulo(112, y + 4, 4, null, RES_COL.oroClaro, 0.9, [1.5, 1.5]); P.txt('Cheat Day', 120, y + 7, { f:'sans', s:7, c:RES_COL.suave });
     P.caja(172, y - 1, 16, 10, 5, RES_COL.oroClaro + '33', RES_COL.oroClaro, 0.5); P.txt('Sesión de entrenamiento', 194, y + 7, { f:'sans', s:7, c:RES_COL.suave });
-    y += 26;
+    y += 30;
   } else {
-    // --- Calendario de Snacks + resumen ---
-    y = resTitulo(P, 'Tus Snacks del mes', y); y += 4;
-    const cw = 34, primerDia = (new Date(D.per.desde+'T00:00:00').getDay() + 6) % 7, nDias = sn.dias.length, filas = Math.ceil((primerDia + nDias)/7);
-    const hCal = 24 + filas*cw;
+    const cw = 34, primerDia = (new Date(D.per.desde+'T00:00:00').getDay() + 6) % 7, nDias = sn.dias.length, filas = Math.ceil((primerDia + nDias)/7), hCal = 24 + filas*cw;
     P.caja(40, y, 7*cw + 20, hCal, 6, RES_COL.panel, RES_COL.borde);
     'LMXJVSD'.split('').forEach((l, i)=>P.txt(l, 50 + i*cw + cw/2, y + 15, { f:'mono', s:6.8, w:500, c:RES_COL.suave, al:'center' }));
     sn.dias.forEach((dd, i)=>{
@@ -4923,44 +5112,98 @@ async function resDibuja(D){
       else if(dd.cheat){ P.circulo(cx, cy, 11, null, RES_COL.oroClaro, 1, [2, 2]); P.txt(String(+dd.fecha.slice(8)), cx, cy + 3, { f:'mono', s:7.5, w:600, c:RES_COL.oro, al:'center' }); }
       else { if(!dd.futuro) P.circulo(cx, cy, 11, null, RES_COL.borde, 0.8); P.txt(String(+dd.fecha.slice(8)), cx, cy + 3, { f:'mono', s:7.5, c:dd.futuro ? RES_COL.borde : RES_COL.suave, al:'center' }); }
     });
-    const rx = 40 + 7*cw + 20 + 22, rw = RES_W - 40 - rx;
-    let ry = y + 22;
+    const rx = 40 + 7*cw + 20 + 22, rw = RES_W - 40 - rx; let ry = y + 22;
     const dato = (t, v)=>{ P.txt(v, rx, ry + 2, { f:'serif', s:20, w:600 }); P.txt(t, rx + P.ancho(v, 'serif', 20, 600) + 8, ry + 2, { f:'sans', s:8.2, c:RES_COL.suave }); ry += 34; };
-    dato('días con Snack', `${sn.hechos} de ${sn.posibles}`);
-    dato('mejor racha del periodo', String(sn.racha.mejor));
-    dato('de racha ahora mismo', String(sn.racha.actual));
+    dato('días con Snack', `${sn.hechos} de ${sn.posibles}`); dato('mejor racha del periodo', String(sn.racha.mejor)); dato('de racha ahora mismo', String(sn.racha.actual));
     P.parr(sn.cheats ? `Se usó el Cheat Day del mes (${sn.dias.filter(x=>x.cheat).map(x=>resFechaLarga(x.fecha)).join(', ')}) y la racha siguió.` : 'Sin Cheat Day usado este mes.', rx, ry + 2, rw, 10, { f:'sans', s:7.6, c:RES_COL.suave, max:3 });
-    y += hCal + 22;
-    // --- Evolución semanal ---
-    y = resTitulo(P, 'Evolución semana a semana', y); y += 4;
-    const et = D.bloques.map(b=>b.etiqueta), gw = (RES_W - 80 - 10)/2, gh = 116;
-    const v = k=>D.bloques.map(b=>{ const z = b.f[k]; return typeof z === 'number' ? z : null; });
-    const ve = k=>v(k).map(z=>z === null ? null : aEscala(z, 5, e));
-    resGrafica(P, 40, y, gw, gh, 'Sueño', `calidad del sueño, 1-${e}`, ve('sueno'), et, { min:1, max:e, dec:1, color:RES_COL.tinta });
-    resGrafica(P, 40 + gw + 10, y, gw, gh, 'Fatiga', `1-${e} · más alto = menos fatiga`, ve('fatiga'), et, { min:1, max:e, dec:1, color:RES_COL.mal });
-    y += gh + 10;
-    const cmax = Math.max(100, ...v('carga').filter(z=>z !== null));
-    resGrafica(P, 40, y, gw, gh, 'Entrenamiento', 'carga semanal (sRPE)', v('carga'), et, { min:0, max:Math.ceil(cmax*1.15/50)*50, dec:0, color:RES_COL.oro });
-    resGrafica(P, 40 + gw + 10, y, gw, gh, 'Snacks', 'días con Snack por semana', D.bloques.map(b=>b.f.snacks), et, { min:0, max:8, dec:0, color:RES_COL.ok });
-    y += gh + 14;
-    P.txt('Cada punto es el promedio de un bloque de 7 días del mes (el último incluye los días sobrantes).', 40, y, { f:'sans', s:6.8, c:RES_COL.suave }); y += 20;
+    y += hCal + 16;
+    const et = D.bloques.map(b=>b.etiqueta), gw = (RES_W - 80 - 10)/2, gh = 112;
+    resGrafica(P, 40, y, gw, gh, 'Snacks', 'días con Snack por semana', D.bloques.map(b=>b.f.snacks), et, { min:0, max:8, dec:0, color:RES_COL.ok });
+    resGrafica(P, 40 + gw + 10, y, gw, gh, 'Hábitos', '% de días cumplidos por semana', D.bloques.map(b=>typeof b.f.habitos === 'number' ? b.f.habitos : null), et, { min:0, max:100, dec:0, color:RES_COL.oro });
+    y += gh + 10; P.txt('Cada punto es el promedio de un bloque de 7 días del mes (el último incluye los días sobrantes).', 40, y + 4, { f:'sans', s:6.8, c:RES_COL.suave }); y += 22;
   }
-  // --- Cómo te has sentido (semanal) / comparación (mensual) ---
-  if(!mes){
-    y = resTitulo(P, 'Cómo te has sentido', y); y += 6;
-    const ms = [['Sueño', 'sueno'], ['Fatiga (5 = sin fatiga)', 'fatiga'], ['Estrés (5 = sin estrés)', 'estres'], ['Ánimo', 'animo']].filter(m=>A[m[1]] !== null);
-    if(!ms.length){ P.txt('Aún no hay check-ins en esta semana: el Snack y el cuestionario los completan.', 40, y + 6, { f:'sans', s:8.5, c:RES_COL.suave }); y += 24; }
-    ms.forEach(m=>{
-      const val = A[m[1]], dl = resDelta(B[m[1]], val);
-      P.txt(m[0], 40, y + 8, { f:'sans', s:8.8, w:600 });
-      P.caja(190, y + 2, 200, 7, 3.5, RES_COL.panel2); P.caja(190, y + 2, Math.max(7, 200*val/5), 7, 3.5, RES_COL.tinta);
-      P.txt(`${nFmt(aEscala(val, 5, e), 1)}/${e}`, 402, y + 9, { f:'mono', s:8.5, w:600 });
-      if(dl !== null && Math.abs(dl) >= 0.1) resDeltaTxt(P, 470, y + 9, resEsc(dl, e), dl > 0 ? RES_COL.ok : RES_COL.mal, x=>nFmt(Math.abs(x), 1));
-      y += 20;
-    });
-    if(ms.length){ P.txt('Flecha: cambio frente a la semana anterior.', 40, y + 4, { f:'sans', s:6.8, c:RES_COL.suave }); y += 22; }
-    // --- Sesiones ---
-    asegura(60); y = resTitulo(P, 'Sesiones', y); y += 4;
+  }
+
+  // ===== Sueño y descanso =====
+  if(on('sueno')){
+  if(mes) salto(hayS ? 170 : 600); else asegura(230);
+  y = resSec(P, nn(), 'Sueño y descanso', y);
+  const metr = [];
+  if(S.horas !== null) metr.push(['Horas dormidas', `${f1(S.horas)} h`, resDelta(SB.horas, S.horas), 1]);
+  if(S.calidad !== null) metr.push(['Calidad del descanso', `${f1(aEscala(S.calidad, 5, e))}/${e}`, resDelta(SB.calidad, S.calidad), 1, true]);
+  if(S.energia !== null) metr.push(['Energía al despertar', `${f1(aEscala(S.energia, 5, e))}/${e}`, resDelta(SB.energia, S.energia), 1, true]);
+  if(S.fatiga !== null) metr.push(['Fatiga al despertar', `${f1(aEscala(S.fatiga, 5, e))}/${e}`, resDelta(SB.fatiga, S.fatiga), 1, true]);
+  if(S.cama !== null) metr.push(['Te acuestas hacia las', `${sueHoraTxt(S.cama)}${S.regul !== null ? ' ±' + Math.round(S.regul) + '′' : ''}`, null]);
+  if(S.desc !== null) metr.push(['Desconexión hacia las', sueHoraTxt(S.desc), null]);
+  if(S.despertares !== null && S.noches >= 3) metr.push(['Despertares por noche', f1(S.despertares), null]);
+  if(S.noches >= 3) metr.push(['Noches con 7 h o más', `${S.n7} de ${S.noches}`, null]);
+  const filaMetr = (m, x, yy, w)=>{
+    P.txt(m[0], x, yy + 8, { f:'sans', s:8.2, w:500 }); P.txt(m[1], x + w - 46, yy + 8, { f:'mono', s:8.4, w:600, al:'right' });
+    if(m[2] !== null && Math.abs(m[2]) >= 0.1) resDeltaTxt(P, x + w, yy + 8, m[4] ? resEsc(m[2], e) : m[2], m[2] > 0 ? RES_COL.ok : RES_COL.mal, z=>nFmt(Math.abs(z), 1), 'right');
+  };
+  if(!hayS){
+    P.caja(40, y, RES_W - 80, 46, 6, RES_COL.panel, RES_COL.borde);
+    P.parr('Todavía no hay registro de sueño en este periodo. La tarjeta «Registro de sueño» de la app se rellena en 30 segundos: antes de dormir y al despertar.', 54, y + 19, RES_W - 108, 12, { f:'sans', s:8.5, c:RES_COL.suave });
+    y += 46 + 16;
+  } else if(!mes){
+    const hh = 134; resBarrasSueno(P, 40, y, 296, hh, D.suenoDias);
+    P.caja(346, y, RES_W - 40 - 346, hh, 6, RES_COL.panel, RES_COL.borde);
+    metr.slice(0, 7).forEach((m, i)=>filaMetr(m, 358, y + 10 + i*17.4, RES_W - 40 - 346 - 24));
+    y += hh + 12;
+    D.obsSueno.slice(0, 2).forEach(t=>{ P.circulo(44, y + 5.5, 1.8, RES_COL.oroClaro); y = P.parr(t, 54, y + 8, RES_W - 100, 11.5, { f:'sans', s:8.2, c:RES_COL.suave }) + 4; });
+    if(D.obsSueno.length) y += 2;
+    y += 8;
+    // bienestar diario (check-in)
+    const ms = [['Fatiga (5 = sin fatiga)', 'fatiga'], ['Estrés (5 = sin estrés)', 'estres'], ['Ánimo', 'animo']].concat(S.noches ? [] : [['Sueño (check-in)', 'sueno']]).filter(m=>A[m[1]] !== null);
+    if(ms.length){
+      P.txt('BIENESTAR DIARIO', 40, y + 6, { f:'mono', s:6.5, w:500, sp:1.8, c:RES_COL.oro }); y += 14;
+      ms.forEach(m=>{
+        const val = A[m[1]], dl = resDelta(B[m[1]], val);
+        P.txt(m[0], 40, y + 8, { f:'sans', s:8.5, w:600 }); P.caja(190, y + 2, 200, 7, 3.5, RES_COL.panel2); P.caja(190, y + 2, Math.max(7, 200*val/5), 7, 3.5, RES_COL.tinta);
+        P.txt(`${nFmt(aEscala(val, 5, e), 1)}/${e}`, 402, y + 9, { f:'mono', s:8.5, w:600 });
+        if(dl !== null && Math.abs(dl) >= 0.1) resDeltaTxt(P, 470, y + 9, resEsc(dl, e), dl > 0 ? RES_COL.ok : RES_COL.mal, x=>nFmt(Math.abs(x), 1));
+        y += 18;
+      });
+      y += 8;
+    }
+  } else {
+    // mensual: cinco indicadores, cuatro gráficas y una tira con todas las noches
+    const mini = [['Horas medias', S.horas !== null ? f1(S.horas) + ' h' : '—', S.noches ? `${S.noches} noches` : ''], ['Descanso', S.calidad !== null ? `${f1(aEscala(S.calidad, 5, e))}/${e}` : '—', 'calidad media'], ['Energía', S.energia !== null ? `${f1(aEscala(S.energia, 5, e))}/${e}` : '—', 'al despertar'],
+      ['Noches ≥ 7 h', S.noches ? `${S.n7}/${S.noches}` : '—', S.efic !== null ? `eficiencia ${Math.round(S.efic)} %` : ''], ['Regularidad', S.regul !== null ? '±' + Math.round(S.regul) + '′' : '—', S.cama !== null ? `acuesta hacia ${sueHoraTxt(S.cama)}` : 'hora de acostarse']];
+    const wm = (RES_W - 80 - 8*4)/5; mini.forEach((t, i)=>resTarjeta(P, 40 + i*(wm + 8), y, wm, 70, t[0], t[1], t[2])); y += 70 + 12;
+    const et = D.bloques.map(b=>b.etiqueta), gw = (RES_W - 80 - 10)/2, gh = 118, SBq = D.suenoBloques;
+    const sv = k=>SBq.map(s=>s[k] === null ? null : s[k]), se = k=>sv(k).map(z=>z === null ? null : aEscala(z, 5, e));
+    resGrafica(P, 40, y, gw, gh, 'Horas dormidas', 'media por semana · objetivo 7-9 h', sv('horas'), et, { min:4, max:10, dec:1, color:RES_COL.tinta, banda:[7, 9] });
+    resGrafica(P, 40 + gw + 10, y, gw, gh, 'Descanso y energía', `1-${e} · descanso (azul) y energía (dorado)`, se('calidad'), et, { min:1, max:e, dec:1, color:RES_COL.tinta, serie2:se('energia'), color2:RES_COL.oroClaro });
+    y += gh + 10;
+    resGrafica(P, 40, y, gw, gh, 'Fatiga', `1-${e} · más alto = menos fatiga`, SBq.map((s, i)=>{ const z = s.fatiga !== null ? s.fatiga : D.bloques[i].f.fatiga; return typeof z === 'number' ? aEscala(z, 5, e) : null; }), et, { min:1, max:e, dec:1, color:RES_COL.mal });
+    resGrafica(P, 40 + gw + 10, y, gw, gh, 'Hora de acostarse', 'media por semana', sv('cama'), et, { min:21*60, max:26*60, dec:0, color:RES_COL.oro, fmt:v=>sueHoraTxt(v), ticks:[21*60, 23.5*60, 26*60] });
+    y += gh + 14;
+    P.txt('TUS NOCHES DEL MES', 40, y + 6, { f:'mono', s:6.5, w:500, sp:1.8, c:RES_COL.oro }); y += 12;
+    const dias = []; for(let f = D.per.desde; f <= D.per.hasta; f = sumaDiasISO(f, 1)){ const r = S.filas.find(x=>x.fecha === f); dias.push({ fecha:f, horas:r && r.horas !== null ? r.horas : null }); }
+    y = resTiraNoches(P, 40, y, RES_W - 80, dias) + 2;
+    [['7 h o más', RES_COL.ok], ['6 a 7 h', RES_COL.oroClaro], ['menos de 6 h', RES_COL.mal]].forEach((l, i)=>{ P.caja(40 + i*92, y + 1, 9, 9, 2, l[1], null); P.txt(l[0], 54 + i*92, y + 8.4, { f:'sans', s:7, c:RES_COL.suave }); });
+    P.caja(40 + 3*92, y + 1, 9, 9, 2, null, RES_COL.borde, 0.6); P.txt('sin registro', 54 + 3*92, y + 8.4, { f:'sans', s:7, c:RES_COL.suave }); y += 24;
+    if(D.obsSueno.length){
+      P.txt('QUÉ SE RELACIONA CON TU DESCANSO', 40, y + 6, { f:'mono', s:6.5, w:500, sp:1.8, c:RES_COL.oro }); y += 16;
+      D.obsSueno.slice(0, 3).forEach(t=>{ asegura(30); P.circulo(44, y - 2.5, 1.8, RES_COL.oroClaro); y = P.parr(t, 54, y, RES_W - 100, 11.5, { f:'sans', s:8.4 }) + 4; });
+      P.txt('Son comparaciones entre noches, no causa y efecto.', 54, y + 4, { f:'sans', s:6.8, c:RES_COL.suave }); y += 16;
+    }
+  }
+  }
+
+  // ===== Entrenamiento y progreso =====
+  if(on('entreno')){
+  salto(mes ? 420 : 430);
+  asegura(80); y = resSec(P, nn(), 'Entrenamiento y progreso', y);
+  if(mes){
+    const et = D.bloques.map(b=>b.etiqueta), gw = (RES_W - 80 - 10)/2, gh = 112, v = k=>D.bloques.map(b=>typeof b.f[k] === 'number' ? b.f[k] : null);
+    const cmax = Math.max(100, ...v('carga').filter(z=>z !== null));
+    resGrafica(P, 40, y, gw, gh, 'Carga de entrenamiento', 'sRPE por semana', v('carga'), et, { min:0, max:Math.ceil(cmax*1.15/50)*50, dec:0, color:RES_COL.oro });
+    resGrafica(P, 40 + gw + 10, y, gw, gh, 'Sesiones', 'registradas por semana', v('ses'), et, { min:0, max:(m=>m % 2 ? m + 1 : m)(Math.max(3, ...v('ses').filter(z=>z !== null)) + 1), dec:0, color:RES_COL.tinta });
+    y += gh + 18;
+  } else {
+    P.txt('SESIONES', 40, y + 2, { f:'mono', s:6.5, w:500, sp:1.8, c:RES_COL.oro }); y += 10;
     if(!D.sesiones.length){ P.txt('No hay sesiones registradas esta semana.', 40, y + 8, { f:'sans', s:8.5, c:RES_COL.suave }); y += 28; }
     else {
       P.txt('DÍA', 44, y + 8, { f:'mono', s:6.3, sp:1.2, c:RES_COL.suave }); P.txt('SESIÓN', 110, y + 8, { f:'mono', s:6.3, sp:1.2, c:RES_COL.suave });
@@ -4977,44 +5220,60 @@ async function resDibuja(D){
       P.linea(40, y, RES_W - 40, y, RES_COL.borde, 0.5); y += 20;
     }
   }
-  // --- Lectura ---
-  const lec = resLectura(D);
-  if(lec.length){
-    asegura(24 + lec.length*24); y = resTitulo(P, mes ? 'Lectura del mes' : 'En resumen', y); y += 8;
-    lec.forEach(l=>{ P.circulo(44, y - 2.5, 1.8, RES_COL.oroClaro); y = P.parr(l, 54, y, RES_W - 100, 12, { f:'sans', s:8.8 }) + 3; });
-    y += 12;
+  // ejercicios con más crecimiento
+  asegura(70); P.txt(mes ? 'EJERCICIOS EN LOS QUE MÁS HAS CRECIDO' : 'EJERCICIO DESTACADO', 40, y + 2, { f:'mono', s:6.5, w:500, sp:1.8, c:RES_COL.oro }); y += 12;
+  if(!crV.length){ y = P.parr(mes ? 'Este mes no hay una mejora clara de cargas en los ejercicios registrados. Se consolida la base: lo importante es seguir acumulando sesiones con buena técnica.' : 'Sin mejoras de carga claras esta semana: se consolida la base.', 40, y + 8, RES_W - 80, 12, { f:'sans', s:8.8, c:RES_COL.suave }) + 14; }
+  crV.slice(0, mes ? 5 : 3).forEach(c=>{
+    asegura(60);
+    P.caja(40, y, RES_W - 80, 52, 6, RES_COL.panel, RES_COL.borde);
+    let nm = c.nombre; while(nm.length > 4 && P.ancho(nm, 'serif', 12.5, 600) > 330) nm = nm.slice(0, -2);
+    P.txt(nm, 52, y + 19, { f:'serif', s:12.5, w:600 });
+    P.txt(`${c.sesiones} ${c.sesiones === 1 ? 'sesión' : 'sesiones'} ${mes ? 'este mes' : 'esta semana'}`, 52, y + 31, { f:'sans', s:6.8, c:RES_COL.suave });
+    P.caja(RES_W - 40 - 62, y + 10, 52, 17, 8.5, RES_COL.ok, null); P.txt('+' + nFmt(c.cambio, 0) + ' %', RES_W - 40 - 36, y + 22, { f:'mono', s:8.5, w:600, c:'#FFFFFF', al:'center' });
+    P.txt('ANTES · ' + fechaCortaISO(c.ini.fecha), 52, y + 43, { f:'mono', s:5.8, sp:1, c:RES_COL.suave }); P.txt(resSerieTxt(c.ini), 52 + 78, y + 43, { f:'mono', s:7.8, c:RES_COL.suave });
+    P.txt('AHORA · ' + fechaCortaISO(c.fin.fecha), 292, y + 43, { f:'mono', s:5.8, sp:1, c:RES_COL.oro }); P.txt(resSerieTxt(c.fin), 292 + 78, y + 43, { f:'mono', s:7.8, w:600 });
+    y += 60;
+  });
+  if(crV.length){ P.txt('El porcentaje es la mejora de la fuerza estimada (carga, repeticiones y RIR de la mejor serie).', 40, y + 2, { f:'sans', s:6.6, c:RES_COL.suave }); y += 22; }
   }
-  // --- Ejercicios con más crecimiento ---
+
+  // ===== Seguimiento personalizado (preguntas propias del entrenador) =====
+  if(D.extras.length && on('extras')){
+    asegura(120); y = resSec(P, nn(), 'Seguimiento personalizado', y);
+    D.extras.forEach(r=>{ asegura(74); y = resFilaExtra(P, y, r, D) + 8; });
+    const exo = resListaDe(D, 'exo', D.extrasObs);
+    if(exo.length) y += 4;
+    exo.slice(0, 5).forEach(t=>{ asegura(30); P.circulo(44, y - 2.5, 1.8, RES_COL.oroClaro); y = P.parr(t, 54, y, RES_W - 100, 11.5, { f:'sans', s:8.4 }) + 4; });
+    if(exo.length){ P.txt('Son comparaciones entre días, no causa y efecto. Si algo persiste o empeora, conviene valorarlo en consulta.', 54, y + 4, { f:'sans', s:6.8, c:RES_COL.suave }); y += 18; }
+    y += 8;
+  }
+
+  // ===== Balance (mensual: comparación) / Lectura =====
+  if(on('balance')){
+  if(mes) salto(380); else asegura(120);
+  y = resSec(P, nn(), mes ? 'Balance del mes' : 'En resumen', y);
   if(mes){
-    asegura(70); y = resTitulo(P, 'Ejercicios en los que más has crecido', y); y += 6;
-    if(!D.crec.length){ P.parr('Este mes no hay una mejora clara de cargas en los ejercicios registrados. Se consolida la base: lo importante es seguir acumulando sesiones con buena técnica.', 40, y + 8, RES_W - 80, 12, { f:'sans', s:8.8, c:RES_COL.suave }); y += 44; }
-    D.crec.forEach(c=>{
-      asegura(60);
-      P.caja(40, y, RES_W - 80, 52, 6, RES_COL.panel, RES_COL.borde);
-      let nm = c.nombre; while(nm.length > 4 && P.ancho(nm, 'serif', 12.5, 600) > 330) nm = nm.slice(0, -2);
-      P.txt(nm, 52, y + 19, { f:'serif', s:12.5, w:600 });
-      P.txt(`${c.sesiones} ${c.sesiones === 1 ? 'sesión' : 'sesiones'} este mes`, 52, y + 31, { f:'sans', s:6.8, c:RES_COL.suave });
-      P.caja(RES_W - 40 - 62, y + 10, 52, 17, 8.5, RES_COL.ok, null); P.txt('+' + nFmt(c.cambio, 0) + ' %', RES_W - 40 - 36, y + 22, { f:'mono', s:8.5, w:600, c:'#FFFFFF', al:'center' });
-      P.txt('ANTES · ' + fechaCortaISO(c.ini.fecha), 52, y + 43, { f:'mono', s:5.8, sp:1, c:RES_COL.suave }); P.txt(resSerieTxt(c.ini), 52 + 78, y + 43, { f:'mono', s:7.8, c:RES_COL.suave });
-      P.txt('AHORA · ' + fechaCortaISO(c.fin.fecha), 292, y + 43, { f:'mono', s:5.8, sp:1, c:RES_COL.oro }); P.txt(resSerieTxt(c.fin), 292 + 78, y + 43, { f:'mono', s:7.8, w:600 });
-      y += 60;
-    });
-    if(D.crec.length){ P.txt('El porcentaje es la mejora de la fuerza estimada (carga, repeticiones y RIR de la mejor serie) frente al inicio del mes.', 40, y + 2, { f:'sans', s:6.6, c:RES_COL.suave }); y += 28; }
-    // --- Mes frente al anterior ---
-    asegura(120); y = resTitulo(P, 'Este mes frente al anterior', y); y += 6;
     P.txt('MES ANTERIOR', 330, y + 6, { f:'mono', s:6.3, sp:1.2, c:RES_COL.suave, al:'right' }); P.txt('ESTE MES', 420, y + 6, { f:'mono', s:6.3, sp:1.2, c:RES_COL.suave, al:'right' }); P.txt('CAMBIO', RES_W - 44, y + 6, { f:'mono', s:6.3, sp:1.2, c:RES_COL.suave, al:'right' });
     y += 12;
-    const fil = [['Sesiones', 'ses', 0, 1], ['Días con Snack', 'snacks', 0, 1], ['Carga semanal media', 'carga', 0, 1], ['Sueño', 'sueno', 1, 1], ['Fatiga (más alto = menos)', 'fatiga', 1, 1], ['Hábitos cumplidos (%)', 'habitos', 0, 1]];
+    const fil = [['Sesiones', A.ses, B.ses, 0, 0], ['Días con Snack', A.snacks, B.snacks, 0, 0], ['Carga semanal media', A.carga, B.carga, 0, 0], ['Horas de sueño', S.horas, SB.horas, 0, 1], ['Calidad del descanso', S.calidad, SB.calidad, 1, 1], ['Energía al despertar', S.energia, SB.energia, 1, 1], ['Fatiga (más alto = menos)', A.fatiga, B.fatiga, 1, 1], ['Hábitos cumplidos (%)', A.habitos, B.habitos, 0, 0]];
     fil.forEach(r=>{
-      const a = B[r[1]], b = A[r[1]]; if(a === null && b === null) return;
+      const a = r[2], b = r[1]; if((a === null || a === undefined) && (b === null || b === undefined)) return;
       asegura(20); P.linea(40, y, RES_W - 40, y, RES_COL.borde, 0.5);
-      const fm = z=>z === null || z === undefined ? '—' : (r[2] ? nFmt(aEscala(z, 5, e), 1) : nFmt(z, r[1] === 'habitos' ? 0 : (r[1] === 'ses' || r[1] === 'snacks' || r[1] === 'carga' ? 0 : 1)));
+      const esc5 = r[3] === 1 && r[0] !== 'Horas de sueño', fm = z=>z === null || z === undefined ? '—' : (esc5 ? nFmt(aEscala(z, 5, e), 1) : nFmt(z, r[4] ? 1 : 0));
       P.txt(r[0], 44, y + 13, { f:'sans', s:8.5, w:500 }); P.txt(fm(a), 330, y + 13, { f:'mono', s:8, c:RES_COL.suave, al:'right' }); P.txt(fm(b), 420, y + 13, { f:'mono', s:8.5, w:600, al:'right' });
       const dl = resDelta(a, b);
-      if(dl !== null && Math.abs(dl) > 1e-9){ const sube = dl > 0, umbral = r[2] ? 0.3 : 0; if(Math.abs(dl) >= umbral) resDeltaTxt(P, RES_W - 44, y + 13, dl, r[1] === 'carga' ? RES_COL.suave : (sube ? RES_COL.ok : RES_COL.mal), z=>nFmt(Math.abs(r[2] ? resEsc(z, e) : z), r[2] ? 1 : 0), 'right'); }
+      if(dl !== null && Math.abs(dl) > 1e-9){ const umbral = esc5 ? 0.3 : 0; if(Math.abs(dl) >= umbral - 1e-9) resDeltaTxt(P, RES_W - 44, y + 13, dl, r[0] === 'Carga semanal media' ? RES_COL.suave : (dl > 0 ? RES_COL.ok : RES_COL.mal), z=>nFmt(Math.abs(esc5 ? resEsc(z, e) : z), esc5 || r[4] ? 1 : 0), 'right'); }
       y += 19;
     });
     P.linea(40, y, RES_W - 40, y, RES_COL.borde, 0.5); y += 22;
+  }
+  const lec = resListaDe(D, 'lec', resLectura(D));
+  if(lec.length){
+    if(mes) P.txt('LECTURA DEL MES', 40, y + 2, { f:'mono', s:6.5, w:500, sp:1.8, c:RES_COL.oro }), y += 14;
+    asegura(14 + lec.length*24);
+    lec.forEach(l=>{ P.circulo(44, y - 2.5, 1.8, RES_COL.oroClaro); y = P.parr(l, 54, y, RES_W - 100, 12, { f:'sans', s:8.8 }) + 3; });
+    y += 14;
+  }
   }
   // --- Mensaje del entrenador / foco ---
   const tieneNota = D.nota && D.nota.trim(), tieneFoco = mes && D.foco && D.foco.trim();
@@ -5071,22 +5330,99 @@ async function tplResumenPdf(athleteId){
   const tipo = state.resTipo, ref = state.resRef[tipo] || (state.resRef[tipo] = resRefDefecto(tipo));
   const D = await datosResumen(athleteId, tipo, ref); resCache = D;
   const hoy = todayISO(), enCurso = D.per.hasta >= hoy, A = D.ahora, f1 = x=>nFmt(x, 1);
-  const puedeCompartir = typeof navigator !== 'undefined' && navigator.canShare && (()=>{ try{ return navigator.canShare({ files:[new File(['x'], 'a.pdf', { type:'application/pdf' })] }); }catch(e){ return false; } })();
+  const puedeCompartir = resPuedeCompartir();
   const chip = (t, v)=>`<div class="res-chip"><span>${t}</span><b>${v}</b></div>`;
   return `<div class="card res-card"><h2>Resumen para ${escapeHtml(String(D.nombre).split(' ')[0] || 'la atleta')}</h2>
-    <p class="snack-nota" style="margin:0 0 10px;">Un documento con la plantilla de Umbral, listo para enviar por WhatsApp o correo. No incluye datos del ciclo.</p>
+    <p class="snack-nota" style="margin:0 0 10px;">Un documento con la plantilla de Umbral, listo para enviar por WhatsApp o correo. Puedes ver cómo queda, cambiar textos y quitar secciones antes de descargarlo. No incluye datos del ciclo.</p>
     <div class="res-seg" role="tablist"><button data-restipo="sem" class="${tipo === 'sem' ? 'sel' : ''}">Semanal</button><button data-restipo="mes" class="${tipo === 'mes' ? 'sel' : ''}">Mensual</button></div>
     <div class="res-nav"><button class="btn ghost small" data-resmueve="-1" aria-label="Periodo anterior">‹</button><div><b>${escapeHtml(D.per.etiqueta)}</b><span>${enCurso ? 'en curso: faltan días por registrar' : 'periodo completo'}</span></div><button class="btn ghost small" data-resmueve="1" aria-label="Periodo siguiente" ${resPeriodo(tipo, resMueve(tipo, ref, 1)).desde > hoy ? 'disabled' : ''}>›</button></div>
     <div class="res-fila">${chip('Snacks', D.sn.posibles ? `${D.sn.hechos}/${D.sn.posibles}` : '—')}${chip('Sesiones', A.ses)}${chip(tipo === 'mes' ? 'Carga/sem' : 'Carga', A.carga !== null ? A.carga : '—')}${chip('Mejoras', D.crec.length)}</div>
     <label class="field-label" style="margin-top:12px;">Tu mensaje (sale en el PDF y en el texto)</label>
     <textarea id="resNota" maxlength="700" placeholder="Una o dos frases: lo que has visto, lo que celebras, el ajuste para la próxima semana…" style="min-height:74px;width:100%;">${escapeHtml(D.nota)}</textarea>
     ${tipo === 'mes' ? `<label class="field-label" style="margin-top:10px;">Foco del próximo mes</label><textarea id="resFoco" maxlength="400" placeholder="Qué se prioriza el mes que viene" style="min-height:58px;width:100%;">${escapeHtml(D.foco)}</textarea>` : ''}
-    <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:12px;"><button class="btn" id="resPdf">Descargar PDF</button>${puedeCompartir ? '<button class="btn ghost" id="resCompartir">Enviar…</button>' : ''}<button class="btn ghost" id="resCopiar">Copiar texto</button></div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:12px;"><button class="btn" id="resEditar">Vista previa y editar</button><button class="btn ghost" id="resPdf">Descargar PDF</button>${puedeCompartir ? '<button class="btn ghost" id="resCompartir">Enviar…</button>' : ''}<button class="btn ghost" id="resCopiar">Copiar texto</button></div>
     <span id="resEstado" class="snack-nota" style="display:block;margin-top:8px;"></span>
     <details class="res-texto"><summary>Ver el texto</summary><textarea id="resTexto" readonly style="width:100%;min-height:190px;">${escapeHtml(textoResumen(D))}</textarea></details>
   </div>`;
 }
 let resTimer = null;
+function resBajaArchivo(f){ const url = URL.createObjectURL(f), a = document.createElement('a'); a.href = url; a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 60000); }
+function resPuedeCompartir(){ return typeof navigator !== 'undefined' && !!navigator.canShare && (()=>{ try{ return navigator.canShare({ files:[new File(['x'], 'a.pdf', { type:'application/pdf' })] }); }catch(e){ return false; } })(); }
+// ---- Vista previa y edición antes de descargar ----
+function resEditorCierra(){ const ov = document.getElementById('resEditor'); if(!ov) return; ov.querySelectorAll('canvas').forEach(c=>{ c.width = 0; c.height = 0; }); ov.remove(); renderKeepScroll(); }
+function resEditorAbre(D){
+  const viejo = document.getElementById('resEditor'); if(viejo) viejo.remove();
+  const ov = document.createElement('div'); ov.id = 'resEditor'; ov.className = 'snack-ov res-ed-ov'; document.body.appendChild(ov);
+  const mes = D.tipo === 'mes', ed = D.ed, hayExtras = D.extras.length > 0;
+  const tit = { dest:'Lo destacado (etiquetas de la franja superior)', lec:mes ? 'Lectura del mes' : 'En resumen', exo:'Observaciones del seguimiento personalizado' };
+  const auto = { dest:()=>resDestacados(D), lec:()=>resLectura(D), exo:()=>D.extrasObs };
+  const lista = k=>{
+    const custom = Array.isArray(ed[k]), arr = custom ? ed[k] : auto[k]();
+    return `<div class="ed-lista" data-edlista="${k}"><div class="ed-tit"><b>${tit[k]}</b><span class="ed-tag" ${custom ? '' : 'hidden'}>editado</span></div>
+      ${arr.map((t, i)=>`<div class="ed-fila"><textarea rows="2" maxlength="220" data-edtxt="${k}">${escapeHtml(t)}</textarea><button class="btn ghost small" data-edquita="${k}" data-i="${i}" aria-label="Quitar esta línea">×</button></div>`).join('') || '<p class="snack-nota" style="margin:4px 0;">Sin líneas: esta parte no saldrá en el PDF.</p>'}
+      <div class="row" style="gap:8px;flex-wrap:wrap;"><button class="btn ghost small" data-edadd="${k}">+ Añadir línea</button><button class="btn ghost small" data-edauto="${k}">Restaurar el texto automático</button></div></div>`;
+  };
+  const grupo = (titulo, cuerpo, abierto)=>`<details class="ed-grupo" ${abierto ? 'open' : ''}><summary>${titulo}</summary>${cuerpo}</details>`;
+  const secs = RES_SECCIONES.filter(z=>z[0] !== 'extras' || hayExtras).map(z=>`<label class="chk"><input type="checkbox" data-edsec="${z[0]}" ${resSecOn(D, z[0]) ? 'checked' : ''}> ${z[1]}</label>`).join('');
+  const crec = D.crec.length ? grupo('Ejercicios destacados', D.crec.map((c, i)=>`<label class="chk"><input type="checkbox" data-edcrec="${i}" ${(ed.crecOff || []).includes(c.nombre) ? '' : 'checked'}> ${escapeHtml(c.nombre)} <small>+${nFmt(c.cambio, 0)} %</small></label>`).join(''), false) : '';
+  const puedeCompartir = resPuedeCompartir();
+  ov.innerHTML = `<div class="snack-in res-ed"><div class="snack-bar"><button class="btn ghost small" id="edCerrar">Cerrar</button><span class="snack-eyebrow">${escapeHtml(D.per.etiqueta)}</span></div>
+    <h2 class="snack-h" style="margin-bottom:6px;">Revisa y edita el PDF</h2>
+    <p class="snack-nota" style="margin:0 0 12px;">Los cambios se guardan para este periodo y la vista previa se actualiza sola. Lo que quites aquí no se borra de la app.</p>
+    <div class="res-seg res-ed-tabs" role="tablist"><button data-edver="edit" class="sel">Editar</button><button data-edver="prev">Vista previa</button></div>
+    <div class="res-ed-grid" data-ver="edit">
+      <div class="res-ed-form">
+        ${grupo('Secciones del PDF', `<div class="ed-secs">${secs}</div>`, true)}
+        ${grupo('Mensaje de tu entrenador', `<textarea id="edNota" maxlength="700" rows="4" style="width:100%;" placeholder="Una o dos frases para ${escapeHtml(String(D.nombre).split(' ')[0] || 'ella')}…">${escapeHtml(D.nota)}</textarea>${mes ? `<label class="field-label" style="margin-top:8px;">Foco del próximo mes</label><textarea id="edFoco" maxlength="400" rows="3" style="width:100%;">${escapeHtml(D.foco)}</textarea>` : ''}`, true)}
+        ${grupo('Textos automáticos', lista('dest') + lista('lec') + (hayExtras ? lista('exo') : ''), false)}
+        ${crec}
+      </div>
+      <div class="res-ed-prev"><div id="edPrev"><p class="snack-nota">Preparando la vista previa…</p></div></div>
+    </div>
+    <div class="res-ed-pie"><button class="btn" id="edPdf">Descargar PDF</button>${puedeCompartir ? '<button class="btn ghost" id="edEnviar">Enviar…</button>' : ''}<span class="snack-nota" id="edEstado" style="margin:0;"></span></div></div>`;
+  const est = t=>{ const e = ov.querySelector('#edEstado'); if(e) e.textContent = t; };
+  let tok = 0, tmGuarda = null, tmPinta = null;
+  const libera = pags=>pags.forEach(p=>{ if(p && p.cv){ p.cv.width = 0; p.cv.height = 0; } });
+  const pinta = async ()=>{
+    const mi = ++tok; est('Actualizando la vista previa…');
+    try{
+      const pags = await resDibuja(D);
+      if(mi !== tok || !document.getElementById('resEditor')){ libera(pags); return; }
+      const host = ov.querySelector('#edPrev'); host.querySelectorAll('canvas').forEach(c=>{ c.width = 0; c.height = 0; }); host.innerHTML = '';
+      pags.forEach((p, i)=>{ const w = document.createElement('div'); w.className = 'ed-pag'; p.cv.style.cssText = 'width:100%;height:auto;display:block;'; w.appendChild(p.cv); host.appendChild(w); });
+      est('');
+    }catch(e){ est('No se pudo dibujar la vista previa: ' + (e.message || e)); }
+  };
+  const guarda = async ()=>{ await saveResumenNota(D.id, D.key, 'edit', resEdLimpia(D.ed)); await saveResumenNota(D.id, D.key, 'nota', D.nota); if(mes) await saveResumenNota(D.id, D.key, 'foco', D.foco); };
+  const cambia = ()=>{ clearTimeout(tmPinta); tmPinta = setTimeout(pinta, 600); clearTimeout(tmGuarda); tmGuarda = setTimeout(guarda, 500); };
+  const leeLista = k=>[...ov.querySelectorAll(`[data-edtxt="${k}"]`)].map(t=>t.value);
+  const repinta = k=>{ const el = ov.querySelector(`[data-edlista="${k}"]`); if(el) el.outerHTML = lista(k); };
+  ov.addEventListener('input', e=>{
+    const t = e.target;
+    if(t.matches && t.matches('[data-edtxt]')){ const k = t.dataset.edtxt; ed[k] = leeLista(k); const tag = ov.querySelector(`[data-edlista="${k}"] .ed-tag`); if(tag) tag.hidden = false; cambia(); }
+    else if(t.id === 'edNota'){ D.nota = t.value; cambia(); }
+    else if(t.id === 'edFoco'){ D.foco = t.value; cambia(); }
+  });
+  ov.addEventListener('change', e=>{
+    const t = e.target; if(!t.matches) return;
+    if(t.matches('[data-edsec]')){ if(t.checked) delete ed.sec[t.dataset.edsec]; else ed.sec[t.dataset.edsec] = false; cambia(); }
+    else if(t.matches('[data-edcrec]')){ const c = D.crec[+t.dataset.edcrec]; if(!c) return; ed.crecOff = (ed.crecOff || []).filter(n=>n !== c.nombre); if(!t.checked) ed.crecOff.push(c.nombre); cambia(); }
+  });
+  ov.addEventListener('click', async e=>{
+    const b = e.target.closest ? e.target.closest('button') : null; if(!b) return;
+    if(b.id === 'edCerrar'){ clearTimeout(tmPinta); clearTimeout(tmGuarda); await guarda(); tok++; resEditorCierra(); return; }
+    if(b.dataset.edver){ ov.querySelectorAll('[data-edver]').forEach(x=>x.classList.toggle('sel', x === b)); ov.querySelectorAll('.res-ed-grid').forEach(g=>{ g.dataset.ver = b.dataset.edver; }); return; }
+    if(b.dataset.edquita){ const k = b.dataset.edquita, a = Array.isArray(ed[k]) ? leeLista(k) : auto[k](); a.splice(+b.dataset.i, 1); ed[k] = a.slice(); repinta(k); cambia(); return; }
+    if(b.dataset.edadd){ const k = b.dataset.edadd, a = Array.isArray(ed[k]) ? leeLista(k) : auto[k](); ed[k] = a.concat(['']); repinta(k); const ta = ov.querySelectorAll(`[data-edtxt="${k}"]`); if(ta.length) ta[ta.length - 1].focus(); cambia(); return; }
+    if(b.dataset.edauto){ const k = b.dataset.edauto; ed[k] = null; repinta(k); cambia(); return; }
+    if(b.id === 'edPdf' || b.id === 'edEnviar'){
+      try{ clearTimeout(tmGuarda); await guarda(); est('Preparando el PDF…'); const f = await resGeneraPdf(D); est('');
+        if(b.id === 'edEnviar') await navigator.share({ files:[f], title:f.name, text:'' }); else { resBajaArchivo(f); toast('PDF listo'); }
+      }catch(err){ est(''); if(!(err && err.name === 'AbortError')) toast('No se pudo crear el PDF: ' + (err.message || err), true); }
+    }
+  });
+  pinta();
+}
 function bindResumen(){
   const card = document.querySelector('.res-card'); if(!card) return;
   const D = resCache; if(!D) return;
@@ -5098,15 +5434,365 @@ function bindResumen(){
   const est = t=>{ const e = document.getElementById('resEstado'); if(e) e.textContent = t; };
   const genera = async ()=>{ clearTimeout(resTimer); await saveResumenNota(D.id, D.key, 'nota', D.nota); if(D.tipo === 'mes') await saveResumenNota(D.id, D.key, 'foco', D.foco); est('Preparando el PDF…'); const f = await resGeneraPdf(D); est(''); return f; };
   const pdf = document.getElementById('resPdf');
-  if(pdf) pdf.addEventListener('click', async ()=>{ try{ const f = await genera(), url = URL.createObjectURL(f), a = document.createElement('a'); a.href = url; a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 60000); toast('PDF listo'); }catch(e){ est(''); toast('No se pudo crear el PDF: ' + (e.message || e), true); } });
+  const edb = document.getElementById('resEditar');
+  if(edb) edb.addEventListener('click', async ()=>{ clearTimeout(resTimer); await saveResumenNota(D.id, D.key, 'nota', D.nota); if(D.tipo === 'mes') await saveResumenNota(D.id, D.key, 'foco', D.foco); resEditorAbre(D); });
+  if(pdf) pdf.addEventListener('click', async ()=>{ try{ const f = await genera(); resBajaArchivo(f); toast('PDF listo'); }catch(e){ est(''); toast('No se pudo crear el PDF: ' + (e.message || e), true); } });
   const comp = document.getElementById('resCompartir');
   if(comp) comp.addEventListener('click', async ()=>{ try{ const f = await genera(); await navigator.share({ files:[f], title:f.name, text:'' }); }catch(e){ est(''); if(e && e.name !== 'AbortError') toast('No se pudo compartir: ' + (e.message || e), true); } });
   const cop = document.getElementById('resCopiar');
   if(cop) cop.addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText(textoResumen(D)); toast('Texto copiado'); }catch(e){ toast('No se pudo copiar', true); } });
 }
 
+// =====================================================================
+// REGISTRO DE SUEÑO: noche (antes de dormir) y mañana (al despertar)
+// Una ficha por noche, guardada con la fecha de la mañana en que acaba:
+//   sueno-<atleta> = { dias: { 'AAAA-MM-DD': { noche:{...}, manana:{...} } } }
+// =====================================================================
+const SUE_CAFE = [['no', 'No'], ['si', 'Sí']];
+const SUE_CENA = [['ligera', 'Ligera'], ['normal', 'Normal'], ['copiosa', 'Copiosa o muy tarde']];
+const SUE_DESCONEXION_LIMITE = 22*60 + 30;      // 22:30, para comparar noches con desconexión temprana y tardía
+function sueNum(v){ return (typeof v === 'number' && isFinite(v)) ? v : null; }
+function sueHM(s){ const m = /^(\d{1,2}):(\d{2})$/.exec(String(s || '')); if(!m) return null; const h = +m[1], mi = +m[2]; return (h > 23 || mi > 59) ? null : h*60 + mi; }
+function sueNoche(min){ return min === null ? null : (min < 12*60 ? min + 1440 : min); }     // 00:30 -> 1470 (después de las 18:00)
+function sueHoraTxt(min){ if(min === null || min === undefined || !isFinite(min)) return '—'; const m = ((Math.round(min) % 1440) + 1440) % 1440; return String(Math.floor(m/60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); }
+function sueEnCama(cama, levanta){ const c = sueHM(cama), l = sueHM(levanta); if(c === null || l === null) return null; const t = (l + 1440 - c) % 1440; return (t <= 0 || t > 16*60) ? null : t/60; }
+function sueAhoraHM(d){ d = d || new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+// La noche que se registra antes de dormir acaba mañana; si ya es de madrugada (antes de las 5), acaba hoy.
+function sueClaveNoche(d){ d = d || new Date(); return d.getHours() < 5 ? fechaLocalISO(d) : sumaDiasISO(fechaLocalISO(d), 1); }
+async function getSuenoLog(athleteId){
+  let o = {}; try{ o = JSON.parse(await safeGet('sueno-'+athleteId, true) || '{}') || {}; }catch(e){}
+  if(!o || typeof o !== 'object' || Array.isArray(o)) o = {};
+  if(!o.dias || typeof o.dias !== 'object' || Array.isArray(o.dias)) o.dias = {};
+  Object.keys(o.dias).forEach(k=>{ if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !o.dias[k] || typeof o.dias[k] !== 'object') delete o.dias[k]; });
+  return o;
+}
+async function saveSuenoLog(athleteId, log){ return safeSet('sueno-'+athleteId, JSON.stringify(log), true); }
+function sueDerivado(rec){
+  rec = rec || {}; const n = rec.noche || {}, m = rec.manana || {}, cama = m.cama || n.cama, camaMin = sueNoche(sueHM(cama)), tib = sueEnCama(cama, m.levanta), horas = sueNum(m.horas);
+  return { horas, calidad:sueNum(m.calidad), energia:sueNum(m.energia), fatiga:sueNum(m.fatiga), despertares:sueNum(m.despertares), cama:camaMin, desc:sueNoche(sueHM(n.desc)), levanta:sueHM(m.levanta),
+    tib, efic:(horas !== null && tib) ? Math.min(100, horas/tib*100) : null, cafe:n.cafe || null, cena:n.cena || null, mente:sueNum(n.mente),
+    ex:Object.assign({}, (n.extra && typeof n.extra === 'object') ? n.extra : {}, (m.extra && typeof m.extra === 'object') ? m.extra : {}),
+    tieneManana:horas !== null, tieneNoche:!!(n.desc || n.cama || n.cafe || n.cena || sueNum(n.mente) !== null || (n.extra && typeof n.extra === 'object' && Object.keys(n.extra).length)) };
+}
+function sueDesv(v){ const x = v.filter(a=>a !== null); if(x.length < 3) return null; const m = x.reduce((a, b)=>a+b, 0)/x.length; return Math.sqrt(x.reduce((a, b)=>a + (b-m)*(b-m), 0)/x.length); }
+function resumenSueno(log, desde, hasta){
+  const filas = Object.keys(log.dias).filter(f=>f >= desde && f <= hasta).sort().map(f=>Object.assign({ fecha:f }, sueDerivado(log.dias[f])));
+  const man = filas.filter(x=>x.tieneManana), md = k=>mediaInf(man.map(x=>x[k]));
+  return { filas, noches:man.length, nNoche:filas.filter(x=>x.tieneNoche).length, horas:md('horas'), calidad:md('calidad'), energia:md('energia'), fatiga:md('fatiga'), despertares:md('despertares'), efic:md('efic'), tib:md('tib'),
+    cama:mediaInf(filas.map(x=>x.cama)), desc:mediaInf(filas.map(x=>x.desc)), regul:sueDesv(filas.map(x=>x.cama)), n7:man.filter(x=>x.horas >= 7).length,
+    cafeSi:filas.filter(x=>x.cafe === 'si').length, cafeN:filas.filter(x=>x.cafe).length };
+}
+// Compara dos grupos de noches. Solo habla si hay al menos `minN` en cada uno.
+function sueComp(filas, fa, fb, minN){
+  const A = filas.filter(fa), B = filas.filter(fb); if(A.length < minN || B.length < minN) return null;
+  const r = g=>({ n:g.length, horas:mediaInf(g.map(x=>x.horas)), calidad:mediaInf(g.map(x=>x.calidad)), energia:mediaInf(g.map(x=>x.energia)) });
+  const a = r(A), b = r(B), dh = (a.horas !== null && b.horas !== null) ? a.horas - b.horas : 0, dq = (a.calidad !== null && b.calidad !== null) ? a.calidad - b.calidad : 0, de = (a.energia !== null && b.energia !== null) ? a.energia - b.energia : 0;
+  return { a, b, claro:Math.abs(dh) >= 0.4 || Math.abs(dq) >= 0.4 || Math.abs(de) >= 0.4 };
+}
+// Observaciones descriptivas que cruzan el sueño con lo demás. Piden datos suficientes y no hablan de causas.
+function suenoObservaciones(log, journal, sl, hasta){
+  hasta = hasta || todayISO(); const desde = sumaDiasISO(hasta, -89), f1 = x=>nFmt(x, 1);
+  const ent = new Set((journal || []).map(e=>e && e.date).filter(Boolean));
+  const filas = Object.keys(log.dias).filter(f=>f >= desde && f <= hasta).map(f=>Object.assign({ fecha:f, entreno:ent.has(sumaDiasISO(f, -1)), snack:!!sl && snackHecho(sl, sumaDiasISO(f, -1)) }, sueDerivado(log.dias[f]))).filter(x=>x.tieneManana);
+  const o = [], d = (c, tema, la, lb)=>{
+    if(!c) return;
+    const t = g=>`${g.horas !== null ? f1(g.horas) + ' h' : '—'}${g.calidad !== null ? ` y descanso ${f1(g.calidad)}/5` : ''}${g.energia !== null ? `, energía ${f1(g.energia)}/5` : ''}`;
+    o.push(c.claro ? `${resCap(la)}: ${t(c.a)} (${c.a.n} noches). ${resCap(lb)}: ${t(c.b)} (${c.b.n} noches).` : `${resCap(tema)} no marca una diferencia clara en tu descanso (${f1(c.a.calidad)} frente a ${f1(c.b.calidad)} sobre 5).`);
+  };
+  d(sueComp(filas, x=>x.desc !== null && x.desc <= SUE_DESCONEXION_LIMITE, x=>x.desc !== null && x.desc > SUE_DESCONEXION_LIMITE, 4), 'la hora de desconexión', 'con desconexión antes de las 22:30', 'con desconexión más tarde');
+  d(sueComp(filas, x=>x.cafe === 'no', x=>x.cafe === 'si', 4), 'la cafeína de la tarde', 'sin cafeína después de las 16:00', 'con cafeína después de las 16:00');
+  d(sueComp(filas, x=>x.mente !== null && x.mente >= 4, x=>x.mente !== null && x.mente <= 3, 4), 'llegar con la mente más o menos tranquila', 'llegando con la mente tranquila', 'llegando con la mente activa');
+  d(sueComp(filas, x=>x.snack, x=>!x.snack, 4), 'hacer o no el Snack el día anterior', 'tras un día con Snack', 'tras un día sin Snack');
+  d(sueComp(filas, x=>x.entreno, x=>!x.entreno, 4), 'entrenar el día anterior', 'tras un día de entrenamiento', 'tras un día sin entrenar');
+  const e = sueComp(filas, x=>x.horas >= 7, x=>x.horas < 7, 4);
+  if(e) o.push(e.claro ? `Con 7 h o más, la energía al despertar puntúa ${f1(e.a.energia)}/5; con menos de 7 h, ${f1(e.b.energia)}/5.` : `Dormir más o menos de 7 h no cambia de forma clara tu energía al despertar (${f1(e.a.energia)} frente a ${f1(e.b.energia)}).`);
+  return o;
+}
+
+// ---------- Preguntas propias del entrenador, por atleta ----------
+// sueno-preguntas-<atleta> = { items:[{ id, tipo, texto, corto, cuando:'noche'|'manana', activa, grupo, bajo, alto, opciones }] }
+// Las respuestas van dentro de la ficha: noche.extra[id] o manana.extra[id]. Una pregunta quitada se pausa, no se borra: el historial se conserva.
+const SUE_TIPOS = { eva:'Escala EVA 0-10', esc:'Escala 1-5', opc:'Opciones', sino:'Sí / No', texto:'Texto corto' };
+const SUE_SINO = [['si', 'Sí'], ['no', 'No']];
+const SUE_MAX_PREG = 6;
+function sueNuevoId(){ return 'q' + Date.now().toString(36) + Math.floor(Math.random()*1296).toString(36); }
+function sueOpciones(q){ return q.tipo === 'sino' ? SUE_SINO : (q.opciones || []); }
+function suePregLimpia(p){
+  if(!p || typeof p !== 'object') return null;
+  const tipo = SUE_TIPOS[p.tipo] ? p.tipo : null, texto = String(p.texto || '').trim().slice(0, 140);
+  if(!tipo || !texto || !/^[A-Za-z0-9]{2,24}$/.test(String(p.id || ''))) return null;
+  const q = { id:String(p.id), tipo, texto, corto:String(p.corto || texto).trim().slice(0, 40) || texto.slice(0, 40), cuando:p.cuando === 'manana' ? 'manana' : 'noche', activa:p.activa !== false, grupo:p.grupo ? String(p.grupo).slice(0, 24) : '' };
+  if(tipo === 'eva' || tipo === 'esc'){ q.bajo = String(p.bajo || '').trim().slice(0, 28); q.alto = String(p.alto || '').trim().slice(0, 28); }
+  if(tipo === 'opc'){
+    const op = (Array.isArray(p.opciones) ? p.opciones : []).map(o=>Array.isArray(o) && o.length >= 2 ? [String(o[0]).slice(0, 16), String(o[1]).trim().slice(0, 28)] : null).filter(o=>o && o[0] && o[1]).slice(0, 6);
+    if(op.length < 2) return null; q.opciones = op;
+  }
+  return q;
+}
+async function getPreguntasSueno(athleteId){
+  let o = {}; try{ o = JSON.parse(await safeGet('sueno-preguntas-'+athleteId, true) || '{}') || {}; }catch(e){}
+  return { items:(o && Array.isArray(o.items) ? o.items : []).map(suePregLimpia).filter(Boolean) };
+}
+async function savePreguntasSueno(athleteId, o){ return safeSet('sueno-preguntas-'+athleteId, JSON.stringify({ items:o.items }), true); }
+function sueExtraValor(q, v){
+  if(v === undefined || v === null) return null;
+  if(q.tipo === 'eva') return (typeof v === 'number' && v >= 0 && v <= 10) ? v : null;
+  if(q.tipo === 'esc') return (typeof v === 'number' && v >= 1 && v <= 5) ? v : null;
+  if(q.tipo === 'texto'){ const t = String(v).trim(); return t ? t.slice(0, 200) : null; }
+  return sueOpciones(q).some(o=>o[0] === v) ? v : null;
+}
+// Las respuestas de «antes de dormir» se guardan con la fecha de la mañana siguiente; aquí se devuelven con el día al que se refieren.
+function sueSerieExtra(log, q, desde, hasta){
+  const o = [];
+  for(let f = desde; f <= hasta; f = sumaDiasISO(f, 1)){
+    const rec = log.dias[q.cuando === 'noche' ? sumaDiasISO(f, 1) : f]; if(!rec) continue;
+    const v = sueExtraValor(q, sueDerivado(rec).ex[q.id]); if(v !== null) o.push({ fecha:f, v });
+  }
+  return o;
+}
+function resumenExtra(log, q, desde, hasta, pd, ph){
+  const s = sueSerieExtra(log, q, desde, hasta), vs = s.map(x=>x.v), num = q.tipo === 'eva' || q.tipo === 'esc';
+  const r = { q, n:s.length, serie:s, ultimo:s.length ? s[s.length-1].v : null };
+  if(num){ r.media = mediaInf(vs); r.max = vs.length ? Math.max(...vs) : null; const a = pd ? sueSerieExtra(log, q, pd, ph).map(x=>x.v) : []; r.mediaAntes = mediaInf(a); r.nAntes = a.length; }
+  else if(q.tipo === 'opc' || q.tipo === 'sino'){ r.dist = {}; sueOpciones(q).forEach(o=>{ r.dist[o[0]] = 0; }); vs.forEach(v=>{ r.dist[v]++; }); }
+  return r;
+}
+// Preguntas con alguna respuesta en el periodo (o activas, si se piden todas).
+function resumenExtras(log, preguntas, desde, hasta, pd, ph, todas){
+  return (preguntas || []).map(q=>resumenExtra(log, q, desde, hasta, pd, ph)).filter(r=>r.n > 0 || (todas && r.q.activa));
+}
+// Observaciones descriptivas sobre las preguntas propias: tendencia, respuesta más frecuente y cruce con el sueño. No hablan de causas.
+function extrasObservaciones(log, preguntas, desde, hasta, pd, ph, ant, hoy){
+  const o = [], f1 = x=>nFmt(x, 1);
+  (preguntas || []).forEach(q=>{
+    const r = resumenExtra(log, q, desde, hasta, pd, ph), nom = resCap(q.corto);
+    if((q.tipo === 'eva' || q.tipo === 'esc') && r.n >= 3){
+      const tope = q.tipo === 'eva' ? 10 : 5, dl = (r.nAntes >= 3 && r.mediaAntes !== null) ? r.media - r.mediaAntes : null;
+      if(dl !== null && Math.abs(dl) >= (q.tipo === 'eva' ? 1 : 0.5) - 1e-9) o.push(`${nom}: la media ${dl > 0 ? 'ha subido' : 'ha bajado'} ${f1(Math.abs(dl))} puntos frente a ${ant} (de ${f1(r.mediaAntes)} a ${f1(r.media)} sobre ${tope}).`);
+      else if(dl !== null) o.push(`${nom}: sin cambios claros frente a ${ant} (${f1(r.media)} sobre ${tope}).`);
+    }
+    if((q.tipo === 'opc' || q.tipo === 'sino') && r.n >= 3){
+      const top = sueOpciones(q).map(op=>[op, r.dist[op[0]]]).sort((a, b)=>b[1] - a[1])[0];
+      if(top && top[1]/r.n >= 0.5) o.push(`${nom}: «${top[0][1]}» fue la respuesta más frecuente (${top[1]} de ${r.n} días).`);
+    }
+  });
+  // cruce con el sueño: noches con la respuesta numérica alta frente a baja (últimos 90 días)
+  const d90 = sumaDiasISO(hoy || hasta, -89), filasS = Object.keys(log.dias).filter(k=>k >= d90 && k <= (hoy || hasta)).map(k=>Object.assign({ fecha:k }, sueDerivado(log.dias[k]))).filter(x=>x.tieneManana);
+  (preguntas || []).filter(q=>q.tipo === 'eva' && q.cuando === 'noche').forEach(q=>{
+    const val = x=>sueExtraValor(q, x.ex[q.id]), c = sueComp(filasS, x=>val(x) !== null && val(x) >= 5, x=>val(x) !== null && val(x) < 5, 4);
+    if(!c) return;
+    const t = g=>`${g.horas !== null ? f1(g.horas) + ' h' : '—'}${g.calidad !== null ? ` y descanso ${f1(g.calidad)}/5` : ''}`;
+    o.push(c.claro ? `Noches con ${q.corto.toLowerCase()} de 5 o más sobre 10: ${t(c.a)} (${c.a.n} noches). Con menos de 5: ${t(c.b)} (${c.b.n} noches).` : `${resCap(q.corto)} de 5 o más no marca una diferencia clara en tu descanso (${f1(c.a.calidad)} frente a ${f1(c.b.calidad)} sobre 5).`);
+  });
+  return o;
+}
+
+// ---------- Pantalla de la atleta ----------
+const SUE_LUNA = `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M20.2 14.6A8.4 8.4 0 0 1 9.4 3.8a8.4 8.4 0 1 0 10.8 10.8z"/></svg>`;
+async function tplSuenoCard(athleteId){
+  const log = await getSuenoLog(athleteId), sl = await getSnackLog(athleteId), ahora = new Date(), hoy = fechaLocalISO(ahora), kN = sueClaveNoche(ahora);
+  const dm = sueDerivado(log.dias[hoy]), dn = sueDerivado(log.dias[kN]), sem = resumenSueno(log, lunesDe(hoy), sumaDiasISO(lunesDe(hoy), 6));
+  const snackPend = !snackHecho(sl, hoy) && ahora.getHours() >= 17;
+  const nEx = (await getPreguntasSueno(athleteId)).items.filter(q=>q.activa && q.cuando === 'noche').length;
+  const fila = (modo, titulo, hecho, textoHecho, textoPend)=>`<div class="sue-fila ${hecho ? 'ok' : ''}"><i class="sue-dot"></i><div><b>${titulo}</b><span>${hecho ? textoHecho : textoPend}</span></div><button class="btn small ${hecho ? 'ghost' : ''}" data-suenoabrir="${modo}">${hecho ? 'Editar' : 'Registrar'}</button></div>`;
+  const orden = ahora.getHours() < 14 ? ['manana', 'noche'] : ['noche', 'manana'];
+  const filas = { manana:fila('manana', 'Al despertar', dm.tieneManana, `${nFmt(dm.horas, 1)} h · descanso ${dm.calidad !== null ? nFmt(dm.calidad, 0) : '—'}/5 · energía ${dm.energia !== null ? nFmt(dm.energia, 0) : '—'}/5`, 'Cuenta cómo has dormido'),
+    noche:fila('noche', 'Antes de dormir', dn.tieneNoche, `desconexión ${dn.desc !== null ? sueHoraTxt(dn.desc) : '—'}${dn.cena ? ' · cena ' + dn.cena : ''}`, nEx ? `Desconexión, cena, cafeína y ${nEx} pregunta${nEx === 1 ? '' : 's'} de tu entrenador` : 'Desconexión, cena, cafeína… 30 segundos') };
+  return `<div class="card sue-card"><div class="snack-top"><div><span class="snack-eyebrow">Registro de sueño</span><h2 style="margin:2px 0 0;">Tu descanso, en 30 segundos</h2></div><div class="sue-luna">${SUE_LUNA}</div></div>
+    ${filas[orden[0]]}${filas[orden[1]]}
+    ${sem.noches ? `<p class="snack-estado" style="margin:10px 0 0;">Esta semana: ${sem.noches} noche${sem.noches === 1 ? '' : 's'} registrada${sem.noches === 1 ? '' : 's'} · media ${nFmt(sem.horas, 1)} h</p>` : ''}
+    ${snackPend ? `<p class="sue-snack"><b>Antes de dormir te falta el Snack de hoy</b> (4 minutos).<button class="btn small" data-suenosnack="1">Hacer el Snack</button></p>` : ''}
+  </div>`;
+}
+function suenoOverlay(){
+  let o = document.getElementById('suenoOverlay');
+  if(!o){ o = document.createElement('div'); o.id = 'suenoOverlay'; o.className = 'snack-ov'; document.body.appendChild(o); }
+  return o;
+}
+function suenoCierra(){ const o = document.getElementById('suenoOverlay'); if(o) o.remove(); renderKeepScroll(); }
+async function suenoAbre(athleteId, modo){
+  const log = await getSuenoLog(athleteId), sl = await getSnackLog(athleteId), ahora = new Date(), hoy = fechaLocalISO(ahora);
+  const clave = modo === 'noche' ? sueClaveNoche(ahora) : hoy, rec = log.dias[clave] || {}, prev = rec[modo] || {}, noche = rec.noche || {};
+  const o = suenoOverlay(), horaAhora = sueAhoraHM(ahora), pq = (await getPreguntasSueno(athleteId)).items.filter(q=>q.activa && q.cuando === modo), pex = (prev.extra && typeof prev.extra === 'object') ? prev.extra : {};
+  const esc = (id, etq, bajo, alto, v)=>`<div class="q-item"><p>${etq}</p><div class="scale" data-sueq="${id}" data-tipo="n">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${v === n ? 'sel' : ''}">${n}</button>`).join('')}</div><div class="scale-labels"><span>1 · ${bajo}</span><span>5 · ${alto}</span></div></div>`;
+  const chips = (id, etq, opts, v, tipo)=>`<div class="q-item"><p>${etq}</p><div class="scale" data-sueq="${id}" data-tipo="${tipo || 's'}">${opts.map(([val, txt])=>`<button data-val="${val}" class="${String(v) === String(val) ? 'sel' : ''}">${txt}</button>`).join('')}</div></div>`;
+  const hora = (id, etq, v)=>`<div class="q-item"><p>${etq}</p><input type="time" data-suet="${id}" value="${v || ''}" style="min-width:140px;"></div>`;
+  const extraHtml = q=>{
+    const id = 'x_' + q.id, v = sueExtraValor(q, pex[q.id]), t = `<p>${escapeHtml(q.texto)}</p>`;
+    if(q.tipo === 'eva') return `<div class="q-item">${t}<div class="scale sue-eva" data-sueq="${id}" data-tipo="n">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-val="${n}" class="${v === n ? 'sel' : ''}">${n}</button>`).join('')}</div><div class="scale-labels"><span>0 · ${escapeHtml(q.bajo || 'Nada')}</span><span>10 · ${escapeHtml(q.alto || 'Máximo')}</span></div></div>`;
+    if(q.tipo === 'esc') return esc(id, escapeHtml(q.texto), escapeHtml(q.bajo || 'Muy poco'), escapeHtml(q.alto || 'Muchísimo'), v);
+    if(q.tipo === 'texto') return `<div class="q-item">${t}<input type="text" maxlength="200" data-suex="${id}" value="${escapeHtml(v || '')}" placeholder="Opcional" style="width:100%;"></div>`;
+    return chips(id, escapeHtml(q.texto), sueOpciones(q), v, 's');
+  };
+  const bloqueExtra = pq.length ? `<div class="sue-extra"><span class="snack-eyebrow">Preguntas de tu entrenador</span>${pq.map(extraHtml).join('')}</div>` : '';
+  let cuerpo;
+  if(modo === 'noche'){
+    cuerpo = `<p class="snack-nota" style="margin:0 0 12px;">Antes de dormir. Cinco toques para ver cómo se relacionan tu rutina de noche y tu descanso.</p>
+      ${hora('desc', '¿A qué hora has dejado las pantallas y el trabajo?', prev.desc)}
+      ${hora('cama', '¿A qué hora te acuestas?', prev.cama || ((ahora.getHours() >= 20 || ahora.getHours() < 5) ? horaAhora : ''))}
+      ${chips('cafe', '¿Has tomado cafeína después de las 16:00?', SUE_CAFE, prev.cafe)}
+      ${chips('cena', 'La cena de hoy', SUE_CENA, prev.cena)}
+      ${esc('mente', 'Cómo llegas a la cama', 'Mente muy activa', 'Mente tranquila', sueNum(prev.mente))}${bloqueExtra}`;
+  } else {
+    cuerpo = `<p class="snack-nota" style="margin:0 0 12px;">Al despertar. Tres respuestas obligatorias; el resto, si te apetece.</p>
+      ${hora('cama', '¿A qué hora te acostaste?', prev.cama || noche.cama)}
+      ${hora('levanta', '¿A qué hora te has levantado?', prev.levanta || (ahora.getHours() < 12 ? horaAhora : ''))}
+      <div class="q-item"><p>Horas dormidas</p><div class="scale snack-horas" data-sueq="horas" data-tipo="n">${[4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,10].map(h=>`<button data-val="${h}" class="${sueNum(prev.horas) === h ? 'sel' : ''}">${String(h).replace('.', ',')}</button>`).join('')}</div><p class="snack-nota" id="sueTib" style="margin:6px 0 0;"></p></div>
+      ${esc('calidad', 'Calidad del descanso', 'Muy mala', 'Excelente', sueNum(prev.calidad))}
+      ${esc('energia', 'Energía al despertar', 'Agotada', 'A tope', sueNum(prev.energia))}
+      ${chips('despertares', 'Despertares durante la noche', [[0, 'Ninguno'], [1, '1'], [2, '2'], [3, '3 o más']], sueNum(prev.despertares), 'n')}
+      ${esc('fatiga', 'Fatiga muscular al despertar', 'Muy alta', 'Ninguna', sueNum(prev.fatiga))}${bloqueExtra}`;
+  }
+  o.innerHTML = `<div class="snack-in"><div class="snack-bar"><button class="btn ghost small" id="sueCerrar">Cerrar</button></div>
+    <h2 class="snack-h">${modo === 'noche' ? 'Antes de dormir' : '¿Cómo has dormido?'}</h2>
+    <div class="snack-preg" id="suePreg">${cuerpo}<button class="btn" id="sueGuardar" style="width:100%;">Guardar</button></div></div>`;
+  const val = id=>{ const b = o.querySelector(`[data-sueq="${id}"] button.sel`); if(!b) return null; return b.parentElement.dataset.tipo === 'n' ? parseFloat(b.dataset.val) : b.dataset.val; };
+  const tm = id=>{ const i = o.querySelector(`[data-suet="${id}"]`); return i && sueHM(i.value) !== null ? i.value : ''; };
+  const tib = ()=>{ const t = o.querySelector('#sueTib'); if(!t) return; const h = sueEnCama(tm('cama'), tm('levanta')); t.textContent = h ? `Tiempo en la cama: ${nFmt(h, 1)} h` : ''; };
+  o.querySelectorAll('[data-sueq]').forEach(sc=>sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); })));
+  o.querySelectorAll('[data-suet]').forEach(i=>i.addEventListener('input', tib)); tib();
+  o.querySelector('#sueCerrar').addEventListener('click', ()=>suenoCierra());
+  o.querySelector('#sueGuardar').addEventListener('click', async ()=>{
+    const nuevo = { ts:Date.now() };
+    const extra = Object.assign({}, pex);
+    pq.forEach(q=>{ let v; if(q.tipo === 'texto'){ const i = o.querySelector(`[data-suex="x_${q.id}"]`); v = i && i.value.trim() ? i.value.trim().slice(0, 200) : null; } else v = val('x_' + q.id); if(v === null) delete extra[q.id]; else extra[q.id] = v; });
+    if(Object.keys(extra).length) nuevo.extra = extra;
+    if(modo === 'noche'){
+      ['desc', 'cama'].forEach(k=>{ const v = tm(k); if(v) nuevo[k] = v; });
+      ['cafe', 'cena'].forEach(k=>{ const v = val(k); if(v) nuevo[k] = v; }); const mt = val('mente'); if(mt !== null) nuevo.mente = mt;
+      if(Object.keys(nuevo).length < 2){ toast('Responde al menos una pregunta', true); return; }
+    } else {
+      const horas = val('horas'), calidad = val('calidad'), energia = val('energia');
+      if(horas === null || calidad === null || energia === null){ toast('Responde horas dormidas, calidad y energía', true); return; }
+      Object.assign(nuevo, { horas, calidad, energia }); ['cama', 'levanta'].forEach(k=>{ const v = tm(k); if(v) nuevo[k] = v; });
+      const dz = val('despertares'), ft = val('fatiga'); if(dz !== null) nuevo.despertares = dz; if(ft !== null) nuevo.fatiga = ft;
+    }
+    const lg = await getSuenoLog(athleteId); lg.dias[clave] = Object.assign({}, lg.dias[clave] || {}, { [modo]: nuevo }); await saveSuenoLog(athleteId, lg);
+    const snackPend = modo === 'noche' && !snackHecho(await getSnackLog(athleteId), hoy);
+    if(snackPend){
+      o.innerHTML = `<div class="snack-in"><h2 class="snack-h" style="text-align:center;">Guardado</h2>
+        <div class="snack-preg"><p style="font-size:15px;line-height:1.6;margin:0 0 14px;"><b>Antes de dormir: aún te falta el Snack de hoy.</b> Son 4 minutos y mantienes la racha.</p>
+        <button class="btn" id="sueSnack" style="width:100%;">Hacer el Snack ahora</button><button class="btn ghost" id="sueLuego" style="width:100%;margin-top:8px;">Ya no, que descanses</button></div></div>`;
+      o.querySelector('#sueSnack').addEventListener('click', ()=>{ const ov = document.getElementById('suenoOverlay'); if(ov) ov.remove(); snackAbre(athleteId); });
+      o.querySelector('#sueLuego').addEventListener('click', ()=>suenoCierra());
+    } else { toast(modo === 'noche' ? 'Guardado. Que descanses' : 'Guardado'); suenoCierra(); }
+  });
+}
+function bindSueno(){
+  document.querySelectorAll('[data-suenoabrir]').forEach(b=>b.addEventListener('click', ()=>suenoAbre(state.athleteAsId || state.selectedId, b.dataset.suenoabrir)));
+  document.querySelectorAll('[data-suenosnack]').forEach(b=>b.addEventListener('click', ()=>snackAbre(state.athleteAsId || state.selectedId)));
+  bindSuenoPreguntas();
+}
+
+// ---------- Panel del entrenador ----------
+async function tplSuenoCoach(athleteId){ return (await tplSuenoPreguntas(athleteId)) + (await tplSuenoDescanso(athleteId)); }
+function sueColorEva(v, tope){ const r = v/tope; return r <= 0.3 ? '#1F7A5A' : (r < 0.7 ? '#C9A227' : '#A83A2E'); }
+async function tplSuenoPreguntas(athleteId){
+  const log = await getSuenoLog(athleteId), pq = await getPreguntasSueno(athleteId), hoy = todayISO(), d14 = sumaDiasISO(hoy, -13), p0 = sumaDiasISO(hoy, -27), p1 = sumaDiasISO(hoy, -14);
+  const cuandoTxt = q=>q.cuando === 'noche' ? 'antes de dormir' : 'al despertar', nAct = pq.items.filter(q=>q.activa).length;
+  const filas = pq.items.map(q=>`<div class="spq-fila ${q.activa ? '' : 'pausada'}"><div><b>${escapeHtml(q.texto)}</b><span>${SUE_TIPOS[q.tipo]} · ${cuandoTxt(q)}${q.activa ? '' : ' · pausada'}</span></div><button class="btn ghost small" data-spqtoggle="${q.id}">${q.activa ? 'Quitar' : 'Reactivar'}</button></div>`).join('');
+  const sel = (f)=>`<label>¿Cuándo se pregunta?<select data-f="${f}"><option value="noche">Antes de dormir</option><option value="manana">Al despertar</option></select></label>`;
+  let html = `<div class="card" id="suePregCard" data-ath="${escapeHtml(athleteId)}"><h2>Preguntas propias</h2>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:6px;">Añade preguntas solo para esta atleta (por ejemplo, el dolor de una zona). Salen en su registro, tras las preguntas de siempre, y sus respuestas aparecen aquí y en el Resumen PDF.</p>
+    ${filas || '<p class="snack-nota" style="margin:8px 0;">Todavía no hay preguntas propias.</p>'}
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:10px;"><button class="btn small" data-spq="dolor">+ Dolor (EVA y evolución)</button><button class="btn ghost small" data-spq="otra">+ Otra pregunta</button></div>
+    <div class="spq-form" data-form="dolor" hidden>
+      <label>Zona del dolor<input type="text" maxlength="40" data-f="zona" placeholder="Hombro derecho"></label>${sel('cuandoD')}
+      <label class="chk"><input type="checkbox" data-f="evo" checked> Preguntar también cómo evoluciona (sube, se mantiene, baja)</label>
+      <button class="btn small" data-spqguardar="dolor">Añadir</button></div>
+    <div class="spq-form" data-form="otra" hidden>
+      <label>Pregunta<input type="text" maxlength="140" data-f="texto" placeholder="¿Cómo has notado la rodilla al bajar escaleras?"></label>
+      <label>Tipo de respuesta<select data-f="tipo"><option value="eva">Escala EVA 0-10</option><option value="esc">Escala 1-5</option><option value="opc">Opciones</option><option value="sino">Sí / No</option><option value="texto">Texto corto</option></select></label>
+      <label data-ver="opc" hidden>Opciones, separadas por comas (de 2 a 6)<input type="text" maxlength="160" data-f="opciones" placeholder="Nada, Un poco, Bastante"></label>
+      <label data-ver="num">Extremo bajo (opcional)<input type="text" maxlength="28" data-f="bajo" placeholder="Sin molestia"></label>
+      <label data-ver="num">Extremo alto (opcional)<input type="text" maxlength="28" data-f="alto" placeholder="Insoportable"></label>${sel('cuandoO')}
+      <button class="btn small" data-spqguardar="otra">Añadir</button></div>
+    <p class="snack-nota" style="margin-bottom:0;">Máximo ${SUE_MAX_PREG} preguntas activas (ahora ${nAct}). Al quitar una se conserva su historial.</p>`;
+  const R = resumenExtras(log, pq.items, p0, hoy, null, null).map(r=>resumenExtra(log, r.q, d14, hoy, p0, p1)).filter(r=>r.n > 0);
+  if(R.length){
+    html += `<h3 style="margin:18px 0 6px;font-size:15px;">Seguimiento (últimas dos semanas)</h3>`;
+    R.forEach(r=>{
+      const q = r.q, tope = q.tipo === 'eva' ? 10 : 5, dl = (r.nAntes >= 3 && r.mediaAntes !== null && r.media !== null) ? r.media - r.mediaAntes : null;
+      html += `<div class="spq-res"><b style="font-size:13.5px;">${escapeHtml(q.corto)}</b> <small style="color:var(--muted);">${r.n} día${r.n === 1 ? '' : 's'} con respuesta</small>`;
+      if(q.tipo === 'eva' || q.tipo === 'esc'){
+        const mapa = {}; r.serie.forEach(x=>{ mapa[x.fecha] = x.v; });
+        const barras = Array.from({ length:14 }, (_, i)=>{ const f = sumaDiasISO(hoy, -13 + i), v = mapa[f], alto = v === undefined ? 3 : Math.max(3, (q.tipo === 'eva' ? v : v - 1)/(q.tipo === 'eva' ? 10 : 4)*56);
+          return `<rect x="${i*24 + 4}" y="${64 - alto}" width="16" height="${alto}" rx="3" fill="${v === undefined ? 'var(--border)' : (q.tipo === 'eva' ? sueColorEva(v, 10) : 'var(--accent)')}" ${v === undefined ? 'opacity=".5"' : ''}/>${v !== undefined ? `<text x="${i*24 + 12}" y="${60 - alto}" font-size="8" text-anchor="middle" fill="currentColor">${nFmt(v, 0)}</text>` : ''}<text x="${i*24 + 12}" y="78" font-size="7.5" text-anchor="middle" fill="var(--muted)">${+f.slice(8)}</text>`; }).join('');
+        html += `<div class="res-fila" style="margin-top:8px;"><div class="res-chip"><span>Media</span><b>${nFmt(r.media, 1)}/${tope}${dl !== null && Math.abs(dl) >= 0.1 ? ` <small style="color:var(--muted);">${dl > 0 ? '+' : '−'}${nFmt(Math.abs(dl), 1)}</small>` : ''}</b></div><div class="res-chip"><span>Máximo · último</span><b>${nFmt(r.max, 0)} · ${nFmt(r.ultimo, 0)}</b></div></div>
+          <svg viewBox="0 0 340 84" style="width:100%;color:var(--ink);" role="img" aria-label="${escapeHtml(q.corto)} por día">${barras}</svg>`;
+      } else if(q.tipo === 'opc' || q.tipo === 'sino'){
+        html += `<p style="margin:6px 0 0;font-size:13px;line-height:1.7;">${sueOpciones(q).map(o=>`${escapeHtml(o[1])} <b>${r.dist[o[0]]}</b>`).join(' · ')}</p>`;
+      } else {
+        html += `<ul class="snack-obs" style="margin-top:6px;">${r.serie.slice(-3).reverse().map(x=>`<li><small style="color:var(--muted);">${fechaCortaISO(x.fecha)}</small> ${escapeHtml(x.v)}</li>`).join('')}</ul>`;
+      }
+      html += `</div>`;
+    });
+    const obs = extrasObservaciones(log, pq.items, d14, hoy, p0, p1, 'las dos semanas anteriores', hoy);
+    if(obs.length) html += `<ul class="snack-obs" style="margin-top:12px;">${obs.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul><p class="snack-nota">Son comparaciones entre días, no causa y efecto. El dolor que persiste o empeora conviene valorarlo en consulta.</p>`;
+  }
+  return html + `</div>`;
+}
+function bindSuenoPreguntas(){
+  const card = document.getElementById('suePregCard'); if(!card) return;
+  const id = card.dataset.ath, ver = ()=>{ const f = card.querySelector('[data-form="otra"]'), t = f.querySelector('[data-f="tipo"]').value; f.querySelectorAll('[data-ver]').forEach(l=>{ l.hidden = l.dataset.ver === 'opc' ? t !== 'opc' : !(t === 'eva' || t === 'esc'); }); };
+  const tipo = card.querySelector('[data-form="otra"] [data-f="tipo"]'); if(tipo){ tipo.addEventListener('change', ver); ver(); }
+  card.querySelectorAll('[data-spq]').forEach(b=>b.addEventListener('click', ()=>card.querySelectorAll('.spq-form').forEach(f=>{ f.hidden = f.dataset.form === b.dataset.spq ? !f.hidden : true; })));
+  const anade = async nuevas=>{
+    const o = await getPreguntasSueno(id);
+    if(o.items.filter(q=>q.activa).length + nuevas.length > SUE_MAX_PREG){ toast(`Máximo ${SUE_MAX_PREG} preguntas activas: quita alguna antes`, true); return; }
+    const lim = nuevas.map(suePregLimpia).filter(Boolean); if(lim.length !== nuevas.length){ toast('Revisa la pregunta: faltan datos', true); return; }
+    o.items = o.items.concat(lim); await savePreguntasSueno(id, o); toast('Pregunta añadida'); renderKeepScroll();
+  };
+  const dolor = card.querySelector('[data-spqguardar="dolor"]');
+  if(dolor) dolor.addEventListener('click', ()=>{
+    const f = card.querySelector('[data-form="dolor"]'), zona = f.querySelector('[data-f="zona"]').value.trim().toLowerCase();
+    if(!zona){ toast('Escribe la zona (por ejemplo, hombro derecho)', true); return; }
+    const cuando = f.querySelector('[data-f="cuandoD"]').value, noche = cuando === 'noche', corto = ('Dolor de ' + zona).slice(0, 40);
+    const lista = [{ id:sueNuevoId(), tipo:'eva', texto:noche ? `Dolor de ${zona} hoy: intensidad media (EVA 0-10)` : `Dolor de ${zona} al despertar (EVA 0-10)`, corto, cuando, grupo:'dolor', bajo:'Sin dolor', alto:'El peor imaginable' }];
+    if(f.querySelector('[data-f="evo"]').checked) lista.push({ id:sueNuevoId() + 'e', tipo:'opc', texto:noche ? `¿Cómo ha evolucionado el dolor de ${zona} durante el día?` : `¿Cómo ha evolucionado el dolor de ${zona} durante la noche?`, corto:('Evolución del dolor de ' + zona).slice(0, 40), cuando, grupo:'dolor', opciones:[['sube', 'Ha ido subiendo'], ['igual', 'Se ha mantenido'], ['baja', 'Ha ido disminuyendo']] });
+    anade(lista);
+  });
+  const otra = card.querySelector('[data-spqguardar="otra"]');
+  if(otra) otra.addEventListener('click', ()=>{
+    const f = card.querySelector('[data-form="otra"]'), g = k=>f.querySelector(`[data-f="${k}"]`).value.trim(), texto = g('texto'), t = g('tipo');
+    if(!texto){ toast('Escribe la pregunta', true); return; }
+    const q = { id:sueNuevoId(), tipo:t, texto, corto:texto.replace(/[¿?]/g, '').trim().slice(0, 40), cuando:g('cuandoO'), grupo:'' };
+    if(t === 'eva' || t === 'esc'){ q.bajo = g('bajo'); q.alto = g('alto'); }
+    if(t === 'opc'){ const op = g('opciones').split(',').map(x=>x.trim()).filter(Boolean); if(op.length < 2 || op.length > 6){ toast('Escribe entre 2 y 6 opciones separadas por comas', true); return; } q.opciones = op.map((x, i)=>['o' + (i + 1), x]); }
+    anade([q]);
+  });
+  card.querySelectorAll('[data-spqtoggle]').forEach(b=>b.addEventListener('click', async ()=>{
+    const o = await getPreguntasSueno(id), q = o.items.find(x=>x.id === b.dataset.spqtoggle); if(!q) return;
+    if(!q.activa && o.items.filter(x=>x.activa).length >= SUE_MAX_PREG){ toast(`Máximo ${SUE_MAX_PREG} preguntas activas: quita alguna antes`, true); return; }
+    q.activa = !q.activa; await savePreguntasSueno(id, o); renderKeepScroll();
+  }));
+}
+async function tplSuenoDescanso(athleteId){
+  const log = await getSuenoLog(athleteId), hoy = todayISO(), sl = await getSnackLog(athleteId);
+  const a = resumenSueno(log, sumaDiasISO(hoy, -13), hoy), b = resumenSueno(log, sumaDiasISO(hoy, -27), sumaDiasISO(hoy, -14));
+  let jr = []; try{ jr = JSON.parse(await safeGet('journal-'+athleteId, true) || '[]') || []; }catch(e){}
+  let html = `<div class="card"><h2>Sueño y descanso</h2><p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;">Registro de la atleta antes de dormir y al despertar. Últimas dos semanas frente a las dos anteriores.</p>`;
+  if(!a.noches && !a.nNoche && !b.noches) return html + `<div class="empty">Todavía no hay registros de sueño. Los rellena desde Rutina, en la tarjeta «Registro de sueño».</div></div>`;
+  const dl = (x, y, d)=>(x !== null && y !== null) ? ` <small style="color:var(--muted);">${x - y >= 0 ? '+' : '−'}${nFmt(Math.abs(x - y), d)}</small>` : '';
+  const chip = (t, v, extra)=>`<div class="res-chip"><span>${t}</span><b>${v}${extra || ''}</b></div>`;
+  html += `<div class="res-fila">${chip('Horas', a.horas !== null ? nFmt(a.horas, 1) + ' h' : '—', dl(a.horas, b.horas, 1))}${chip('Descanso', a.calidad !== null ? nFmt(a.calidad, 1) + '/5' : '—', dl(a.calidad, b.calidad, 1))}${chip('Energía', a.energia !== null ? nFmt(a.energia, 1) + '/5' : '—', dl(a.energia, b.energia, 1))}${chip('Regularidad', a.regul !== null ? '±' + Math.round(a.regul) + ' min' : '—')}</div>
+    <p class="snack-nota" style="margin:8px 0 0;">${a.noches} noche${a.noches === 1 ? '' : 's'} con registro de mañana · ${a.n7} con 7 h o más${a.cama !== null ? ` · se acuesta hacia las ${sueHoraTxt(a.cama)}` : ''}${a.desc !== null ? ` · desconexión hacia las ${sueHoraTxt(a.desc)}` : ''}${a.cafeN ? ` · cafeína tarde ${a.cafeSi} de ${a.cafeN} noches` : ''}.</p>`;
+  const col = x=>x === null ? 'var(--border)' : (x >= 4 ? '#1F7A5A' : (x >= 3 ? '#C9A227' : '#A83A2E')), dias = [];
+  for(let i = 13; i >= 0; i--) dias.push(sumaDiasISO(hoy, -i));
+  const barras = dias.map((f, i)=>{ const dv = sueDerivado(log.dias[f]), h = dv.horas === null ? 0 : Math.min(10, dv.horas), alto = h/10*80;
+    return `<rect x="${i*24 + 4}" y="${92 - alto}" width="16" height="${Math.max(alto, dv.horas === null ? 3 : 2)}" rx="3" fill="${col(dv.calidad)}" ${dv.horas === null ? 'opacity=".35"' : ''}/>${dv.horas !== null ? `<text x="${i*24 + 12}" y="${88 - alto}" font-size="8" text-anchor="middle" fill="currentColor">${nFmt(dv.horas, 1)}</text>` : ''}<text x="${i*24 + 12}" y="107" font-size="7.5" text-anchor="middle" fill="var(--muted)">${+f.slice(8)}</text>`; }).join('');
+  html += `<svg viewBox="0 0 340 112" style="width:100%;margin-top:12px;color:var(--ink);" role="img" aria-label="Horas dormidas por noche"><rect x="0" y="${92 - 72}" width="340" height="${72 - 56}" fill="var(--gold-dim)" opacity=".7"/><line x1="0" y1="92" x2="340" y2="92" stroke="var(--border)"/>${barras}</svg>
+    <p class="snack-nota" style="margin:2px 0 0;">Altura = horas dormidas (banda dorada: 7-9 h). Color = descanso: verde 4-5, ámbar 3, rojo 1-2.</p>`;
+  const obs = suenoObservaciones(log, jr, sl);
+  if(obs.length) html += `<ul class="snack-obs" style="margin-top:12px;">${obs.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul><p class="snack-nota">Son comparaciones entre noches, no causa y efecto. Cada una necesita al menos 4 noches en cada grupo.</p>`;
+  else html += `<p class="snack-nota" style="margin-top:12px;">Aún no hay noches suficientes para cruzar el sueño con la desconexión, la cafeína o el entrenamiento (hacen falta unas 4 de cada tipo).</p>`;
+  const filas = resumenSueno(log, sumaDiasISO(hoy, -13), hoy).filas.slice().reverse();
+  if(filas.length) html += `<details class="cruce-tabla"><summary>Ver las noches (${filas.length})</summary><div class="snack-tabla-wrap"><table class="snack-tabla"><thead><tr><th>Mañana</th><th>Cama</th><th>Levanta</th><th>Horas</th><th>Descanso</th><th>Energía</th><th>Desconexión</th></tr></thead><tbody>${filas.map(x=>`<tr><td>${fechaCortaISO(x.fecha)}</td><td>${sueHoraTxt(x.cama)}</td><td>${sueHoraTxt(x.levanta)}</td><td>${x.horas !== null ? nFmt(x.horas, 1) : '—'}</td><td>${x.calidad !== null ? x.calidad : '—'}</td><td>${x.energia !== null ? x.energia : '—'}</td><td>${sueHoraTxt(x.desc)}</td></tr>`).join('')}</tbody></table></div></details>`;
+  return html + `</div>`;
+}
+
 // --- Recordatorios: archivo de calendario con avisos que el móvil repite solo ---
-const REC_DEF = { snack:{ on:true, hora:'08:00' }, quest:{ on:true, dia:'SU', hora:'19:00' }, ciclo:{ on:false, hora:'09:00' } };
+const REC_DEF = { snack:{ on:true, hora:'08:00' }, quest:{ on:true, dia:'SU', hora:'19:00' }, noche:{ on:true, hora:'22:00' }, manana:{ on:false, hora:'08:30' }, ciclo:{ on:false, hora:'09:00' } };
 const REC_DIAS = { MO:'Lunes', TU:'Martes', WE:'Miércoles', TH:'Jueves', FR:'Viernes', SA:'Sábado', SU:'Domingo' };
 function recPrefs(){ let p = {}; try{ p = JSON.parse(readLocal('recordatorios', false) || '{}') || {}; }catch(e){}
   const o = {}; Object.keys(REC_DEF).forEach(k=>{ o[k] = Object.assign({}, REC_DEF[k], (p[k] && typeof p[k] === 'object') ? p[k] : {}); if(!/^\d{2}:\d{2}$/.test(o[k].hora)) o[k].hora = REC_DEF[k].hora; });
@@ -5121,6 +5807,8 @@ function recIcs(prefs, opciones){
   let l = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Umbral//Recordatorios//ES','CALSCALE:GREGORIAN'];
   if(prefs.snack.on) l = l.concat(ev('umbral-snack', hoy, prefs.snack.hora, 'FREQ=DAILY', 'Umbral · Snack de movimiento', 'Tus 4 minutos de hoy.'));
   if(prefs.quest.on) l = l.concat(ev('umbral-cuestionario', hoy, prefs.quest.hora, 'FREQ=WEEKLY;BYDAY='+prefs.quest.dia, 'Umbral · Cuestionario semanal', 'Dos minutos para cerrar la semana.'));
+  if(prefs.noche.on) l = l.concat(ev('umbral-sueno-noche', hoy, prefs.noche.hora, 'FREQ=DAILY', 'Umbral · Registro de la noche', 'Antes de dormir: 30 segundos. Si hoy aún no has hecho el Snack de movimiento, hazlo antes de acostarte.'));
+  if(prefs.manana.on) l = l.concat(ev('umbral-sueno-manana', hoy, prefs.manana.hora, 'FREQ=DAILY', 'Umbral · ¿Cómo has dormido?', 'Cuenta cómo has dormido: horas, descanso y energía.'));
   if(prefs.ciclo.on) l = l.concat(ev('umbral-registro', opciones.cicloInicio || hoy, prefs.ciclo.hora, 'FREQ=DAILY;INTERVAL='+(opciones.cicloDias || 28), 'Umbral · Actualiza tu registro', 'Abre tu Perfil y actualiza tu registro si toca.'));
   l.push('END:VCALENDAR');
   return l.join('\r\n');
@@ -5133,6 +5821,8 @@ async function tplRecordatorios(athleteId){
   return `<div class="card" id="recCard"><h2>Recordatorios</h2>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;">Elige qué quieres que te recuerde el móvil y a qué hora. Se añaden a tu calendario con aviso y se repiten solos; puedes borrarlos desde el calendario cuando quieras.</p>
     ${fila('snack', 'Snack de movimiento · cada día')}
+    ${fila('noche', 'Registro de sueño · antes de dormir (con aviso del Snack)')}
+    ${fila('manana', 'Registro de sueño · al despertar')}
     ${fila('quest', 'Cuestionario semanal', `<select data-recdia>${Object.keys(REC_DIAS).map(d=>`<option value="${d}" ${p.quest.dia===d?'selected':''}>${REC_DIAS[d]}</option>`).join('')}</select> `)}
     ${conCiclo ? fila('ciclo', 'Actualizar mi registro del ciclo') : ''}
     <button class="btn" id="recDescargar" style="width:100%;margin-top:12px;">Añadir a mi calendario</button>
@@ -5150,7 +5840,7 @@ function bindRecordatorios(){
   card.querySelectorAll('input,select').forEach(i=>i.addEventListener('change', ()=>cacheLocal('recordatorios', false, JSON.stringify(lee()))));
   card.querySelector('#recDescargar').addEventListener('click', async ()=>{
     const p = lee(); cacheLocal('recordatorios', false, JSON.stringify(p));
-    if(!p.snack.on && !p.quest.on && !p.ciclo.on){ toast('Marca al menos un recordatorio', true); return; }
+    if(!p.snack.on && !p.quest.on && !p.noche.on && !p.manana.on && !p.ciclo.on){ toast('Marca al menos un recordatorio', true); return; }
     const op = { url:(location.protocol.startsWith('http') ? location.origin + location.pathname : '') };
     if(p.ciclo.on){
       try{ const c = await getCiclo(state.athleteAsId || state.selectedId), ini = c.inicios || [];
@@ -5185,16 +5875,17 @@ function cruceMediana(filas, x, y, minN, umbral){
 }
 async function filasCruces(athleteId, n, hoy){
   hoy = hoy || todayISO();
-  const d = await datosInforme(athleteId), sl = await getSnackLog(athleteId);
+  const d = await datosInforme(athleteId), sl = await getSnackLog(athleteId), sg = await getSuenoLog(athleteId);
   const out = [];
   for(let k = (n||10)-1; k >= 0; k--){
     const lunes = sumaDiasISO(lunesDe(hoy), -7*k), dom = sumaDiasISO(lunes, 6);
     const m = metricasPeriodo(d, lunes, dom);
     const sn = Object.keys(sl.dias).filter(f=>f >= lunes && f <= dom && snackHecho(sl, f)).map(f=>sl.dias[f]);
     const comb = (a, b)=>mediaInf([a, b].filter(x=>typeof x === 'number'));
+    const rs = resumenSueno(sg, lunes, dom);
     out.push({ lunes, ses:m.sesiones, carga:m.sesiones ? Math.round(m.carga) : null, rpe:m.sesiones ? m.rpe : null,
-      fatiga:comb(m.fatiga, mediaInf(sn.map(x=>x.fatiga))), sueno:comb(m.sueno, mediaInf(sn.map(x=>x.sueno))),
-      horas:mediaInf(sn.map(x=>x.horas)), estres:m.estres, animo:m.animo, habitos:m.habitos, snacks:sn.length });
+      fatiga:comb(m.fatiga, mediaInf(sn.map(x=>x.fatiga))), sueno:mediaInf([comb(m.sueno, mediaInf(sn.map(x=>x.sueno))), rs.calidad].filter(x=>typeof x === 'number')),
+      horas:rs.horas !== null ? rs.horas : mediaInf(sn.map(x=>x.horas)), energia:rs.energia, estres:m.estres, animo:m.animo, habitos:m.habitos, snacks:sn.length });
   }
   return out;
 }
@@ -5236,19 +5927,20 @@ function resumenCruces(f){
 }
 async function tplCruces(athleteId){
   const f = await filasCruces(athleteId, 10);
-  const con = f.filter(x=>x.ses || x.fatiga !== null || x.snacks);
+  const con = f.filter(x=>x.ses || x.fatiga !== null || x.snacks || x.horas !== null);
   const n1 = x=>x === null || x === undefined ? '—' : (Math.round(x*10)/10).toFixed(1).replace('.', ',');
   let html = `<div class="card"><h2>Cruces semana a semana</h2>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;">Entrenamiento, descanso, fatiga, hábitos y Snacks en una sola tabla. Fatiga y sueño (1-5, más alto = mejor) juntan el check-in previo a la sesión y las preguntas del Snack.</p>`;
   if(!con.length){ return html + `<div class="empty">Todavía no hay datos que cruzar.</div></div>`; }
   const chips = resumenCruces(f);
   if(chips.length) html += `<p class="snack-nota" style="margin:0 0 6px;">Última semana completa (lunes-domingo) frente a la media de las 4 anteriores.</p><div class="res-fila cruce-chips">${chips.map(c=>`<div class="res-chip cc-${c.c}"><span>${c.etq}</span><b>${c.val}</b><small>${c.sub}</small></div>`).join('')}</div>`;
-  const obs0 = observacionesCruces(f);
+  const obs0 = observacionesCruces(f), dInf = await datosInforme(athleteId), obsS = suenoObservaciones(await getSuenoLog(athleteId), dInf.journal, await getSnackLog(athleteId));
   if(obs0.length) html += `<ul class="snack-obs" style="margin-bottom:10px;">${obs0.map(o=>`<li>${escapeHtml(o)}</li>`).join('')}</ul><p class="snack-nota" style="margin-top:0;">Comparan sus semanas altas con las bajas: pistas para comentar, no causa y efecto.</p>`;
+  if(obsS.length) html += `<p class="snack-nota" style="margin:10px 0 4px;"><b>Sueño y descanso</b> (comparan noches con y sin cada hábito)</p><ul class="snack-obs" style="margin-bottom:10px;">${obsS.map(o=>`<li>${escapeHtml(o)}</li>`).join('')}</ul>`;
   html += `<details class="cruce-tabla"><summary>Ver la tabla completa (10 semanas)</summary><div class="snack-tabla-wrap"><table class="snack-tabla" style="min-width:560px;">
     <thead><tr><th>Semana</th><th>Ses.</th><th>Carga</th><th>RPE</th><th>Fatiga</th><th>Sueño</th><th>Horas</th><th>Hábitos</th><th>Snacks</th></tr></thead>
     <tbody>${f.map(x=>`<tr><td>${fechaCortaISO(x.lunes)}</td><td>${x.ses||'—'}</td><td>${x.carga === null ? '—' : x.carga}</td><td>${n1(x.rpe)}</td><td>${n1(x.fatiga)}</td><td>${n1(x.sueno)}</td><td>${x.horas === null ? '—' : n1(x.horas)+' h'}</td><td>${x.habitos === null ? '—' : Math.round(x.habitos)+'%'}</td><td>${x.snacks}/7</td></tr>`).join('')}</tbody></table></div></details>`;
-  if(!obs0.length) html += `<div class="empty">Hacen falta unas 5 semanas con datos para empezar a comparar.</div>`;
+  if(!obs0.length && !obsS.length) html += `<div class="empty">Hacen falta unas 5 semanas con datos para empezar a comparar.</div>`;
   return html + `</div>`;
 }
 
@@ -5317,7 +6009,37 @@ async function tplGaleriaSnack(){
   return html;
 }
 let snackPreview = null;
+// ---- Explicación para la atleta: qué buscamos con un Snack y con qué solidez se sabe ----
+const SNACK_PARA = [
+  { n:'1', t:'Te activan al despertar', nivel:'firme', p:`Tu sistema nervioso autónomo tiene dos marchas. El <b>simpático</b> es el acelerador («lucha o huida»): sube el pulso, la alerta y la energía. El <b>parasimpático</b> es el freno («descanso y digestión»): te calma y te recupera. Un Snack por la mañana da un empujón al acelerador y te saca del modo dormido antes que quedarte sentada. Como dura poco, después el freno vuelve a tomar el mando y no te deja agotada.`, grafico:true },
+  { n:'2', t:'Afinan el foco', nivel:'prometedor', p:`Al moverte con intensidad, el cuerpo libera <b>BDNF</b> (factor neurotrófico derivado del cerebro). Piénsalo como un «fertilizante» para las neuronas: ayuda a que se conecten y se adapten, y se asocia con mejor atención, memoria de trabajo y productividad. Está bien demostrado que el ejercicio sube el BDNF en sangre; que un solo Snack mejore tu concentración un rato es plausible y muchas personas lo notan, pero la ciencia aún lo está afinando. Úsalo como herramienta, no como promesa.` },
+  { n:'3', t:'Recuperan sin cansar', nivel:'prometedor', p:`Un Snack manda sangre a todos los músculos y mueve las articulaciones por su recorrido. Eso ayuda a «desentumecer» el cuerpo y a que el líquido que nutre y lubrica las articulaciones circule. Dura tan poco que la carga total es pequeña: bien hecho, no suma fatiga relevante, así que se añade a tu entrenamiento en lugar de competir con él.` },
+  { n:'4', t:'Mantienen la motivación', nivel:'prometedor', p:`El ejercicio y la música que te gusta se asocian con liberación de <b>dopamina</b>, el mensajero de la motivación y la recompensa. Por eso el Snack lleva música: no es un adorno, ayuda a que mañana te apetezca repetir.` },
+  { n:'5', t:'Preparan el desayuno', nivel:'matices', p:`El movimiento ligero antes de comer te pone en marcha y suele dejarte con hambre de verdad. No hay pruebas de que haga que absorbas «más» nutrientes, pero sí de que un esfuerzo corto no estropea la digestión. Un truco práctico: deja <b>15-30 minutos</b> entre el Snack y el desayuno para que el cuerpo vuelva a modo digestivo.` },
+  { n:'6', t:'Entre bloques de estudio, además, ayudan a tu metabolismo', nivel:'matices', p:`Interrumpir el tiempo sentada con movimiento corto reduce la subida de glucosa e insulina después de comer (evidencia moderada, en estudios pequeños). Mientras te mueves respiras más rápido y gastas más energía, y algunos estudios sugieren que el cuerpo tira más de la grasa como combustible; es un efecto pequeño y poco probado, así que piensa en los Snacks como un extra de salud, no como un plan para quemar grasa.` }
+];
+const SNACK_NIVEL_TXT = { firme:'Bien establecido', prometedor:'Prometedor', matices:'Con matices' };
+function snackInfoAbre(){
+  let o = document.getElementById('snackInfo'); if(o) o.remove();
+  o = document.createElement('div'); o.id = 'snackInfo'; o.className = 'snack-ov'; o.style.zIndex = 190; document.body.appendChild(o);
+  o.innerHTML = `<div class="snack-in"><div class="snack-bar"><span class="snack-eyebrow">Snack de movimiento</span><button class="btn ghost small" id="snackInfoCerrar">Cerrar</button></div>
+    <h2 class="snack-h">¿Para qué sirven los Snacks?</h2>
+    <p class="si-intro">Cuatro minutos de movimiento corto e intenso. Una dosis pequeña que activa tu cuerpo y tu cabeza sin dejarte cansada. Esto es lo que buscamos con ellos y lo sólido que es cada argumento.</p>
+    ${SNACK_PARA.map(b=>`<section class="si-bloque"><div class="si-cab"><span class="si-num">${b.n}</span><h3>${b.t}</h3></div><span class="si-badge ${b.nivel}">${SNACK_NIVEL_TXT[b.nivel]}</span><p>${b.p}</p>
+      ${b.grafico ? `<div class="si-sn"><div class="si-sn-a"><b>Simpático</b><em>El acelerador</em><span>Lucha o huida</span><span>Pulso, alerta y energía suben</span></div><div class="si-sn-b"><b>Parasimpático</b><em>El freno</em><span>Descanso y digestión</span><span>Calma y recuperación</span></div></div>` : ''}</section>`).join('')}
+    <section class="si-bloque"><div class="si-cab"><span class="si-num">7</span><h3>Cuándo hacerlos</h3></div>
+      <div class="si-cuando"><div><b>Al despertar</b><span>Para activarte y arrancar el día.</span></div><div><b>Cada 50-90 min</b><span>En sesiones largas de estudio o trabajo: un Snack por bloque.</span></div><div><b>15-30 min antes de comer</b><span>Si lo haces antes del desayuno, deja un margen para empezar a comer.</span></div></div></section>
+    <details class="si-base"><summary>En qué se basa</summary><ul>
+      <li>Lippi G. y cols. (2019), <i>Journal of Sport and Health Science</i>: el ejercicio agudo aumenta el BDNF circulante; su relación con la cognición es todavía correlacional (PMC6943756).</li>
+      <li>Revisión sistemática (2025), <i>Frontiers in Nutrition</i>: interrumpir el tiempo sentada con actividad corta baja la glucosa y la insulina tras comer; la oxidación de grasas no se pudo agrupar entre estudios (doi 10.3389/fnut.2025.1708301).</li>
+      <li>Estudio sobre ejercicio suave y vaciado gástrico (PMC7400912): el ejercicio suave no altera el vaciado del estómago y el flujo sanguíneo del intestino se recupera en unos 30 minutos tras el esfuerzo.</li></ul>
+      <p>Información general sobre hábitos; no sustituye una valoración médica ni de tu entrenador.</p></details>
+    <button class="btn" id="snackInfoOk" style="width:100%;margin-top:8px;">Entendido</button></div>`;
+  const cierra = ()=>{ const x = document.getElementById('snackInfo'); if(x) x.remove(); };
+  o.querySelector('#snackInfoCerrar').addEventListener('click', cierra); o.querySelector('#snackInfoOk').addEventListener('click', cierra);
+}
 function bindSnack(){
+  document.querySelectorAll('[data-snackinfo]').forEach(b=>b.addEventListener('click', snackInfoAbre));
   const abrir = document.getElementById('snackAbrirBtn');
   if(abrir) abrir.addEventListener('click', ()=>snackAbre(state.athleteAsId || state.selectedId));
   // --- entrenador ---
@@ -7249,6 +7971,7 @@ async function tplRutinaAtleta(athleteId){
   const tareasAt = await getTareas(athleteId);
   html += tplTareasBanner(tareasAt);
   if(!state.wpRelectura) html += await tplSnackCard(athleteId);
+  if(!state.wpRelectura) html += await tplSuenoCard(athleteId);
   if(state.modoDemo){
     html += `<div class="card demo-intro">
       <span class="demo-tag">Modo demostración</span>
@@ -11077,7 +11800,7 @@ async function sincronizaCompeticiones(athleteId, origen){
 const ATLETA_TABS = [{k:'plan',l:'Plan'},{k:'seguimiento',l:'Seguimiento'},{k:'evaluacion',l:'Evaluación'},{k:'perfil',l:'Perfil'}];
 const ATLETA_SECCIONES = {
   plan:[{k:'semana',l:'Semana'},{k:'periodizacion',l:'Periodización y competiciones'}],
-  seguimiento:[{k:'progreso',l:'Progreso'},{k:'cruces',l:'Cruces'},{k:'resumen',l:'Resumen PDF'},{k:'diario',l:'Diario'},{k:'cuestionarios',l:'Cuestionarios'},{k:'habitos',l:'Hábitos'},{k:'snack',l:'Snack de movimiento'}],
+  seguimiento:[{k:'progreso',l:'Progreso'},{k:'cruces',l:'Cruces'},{k:'sueno',l:'Sueño'},{k:'resumen',l:'Resumen PDF'},{k:'diario',l:'Diario'},{k:'cuestionarios',l:'Cuestionarios'},{k:'habitos',l:'Hábitos'},{k:'snack',l:'Snack de movimiento'}],
   evaluacion:[{k:'tests',l:'Tests'},{k:'gym',l:'Gym'},{k:'fotos',l:'Fotos'}]
 };
 // Los nombres de las 11 pestañas antiguas siguen valiendo para saltar a un sitio.
@@ -11099,6 +11822,7 @@ async function resumenSeccion(athleteId, k){
     const raw = await safeGet('quest-'+athleteId, true); let l = []; try{ l = raw ? JSON.parse(raw) : []; }catch(e){}
     return l.length ? `${l.length} respuestas · última ${fechaCortaISO(l[l.length-1].date || l[l.length-1].weekOf)}` : 'sin respuestas';
   }
+  if(k === 'sueno'){ const hoy = todayISO(), s = resumenSueno(await getSuenoLog(athleteId), sumaDiasISO(hoy, -13), hoy); return s.noches ? `${nFmt(s.horas, 1)} h · descanso ${nFmt(s.calidad, 1)}/5 · ${s.noches} noches` : 'sin registros'; }
   if(k === 'snack'){ const r = snackRacha(await getSnackLog(athleteId)); return r.total ? `racha ${r.actual} · ${r.total} hechos` : 'sin Snacks'; }
   if(k === 'periodizacion'){
     const plan = await getPlan(athleteId), comps = await getCompeticiones(athleteId);
@@ -11136,6 +11860,7 @@ if(state.compEditId) return await tplCompeticiones(athleteId, true);
   if(k === 'progreso') return await tplProgreso(athleteId);
   if(k === 'cruces') return await tplCruces(athleteId);
   if(k === 'resumen') return await tplResumenPdf(athleteId);
+  if(k === 'sueno') return await tplSuenoCoach(athleteId);
   if(k === 'diario') return await tplDiarioLectura(athleteId, true);
   if(k === 'cuestionarios') return await tplQuestConfigAndRead(athleteId);
   if(k === 'habitos') return await tplHabitosCoach(athleteId);
