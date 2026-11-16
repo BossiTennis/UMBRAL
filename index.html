@@ -272,6 +272,52 @@
   }
   .sue-eva{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;}
   .sue-eva button{min-width:0;padding:0;height:36px;font-size:12px;}
+  .sue-otro .snack-info-link{display:inline;margin:0;padding:0 2px;font-size:12px;}
+  .sue-otro{margin:10px 0 0;font-size:12px;color:var(--muted);line-height:1.8;} .sue-otro span{opacity:.8;}
+  /* ---- Estudio ---- */
+  .est-presets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 14px;}
+  .est-preset{text-align:left;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;gap:3px;font-family:inherit;}
+  .est-preset b{font-family:'Fraunces',serif;font-size:16px;} .est-preset span{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--gold);} .est-preset small{font-size:11px;color:var(--muted);line-height:1.4;}
+  .est-preset.sel{border-color:var(--gold);background:var(--gold-dim);}
+  .est-custom{display:flex;gap:12px;margin:-4px 0 14px;} .est-custom label{flex:1;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:5px;}
+  .est-custom input,.est-pl input{background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:7px;padding:10px;font-family:'IBM Plex Mono',monospace;font-size:14px;width:100%;box-sizing:border-box;}
+  .est-fila{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--border);font-size:14px;}
+  .est-step{display:flex;align-items:center;gap:12px;} .est-step button{width:38px;height:38px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--ink);font-size:20px;cursor:pointer;} .est-step b{font-family:'IBM Plex Mono',monospace;font-size:18px;min-width:20px;text-align:center;}
+  .est-opc{border-top:1px solid var(--border);}
+  .est-sw{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer;} .est-sw input{margin-top:4px;width:18px;height:18px;accent-color:var(--gold);flex:none;} .est-sw span{display:flex;flex-direction:column;gap:2px;font-size:14px;} .est-sw small{font-size:11.5px;color:var(--muted);line-height:1.45;}
+  .est-tl{list-style:none;margin:0;padding:0;} .est-tl li{padding:8px 0 8px 14px;border-left:2px solid var(--gold);margin-left:4px;display:flex;flex-direction:column;gap:2px;font-size:13.5px;} .est-tl li span{font-size:12px;color:var(--muted);} .est-tot{margin:8px 0 0;font-size:12.5px;color:var(--muted);}
+  .est-musica{margin-top:16px;} .est-musica .snack-eyebrow{display:block;margin-bottom:9px;} .est-mu button{padding:0 12px;font-family:'Manrope',sans-serif;font-size:12.5px;font-weight:700;height:36px;} .est-pl{display:block;margin-top:10px;font-size:11.5px;color:var(--muted);} .est-pl input{margin-top:5px;font-size:12.5px;}
+  .est-run{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:100vh;} .est-run .snack-bar{width:100%;}
+  .est-puntos{display:flex;gap:7px;margin-top:3vh;} .est-puntos i{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--border);display:block;} .est-puntos i.ok{background:var(--gold);border-color:var(--gold);} .est-puntos i.on{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim);}
+  .est-fase{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:700;letter-spacing:.14em;color:var(--muted);margin-top:4vh;}
+  .est-reloj{font-family:'IBM Plex Mono',monospace;font-size:96px;font-weight:600;line-height:1.05;color:var(--ink);} .est-foco .est-fase,.est-foco .est-reloj{color:var(--gold);} .est-pausa .est-reloj{opacity:.5;}
+  .est-barra{width:100%;max-width:360px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 18px;overflow:hidden;} .est-barra i{display:block;height:100%;width:0;background:var(--gold);transition:width .25s linear;}
+  .est-cuerpo{width:100%;max-width:420px;text-align:left;}
+  .est-lead{font-size:14px;line-height:1.55;color:var(--muted);text-align:center;margin:12px 0;}
+  .est-pasos{margin:6px 0;padding-left:22px;font-size:15px;line-height:1.9;}
+  .est-obj{width:100%;box-sizing:border-box;background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:15px;font-family:inherit;margin-bottom:9px;}
+  .est-objs{display:flex;flex-direction:column;gap:8px;} .est-objit{display:flex;align-items:center;gap:12px;text-align:left;padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--panel2);color:var(--ink);font-family:inherit;font-size:14.5px;cursor:pointer;} .est-objit i{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--muted);flex:none;display:block;} .est-objit.on i{background:var(--gold);border-color:var(--gold);position:relative;} .est-objit.on i::after{content:'';position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid var(--bg);border-width:0 2.5px 2.5px 0;transform:rotate(45deg);} .est-objit.on span{text-decoration:line-through;opacity:.6;}
+  .est-objadd{display:flex;gap:8px;} .est-objadd .est-obj{margin:0;}
+  .est-botones{display:flex;flex-direction:column;gap:9px;width:100%;max-width:420px;margin-top:20px;}
+  .est-mus{margin-top:16px;font-size:13px;color:var(--gold);text-decoration:underline;text-underline-offset:3px;}
+  .est-aro-box{display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0;} .est-aro{width:170px;height:170px;border-radius:50%;border:3px solid var(--gold);background:var(--gold-dim);transition:transform .3s linear;transform:scale(.55);} .est-aro.hold{box-shadow:0 0 0 6px var(--gold-dim);}
+  .est-resp-txt{font-family:'Fraunces',serif;font-size:21px;text-align:center;} .est-resp-seg{font-family:'IBM Plex Mono',monospace;font-size:28px;color:var(--gold);}
+  .est-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;} .est-kpis div{background:var(--panel);border:1px solid var(--border);border-radius:9px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;gap:2px;} .est-kpis b{font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--gold);} .est-kpis span{font-size:10.5px;color:var(--muted);}
+  .est-ev{border:1px solid var(--border);border-radius:11px;background:var(--panel);margin-bottom:10px;} .est-ev summary{list-style:none;cursor:pointer;padding:14px;display:flex;flex-direction:column;gap:5px;} .est-ev summary::-webkit-details-marker{display:none;} .est-ev summary b{font-family:'Fraunces',serif;font-size:16.5px;} .est-ev summary small{font-size:12.5px;color:var(--muted);line-height:1.5;}
+  .est-ev-n{align-self:flex-start;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:100px;border:1px solid var(--border);color:var(--muted);} .est-ev-n.ok{color:#1F7A5A;border-color:#1F7A5A;} .est-ev-n.mid{color:var(--gold);border-color:var(--gold);} .est-ev-n.low{color:var(--danger);border-color:var(--danger);}
+  .est-ev-c{padding:0 14px 14px;font-size:13.5px;line-height:1.65;} .est-ev-c p{margin:0 0 10px;} .est-ev-u{border-top:1px dashed var(--border);padding-top:10px;color:var(--muted);}
+  @media (max-width:380px){ .est-reloj{font-size:80px;} .est-presets{grid-template-columns:1fr;} }
+  .sue-fecha{margin:0 0 16px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+  .sue-fecha .snack-eyebrow{display:block;margin-bottom:9px;}
+  .sue-fecha-chips button{padding:0 14px;font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;}
+  .sue-fecha-otra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted);}
+  .sue-fecha-otra input[type=date]{background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-family:'IBM Plex Mono',monospace;font-size:13px;}
+  .sue-tabs{display:flex;gap:6px;margin:0 0 16px;padding:4px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;}
+  .sue-tabs button{flex:1;border:0;background:transparent;color:var(--muted);font-family:'Manrope',sans-serif;font-weight:700;font-size:13.5px;padding:10px 8px;border-radius:7px;cursor:pointer;}
+  .sue-tabs button.on{background:var(--accent);color:var(--on-accent);}
+  .sue-badge{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;opacity:.85;margin-left:4px;}
+  .hab-plano{margin-top:18px;padding-top:14px;border-top:1px solid var(--border);} .hab-plano h2{font-size:16px;margin:0 0 6px;}
+  [data-spane][hidden]{display:none !important;}
   .sue-extra{margin:6px 0 16px;padding:14px 14px 2px;border:1px solid var(--gold);border-radius:12px;background:var(--gold-dim);}
   .sue-extra .snack-eyebrow{display:block;margin-bottom:12px;}
   .snack-preg input[type=text]{background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:7px;padding:10px 11px;font-size:14px;font-family:inherit;box-sizing:border-box;}
@@ -867,6 +913,63 @@
   .ec-ok{color:var(--accent);}
   .ec-mal{color:var(--danger);}
   .ec-etq{font-size:11px;color:var(--muted);}
+  .hab-anoche{background:var(--gold-dim);border-radius:9px;padding:11px 12px;margin-bottom:14px;}
+  .hab-anoche p{font-size:12.5px;line-height:1.55;margin-bottom:8px;}
+  .ec-hora{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--border);}
+  .ec-hora .field-label{width:100%;margin:0;}
+  .ec-hora input{width:130px;}
+  .ec-ej-cab{margin-bottom:6px;}
+  .ec-series{margin-top:4px;}
+  .ec-fila{display:grid;grid-template-columns:24px repeat(4,minmax(0,1fr)) 26px 22px;gap:5px;align-items:center;margin-bottom:5px;}
+  .ec-fila.uni{grid-template-columns:22px 52px repeat(4,minmax(0,1fr)) 26px 18px;gap:4px;}
+  .ec-fila input[type=text]{width:100%;min-width:0;padding:6px 3px;font-size:12.5px;text-align:center;}
+  .ec-cab span{font-size:9.5px;overflow:hidden;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.04em;}
+  .ec-n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+  .ec-lado{display:flex;gap:2px;} .ec-lado .sd-lado-btn{padding:4px 3px;font-size:10px;flex:1;}
+  .ec-ok-serie{position:relative;display:flex;justify-content:center;cursor:pointer;}
+  .ec-ok-serie input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;}
+  .ec-ok-serie i{width:20px;height:20px;border:1.5px solid var(--border);border-radius:5px;display:block;}
+  .ec-ok-serie input:checked + i{background:var(--accent);border-color:var(--accent);}
+  .ec-ok-serie input:checked + i::after{content:'';display:block;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);margin:2px auto 0;}
+  .ec-ok-serie input:focus-visible + i{outline:2px solid var(--gold);outline-offset:2px;}
+  .ec-del{background:none;border:none;color:var(--muted);font-size:17px;line-height:1;cursor:pointer;padding:0;}
+  .ec-del:disabled{opacity:.25;cursor:default;}
+  .ec-add{background:none;border:1px dashed var(--border);color:var(--accent);border-radius:7px;font-size:12px;padding:5px 10px;margin-top:2px;cursor:pointer;}
+  .ec-nota{width:100%;margin-top:7px;font-size:12.5px;}
+  .ec-antes{font-size:12px;margin-bottom:6px;}
+  .sesion-det{border:1px solid var(--gold);border-radius:12px;padding:14px;margin-bottom:14px;background:var(--panel);scroll-margin-top:76px;}
+  .det-cab{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;font-family:'Fraunces',serif;font-weight:600;font-size:15px;line-height:1.35;}
+  .det-tags{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px;}
+  .det-tag{font-size:10.5px;letter-spacing:.03em;border:1px solid var(--border);border-radius:20px;padding:2px 9px;color:var(--muted);}
+  .det-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0;}
+  @media (min-width:560px){ .det-kpis{grid-template-columns:repeat(5,minmax(0,1fr));} }
+  .diario-tile > span{display:block;padding-right:58px;}
+  .det-kpis div{background:var(--panel2);border-radius:8px;padding:7px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;}
+  .det-kpis b{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);}
+  .det-kpis span{font-size:10.5px;color:var(--muted);line-height:1.25;}
+  .det-pie{font-size:11.5px;color:var(--muted);margin:-2px 0 8px;}
+  .det-notas{font-size:13px;font-style:italic;color:var(--ink);margin:4px 0 10px;line-height:1.55;}
+  .det-ctx{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;background:var(--gold-dim);border-radius:8px;padding:9px 11px;margin-bottom:10px;}
+  .det-ctx-tit{width:100%;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);font-weight:700;}
+  .det-ctx i{font-style:normal;color:var(--muted);}
+  .det-ex{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:var(--panel2);}
+  .det-ex.omit{opacity:.75;}
+  .det-ex-cab{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;}
+  .det-ex-cab b{font-family:'Fraunces',serif;font-size:14.5px;}
+  .det-chip{font-family:'IBM Plex Mono',monospace;font-size:10.5px;border:1px solid var(--accent);color:var(--accent);border-radius:12px;padding:1px 8px;white-space:nowrap;}
+  .det-chip.omit{border-color:var(--danger);color:var(--danger);}
+  .det-pares{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:12.5px;}
+  .det-pares span{color:var(--muted);} .det-pares b{font-weight:500;}
+  .det-sets{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px;font-family:'IBM Plex Mono',monospace;}
+  .det-sets th{font-family:inherit;font-size:10px;font-weight:600;color:var(--muted);text-align:center;padding:3px 2px;border-bottom:1px solid var(--border);}
+  .det-sets td{text-align:center;padding:4px 2px;border-bottom:1px dashed var(--border);}
+  .det-sets tr.no-hecha td{color:var(--muted);text-decoration:line-through;}
+  .det-sets .det-ok{color:var(--accent);text-decoration:none!important;}
+  .det-minis{margin:6px 0 0 16px;font-size:12px;line-height:1.6;}
+  .det-nota{font-size:12.5px;margin-top:6px;color:var(--ink);}
+  .det-linea{font-size:12.5px;color:var(--muted);}
+  .det-vacio{font-size:12.5px;color:var(--muted);background:var(--panel2);border-radius:8px;padding:10px 12px;}
+  .det-acc{margin-top:10px;gap:8px;flex-wrap:wrap;}
   .q-graf-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:100px;padding:1px 8px;font-size:11px;cursor:pointer;margin-left:4px;}
   .q-graf-btn.on{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
   .q-graf-fila{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;}
@@ -3198,6 +3301,7 @@ async function renderTabContent(){
   bindSnack();
   bindResumen();
   bindSueno();
+  bindEstudio();
   renderNav();
   if(session && session.fullscreen) mountSessionOverlay(state.athleteAsId || state.selectedId);
 }
@@ -4390,7 +4494,9 @@ function snackConfeti(grande){
     setTimeout(()=>capa.remove(), dur + 1900);
   }catch(e){}
 }
-async function snackAbre(athleteId){
+// opts.directo: lo lanza el módulo de Estudio dentro de un descanso: sin pantalla previa, sin música propia ni preguntas finales; avisa con opts.alTerminar(hecho).
+async function snackAbre(athleteId, opts){
+  opts = opts || {};
   const [banco, cfg, log, musica] = [await snackBancoActivo(), await getSnackCfg(), await getSnackLog(athleteId), await getSnackMusica()];
   const hoy = todayISO(), prefs = snackPrefs();
   const suenoManana = sueDerivado((await getSuenoLog(athleteId)).dias[hoy]).tieneManana;
@@ -4399,7 +4505,13 @@ async function snackAbre(athleteId){
     const p = log.hoy.ids.map(id=>banco.find(e=>e.id === id)).filter(Boolean);
     if(p.length === cfg.rondas) plan = p;
   }
-  snackRun = { athleteId, banco, cfg, log, musica, hoy, plan:plan || [], fase:'previa', suenoManana, musicaOn:prefs.musica !== false, cancion:null, audio:null };
+  snackRun = { athleteId, banco, cfg, log, musica, hoy, plan:plan || [], fase:'previa', suenoManana, musicaOn:prefs.musica !== false, cancion:null, audio:null, directo:!!opts.directo, alTerminar:opts.alTerminar || null };
+  if(opts.directo){
+    snackRun.musicaOn = false;
+    await snackSortea(false);                       // cada descanso, un Tabata distinto
+    if(snackRun.plan.length < 2){ const cb = snackRun.alTerminar; snackRun = null; if(cb) cb(false, 'sin-banco'); return; }
+    snackEmpieza(); return;
+  }
   if(!plan) await snackSortea(false);
   snackRun.cancion = snackEligeCancion(musica, prefs.ultima);
   snackPreparaCancion();
@@ -4613,18 +4725,413 @@ async function snackTermina(){
   const previo = Object.assign({}, log.dias[R.hoy] || {});
   log.dias[R.hoy] = Object.assign({}, previo, { hecho:true, ts:Date.now(), ids:R.plan.map(e=>e.id), fams:R.plan.map(e=>e.fam), nivel:log.nivel,
     rondas:R.plan.length, work:R.cfg.work, rest:R.cfg.rest, veces:(previo.veces||0)+1 });
+  if(R.directo) log.dias[R.hoy].est = (previo.est || 0) + 1;     // hecho dentro de una sesión de estudio
   if(R.cancion && R.musicaOn) log.dias[R.hoy].cancion = R.cancion.nombre || '';
   await saveSnackLog(R.athleteId, log);
   R.log = log;
+  if(R.directo){ snackCierra(); return; }
   snackPinta();
   if(!previo.veces) snackConfeti(!!snackHito(snackRacha(log, R.hoy).actual));
 }
 function snackCierra(){
-  const R = snackRun;
+  const R = snackRun, cb = (R && R.directo) ? R.alTerminar : null, termino = !!(R && R.fase === 'fin');
   if(R){ clearInterval(R.timer); snackParaAudio(false); if(R.fase === 'tabata') keepAwake(false); }
   snackRun = null;
   const o = document.getElementById('snackOverlay'); if(o) o.remove();
+  if(!(R && R.directo)) renderKeepScroll();
+  if(cb) cb(termino);
+}
+
+// =====================================================================
+// ESTUDIO · bloques de foco + descanso con Snack y respiración guiada
+// estudio-cfg-<atleta> = ajustes · estudio-<atleta> = { obj:{fecha, items:[{t,h}]}, dias:{ 'AAAA-MM-DD':{ ses:[{ts,p,foco,desc,bl,min,sn,rs,c,ob:[hechos,total],mu}] } } }
+// El Snack del descanso reutiliza el motor de Snacks (modo «directo») y suma a la misma racha.
+// =====================================================================
+const EST_PRESETS = [
+  { id:'p25', nombre:'Pomodoro', foco:25, desc:5, bl:4, nota:'El clásico. Bueno para arrancar o con poca energía.' },
+  { id:'p50', nombre:'50 / 10', foco:50, desc:10, bl:3, nota:'Bloques medios para leer, redactar o resolver problemas.' },
+  { id:'p52', nombre:'52 / 17', foco:52, desc:17, bl:3, nota:'Ritmo de un estudio sobre trabajadores muy productivos. Descanso largo.' },
+  { id:'p90', nombre:'90 / 20', foco:90, desc:20, bl:2, nota:'Foco profundo para tareas grandes. Hay que entrenarlo.' },
+  { id:'custom', nombre:'Mi ritmo', foco:40, desc:8, bl:3, nota:'Tus minutos, tus reglas.' }
+];
+const EST_MUSICA = { lofi:{ nombre:'Lo-fi beats', q:'lofi beats' }, jazz:{ nombre:'Jazz para estudiar', q:'jazz study' }, bina:{ nombre:'Ondas binaurales', q:'binaural beats focus' } };
+const EST_CFG_DEF = { preset:'p25', foco:40, desc:8, bloques:4, prep:true, snack:true, resp:true, suave:false, musica:'lofi', playlist:'' };
+function estClamp(v, a, b, d){ v = Math.round(+v); return isFinite(v) ? Math.min(b, Math.max(a, v)) : d; }
+function estUrlSpotify(u){ return /^https:\/\/(open\.spotify\.com|spotify\.link)\//i.test(String(u || '').trim()); }
+function estCfgLimpia(o){
+  o = (o && typeof o === 'object' && !Array.isArray(o)) ? o : {};
+  const pl = String(o.playlist || '').trim();
+  return { preset:EST_PRESETS.some(p=>p.id === o.preset) ? o.preset : EST_CFG_DEF.preset, foco:estClamp(o.foco, 5, 180, 40), desc:estClamp(o.desc, 1, 45, 8), bloques:estClamp(o.bloques, 1, 8, 4),
+    prep:o.prep !== false, snack:o.snack !== false, resp:o.resp !== false, suave:!!o.suave, musica:(EST_MUSICA[o.musica] || o.musica === 'ninguna') ? o.musica : 'lofi', playlist:estUrlSpotify(pl) ? pl.slice(0, 300) : '' };
+}
+async function getEstCfg(athleteId){ let o = {}; try{ o = JSON.parse(await safeGet('estudio-cfg-'+athleteId, true) || '{}') || {}; }catch(e){} return estCfgLimpia(o); }
+async function saveEstCfg(athleteId, cfg){ return safeSet('estudio-cfg-'+athleteId, JSON.stringify(estCfgLimpia(cfg)), true); }
+async function getEstLog(athleteId){
+  let o = {}; try{ o = JSON.parse(await safeGet('estudio-'+athleteId, true) || '{}') || {}; }catch(e){}
+  if(!o || typeof o !== 'object' || Array.isArray(o)) o = {};
+  if(!o.dias || typeof o.dias !== 'object' || Array.isArray(o.dias)) o.dias = {};
+  Object.keys(o.dias).forEach(k=>{ const d = o.dias[k]; if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !d || !Array.isArray(d.ses)) delete o.dias[k]; else d.ses = d.ses.filter(x=>x && typeof x === 'object'); });
+  o.obj = (o.obj && typeof o.obj === 'object' && Array.isArray(o.obj.items)) ? { fecha:String(o.obj.fecha || ''), items:o.obj.items.map(x=>({ t:String((x && x.t) || '').trim().slice(0, 90), h:!!(x && x.h) })).filter(x=>x.t).slice(0, 3) } : { fecha:'', items:[] };
+  return o;
+}
+async function saveEstLog(athleteId, log){
+  const ks = Object.keys(log.dias).sort(); while(ks.length > 120) delete log.dias[ks.shift()];
+  return safeSet('estudio-'+athleteId, JSON.stringify(log), true);
+}
+function estParams(cfg){ const p = EST_PRESETS.find(x=>x.id === cfg.preset) || EST_PRESETS[0]; return p.id === 'custom' ? { nombre:p.nombre, foco:cfg.foco, desc:cfg.desc, bloques:cfg.bloques } : { nombre:p.nombre, foco:p.foco, desc:p.desc, bloques:cfg.bloques }; }
+// Reparto de un descanso: preparación (hasta 2 min) → Snack (4 min) → tiempo libre → último minuto de respiración.
+function estLayoutDescanso(D, cfg){
+  const resp = (cfg.resp && D >= 2) ? 1 : 0, snack = (cfg.snack && D >= 5) ? 1 : 0, prep = snack ? Math.max(0, Math.min(2, D - 4 - resp)) : 0;
+  return { prep, snack, resp, libre:Math.max(0, D - prep - snack*4 - resp) };
+}
+function estTxtDescanso(L){ const o = []; if(L.prep) o.push(`${L.prep} min para prepararte`); if(L.snack) o.push('4 min de Snack'); if(L.libre) o.push(`${L.libre} min libres`); if(L.resp) o.push('1 min de respiración'); return o.join(' · '); }
+function estTotalMin(cfg){ const p = estParams(cfg); return (cfg.prep ? 5 : 0) + p.bloques*p.foco + (p.bloques - 1)*p.desc; }
+function estHM(min){ const h = Math.floor(min/60), m = Math.round(min % 60); return h ? `${h} h${m ? ' ' + m + ' min' : ''}` : `${m} min`; }
+function estFases(cfg){
+  const p = estParams(cfg), L = estLayoutDescanso(p.desc, cfg), f = [];
+  if(cfg.prep){ f.push({ k:'org', dur:240, grupo:'prep' }, { k:'resp', dur:60, ctx:'prep', grupo:'prep' }); }
+  for(let b = 1; b <= p.bloques; b++){
+    f.push({ k:'foco', b, dur:p.foco*60 });
+    if(b < p.bloques){
+      if(L.prep) f.push({ k:'dprep', b, dur:L.prep*60, grupo:'desc' });
+      if(L.snack) f.push({ k:'snack', b, grupo:'desc' });
+      f.push({ k:'libre', b, grupo:'desc' });
+      if(L.resp) f.push({ k:'resp', b, dur:60, ctx:'vuelta', grupo:'desc' });
+    }
+  }
+  return f;
+}
+function estMusicaLink(cfg){
+  if(cfg.musica === 'ninguna') return null;
+  const m = EST_MUSICA[cfg.musica]; if(!m) return null;
+  return cfg.playlist ? { url:cfg.playlist, txt:'Abrir tu playlist' } : { url:'https://open.spotify.com/search/' + encodeURIComponent(m.q), txt:'Abrir ' + m.nombre + ' en Spotify' };
+}
+const EST_ICONO = `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.500 4H11v15H5.500A1.500 1.500 0 0 1 4 17.500z"/><path d="M20 5.500A1.500 1.500 0 0 0 18.500 4H13v15h5.500a1.500 1.500 0 0 0 1.500-1.500z"/></svg>`;
+
+// ---------- Tarjeta de la atleta ----------
+async function tplEstudioCard(athleteId){
+  const cfg = await getEstCfg(athleteId), log = await getEstLog(athleteId), hoy = todayISO(), p = estParams(cfg), d = log.dias[hoy], ses = d ? d.ses : [];
+  const min = ses.reduce((a, x)=>a + (+x.min || 0), 0), mu = estMusicaLink(cfg);
+  return `<div class="card est-card"><div class="snack-top"><div><span class="snack-eyebrow">Estudio · alto rendimiento</span><h2 style="margin:2px 0 0;">Foco, movimiento y descanso</h2></div><div class="sue-luna">${EST_ICONO}</div></div>
+    <p class="snack-estado" style="margin:10px 0 12px;">${min ? `Hoy: <b>${estHM(min)}</b> de foco en ${ses.length} ${ses.length === 1 ? 'sesión' : 'sesiones'}` : 'Hoy todavía no has estudiado con Umbral'} · tu ritmo: <b>${escapeHtml(p.nombre)}</b> (${p.foco} + ${p.desc})${mu ? '' : ' · sin música'}</p>
+    <div class="row" style="gap:10px;"><button class="btn" id="estEmpezarBtn" style="flex:1;">Empezar a estudiar</button><button class="btn ghost" id="estAjustarBtn">Ajustar</button></div>
+    <button class="snack-info-link" data-estevid="1">¿Qué dice la ciencia de esto?</button></div>`;
+}
+
+// ---------- Ajustes de la sesión ----------
+let estCfgTmp = null;
+function estOverlay(){ let o = document.getElementById('estOverlay'); if(!o){ o = document.createElement('div'); o.id = 'estOverlay'; o.className = 'snack-ov'; document.body.appendChild(o); } return o; }
+function estResumenHtml(cfg){
+  const p = estParams(cfg), L = estLayoutDescanso(p.desc, cfg), li = [];
+  if(cfg.prep) li.push(`<li><b>Preparación · 5 min</b><span>4 min para organizar tus objetivos del día y 1 min de respiración guiada</span></li>`);
+  li.push(`<li><b>${p.bloques} ${p.bloques === 1 ? 'bloque' : 'bloques'} de foco · ${p.foco} min</b><span>Un solo objetivo a la vez, el móvil fuera de la vista</span></li>`);
+  if(p.bloques > 1) li.push(`<li><b>${p.bloques - 1} ${p.bloques === 2 ? 'descanso' : 'descansos'} · ${p.desc} min</b><span>${escapeHtml(estTxtDescanso(L)) || 'Descanso libre'}</span></li>`);
+  return `<ul class="est-tl">${li.join('')}</ul><p class="est-tot">Duración total: <b>${estHM(estTotalMin(cfg))}</b>${(cfg.snack && p.desc < 5 && p.bloques > 1) ? ' · <span style="color:var(--danger);">El Snack necesita descansos de 5 min o más</span>' : ''}</p>`;
+}
+function estSetupPinta(athleteId){
+  const cfg = estCfgTmp, o = estOverlay(), p = estParams(cfg), mu = estMusicaLink(cfg);
+  const sw = (k, t, d)=>`<label class="est-sw"><input type="checkbox" data-estopt="${k}" ${cfg[k] ? 'checked' : ''}><span><b>${t}</b><small>${d}</small></span></label>`;
+  o.innerHTML = `<div class="snack-in"><div class="snack-bar"><span class="snack-eyebrow">Estudio · tu sesión</span><button class="btn ghost small" id="estCerrar">Cerrar</button></div>
+    <h2 class="snack-h">Elige tu ritmo</h2>
+    <div class="est-presets">${EST_PRESETS.map(x=>`<button class="est-preset ${cfg.preset === x.id ? 'sel' : ''}" data-estpreset="${x.id}"><b>${x.nombre}</b><span>${x.id === 'custom' ? `${cfg.foco} + ${cfg.desc}` : `${x.foco} + ${x.desc}`} min</span><small>${x.nota}</small></button>`).join('')}</div>
+    ${cfg.preset === 'custom' ? `<div class="est-custom"><label>Foco (min)<input type="number" inputmode="numeric" min="5" max="180" data-estnum="foco" value="${cfg.foco}"></label><label>Descanso (min)<input type="number" inputmode="numeric" min="1" max="45" data-estnum="desc" value="${cfg.desc}"></label></div>` : ''}
+    <div class="est-fila"><span>Bloques de foco</span><div class="est-step"><button data-estbl="-1" aria-label="Menos bloques">−</button><b>${cfg.bloques}</b><button data-estbl="1" aria-label="Más bloques">+</button></div></div>
+    <div class="est-opc">${sw('prep', 'Preparación de 5 min', '4 min organizando tus objetivos + 1 min de respiración guiada')}${sw('snack', 'Snack de movimiento en el descanso', 'Tabata de 4 min (20″/10″ × 8) que empieza solo tras la preparación')}${sw('resp', 'Respiración antes de volver', 'El último minuto del descanso, guiado')}${sw('suave', 'Respiración suave, sin pausas', 'Solo inhalar y exhalar despacio. Recomendado si lo prefieres o si tienes dudas de salud')}</div>
+    <div class="snack-preg" style="margin-top:14px;">${estResumenHtml(cfg)}</div>
+    <div class="est-musica"><span class="snack-eyebrow">Música para concentrarte</span>
+      <div class="scale est-mu">${Object.keys(EST_MUSICA).map(k=>`<button data-estmu="${k}" class="${cfg.musica === k ? 'sel' : ''}">${EST_MUSICA[k].nombre}</button>`).join('')}<button data-estmu="ninguna" class="${cfg.musica === 'ninguna' ? 'sel' : ''}">Sin música</button></div>
+      <label class="est-pl">Tu propia playlist de Spotify (opcional)<input type="url" id="estPlaylist" placeholder="https://open.spotify.com/playlist/…" value="${escapeHtml(cfg.playlist)}"></label>
+      ${mu ? `<a class="snack-chip on" href="${escapeHtml(mu.url)}" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block;margin-top:8px;">♪ ${escapeHtml(mu.txt)}</a>` : ''}
+      <p class="snack-nota" style="margin:8px 0 0;">Abre la música antes de empezar y vuelve a Umbral: los avisos suenan por encima. Las ondas binaurales necesitan auriculares.</p></div>
+    <button class="btn" id="estEmpezar" style="width:100%;margin-top:16px;">Empezar · ${p.foco} min de foco</button>
+    <button class="snack-info-link" id="estEvid">¿Qué dice la ciencia de esto?</button>
+    <p class="snack-nota">Mantén Umbral abierto durante la sesión: la pantalla no se apaga. Si la app pasa a segundo plano, el aviso puede no sonar; al volver, el tiempo seguirá correcto.</p></div>`;
+  const rerender = async ()=>{ await saveEstCfg(athleteId, estCfgTmp); estCfgTmp = estCfgLimpia(estCfgTmp); estSetupPinta(athleteId); };
+  o.querySelector('#estCerrar').addEventListener('click', ()=>{ estCfgTmp = null; estCierra(); });
+  o.querySelector('#estEvid').addEventListener('click', ()=>estEvidenciaAbre());
+  o.querySelectorAll('[data-estpreset]').forEach(b=>b.addEventListener('click', ()=>{ const x = EST_PRESETS.find(z=>z.id === b.dataset.estpreset); estCfgTmp.preset = x.id; estCfgTmp.bloques = x.bl; rerender(); }));
+  o.querySelectorAll('[data-estnum]').forEach(i=>i.addEventListener('change', ()=>{ const k = i.dataset.estnum; estCfgTmp[k] = k === 'foco' ? estClamp(i.value, 5, 180, 40) : estClamp(i.value, 1, 45, 8); rerender(); }));
+  o.querySelectorAll('[data-estbl]').forEach(b=>b.addEventListener('click', ()=>{ estCfgTmp.bloques = estClamp(estCfgTmp.bloques + parseInt(b.dataset.estbl, 10), 1, 8, 4); rerender(); }));
+  o.querySelectorAll('[data-estopt]').forEach(i=>i.addEventListener('change', ()=>{ estCfgTmp[i.dataset.estopt] = i.checked; rerender(); }));
+  o.querySelectorAll('[data-estmu]').forEach(b=>b.addEventListener('click', ()=>{ estCfgTmp.musica = b.dataset.estmu; rerender(); }));
+  const pl = o.querySelector('#estPlaylist');
+  pl.addEventListener('change', ()=>{ const v = pl.value.trim(); if(v && !estUrlSpotify(v)){ toast('Pega un enlace de open.spotify.com', true); pl.value = estCfgTmp.playlist; return; } estCfgTmp.playlist = v; rerender(); });
+  o.querySelector('#estEmpezar').addEventListener('click', async ()=>{ const v = pl.value.trim(); if(v && estUrlSpotify(v)) estCfgTmp.playlist = v; await saveEstCfg(athleteId, estCfgTmp); const c = estCfgLimpia(estCfgTmp); estCfgTmp = null; estEmpieza(athleteId, c); });
+}
+async function estSetupAbre(athleteId){ estCfgTmp = await getEstCfg(athleteId); estSetupPinta(athleteId); }
+function estCierra(){
+  const R = estRun; estRun = null;
+  if(R){ clearInterval(R.timer); }
+  if(snackRun && snackRun.directo){ snackRun.alTerminar = null; snackCierra(); }
+  keepAwake(false);
+  const o = document.getElementById('estOverlay'); if(o) o.remove();
+  const e = document.getElementById('estEvidencia'); if(e) e.remove();
   renderKeepScroll();
+}
+
+// ---------- Sesión en marcha ----------
+let estRun = null;
+async function estEmpieza(athleteId, cfg){
+  ensureAudio();                                     // el toque de «Empezar» desbloquea los avisos sonoros
+  cfg = cfg || await getEstCfg(athleteId);
+  const log = await getEstLog(athleteId), hoy = todayISO(), at = state.athletes.find(a=>a.id === athleteId);
+  estRun = { athleteId, cfg, p:estParams(cfg), L:null, fases:estFases(cfg), i:-1, fase:null, faseFin:0, pausado:false, resto:0, breakFin:0, breakB:0, minFoco:0, bloques:0, snacks:0, resps:0,
+    obj:log.obj.fecha === hoy ? log.obj.items.map(x=>({ t:x.t, h:x.h })) : [], fin:false, menor:esMenor(at), t0:Date.now(), ultimo:'', timer:null };
+  estRun.L = estLayoutDescanso(estRun.p.desc, cfg);
+  estOverlay();
+  estIr(0);
+  estRun.timer = setInterval(estTick, 250);
+}
+function estLeeObj(R){
+  const o = document.getElementById('estOverlay'); if(!o) return;
+  const ins = [...o.querySelectorAll('[data-estobjin]')]; if(!ins.length) return;
+  R.obj = ins.map(i=>i.value.trim().slice(0, 90)).filter(Boolean).slice(0, 3).map(t=>({ t, h:!!(R.obj.find(x=>x.t === t) || {}).h }));
+}
+async function estGuardaObj(R){
+  const log = await getEstLog(R.athleteId); log.obj = { fecha:todayISO(), items:R.obj.map(x=>({ t:x.t, h:!!x.h })) }; await saveEstLog(R.athleteId, log);
+}
+function estRestoMs(R){ return R.pausado ? R.resto : R.faseFin - Date.now(); }
+function estCierraFase(R){
+  const f = R.fase; if(!f) return;
+  if(f.k === 'org'){ estLeeObj(R); estGuardaObj(R); }
+  if(f.k === 'foco'){ const hecho = Math.max(0, f.dur - Math.max(0, estRestoMs(R))/1000); R.minFoco += hecho/60; if(hecho >= f.dur*0.8) R.bloques++; }
+  if(f.k === 'resp'){ const hecho = Math.max(0, 60 - Math.max(0, estRestoMs(R))/1000); if(hecho >= 30) R.resps++; }
+}
+function estIr(j){
+  const R = estRun; if(!R) return;
+  if(j >= R.fases.length){ estFin(true); return; }
+  estCierraFase(R);
+  R.i = j; const f = R.fases[j], ahora = Date.now(); R.fase = f; R.pausado = false; R.ultimo = '';
+  if(f.grupo === 'desc' && R.breakB !== f.b){ R.breakB = f.b; R.breakFin = ahora + R.p.desc*60000; CUE.rest(); }
+  if(f.k === 'foco'){ CUE.work(); R.faseFin = ahora + f.dur*1000; }
+  else if(f.k === 'libre'){ R.faseFin = R.breakFin - R.L.resp*60000; if(R.faseFin - ahora < 4000){ estIr(j + 1); return; } }
+  else if(f.k === 'snack'){ R.faseFin = 0; }
+  else R.faseFin = ahora + f.dur*1000;
+  R.faseDur = Math.max(1, R.faseFin - ahora);
+  keepAwake(true);
+  estPinta();
+  if(f.k === 'snack') estLanzaSnack();
+}
+function estLanzaSnack(){
+  const R = estRun; if(!R) return;
+  snackAbre(R.athleteId, { directo:true, alTerminar:(ok, motivo)=>{
+    if(estRun !== R) return;
+    keepAwake(true);
+    if(ok) R.snacks++; else if(motivo === 'sin-banco') toast('No hay ejercicios activos para el Snack: tu entrenador tiene que activar alguno', true);
+    estIr(R.i + 1);
+  } });
+}
+function estSaltar(grupo){
+  const R = estRun; if(!R || R.fin) return;
+  let j = R.i + 1;
+  if(grupo){ const f = R.fase; if(f.grupo === 'prep') while(j < R.fases.length && R.fases[j].k !== 'foco') j++; else if(f.grupo === 'desc') while(j < R.fases.length && R.fases[j].grupo === 'desc') j++; }
+  estIr(j);
+}
+function estPausa(){
+  const R = estRun; if(!R || R.fin || !R.fase || R.fase.k === 'snack') return;
+  if(!R.pausado){ R.pausado = true; R.resto = R.faseFin - Date.now(); R.pausaT = Date.now(); }
+  else { const d = Date.now() - R.pausaT; R.pausado = false; R.faseFin = Date.now() + R.resto; if(R.fase.grupo === 'desc') R.breakFin += d; }
+  R.ultimo = ''; estPinta();
+}
+function estTick(){
+  const R = estRun; if(!R || R.fin || R.pausado || !R.fase || R.fase.k === 'snack') return;
+  const ms = R.faseFin - Date.now();
+  if(ms <= 0){ estIr(R.i + 1); return; }
+  const rem = Math.ceil(ms/1000), clave = R.i + '|' + rem;
+  if(clave !== R.ultimo){ R.ultimo = clave; if(R.fase.k === 'foco' || R.fase.k === 'libre') cueCountdown(rem); }
+  estActualiza();
+}
+const EST_TIT = { org:'PREPARACIÓN · ORGANIZA TU DÍA', dprep:'DESCANSO · PREPÁRATE', snack:'DESCANSO · SNACK DE MOVIMIENTO', libre:'DESCANSO · LIBRE' };
+function estTitFase(R){
+  const f = R.fase;
+  if(f.k === 'foco') return `FOCO · BLOQUE ${f.b} DE ${R.p.bloques}`;
+  if(f.k === 'resp') return f.ctx === 'prep' ? 'PREPARACIÓN · RESPIRACIÓN' : 'ÚLTIMO MINUTO · RESPIRACIÓN';
+  return EST_TIT[f.k] || '';
+}
+const EST_CICLO_PAUSAS = [['in', 4, 'Inhala por la nariz'], ['out', 6, 'Exhala despacio'], ['hold', 5, 'Pausa con los pulmones vacíos']];
+function estRespEstado(R, seg){
+  const ciclo = (R.cfg.suave || R.menor) ? EST_CICLO_PAUSAS.slice(0, 2) : EST_CICLO_PAUSAS, C = ciclo.reduce((a, c)=>a + c[1], 0);
+  let t = ((seg % C) + C) % C;
+  for(const c of ciclo){ if(t < c[1]) return { tipo:c[0], txt:c[2], rest:Math.ceil(c[1] - t), pos:t/c[1] }; t -= c[1]; }
+  return { tipo:'out', txt:'Exhala despacio', rest:1, pos:1 };
+}
+function estPinta(){
+  const R = estRun; if(!R) return; const o = estOverlay(), f = R.fase;
+  if(R.fin){ estPintaFin(); return; }
+  const hechos = f.k === 'foco' ? f.b - 1 : (f.b || 0), dots = Array.from({ length:R.p.bloques }, (_, i)=>`<i class="${i + 1 <= hechos ? 'ok' : ''} ${f.k === 'foco' && f.b === i + 1 ? 'on' : ''}"></i>`).join('');
+  const mu = estMusicaLink(R.cfg);
+  let cuerpo = '', botones = '';
+  if(f.k === 'org'){
+    const v = i=>escapeHtml((R.obj[i] || {}).t || '');
+    cuerpo = `<p class="est-lead">Elige 1 a 3 cosas que, si salen hoy, hacen que el día haya valido la pena.</p>
+      ${[0, 1, 2].map(i=>`<input type="text" class="est-obj" maxlength="90" data-estobjin="${i}" value="${v(i)}" placeholder="${['Lo más importante de hoy', 'Lo segundo (opcional)', 'Lo tercero (opcional)'][i]}">`).join('')}
+      <p class="snack-nota">Escríbelas en concreto: «Resolver 10 problemas de cinemática» mejor que «estudiar física».</p>`;
+  } else if(f.k === 'foco'){
+    cuerpo = estObjLista(R) + `<p class="est-lead">Una sola cosa. Móvil boca abajo y notificaciones fuera.</p>`;
+  } else if(f.k === 'dprep'){
+    cuerpo = `<ul class="est-pasos"><li>Levántate y deja el material</li><li>Suelta hombros y cuello</li><li>Bebe un poco de agua</li></ul><p class="est-lead">Después empieza el Snack solo: 4 minutos.</p>`;
+  } else if(f.k === 'snack'){
+    cuerpo = `<p class="est-lead">Snack en curso.</p>`;
+  } else if(f.k === 'libre'){
+    cuerpo = `<ul class="est-pasos"><li>Mira lejos, por una ventana si puedes</li><li>Camina, bebe, estira</li><li>Evita las redes: no son un descanso para el cerebro</li></ul><p class="est-lead">${f.b < R.p.bloques ? `Después: bloque ${f.b + 1} de ${R.p.bloques}.` : ''}</p>`;
+  } else if(f.k === 'resp'){
+    cuerpo = `<div class="est-aro-box"><div class="est-aro" id="estAro"></div><div class="est-resp-txt" id="estRespTxt"></div><div class="est-resp-seg" id="estRespSeg"></div></div>
+      <p class="snack-nota">Sentado, sin forzar. Si notas mareo, hormigueo o malestar, respira con normalidad y salta esta fase.${(R.cfg.suave || R.menor) ? '' : ' Las pausas son cortas: nunca hiperventiles antes.'}</p>`;
+  }
+  const saltaTxt = f.k === 'foco' ? (f.b < R.p.bloques ? 'Pasar al descanso' : 'Terminar el bloque') : 'Saltar esta fase';
+  const grupoTxt = f.grupo === 'prep' ? 'Saltar toda la preparación' : (f.grupo === 'desc' ? 'Volver al foco ya' : '');
+  botones = `<button class="btn" id="estPausa">${R.pausado ? 'Seguir' : 'Pausar'}</button><button class="btn ghost" id="estSaltar">${saltaTxt}</button>${grupoTxt && (f.k === 'org' ? true : (f.k === 'resp' && f.grupo === 'prep') ? true : f.grupo === 'desc') ? `<button class="btn ghost" id="estSaltarG">${grupoTxt}</button>` : ''}`;
+  o.innerHTML = `<div class="snack-in est-run est-${f.k}${R.pausado ? ' est-pausa' : ''}"><div class="snack-bar"><span class="snack-eyebrow">Estudio · ${escapeHtml(R.p.nombre)}</span><button class="btn ghost small" id="estSalir">Terminar</button></div>
+    <div class="est-puntos">${dots}</div>
+    <div class="est-fase">${R.pausado ? 'EN PAUSA' : estTitFase(R)}</div>
+    <div class="est-reloj" id="estReloj"></div>
+    <div class="est-barra"><i id="estBarra"></i></div>
+    <div class="est-cuerpo">${cuerpo}</div>
+    <div class="est-botones">${botones}</div>
+    ${mu ? `<a class="est-mus" href="${escapeHtml(mu.url)}" target="_blank" rel="noopener">♪ ${escapeHtml(mu.txt)}</a>` : ''}</div>`;
+  o.querySelector('#estSalir').addEventListener('click', ()=>{ if(confirm('¿Terminar la sesión ahora?')) estFin(false); });
+  o.querySelector('#estPausa').addEventListener('click', ()=>estPausa());
+  o.querySelector('#estSaltar').addEventListener('click', ()=>estSaltar(false));
+  const g = o.querySelector('#estSaltarG'); if(g) g.addEventListener('click', ()=>estSaltar(true));
+  o.querySelectorAll('[data-estobjok]').forEach(b=>b.addEventListener('click', ()=>{ const it = R.obj[parseInt(b.dataset.estobjok, 10)]; if(!it) return; it.h = !it.h; b.classList.toggle('on', it.h); estGuardaObj(R); }));
+  const add = o.querySelector('#estObjAdd'); if(add) add.addEventListener('click', ()=>{ const i = o.querySelector('#estObjNuevo'), t = i.value.trim().slice(0, 90); if(!t) return; R.obj.push({ t, h:false }); estGuardaObj(R); estPinta(); });
+  estActualiza();
+}
+function estObjLista(R){
+  if(!R.obj.length) return `<div class="est-objs"><div class="est-objadd"><input type="text" class="est-obj" id="estObjNuevo" maxlength="90" placeholder="¿Qué vas a cerrar en este bloque?"><button class="btn small" id="estObjAdd">Añadir</button></div></div>`;
+  return `<div class="est-objs">${R.obj.map((x, i)=>`<button class="est-objit ${x.h ? 'on' : ''}" data-estobjok="${i}"><i></i><span>${escapeHtml(x.t)}</span></button>`).join('')}${R.obj.length < 3 ? `<div class="est-objadd"><input type="text" class="est-obj" id="estObjNuevo" maxlength="90" placeholder="Otro objetivo (opcional)"><button class="btn small" id="estObjAdd">Añadir</button></div>` : ''}</div>`;
+}
+function estActualiza(){
+  const R = estRun; if(!R || R.fin || !R.fase) return; const f = R.fase, g = id=>document.getElementById(id); if(!g('estReloj')) return;
+  const ms = Math.max(0, estRestoMs(R)), rem = Math.ceil(ms/1000);
+  if(f.k === 'snack'){ g('estReloj').textContent = '4:00'; return; }
+  g('estReloj').textContent = Math.floor(rem/60) + ':' + String(rem % 60).padStart(2, '0');
+  const bar = g('estBarra'); if(bar) bar.style.width = Math.min(100, Math.max(0, (1 - ms/Math.max(1, R.faseDur || 1))*100)) + '%';
+  if(f.k === 'resp'){
+    const st = estRespEstado(R, 60 - ms/1000), a = g('estAro'); if(!a) return;
+    const sc = st.tipo === 'in' ? 0.55 + 0.45*st.pos : (st.tipo === 'out' ? 1 - 0.45*st.pos : 0.55);
+    a.style.transform = `scale(${sc.toFixed(3)})`; a.className = 'est-aro ' + st.tipo;
+    g('estRespTxt').textContent = st.txt; g('estRespSeg').textContent = String(st.rest);
+  }
+}
+// ---------- Final de la sesión ----------
+function estFin(natural){
+  const R = estRun; if(!R || R.fin) return;
+  if(snackRun && snackRun.directo){ snackRun.alTerminar = null; snackCierra(); }
+  estCierraFase(R); estLeeObj(R);
+  R.fin = true; clearInterval(R.timer); keepAwake(false); R.fase = null;
+  if(natural) CUE.done();
+  estPinta();
+}
+function estPintaFin(){
+  const R = estRun; if(!R) return; const o = estOverlay(), min = Math.round(R.minFoco), corta = R.minFoco < 1;
+  const hechos = R.obj.filter(x=>x.h).length;
+  o.innerHTML = `<div class="snack-in"><div class="snack-bar"><span class="snack-eyebrow">Estudio · ${escapeHtml(R.p.nombre)}</span></div>
+    <h2 class="snack-h" style="text-align:center;margin-top:18px;">${corta ? 'Sesión muy corta' : (R.bloques >= R.p.bloques ? 'Sesión completada' : 'Sesión terminada')}</h2>
+    ${corta ? `<div class="snack-preg"><p style="margin:0 0 14px;font-size:14.5px;line-height:1.6;">No llegaste ni a un minuto de foco, así que no se guarda. Cuando quieras, empieza otra.</p><button class="btn" id="estDescarta" style="width:100%;">Cerrar</button></div>` : `
+    <div class="est-kpis"><div><b>${estHM(min)}</b><span>de foco</span></div><div><b>${R.bloques}/${R.p.bloques}</b><span>bloques</span></div><div><b>${R.snacks}</b><span>Snack${R.snacks === 1 ? '' : 's'}</span></div><div><b>${R.resps}</b><span>respiraciones</span></div></div>
+    ${R.obj.length ? `<div class="snack-preg" style="margin-top:12px;"><span class="snack-eyebrow">Tus objetivos de hoy</span><div class="est-objs" style="margin-top:10px;">${R.obj.map((x, i)=>`<button class="est-objit ${x.h ? 'on' : ''}" data-estobjok="${i}"><i></i><span>${escapeHtml(x.t)}</span></button>`).join('')}</div></div>` : ''}
+    <div class="snack-preg" style="margin-top:12px;"><div class="q-item" style="margin-bottom:14px;"><p>¿Cómo ha sido tu concentración?</p><div class="scale" id="estConc">${[1, 2, 3, 4, 5].map(n=>`<button data-val="${n}">${n}</button>`).join('')}</div><div class="scale-labels"><span>1 · Dispersa</span><span>5 · Muy concentrada</span></div></div>
+    <button class="btn" id="estGuardar" style="width:100%;">Guardar sesión</button><button class="btn ghost small" id="estDescarta" style="width:100%;margin-top:8px;">No guardar</button></div>`}</div>`;
+  o.querySelectorAll('[data-estobjok]').forEach(b=>b.addEventListener('click', ()=>{ const it = R.obj[parseInt(b.dataset.estobjok, 10)]; if(!it) return; it.h = !it.h; b.classList.toggle('on', it.h); }));
+  o.querySelectorAll('#estConc button').forEach(b=>b.addEventListener('click', ()=>{ const ya = b.classList.contains('sel'); o.querySelectorAll('#estConc button').forEach(x=>x.classList.remove('sel')); if(!ya) b.classList.add('sel'); }));
+  const d = o.querySelector('#estDescarta'); if(d) d.addEventListener('click', ()=>estCierra());
+  const g = o.querySelector('#estGuardar');
+  if(g) g.addEventListener('click', async ()=>{
+    const sel = o.querySelector('#estConc button.sel'), hoy = todayISO(), log = await getEstLog(R.athleteId);
+    const ses = { ts:Date.now(), p:R.cfg.preset, foco:R.p.foco, desc:R.p.desc, bl:R.bloques, min, sn:R.snacks, rs:R.resps, ob:[R.obj.filter(x=>x.h).length, R.obj.length], mu:R.cfg.musica };
+    if(sel) ses.c = parseInt(sel.dataset.val, 10);
+    const dia = log.dias[hoy] || { ses:[] }; dia.ses.push(ses); log.dias[hoy] = dia; log.obj = { fecha:hoy, items:R.obj.map(x=>({ t:x.t, h:!!x.h })) };
+    await saveEstLog(R.athleteId, log);
+    toast(R.snacks ? 'Sesión guardada · tus Snacks suman a la racha' : 'Sesión guardada'); estCierra();
+  });
+}
+
+// ---------- Lo que dice la ciencia ----------
+const EST_EVID = [
+  { t:'Descansos y Snack de movimiento', n:'Moderada', c:'ok', r:'Hacer pausas cortas mantiene la energía; moverse en ellas es un plus.',
+    d:['Un metaanálisis de 22 estudios (Albulescu y cols., PLOS ONE, 2022) encontró que las micropausas de 10 minutos o menos se asocian con más vigor y menos fatiga. En el rendimiento no hubo una mejora global clara, y en tareas exigentes los descansos más largos parecían ayudar más. Son datos de asociación, no de causa.',
+      'Lo de moverse es una lectura general de la literatura (no verificada en esta sesión): el ejercicio breve tiende a mejorar un poco la atención y las funciones ejecutivas justo después, con efectos pequeños pero consistentes.'],
+    u:'El Snack de 4 minutos va dentro del descanso, con preparación antes y tiempo libre después.' },
+  { t:'Pomodoro, 50/10, 52/17 y 90/20', n:'Limitada', c:'mid', r:'Estructurar el estudio en bloques con descansos funciona; las cifras exactas no son mágicas.',
+    d:['Pomodoro: en un estudio con 87 estudiantes (Universidad de Maastricht, 2023) comparaban descansos sistemáticos (24 min de estudio + 6 de descanso) con descansos a demanda. Terminaron lo mismo, pero quien descansaba cuando quería refirió más fatiga, menos concentración y más distracción, y los descansos fijos resultaron más eficientes en tiempo. Ojo: la prueba usó 24/6, no 25/5.',
+      '52/17 sale de datos de una empresa de seguimiento de tiempo sobre sus usuarios más productivos (observacional, sin revisión por pares, no lo he podido verificar de primera mano). 90/20 se apoya en la idea de ciclos de actividad de unos 90 minutos; fuera del sueño, esa idea tiene respaldo débil. Una idea que se repite en la literatura sobre práctica deliberada (lectura general, no verificada aquí) es que las sesiones muy largas sin pausa rinden menos.',
+      'Conclusión práctica: el mejor ritmo es el que puedas sostener y que encaje con la tarea. Empieza por 25/5 o 50/10 y ajusta según cómo termines.'],
+    u:'Tienes los cuatro ritmos y uno propio. En Estudio queda tu concentración de 1 a 5 para comparar con el tiempo.' },
+  { t:'Organizar objetivos antes de empezar', n:'Sólida', c:'ok', r:'Decidir qué, cuándo y cómo antes de empezar ayuda a cumplirlo.',
+    d:['La literatura sobre intenciones de implementación («cuando pase X, haré Y») muestra un efecto de tamaño medio a grande en la consecución de metas (Gollwitzer y Sheeran, 2006; lectura general, no verificada aquí). Escribir objetivos concretos reduce la fricción para arrancar.'],
+    u:'Los 4 minutos iniciales son para eso: 1 a 3 objetivos concretos, que verás tachables en cada bloque.' },
+  { t:'Música y ondas binaurales', n:'Mixta', c:'mid', r:'Si te ayuda, bien; si te distrae, quítala. Las ondas binaurales no tienen respaldo sólido.',
+    d:['Un metaanálisis (Garcia-Argibay y cols., Psychological Research, 2019) con 22 estudios halló un efecto medio (g ≈ 0,45) sobre memoria, atención, ansiedad y percepción del dolor, mayor cuando se escuchan antes o durante la tarea y según la frecuencia. Pero hay resultados contrarios: un estudio con 920 adultos (Scientific Reports, 2023) vio peor rendimiento cognitivo con binaurales de 15 Hz y 5 Hz, y otro estudio con estudiantes (2024) no encontró mejora con 40 Hz.',
+      'Con música en general (lectura general, no verificada aquí): la que tiene letra suele interferir con leer y escribir; la instrumental, predecible y a volumen bajo interfiere poco, y en algunas personas ayuda a mantener el ánimo. Lo-fi y jazz entran en esa categoría.',
+      'Las ondas binaurales exigen auriculares estéreo. Pruébalas una semana y mira si tu concentración sube o baja en tus registros.'],
+    u:'Tienes accesos directos a lo-fi, jazz y binaurales en Spotify, o pones tu propia playlist.' },
+  { t:'Respiración con pausas (hipoxia intermitente suave)', n:'Débil', c:'low', r:'Respirar despacio relaja; no hay pruebas de que contener el aire unos segundos mejore el estudio.',
+    d:['La hipoxia aguda, o sea, poco oxígeno, empeora la cognición: un metaanálisis de 22 experimentos con adultos sanos halló un efecto moderado negativo (g ≈ −0,49), sobre todo con oxígeno arterial bajo. Las pausas de pocos segundos de este ejercicio cambian muy poco el oxígeno de la sangre y no son lo mismo que los protocolos clínicos.',
+      'Los estudios de hipoxia intermitente con posibles beneficios usan mascarillas con mezcla de gas pobre en oxígeno, bajo supervisión, en poblaciones concretas (lectura general, no verificada aquí). No hay datos sólidos de que contener la respiración mejore la oxigenación cerebral ni el estudio en estudiantes sanos.',
+      'Lo que sí tiene sentido: inhalar corto y exhalar largo (unas 6 respiraciones por minuto) ayuda a bajar la activación y puede venirte bien como transición entre descanso y foco.',
+      'Seguridad: el Instituto Australiano del Deporte (AIS) avisa de que el entrenamiento con apnea puede causar pérdida de conocimiento sin aviso, que nunca hay que hiperventilar antes y que no se haga a solas en el agua. Aquí vas sentado, con pausas de 5 segundos, sin hiperventilar. Si tienes dudas de salud (corazón, pulmón, embarazo), usa la respiración suave o salta la fase. Nunca en el agua ni conduciendo.'],
+    u:'Respiración guiada de 1 minuto: 4 s inhalar, 6 s exhalar y pausa corta de 5 s (opción suave: sin pausa). Siempre se puede saltar.' }
+];
+function estEvidenciaAbre(){
+  const o = document.createElement('div'); o.id = 'estEvidencia'; o.className = 'snack-ov'; o.style.zIndex = '190';
+  o.innerHTML = `<div class="snack-in"><div class="snack-bar"><span class="snack-eyebrow">Qué dice la ciencia</span><button class="btn ghost small" id="estEvCerrar">Cerrar</button></div>
+    <h2 class="snack-h">Lo que sabemos, y lo que no</h2>
+    <p class="snack-nota" style="margin:0 0 14px;">Cada método lleva su nivel de evidencia. Tocar uno para leer los datos.</p>
+    ${EST_EVID.map((e, i)=>`<details class="est-ev" ${i === 0 ? '' : ''}><summary><span class="est-ev-n ${e.c}">${e.n}</span><b>${e.t}</b><small>${e.r}</small></summary><div class="est-ev-c">${e.d.map(x=>`<p>${x}</p>`).join('')}<p class="est-ev-u"><b>En Umbral:</b> ${e.u}</p></div></details>`).join('')}
+    <p class="snack-nota" style="margin-top:18px;">Estos datos no sustituyen el consejo médico. Parte de la información procede de resúmenes y notas de prensa de los estudios; los marcados como «lectura general» no se han podido contrastar aquí.</p></div>`;
+  document.body.appendChild(o); o.querySelector('#estEvCerrar').addEventListener('click', ()=>o.remove());
+}
+
+// ---------- Panel del entrenador ----------
+function estFilas(log, desde, hasta){
+  const o = []; Object.keys(log.dias).filter(f=>f >= desde && f <= hasta).sort().forEach(f=>log.dias[f].ses.forEach(s=>o.push({ fecha:f, min:+s.min || 0, bl:+s.bl || 0, sn:+s.sn || 0, rs:+s.rs || 0, c:(typeof s.c === 'number' && s.c >= 1 && s.c <= 5) ? s.c : null, p:s.p, foco:s.foco, desc:s.desc, ob:Array.isArray(s.ob) ? s.ob : [0, 0] })));
+  return o;
+}
+function resumenEstudio(log, desde, hasta, pd, ph){
+  const f = estFilas(log, desde, hasta), a = pd ? estFilas(log, pd, ph) : [], dias = {};
+  f.forEach(x=>{ dias[x.fecha] = (dias[x.fecha] || 0) + x.min; });
+  const r = fs=>({ ses:fs.length, min:fs.reduce((t, x)=>t + x.min, 0), conc:mediaInf(fs.map(x=>x.c)), sn:fs.reduce((t, x)=>t + x.sn, 0), nConc:fs.filter(x=>x.c !== null).length, diasN:new Set(fs.map(x=>x.fecha)).size });
+  return Object.assign(r(f), { filas:f, dias, antes:r(a) });
+}
+// Compara sesiones con y sin una condición. Solo habla con suficientes sesiones con concentración en cada grupo.
+function estComp(filas, fa, fb, minN){
+  const A = filas.filter(fa), B = filas.filter(fb), ca = A.filter(x=>x.c !== null), cb = B.filter(x=>x.c !== null); if(ca.length < minN || cb.length < minN) return null;
+  const r = (g, gc)=>({ n:gc.length, conc:mediaInf(gc.map(x=>x.c)), min:mediaInf(g.map(x=>x.min)) });
+  const a = r(A, ca), b = r(B, cb);
+  return { a, b, claro:Math.abs(a.conc - b.conc) >= 0.4 };
+}
+function estObservaciones(log, sueLog, hasta){
+  hasta = hasta || todayISO(); const desde = sumaDiasISO(hasta, -89), f1 = x=>nFmt(x, 1), o = [];
+  const filas = estFilas(log, desde, hasta).map(x=>Object.assign(x, { horas:sueDerivado((sueLog && sueLog.dias || {})[x.fecha]).horas }));
+  const d = (c, tema, la, lb)=>{ if(!c) return; o.push(c.claro ? `${resCap(la)}: concentración ${f1(c.a.conc)}/5 (${c.a.n} sesiones). ${resCap(lb)}: ${f1(c.b.conc)}/5 (${c.b.n} sesiones).` : `${resCap(tema)} no marca una diferencia clara en la concentración (${f1(c.a.conc)} frente a ${f1(c.b.conc)} sobre 5).`); };
+  d(estComp(filas, x=>x.sn > 0, x=>x.sn === 0, 3), 'el Snack en los descansos', 'con Snack en los descansos', 'sin Snack');
+  d(estComp(filas, x=>x.horas !== null && x.horas >= 7, x=>x.horas !== null && x.horas < 7, 3), 'dormir 7 h o más la noche anterior', 'tras dormir 7 h o más', 'tras dormir menos de 7 h');
+  d(estComp(filas, x=>x.rs > 0, x=>x.rs === 0, 3), 'la respiración guiada', 'con respiración guiada', 'sin respiración guiada');
+  d(estComp(filas, x=>x.foco >= 50, x=>x.foco < 50, 3), 'los bloques largos (50 min o más)', 'con bloques de 50 min o más', 'con bloques más cortos');
+  return o;
+}
+async function tplEstudioCoach(athleteId){
+  const log = await getEstLog(athleteId), cfg = await getEstCfg(athleteId), sg = await getSuenoLog(athleteId), hoy = todayISO(), d14 = sumaDiasISO(hoy, -13), R = resumenEstudio(log, d14, hoy, sumaDiasISO(hoy, -27), sumaDiasISO(hoy, -14)), p = estParams(cfg);
+  let html = `<div class="card"><h2>Estudio y foco</h2><p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;">Sesiones de estudio de la atleta con sus Snacks en los descansos. Ritmo elegido: <b>${escapeHtml(p.nombre)}</b> (${p.foco} + ${p.desc} min × ${p.bloques}) · música: ${cfg.musica === 'ninguna' ? 'ninguna' : escapeHtml(EST_MUSICA[cfg.musica].nombre)}${cfg.playlist ? ' · playlist propia' : ''}.</p>`;
+  if(!R.ses && !R.antes.ses) return html + `<div class="empty">Todavía no hay sesiones. Las inicia desde Rutina, en la tarjeta «Estudio».</div></div>`;
+  const dl = (x, y, dd)=>(x !== null && y !== null && x !== undefined && y !== undefined) ? ` <small style="color:var(--muted);">${x - y >= 0 ? '+' : '−'}${nFmt(Math.abs(x - y), dd)}</small>` : '';
+  const chip = (t, v, e)=>`<div class="res-chip"><span>${t}</span><b>${v}${e || ''}</b></div>`;
+  html += `<div class="res-fila">${chip('Sesiones', R.ses, dl(R.ses, R.antes.ses, 0))}${chip('Foco', estHM(R.min), dl(R.min, R.antes.min, 0).replace(/(\d)<\/small>/, '$1 min</small>'))}${chip('Concentración', R.conc !== null ? nFmt(R.conc, 1) + '/5' : '—', dl(R.conc, R.antes.conc, 1))}${chip('Snacks en descansos', R.sn)}</div>`;
+  const dias = []; for(let i = 13; i >= 0; i--) dias.push(sumaDiasISO(hoy, -i));
+  const mx = Math.max(60, ...dias.map(f=>R.dias[f] || 0));
+  html += `<svg viewBox="0 0 340 100" style="width:100%;margin-top:12px;color:var(--ink);" role="img" aria-label="Minutos de foco por día"><line x1="0" y1="80" x2="340" y2="80" stroke="var(--border)"/>${dias.map((f, i)=>{ const m = R.dias[f] || 0, h = m/mx*66; return `<rect x="${i*24 + 4}" y="${80 - Math.max(h, m ? 2 : 0)}" width="16" height="${Math.max(h, m ? 2 : 3)}" rx="3" fill="${m ? 'var(--accent)' : 'var(--border)'}" ${m ? '' : 'opacity=".5"'}/>${m ? `<text x="${i*24 + 12}" y="${76 - h}" font-size="8" text-anchor="middle" fill="currentColor">${m}</text>` : ''}<text x="${i*24 + 12}" y="94" font-size="7.5" text-anchor="middle" fill="var(--muted)">${+f.slice(8)}</text>`; }).join('')}</svg><p class="snack-nota" style="margin:2px 0 0;">Minutos de foco por día, últimos 14 días.</p>`;
+  const ult = estFilas(log, sumaDiasISO(hoy, -29), hoy).slice(-5).reverse();
+  if(ult.length) html += `<h3 style="margin:16px 0 6px;font-size:15px;">Últimas sesiones</h3><ul class="snack-obs">${ult.map(x=>`<li><small style="color:var(--muted);">${fechaCortaISO(x.fecha)}</small> ${x.min} min · ${x.bl} bloque${x.bl === 1 ? '' : 's'} (${x.foco}/${x.desc})${x.sn ? ` · ${x.sn} Snack${x.sn === 1 ? '' : 's'}` : ''}${x.c !== null ? ` · concentración ${x.c}/5` : ''}</li>`).join('')}</ul>`;
+  const obs = estObservaciones(log, sg, hoy);
+  if(obs.length) html += `<ul class="snack-obs" style="margin-top:12px;">${obs.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul><p class="snack-nota">Son comparaciones entre sesiones, no causa y efecto.</p>`;
+  return html + `</div>`;
+}
+function bindEstudio(){
+  const id = ()=>state.athleteAsId || state.selectedId;
+  const e = document.getElementById('estEmpezarBtn'); if(e) e.addEventListener('click', ()=>estEmpieza(id()));
+  const a = document.getElementById('estAjustarBtn'); if(a) a.addEventListener('click', ()=>estSetupAbre(id()));
+  document.querySelectorAll('[data-estevid]').forEach(b=>b.addEventListener('click', ()=>estEvidenciaAbre()));
 }
 
 // --- Evolución semanal (Progreso del atleta y ficha del entrenador) ---
@@ -4774,7 +5281,7 @@ async function saveResumenNota(athleteId, key, campo, valor){
   return safeSet('resumen-notas-'+athleteId, JSON.stringify(o), true);
 }
 // ---- Lo que el entrenador edita antes de descargar: secciones, listas de texto y ejercicios ocultos ----
-const RES_SECCIONES = [['constancia', 'Constancia'], ['sueno', 'Sueño y descanso'], ['entreno', 'Entrenamiento y progreso'], ['extras', 'Seguimiento personalizado'], ['balance', 'Balance y lectura']];
+const RES_SECCIONES = [['constancia', 'Constancia'], ['sueno', 'Sueño y descanso'], ['entreno', 'Entrenamiento y progreso'], ['habitos', 'Hábitos'], ['estudio', 'Estudio y foco'], ['extras', 'Seguimiento personalizado'], ['balance', 'Balance y lectura']];
 function resEdLimpia(r){
   r = (r && typeof r === 'object' && !Array.isArray(r)) ? r : {};
   const lis = a=>Array.isArray(a) ? a.map(x=>String(x == null ? '' : x).slice(0, 220)).slice(0, 12) : null, sec = {};
@@ -4784,6 +5291,20 @@ function resEdLimpia(r){
 function resSecOn(D, k){ return !(D.ed && D.ed.sec && D.ed.sec[k] === false); }
 function resCrecVis(D){ const off = (D.ed && D.ed.crecOff) || []; return D.crec.filter(c=>!off.includes(c.nombre)); }
 function resListaDe(D, k, auto){ return ((D.ed && Array.isArray(D.ed[k])) ? D.ed[k] : auto).map(t=>String(t).trim()).filter(Boolean); }
+// Hábitos del periodo: una fila por hábito (cumplido / no / sin registrar cada día) y la serie de hábitos cumplidos por día.
+function resumenHabitos(defs, log, desde, hasta, pd, ph, limite){
+  defs = (defs || []).filter(h=>h && h.id); log = log || {}; limite = limite || hasta;
+  const rango = (a, b)=>{ const r = []; for(let f = a; f <= b; f = sumaDiasISO(f, 1)) r.push(f); return r; };
+  const dias = rango(desde, hasta), hasta2 = rango(desde, limite < hasta ? limite : hasta), prevD = pd ? rango(pd, ph) : [];
+  const serie = dias.map(f=>{ const dia = log[f]; if(f > limite || !dia || !Object.keys(dia).length) return null; return defs.filter(h=>habitoCumplido(h, dia) === true).length; });
+  const reg = serie.filter(v=>v !== null);
+  const items = defs.map(h=>{
+    const celdas = dias.map(f=>f > limite ? null : habitoCumplido(h, log[f])), st = statsHabito(h, log, hasta2), n = celdas.filter(c=>c !== null).length;
+    const nPrev = prevD.filter(f=>habitoCumplido(h, log[f]) !== null).length, sp = nPrev >= 3 ? statsHabito(h, log, prevD) : null;
+    return { id:h.id, nombre:h.name, tipo:h.type, unit:h.unit || '', celdas, n, si:celdas.filter(c=>c === true).length, texto:st.texto.replace('.', ','), pct:st.pct, pctAntes:sp ? sp.pct : null };
+  }).filter(it=>it.n > 0);
+  return { n:defs.length, dias, serie, diasReg:reg.length, diasPosibles:hasta2.length, media:mediaInf(reg), items };
+}
 async function datosResumen(athleteId, tipo, ref, hoy){
   hoy = hoy || todayISO();
   const at = state.athletes.find(a=>a.id === athleteId) || {};
@@ -4810,7 +5331,9 @@ async function datosResumen(athleteId, tipo, ref, hoy){
   const pq = await getPreguntasSueno(athleteId), limite = per.hasta < hoy ? per.hasta : hoy;
   const extras = resumenExtras(sg, pq.items, per.desde, per.hasta, prev.desde, prev.hasta);
   const extrasObs = extrasObservaciones(sg, pq.items, per.desde, per.hasta, prev.desde, prev.hasta, tipo === 'mes' ? 'el mes anterior' : 'la semana anterior', limite);
-  return { id:athleteId, nombre:at.name || '', tipo, per, prev, ahora, antes, sn:{ dias, racha:rac, hechos:dias.filter(x=>x.hecho).length, cheats:dias.filter(x=>x.cheat).length, posibles:dias.filter(x=>!x.futuro).length },
+  const habitos = resumenHabitos(d.defs, d.log, per.desde, per.hasta, prev.desde, prev.hasta, limite);
+  const elog = await getEstLog(athleteId), estudio = resumenEstudio(elog, per.desde, per.hasta, prev.desde, prev.hasta), obsEstudio = estObservaciones(elog, sg, limite);
+  return { id:athleteId, nombre:at.name || '', tipo, per, prev, ahora, antes, habitos, estudio, obsEstudio, sn:{ dias, racha:rac, hechos:dias.filter(x=>x.hecho).length, cheats:dias.filter(x=>x.cheat).length, posibles:dias.filter(x=>!x.futuro).length },
     sesiones, crec:ejerciciosCrecimiento(d.journal, per.desde, per.hasta, 5), cargaRel, bloques, sueno, suenoAntes, suenoBloques, suenoDias, obsSueno, semanaPlan, key, nota:notas.nota || '', foco:notas.foco || '', extras, extrasObs, ed:resEdLimpia(notas.edit), escala:escalaDe(at), generado:hoy };
 }
 // ---- Lectura automática (descriptiva, sin diagnosticar) ----
@@ -4853,6 +5376,8 @@ function textoResumen(D){
     .map(m=>{ const dl = resDelta(D.antes[m[0]], A[m[0]]), fl = dl === null || Math.abs(dl) < 0.2 ? '' : (dl > 0 ? ' ↑' : ' ↓'); return `${m[1]} ${nFmt(aEscala(A[m[0]], 5, e), 1)}/${e}${fl}`; });
   if(bien.length) L.push('• ' + bien.join(' · '));
   if(mes && A.carga !== null) L.push(`• Carga media: ${A.carga} por semana.`);
+  if(resSecOn(D, 'habitos') && D.habitos && D.habitos.items.length && D.habitos.diasReg > 0){ const H = D.habitos; L.push(`• Hábitos: ${H.diasReg} de ${H.diasPosibles} días con registro${H.media !== null ? ` · media de ${nFmt(H.media, 1)} de ${H.n} cumplidos al día` : ''}.`); }
+  if(resSecOn(D, 'estudio') && D.estudio && D.estudio.ses > 0) L.push(`• Estudio: ${D.estudio.ses} ${D.estudio.ses === 1 ? 'sesión' : 'sesiones'} · ${estHM(D.estudio.min)} de foco${D.estudio.conc !== null ? ` · concentración ${nFmt(D.estudio.conc, 1)}/5` : ''}${D.estudio.sn ? ` · ${D.estudio.sn} Snack${D.estudio.sn === 1 ? '' : 's'} en descansos` : ''}.`);
   const crV = resCrecVis(D);
   if(resSecOn(D, 'extras')) D.extras.slice(0, 4).forEach(r=>{ const q = r.q; if(q.tipo === 'eva' || q.tipo === 'esc') L.push(`• ${q.corto}: ${nFmt(r.media, 1)}/${q.tipo === 'eva' ? 10 : 5} de media${r.max !== null ? ` (máx. ${nFmt(r.max, 0)})` : ''}.`);
     else if(q.tipo === 'opc' || q.tipo === 'sino'){ const top = sueOpciones(q).map(o=>[o, r.dist[o[0]]]).sort((a, b)=>b[1] - a[1])[0]; if(top && top[1] > 0) L.push(`• ${q.corto}: «${top[0][1]}» en ${top[1]} de ${r.n} días.`); } });
@@ -5237,6 +5762,48 @@ async function resDibuja(D){
   if(crV.length){ P.txt('El porcentaje es la mejora de la fuerza estimada (carga, repeticiones y RIR de la mejor serie).', 40, y + 2, { f:'sans', s:6.6, c:RES_COL.suave }); y += 22; }
   }
 
+  // ===== Hábitos =====
+  if(D.habitos && D.habitos.items.length && D.habitos.diasReg > 0 && on('habitos')){
+    const H = D.habitos, nI = Math.min(H.items.length, 9), mesH = mes;
+    asegura(176); y = resSec(P, nn(), 'Hábitos', y);
+    const etH = H.dias.map((f, i)=>mesH ? (i === 0 || (+f.slice(8)) % 5 === 0 ? String(+f.slice(8)) : '') : 'LMXJVSD'[i]);
+    const tk = [0, Math.round(H.n/2), H.n].filter((v, i, a)=>a.indexOf(v) === i);
+    resGrafica(P, 40, y, RES_W - 80, 112, 'Hábitos cumplidos por día', `de ${H.n} hábito${H.n === 1 ? '' : 's'} · la línea se corta los días sin registrar`, H.serie, etH, { min:0, max:Math.max(1, H.n), ticks:tk, dec:0, color:RES_COL.ok });
+    y += 112 + 8;
+    P.txt(`${H.diasReg} de ${H.diasPosibles} día${H.diasPosibles === 1 ? '' : 's'} con registro${H.media !== null ? ` · media de ${nFmt(H.media, 1)} hábitos cumplidos al día` : ''}.`, 40, y + 6, { f:'sans', s:7.4, c:RES_COL.suave });
+    y += 20;
+    const x0 = 40, wT = RES_W - 80, cw = Math.min(mesH ? 6.2 : 14, 210/H.dias.length), wCel = cw*H.dias.length, xCel = x0 + 150;
+    H.items.slice(0, nI).forEach(it=>{
+      asegura(26); P.caja(x0, y, wT, 22, 5, RES_COL.panel, RES_COL.borde);
+      P.txt(resCorta(it.nombre, 30), x0 + 10, y + 14, { f:'sans', s:8.2, w:600 });
+      it.celdas.forEach((c, i)=>{ const cx = xCel + i*cw; if(c === true) P.caja(cx, y + 6, cw - 1.6, 10, 2, RES_COL.ok, null); else if(c === false) P.caja(cx, y + 6, cw - 1.6, 10, 2, RES_COL.mal + '66', null); else P.caja(cx, y + 6, cw - 1.6, 10, 2, null, RES_COL.borde, 0.5); });
+      const tx = xCel + wCel + 14; P.txt(it.texto, tx, y + 14, { f:'mono', s:7.6, w:600 });
+      const dl = (it.pctAntes !== null && it.tipo === 'check') ? it.pct - it.pctAntes : null;
+      if(dl !== null && Math.abs(dl) >= 10) resDeltaTxt(P, x0 + wT - 10, y + 14, dl, dl > 0 ? RES_COL.ok : RES_COL.mal, z=>Math.round(Math.abs(z)) + ' %', 'right');
+      y += 26;
+    });
+    P.caja(x0 + 2, y + 2, 9, 8, 2, RES_COL.ok, null); P.txt('cumplido', x0 + 15, y + 9, { f:'sans', s:7, c:RES_COL.suave });
+    P.caja(x0 + 62, y + 2, 9, 8, 2, RES_COL.mal + '66', null); P.txt('no cumplido', x0 + 75, y + 9, { f:'sans', s:7, c:RES_COL.suave });
+    P.caja(x0 + 132, y + 2, 9, 8, 2, null, RES_COL.borde, 0.5); P.txt('sin registrar', x0 + 145, y + 9, { f:'sans', s:7, c:RES_COL.suave });
+    if(H.items.length > nI) P.txt(`y ${H.items.length - nI} más`, x0 + wT - 4, y + 9, { f:'sans', s:7, c:RES_COL.suave, al:'right' });
+    y += 28;
+  }
+
+  // ===== Estudio y foco =====
+  if(D.estudio && D.estudio.ses > 0 && on('estudio')){
+    const E = D.estudio; asegura(260); y = resSec(P, nn(), 'Estudio y foco', y);
+    const tt = [['Sesiones', String(E.ses), E.antes.ses ? `${E.antes.ses} ${mes ? 'el mes anterior' : 'la semana anterior'}` : ''], ['Foco', estHM(E.min), `${E.diasN} día${E.diasN === 1 ? '' : 's'} con estudio`], ['Concentración', E.conc !== null ? f1(E.conc) + '/5' : '—', E.nConc ? `${E.nConc} valoración${E.nConc === 1 ? '' : 'es'}` : 'sin valorar'], ['Snacks', String(E.sn), 'en los descansos']];
+    const wT = (RES_W - 80 - 24)/4; tt.forEach((t, i)=>resTarjeta(P, 40 + i*(wT + 8), y, wT, 62, t[0], t[1], t[2]));
+    y += 62 + 10;
+    const diasE = []; for(let f = D.per.desde; f <= D.per.hasta; f = sumaDiasISO(f, 1)) diasE.push(f);
+    const mxE = Math.max(60, Math.ceil(Math.max(...diasE.map(f=>E.dias[f] || 0))/60)*60);
+    resGrafica(P, 40, y, RES_W - 80, 104, 'Minutos de foco por día', 'sesiones de estudio con Umbral', diasE.map(f=>E.dias[f] || null), diasE.map((f, i)=>mes ? (i === 0 || (+f.slice(8)) % 5 === 0 ? String(+f.slice(8)) : '') : 'LMXJVSD'[i]), { min:0, max:mxE, dec:0, color:RES_COL.oro });
+    y += 104 + 10;
+    (D.obsEstudio || []).slice(0, 3).forEach(t=>{ asegura(30); P.circulo(44, y - 2.5, 1.8, RES_COL.oroClaro); y = P.parr(t, 54, y, RES_W - 100, 11.5, { f:'sans', s:8.4 }) + 4; });
+    if((D.obsEstudio || []).length){ P.txt('Son comparaciones entre sesiones, no causa y efecto.', 54, y + 4, { f:'sans', s:6.8, c:RES_COL.suave }); y += 18; }
+    y += 8;
+  }
+
   // ===== Seguimiento personalizado (preguntas propias del entrenador) =====
   if(D.extras.length && on('extras')){
     asegura(120); y = resSec(P, nn(), 'Seguimiento personalizado', y);
@@ -5363,7 +5930,7 @@ function resEditorAbre(D){
       <div class="row" style="gap:8px;flex-wrap:wrap;"><button class="btn ghost small" data-edadd="${k}">+ Añadir línea</button><button class="btn ghost small" data-edauto="${k}">Restaurar el texto automático</button></div></div>`;
   };
   const grupo = (titulo, cuerpo, abierto)=>`<details class="ed-grupo" ${abierto ? 'open' : ''}><summary>${titulo}</summary>${cuerpo}</details>`;
-  const secs = RES_SECCIONES.filter(z=>z[0] !== 'extras' || hayExtras).map(z=>`<label class="chk"><input type="checkbox" data-edsec="${z[0]}" ${resSecOn(D, z[0]) ? 'checked' : ''}> ${z[1]}</label>`).join('');
+  const secs = RES_SECCIONES.filter(z=>(z[0] !== 'extras' || hayExtras) && (z[0] !== 'habitos' || (D.habitos && D.habitos.items.length > 0)) && (z[0] !== 'estudio' || (D.estudio && D.estudio.ses > 0))).map(z=>`<label class="chk"><input type="checkbox" data-edsec="${z[0]}" ${resSecOn(D, z[0]) ? 'checked' : ''}> ${z[1]}</label>`).join('');
   const crec = D.crec.length ? grupo('Ejercicios destacados', D.crec.map((c, i)=>`<label class="chk"><input type="checkbox" data-edcrec="${i}" ${(ed.crecOff || []).includes(c.nombre) ? '' : 'checked'}> ${escapeHtml(c.nombre)} <small>+${nFmt(c.cambio, 0)} %</small></label>`).join(''), false) : '';
   const puedeCompartir = resPuedeCompartir();
   ov.innerHTML = `<div class="snack-in res-ed"><div class="snack-bar"><button class="btn ghost small" id="edCerrar">Cerrar</button><span class="snack-eyebrow">${escapeHtml(D.per.etiqueta)}</span></div>
@@ -5600,6 +6167,7 @@ async function tplSuenoCard(athleteId){
     noche:fila('noche', 'Antes de dormir', dn.tieneNoche, `desconexión ${dn.desc !== null ? sueHoraTxt(dn.desc) : '—'}${dn.cena ? ' · cena ' + dn.cena : ''}`, nEx ? `Desconexión, cena, cafeína y ${nEx} pregunta${nEx === 1 ? '' : 's'} de tu entrenador` : 'Desconexión, cena, cafeína… 30 segundos') };
   return `<div class="card sue-card"><div class="snack-top"><div><span class="snack-eyebrow">Registro de sueño</span><h2 style="margin:2px 0 0;">Tu descanso, en 30 segundos</h2></div><div class="sue-luna">${SUE_LUNA}</div></div>
     ${filas[orden[0]]}${filas[orden[1]]}
+    <p class="sue-otro">¿Te saltaste un día? Regístralo: <button class="snack-info-link" data-suenoabrir="noche" data-suenodia="1">antes de dormir</button> · <button class="snack-info-link" data-suenoabrir="manana" data-suenodia="1">al despertar</button> <span>(el día se elige dentro)</span></p>
     ${sem.noches ? `<p class="snack-estado" style="margin:10px 0 0;">Esta semana: ${sem.noches} noche${sem.noches === 1 ? '' : 's'} registrada${sem.noches === 1 ? '' : 's'} · media ${nFmt(sem.horas, 1)} h</p>` : ''}
     ${snackPend ? `<p class="sue-snack"><b>Antes de dormir te falta el Snack de hoy</b> (4 minutos).<button class="btn small" data-suenosnack="1">Hacer el Snack</button></p>` : ''}
   </div>`;
@@ -5610,10 +6178,30 @@ function suenoOverlay(){
   return o;
 }
 function suenoCierra(){ const o = document.getElementById('suenoOverlay'); if(o) o.remove(); renderKeepScroll(); }
-async function suenoAbre(athleteId, modo){
-  const log = await getSuenoLog(athleteId), sl = await getSnackLog(athleteId), ahora = new Date(), hoy = fechaLocalISO(ahora);
-  const clave = modo === 'noche' ? sueClaveNoche(ahora) : hoy, rec = log.dias[clave] || {}, prev = rec[modo] || {}, noche = rec.noche || {};
+function sueDiaValido(f, hoy){ return /^\d{4}-\d{2}-\d{2}$/.test(String(f || '')) && f <= hoy && f >= sumaDiasISO(hoy, -30); }
+function sueDiaTxt(f, hoy){ const n = (new Date(hoy + 'T12:00:00') - new Date(f + 'T12:00:00'))/86400000; return n === 0 ? 'hoy' : (n === 1 ? 'ayer' : (n === 2 ? 'anteayer' : new Date(f + 'T12:00:00').toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' }))); }
+// Una fila de hábito dentro del registro de la noche. Usa atributos propios (data-sh*) para no chocar con el check diario.
+function sueHabFila(h, v){
+  let ctl;
+  if(h.type === 'check'){
+    const si = (v === true || v === 'true'), no = (v === false || v === 'false');
+    ctl = `<div class="row" style="gap:8px;"><button class="habit-check ${si ? 'on' : ''}" data-sh="${h.id}" data-shtype="check" data-shval="si">✓ Sí</button><button class="habit-check no ${no ? 'on' : ''}" data-sh="${h.id}" data-shtype="check" data-shval="no">✕ No</button></div>`;
+  } else if(h.type === 'scale'){
+    ctl = `<div class="scale" data-shscale="${h.id}">${[1,2,3,4,5].map(n=>`<button data-shval="${n}" class="${String(v) === String(n) ? 'sel' : ''}">${n}</button>`).join('')}</div>`;
+  } else {
+    ctl = `<div class="row"><input type="number" class="sh-num" data-sh="${h.id}" data-shtype="num" value="${v !== undefined && v !== null ? v : ''}" placeholder="0" style="width:110px;">${h.unit ? `<span style="font-size:12.5px;color:var(--muted);">${escapeHtml(h.unit)}</span>` : ''}</div>`;
+  }
+  return `<div class="habit-row"><div class="habit-head"><b>${escapeHtml(h.name)}</b>${h.fijo ? '<span class="habit-tag">de tu entrenador</span>' : ''}</div>${ctl}</div>`;
+}
+async function suenoAbre(athleteId, modo, diaSel){
+  const log = await getSuenoLog(athleteId), ahora = new Date(), hoy = fechaLocalISO(ahora);
+  // «dia» es el día del que se habla: al despertar, el día en que despertó; antes de dormir, el día que acaba (la noche se guarda con la fecha de la mañana siguiente).
+  const diaDef = (modo === 'noche' && ahora.getHours() < 5) ? sumaDiasISO(hoy, -1) : hoy, dia = sueDiaValido(diaSel, hoy) ? diaSel : diaDef, esDef = dia === diaDef;
+  const clave = modo === 'noche' ? sumaDiasISO(dia, 1) : dia, rec = log.dias[clave] || {}, prev = rec[modo] || {}, noche = rec.noche || {};
   const o = suenoOverlay(), horaAhora = sueAhoraHM(ahora), pq = (await getPreguntasSueno(athleteId)).items.filter(q=>q.activa && q.cuando === modo), pex = (prev.extra && typeof prev.extra === 'object') ? prev.extra : {};
+  let hdefs = { coach:[], athlete:[] }, hlog = {};
+  if(modo === 'noche'){ hdefs = await getHabitDefs(athleteId); try{ hlog = JSON.parse(JSON.stringify(await getHabitLog(athleteId))); }catch(e){ hlog = {}; } }
+  const hTodos = [...hdefs.coach.map(h=>({ ...h, fijo:true })), ...hdefs.athlete.map(h=>({ ...h, fijo:false }))], hOrig = JSON.stringify(hlog[dia] || {});
   const esc = (id, etq, bajo, alto, v)=>`<div class="q-item"><p>${etq}</p><div class="scale" data-sueq="${id}" data-tipo="n">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${v === n ? 'sel' : ''}">${n}</button>`).join('')}</div><div class="scale-labels"><span>1 · ${bajo}</span><span>5 · ${alto}</span></div></div>`;
   const chips = (id, etq, opts, v, tipo)=>`<div class="q-item"><p>${etq}</p><div class="scale" data-sueq="${id}" data-tipo="${tipo || 's'}">${opts.map(([val, txt])=>`<button data-val="${val}" class="${String(v) === String(val) ? 'sel' : ''}">${txt}</button>`).join('')}</div></div>`;
   const hora = (id, etq, v)=>`<div class="q-item"><p>${etq}</p><input type="time" data-suet="${id}" value="${v || ''}" style="min-width:140px;"></div>`;
@@ -5625,61 +6213,108 @@ async function suenoAbre(athleteId, modo){
     return chips(id, escapeHtml(q.texto), sueOpciones(q), v, 's');
   };
   const bloqueExtra = pq.length ? `<div class="sue-extra"><span class="snack-eyebrow">Preguntas de tu entrenador</span>${pq.map(extraHtml).join('')}</div>` : '';
+  const dd = k=>sumaDiasISO(hoy, -k), fechaHtml = `<div class="sue-fecha"><span class="snack-eyebrow">Día que registras</span>
+    <div class="scale sue-fecha-chips">${[[0, 'Hoy'], [1, 'Ayer'], [2, 'Anteayer']].map(([k, t])=>`<button data-sfecha="${dd(k)}" class="${dia === dd(k) ? 'sel' : ''}">${t}</button>`).join('')}</div>
+    <label class="sue-fecha-otra">o elige otra fecha <input type="date" id="sueFechaIn" min="${dd(30)}" max="${hoy}" value="${dia}"></label>
+    ${esDef ? '' : `<p class="snack-nota" style="margin:8px 0 0;">${modo === 'noche' ? 'Estás registrando la noche de' : 'Estás registrando el despertar de'} <b>${escapeHtml(sueDiaTxt(dia, hoy))}</b>.</p>`}</div>`;
   let cuerpo;
   if(modo === 'noche'){
     cuerpo = `<p class="snack-nota" style="margin:0 0 12px;">Antes de dormir. Cinco toques para ver cómo se relacionan tu rutina de noche y tu descanso.</p>
       ${hora('desc', '¿A qué hora has dejado las pantallas y el trabajo?', prev.desc)}
-      ${hora('cama', '¿A qué hora te acuestas?', prev.cama || ((ahora.getHours() >= 20 || ahora.getHours() < 5) ? horaAhora : ''))}
+      ${hora('cama', '¿A qué hora te acuestas?', prev.cama || ((esDef && (ahora.getHours() >= 20 || ahora.getHours() < 5)) ? horaAhora : ''))}
       ${chips('cafe', '¿Has tomado cafeína después de las 16:00?', SUE_CAFE, prev.cafe)}
       ${chips('cena', 'La cena de hoy', SUE_CENA, prev.cena)}
       ${esc('mente', 'Cómo llegas a la cama', 'Mente muy activa', 'Mente tranquila', sueNum(prev.mente))}${bloqueExtra}`;
   } else {
     cuerpo = `<p class="snack-nota" style="margin:0 0 12px;">Al despertar. Tres respuestas obligatorias; el resto, si te apetece.</p>
       ${hora('cama', '¿A qué hora te acostaste?', prev.cama || noche.cama)}
-      ${hora('levanta', '¿A qué hora te has levantado?', prev.levanta || (ahora.getHours() < 12 ? horaAhora : ''))}
+      ${hora('levanta', '¿A qué hora te has levantado?', prev.levanta || ((esDef && ahora.getHours() < 12) ? horaAhora : ''))}
       <div class="q-item"><p>Horas dormidas</p><div class="scale snack-horas" data-sueq="horas" data-tipo="n">${[4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,10].map(h=>`<button data-val="${h}" class="${sueNum(prev.horas) === h ? 'sel' : ''}">${String(h).replace('.', ',')}</button>`).join('')}</div><p class="snack-nota" id="sueTib" style="margin:6px 0 0;"></p></div>
       ${esc('calidad', 'Calidad del descanso', 'Muy mala', 'Excelente', sueNum(prev.calidad))}
       ${esc('energia', 'Energía al despertar', 'Agotada', 'A tope', sueNum(prev.energia))}
       ${chips('despertares', 'Despertares durante la noche', [[0, 'Ninguno'], [1, '1'], [2, '2'], [3, '3 o más']], sueNum(prev.despertares), 'n')}
       ${esc('fatiga', 'Fatiga muscular al despertar', 'Muy alta', 'Ninguna', sueNum(prev.fatiga))}${bloqueExtra}`;
   }
+  let cuerpoFinal = cuerpo;
+  if(modo === 'noche'){
+    cuerpoFinal = `<div class="sue-tabs" role="tablist"><button class="on" data-stab="reg" role="tab">Registro</button><button data-stab="hab" role="tab">Hábitos <span class="sue-badge" id="sueHabBadge"></span></button></div>
+      <div data-spane="reg">${cuerpo}</div>
+      <div data-spane="hab" hidden>
+        <p class="snack-nota" style="margin:0 0 12px;">Hábitos de <b>${escapeHtml(sueDiaTxt(dia, hoy))}</b>. Lo que marques aquí es lo mismo que el check diario, y la gráfica se actualiza al momento.</p>
+        ${hTodos.length ? hTodos.map(h=>sueHabFila(h, (hlog[dia] || {})[h.id])).join('') : '<div class="empty">Aún no hay hábitos que seguir. Añádelos en Calendario → Check diario, o espera a que tu entrenador te asigne alguno.</div>'}
+        <div id="sueHabChart"></div>
+      </div>`;
+  }
   o.innerHTML = `<div class="snack-in"><div class="snack-bar"><button class="btn ghost small" id="sueCerrar">Cerrar</button></div>
     <h2 class="snack-h">${modo === 'noche' ? 'Antes de dormir' : '¿Cómo has dormido?'}</h2>
-    <div class="snack-preg" id="suePreg">${cuerpo}<button class="btn" id="sueGuardar" style="width:100%;">Guardar</button></div></div>`;
+    <div class="snack-preg" id="suePreg">${fechaHtml}${cuerpoFinal}<button class="btn" id="sueGuardar" style="width:100%;">Guardar</button></div></div>`;
   const val = id=>{ const b = o.querySelector(`[data-sueq="${id}"] button.sel`); if(!b) return null; return b.parentElement.dataset.tipo === 'n' ? parseFloat(b.dataset.val) : b.dataset.val; };
   const tm = id=>{ const i = o.querySelector(`[data-suet="${id}"]`); return i && sueHM(i.value) !== null ? i.value : ''; };
   const tib = ()=>{ const t = o.querySelector('#sueTib'); if(!t) return; const h = sueEnCama(tm('cama'), tm('levanta')); t.textContent = h ? `Tiempo en la cama: ${nFmt(h, 1)} h` : ''; };
   o.querySelectorAll('[data-sueq]').forEach(sc=>sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); })));
   o.querySelectorAll('[data-suet]').forEach(i=>i.addEventListener('input', tib)); tib();
   o.querySelector('#sueCerrar').addEventListener('click', ()=>suenoCierra());
+  // Cambio de día: se vuelve a abrir el registro de ese día (carga lo ya guardado de esa fecha).
+  o.querySelectorAll('[data-sfecha]').forEach(b=>b.addEventListener('click', ()=>suenoAbre(athleteId, modo, b.dataset.sfecha)));
+  const fi = o.querySelector('#sueFechaIn'); if(fi) fi.addEventListener('change', ()=>{ if(sueDiaValido(fi.value, hoy)) suenoAbre(athleteId, modo, fi.value); else toast('Elige un día de los últimos 30', true); });
+  // Hábitos de la noche: copia de trabajo en memoria; se guarda con el botón de abajo.
+  const setHab = (hid, v)=>{ if(!hlog[dia]) hlog[dia] = {}; if(v === null || v === undefined || v === '' || (typeof v === 'number' && isNaN(v))) delete hlog[dia][hid]; else hlog[dia][hid] = v; if(!Object.keys(hlog[dia]).length) delete hlog[dia]; pintaHab(); };
+  const pintaHab = ()=>{
+    const ch = o.querySelector('#sueHabChart'), bd = o.querySelector('#sueHabBadge'); if(!ch) return;
+    const dv = hlog[dia] || {}, n = hTodos.filter(h=>habitoCumplido(h, dv) !== null).length;
+    if(bd) bd.textContent = hTodos.length ? `${n}/${hTodos.length}` : '';
+    ch.innerHTML = hTodos.length ? tplTendenciaHabitos(hTodos, hlog, { plano:true, sinDetalle:true, marca:dia }) : '';
+  };
+  if(modo === 'noche'){
+    o.querySelectorAll('[data-stab]').forEach(b=>b.addEventListener('click', ()=>{
+      o.querySelectorAll('[data-stab]').forEach(x=>x.classList.toggle('on', x === b));
+      o.querySelectorAll('[data-spane]').forEach(p=>{ p.hidden = p.dataset.spane !== b.dataset.stab; });
+    }));
+    o.querySelectorAll('[data-sh][data-shtype="check"]').forEach(b=>b.addEventListener('click', ()=>{
+      const ya = b.classList.contains('on'), fila = b.closest('.habit-row'); fila.querySelectorAll('[data-shtype="check"]').forEach(x=>x.classList.remove('on'));
+      if(!ya) b.classList.add('on'); setHab(b.dataset.sh, ya ? null : b.dataset.shval === 'si');
+    }));
+    o.querySelectorAll('[data-shscale]').forEach(sc=>sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+      const ya = b.classList.contains('sel'); sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
+      if(!ya) b.classList.add('sel'); setHab(sc.dataset.shscale, ya ? null : parseInt(b.dataset.shval, 10));
+    })));
+    o.querySelectorAll('.sh-num').forEach(i=>{ const f = ()=>{ const t = i.value.trim(); setHab(i.dataset.sh, t === '' ? null : parseFloat(t)); }; i.addEventListener('input', f); i.addEventListener('change', f); });
+    pintaHab();
+  }
   o.querySelector('#sueGuardar').addEventListener('click', async ()=>{
     const nuevo = { ts:Date.now() };
     const extra = Object.assign({}, pex);
     pq.forEach(q=>{ let v; if(q.tipo === 'texto'){ const i = o.querySelector(`[data-suex="x_${q.id}"]`); v = i && i.value.trim() ? i.value.trim().slice(0, 200) : null; } else v = val('x_' + q.id); if(v === null) delete extra[q.id]; else extra[q.id] = v; });
     if(Object.keys(extra).length) nuevo.extra = extra;
+    let guardaReg = true;
+    const habCambio = modo === 'noche' && JSON.stringify(hlog[dia] || {}) !== hOrig;
     if(modo === 'noche'){
       ['desc', 'cama'].forEach(k=>{ const v = tm(k); if(v) nuevo[k] = v; });
       ['cafe', 'cena'].forEach(k=>{ const v = val(k); if(v) nuevo[k] = v; }); const mt = val('mente'); if(mt !== null) nuevo.mente = mt;
-      if(Object.keys(nuevo).length < 2){ toast('Responde al menos una pregunta', true); return; }
+      if(Object.keys(nuevo).length < 2){ if(!habCambio){ toast('Responde al menos una pregunta', true); return; } guardaReg = false; }
     } else {
       const horas = val('horas'), calidad = val('calidad'), energia = val('energia');
       if(horas === null || calidad === null || energia === null){ toast('Responde horas dormidas, calidad y energía', true); return; }
       Object.assign(nuevo, { horas, calidad, energia }); ['cama', 'levanta'].forEach(k=>{ const v = tm(k); if(v) nuevo[k] = v; });
       const dz = val('despertares'), ft = val('fatiga'); if(dz !== null) nuevo.despertares = dz; if(ft !== null) nuevo.fatiga = ft;
     }
-    const lg = await getSuenoLog(athleteId); lg.dias[clave] = Object.assign({}, lg.dias[clave] || {}, { [modo]: nuevo }); await saveSuenoLog(athleteId, lg);
-    const snackPend = modo === 'noche' && !snackHecho(await getSnackLog(athleteId), hoy);
+    if(guardaReg){ const lg = await getSuenoLog(athleteId); lg.dias[clave] = Object.assign({}, lg.dias[clave] || {}, { [modo]: nuevo }); await saveSuenoLog(athleteId, lg); }
+    if(habCambio){
+      // Se relee el registro de hábitos y solo se sustituye ese día, por si se marcó algo desde otro sitio.
+      const hl = await getHabitLog(athleteId); if(hlog[dia] && Object.keys(hlog[dia]).length) hl[dia] = hlog[dia]; else delete hl[dia]; await saveHabitLog(athleteId, hl);
+    }
+    const snackPend = modo === 'noche' && dia === hoy && !snackHecho(await getSnackLog(athleteId), hoy);
     if(snackPend){
       o.innerHTML = `<div class="snack-in"><h2 class="snack-h" style="text-align:center;">Guardado</h2>
         <div class="snack-preg"><p style="font-size:15px;line-height:1.6;margin:0 0 14px;"><b>Antes de dormir: aún te falta el Snack de hoy.</b> Son 4 minutos y mantienes la racha.</p>
         <button class="btn" id="sueSnack" style="width:100%;">Hacer el Snack ahora</button><button class="btn ghost" id="sueLuego" style="width:100%;margin-top:8px;">Ya no, que descanses</button></div></div>`;
       o.querySelector('#sueSnack').addEventListener('click', ()=>{ const ov = document.getElementById('suenoOverlay'); if(ov) ov.remove(); snackAbre(athleteId); });
       o.querySelector('#sueLuego').addEventListener('click', ()=>suenoCierra());
-    } else { toast(modo === 'noche' ? 'Guardado. Que descanses' : 'Guardado'); suenoCierra(); }
+    } else { toast(modo === 'noche' ? (esDef ? 'Guardado. Que descanses' : 'Guardado') : 'Guardado'); suenoCierra(); }
   });
 }
 function bindSueno(){
-  document.querySelectorAll('[data-suenoabrir]').forEach(b=>b.addEventListener('click', ()=>suenoAbre(state.athleteAsId || state.selectedId, b.dataset.suenoabrir)));
+  document.querySelectorAll('[data-suenoabrir]').forEach(b=>b.addEventListener('click', ()=>suenoAbre(state.athleteAsId || state.selectedId, b.dataset.suenoabrir, b.dataset.suenodia ? sumaDiasISO(todayISO(), -parseInt(b.dataset.suenodia, 10)) : undefined)));
   document.querySelectorAll('[data-suenosnack]').forEach(b=>b.addEventListener('click', ()=>snackAbre(state.athleteAsId || state.selectedId)));
   bindSuenoPreguntas();
 }
@@ -5916,7 +6551,7 @@ function resumenCruces(f){
   const num = x=>(Math.round(x*10)/10).toFixed(1).replace('.', ',');
   const chips = [];
   const semaf = (v, verde, ambar, alto)=>v === null ? 'nada' : (alto ? (v >= verde ? 'ok' : (v >= ambar ? 'pend' : 'alerta')) : (v <= verde ? 'ok' : (v <= ambar ? 'pend' : 'alerta')));
-  chips.push({ etq:'Compromiso', val:`${u.snacks}/7 Snacks`, sub:u.ses ? `${u.ses} sesión${u.ses===1?'':'es'}${u.habitos !== null ? ` · hábitos ${Math.round(u.habitos)}%` : ''}` : (u.habitos !== null ? `hábitos ${Math.round(u.habitos)}%` : 'sin sesiones'), c:semaf(u.snacks, 5, 3, true) });
+  chips.push({ etq:'Compromiso', val:`${u.snacks}/7 Snacks`, sub:u.ses ? `${u.ses} ${u.ses===1?'sesión':'sesiones'}${u.habitos !== null ? ` · hábitos ${Math.round(u.habitos)}%` : ''}` : (u.habitos !== null ? `hábitos ${Math.round(u.habitos)}%` : 'sin sesiones'), c:semaf(u.snacks, 5, 3, true) });
   const cm = media('carga'), rc = (u.carga !== null && cm) ? u.carga/cm : null;
   chips.push({ etq:'Carga', val:u.carga === null ? '—' : String(u.carga), sub:rc === null ? 'sin referencia' : `×${num(rc)} su media`, c:rc === null ? 'nada' : (rc > 1.5 ? 'alerta' : (rc > 1.3 || rc < 0.6 ? 'pend' : 'ok')) });
   [['fatiga','Fatiga'],['sueno','Sueño']].forEach(([k, etq])=>{
@@ -7972,6 +8607,7 @@ async function tplRutinaAtleta(athleteId){
   html += tplTareasBanner(tareasAt);
   if(!state.wpRelectura) html += await tplSnackCard(athleteId);
   if(!state.wpRelectura) html += await tplSuenoCard(athleteId);
+  if(!state.wpRelectura) html += await tplEstudioCard(athleteId);
   if(state.modoDemo){
     html += `<div class="card demo-intro">
       <span class="demo-tag">Modo demostración</span>
@@ -8218,6 +8854,7 @@ function tplRegistroDrills(source, selDay, athleteId){
     <div class="ex-grid">
       <div><label class="field-label">Fecha</label><input type="date" id="drDate" value="${prev.date||todayISO()}" max="${todayISO()}"></div>
       <div><label class="field-label">Duración total (min)</label><input type="number" id="drMin" min="1" max="400" value="${prev.min||60}"></div>
+      <div><label class="field-label">Hora a la que empezaste</label><input type="time" id="drHora" value=""></div>
     </div>`;
 
   drills.forEach((dr,i)=>{
@@ -8271,6 +8908,8 @@ async function tplRegistroManual(athleteId, source, selDay){
     <div class="ex-grid">
       <div><label class="field-label">Fecha de la sesión</label><input type="date" id="mnDate" value="${m.date||todayISO()}" max="${todayISO()}"></div>
       <div><label class="field-label">Duración (min)</label><input type="number" id="mnMin" min="1" max="600" value="${m.min||60}"></div>
+      <div><label class="field-label">Hora a la que empezaste</label><input type="time" id="mnHora" value="${horaValida(m.hora)?m.hora:''}"></div>
+      <div><label class="field-label">&nbsp;</label><p style="font-size:11.5px;color:var(--muted);margin-top:4px;">Opcional. Sirve para cruzarla con el sueño y el resto del día.</p></div>
       <div class="full"><label class="field-label">Ejercicios de</label>
         <select id="mnDay">${DAYS.map(x=>`<option value="${x}" ${x===selDay?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}</select>
         <p style="font-size:11.5px;color:var(--muted);margin-top:5px;">Se ajusta solo al elegir la fecha, pero puedes cambiarlo si ese día hiciste otra cosa.</p>
@@ -9137,7 +9776,7 @@ function bindSurveyEvents(){
     // general sí es obligatorio, así que sirve de base cuando falta el otro.
     const rpeBase = (session.avgExerciseRPE && session.avgExerciseRPE > 0) ? session.avgExerciseRPE : overallRPE;
     const cargaFinal = +(rpeBase * (session.elapsedSec/60)).toFixed(1);
-    const record = { date: todayISO(), day: session.day, turno: session.turno || '', durationSeconds: session.elapsedSec,
+    const record = { date: todayISO(), hora: horaHM(session.startedAt || (Date.now() - (session.elapsedSec||0)*1000)), day: session.day, turno: session.turno || '', durationSeconds: session.elapsedSec,
       exercises: session.exercises.map(e=>({name:e.name, omitido: !!e.omitido, motivo: e.omitido ? (e.omitidoMotivo||'') : '', patrones:patronesDe(e), tipo:e.tipo||'gym', minis:(e.tipo==='circuito' && Array.isArray(e.minis)) ? e.minis.filter(m=>m.name).map(m=>({name:m.name, series:m.series||'', reps:m.reps||'', hecho:m.hecho||''})) : undefined, section:e.section||'',
         rpeApplied:e.rpeApplied, rpeTexto:e.rpeTexto||'',
         rirApplied:e.rirApplied ?? null, rirTexto:e.rirTexto||'',
@@ -10695,34 +11334,89 @@ function ecLecturaHtml(valores){
   const aviso = mejor > 300 ? ' · ¿seguro? es mucho peso' : '';
   return `<span class="ec-ok">Se leerá: ${una.length > 1 ? una.join(' · ')+' kg → mejor serie '+mejor+' kg' : una[0]+' kg'}${aviso}</span>`;
 }
+// ---------- EDITOR DE SERIES (una a una) y hora de la sesión ----------
+function horaValida(h){ return /^([01]\d|2[0-3]):[0-5]\d$/.test(String(h || '')); }
+function horaHM(ts){ const d = new Date(ts); if(isNaN(d)) return ''; return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
+// Orden del diario: por fecha y, dentro del mismo día, por hora cuando ambas la tienen (si no, se respeta el orden en que se guardaron).
+function cmpSesiones(a, b){ return String(a.date).localeCompare(String(b.date)) || ((horaValida(a.hora) && horaValida(b.hora)) ? a.hora.localeCompare(b.hora) : 0); }
+function ecNum(v){ const t = String(v == null ? '' : v).trim().replace(',', '.'); if(!/^\d+(\.\d+)?$/.test(t)) return null; return parseFloat(t); }
+// Filas editables de un ejercicio ya guardado. Si se anotó serie a serie, se
+// usan tal cual; si no, se reconstruyen con lo que hubiera (series previstas,
+// series marcadas, cargas «30 40 50 60», RPE «7,8,9»…) para poder corregirlas una a una.
+function filasSeries(x){
+  const sd = Array.isArray(x.setsDone) ? x.setsDone : [];
+  if(Array.isArray(x.setsData) && x.setsData.length){
+    return x.setsData.map((s, i)=>({ kg:String(s.kg == null ? '' : s.kg), reps:String(s.reps == null ? '' : s.reps), rpe:String(s.rpe == null ? '' : s.rpe), rir:String(s.rir == null ? '' : s.rir), lado:s.lado || '',
+      hecha: sd.length ? !!sd[i] : x.done !== false }));
+  }
+  const kgs = parseCargas(x.loadApplied), rp = parseEsfuerzo(x.rpeTexto), ri = parseEsfuerzo(x.rirTexto);
+  const nSer = /^\d+$/.test(String(x.seriesDone || '')) ? parseInt(x.seriesDone, 10) : 0;
+  const n = Math.max(1, Math.min(20, Math.max(parseInt(x.seriesPlanned, 10) || 0, sd.length, kgs.length, nSer)));
+  const reparte = (arr, i)=>{ if(!arr || !arr.length) return ''; const v = arr.length === 1 ? arr[0] : arr[i]; return v === undefined ? '' : String(v); };
+  return Array.from({ length:n }, (_, i)=>({ kg:reparte(kgs, i), reps:'', rpe:reparte(rp && rp.valores, i), rir:reparte(ri && ri.valores, i), lado:'',
+    hecha: sd.length ? !!sd[i] : (nSer ? i < nSer : x.done !== false) }));
+}
+function ecFilaHtml(f, si, uni){
+  return `<div class="ec-fila${uni ? ' uni' : ''}" data-ecfila="1">
+    <span class="ec-n">S${si+1}</span>
+    ${uni ? `<span class="ec-lado"><button type="button" class="sd-lado-btn ${f.lado === 'izq' ? 'on' : ''}" data-ecl="izq" title="Izquierdo" aria-label="Lado izquierdo">I</button><button type="button" class="sd-lado-btn ${f.lado === 'der' ? 'on' : ''}" data-ecl="der" title="Derecho" aria-label="Lado derecho">D</button></span>` : ''}
+    <input type="text" inputmode="decimal" class="ec-kg" data-si="${si}" value="${escapeHtml(f.kg)}" placeholder="kg" aria-label="Kilos serie ${si+1}">
+    <input type="text" inputmode="numeric" class="ec-reps" value="${escapeHtml(f.reps)}" placeholder="reps" aria-label="Repeticiones serie ${si+1}">
+    <input type="text" inputmode="decimal" class="ec-rpe" value="${escapeHtml(f.rpe)}" placeholder="RPE" aria-label="RPE serie ${si+1}">
+    <input type="text" inputmode="decimal" class="ec-rir" value="${escapeHtml(f.rir)}" placeholder="RIR" aria-label="RIR serie ${si+1}">
+    <label class="ec-ok-serie" title="Serie hecha"><input type="checkbox" class="ec-hecha" ${f.hecha ? 'checked' : ''}><i></i></label>
+    <button type="button" class="ec-del" data-ecdel="1" title="Quitar esta serie" aria-label="Quitar serie ${si+1}">×</button>
+  </div>`;
+}
 function tplEditorCargas(e, idx){
+  const conEj = (e.exercises || []).some(x=>x.tipo !== 'running');
   let h = `<div class="editor-cargas" data-editorcargas="${idx}">
-    <p class="ec-ayuda">Cada número es una serie: <b>30 40 50 60</b> se lee como una progresión de pesos, no como una sola cifra. En Progreso cuenta la mejor serie.</p>`;
-  (e.exercises || []).forEach((x,i)=>{
+    <div class="ec-hora"><label class="field-label" for="ecHora${idx}">Hora a la que hiciste la sesión</label>
+      <input type="time" id="ecHora${idx}" class="ec-hora-in" value="${horaValida(e.hora) ? e.hora : ''}"><span class="ec-etq">opcional</span></div>
+    ${conEj ? `<p class="ec-ayuda">Corrige cada serie por separado: kilos, repeticiones, RPE y RIR. La casilla marca las series que sí hiciste. Para los kilos vale <b>22,5</b> o <b>22.5</b>.</p>` : ''}`;
+  (e.exercises || []).forEach((x, i)=>{
     if(x.tipo === 'running') return;
-    const sets = Array.isArray(x.setsData) && x.setsData.some(s=>s.kg !== undefined && s.kg !== null && String(s.kg) !== '');
-    h += `<div class="ec-ej" data-ecej="${i}"><b>${escapeHtml(x.name || '—')}</b>${x.loadPlanned ? ` <span class="ec-prev">previsto: ${escapeHtml(x.loadPlanned)}</span>` : ''}`;
-    if(sets){
-      h += `<div class="ec-sets">${x.setsData.map((s,si)=>`<label>S${si+1} <input type="text" inputmode="decimal" class="ec-kg" data-si="${si}" value="${escapeHtml(String(s.kg == null ? '' : s.kg))}"> kg${s.reps ? ' × '+escapeHtml(String(s.reps)) : ''}</label>`).join('')}</div>`;
-      h += `<div class="ec-lectura">${ecLecturaHtml(x.setsData.map(s=>s.kg))}</div>`;
-    } else {
-      h += `<input type="text" class="ec-carga" value="${escapeHtml(x.loadApplied || '')}" placeholder="p. ej. 30 40 50 60">`;
-      h += `<div class="ec-lectura">${ecLecturaHtml([x.loadApplied])}</div>`;
-    }
-    h += `</div>`;
+    h += `<div class="ec-ej" data-ecej="${i}"><div class="ec-ej-cab"><b>${escapeHtml(x.name || '—')}</b>${x.loadPlanned ? ` <span class="ec-prev">previsto: ${x.seriesPlanned ? x.seriesPlanned+' × ' : ''}${escapeHtml(x.repsPlanned || '')}${x.repsPlanned ? ' · ' : ''}${escapeHtml(x.loadPlanned)}</span>` : ''}</div>`;
+    if(x.omitido){ h += `<p class="ec-etq">Omitido${x.motivo ? ' · '+escapeHtml(x.motivo) : ''}: no tiene series que corregir.</p></div>`; return; }
+    const filas = filasSeries(x), uni = filas.some(f=>f.lado);
+    const crudo = String(x.loadApplied || '').trim();
+    if(!(Array.isArray(x.setsData) && x.setsData.length) && crudo && /\d/.test(crudo) && !parseCargas(crudo).length)
+      h += `<p class="ec-mal ec-antes">Antes se guardó «${escapeHtml(crudo)}», que no se entiende como kilos. Escribe los kilos de cada serie.</p>`;
+    h += `<div class="ec-series" data-uni="${uni ? 1 : 0}">
+      <div class="ec-fila ec-cab${uni ? ' uni' : ''}"><span></span>${uni ? '<span>lado</span>' : ''}<span>kg</span><span>reps</span><span>RPE</span><span>RIR</span><span>✓</span><span></span></div>
+      ${filas.map((f, si)=>ecFilaHtml(f, si, uni)).join('')}
+    </div>
+    <button type="button" class="ec-add" data-ecadd="1">+ Añadir serie</button>
+    <div class="ec-lectura">${ecLecturaHtml(filas.map(f=>f.kg))}</div>
+    <input type="text" class="ec-nota" value="${escapeHtml(x.noteApplied || '')}" placeholder="Nota del ejercicio (opcional)">
+    </div>`;
   });
-  h += `<div class="row" style="margin-top:10px;"><button class="btn small" data-savecargas="${idx}">Guardar cargas</button><button class="btn ghost small" data-cancelcargas="1">Cancelar</button></div></div>`;
+  h += `<div class="row" style="margin-top:12px;"><button class="btn small" data-savecargas="${idx}">Guardar cambios</button><button class="btn ghost small" data-cancelcargas="1">Cancelar</button></div></div>`;
   return h;
 }
 function bindEditorCargas(athleteId){
   document.querySelectorAll('.ec-ej').forEach(el=>{
     const refresca = ()=>{
-      const kgs = [...el.querySelectorAll('.ec-kg')];
+      el.querySelectorAll('[data-ecfila]').forEach((f, i)=>{ f.querySelector('.ec-n').textContent = 'S'+(i+1); const k = f.querySelector('.ec-kg'); if(k) k.dataset.si = i; });
+      const dels = el.querySelectorAll('[data-ecdel]'); dels.forEach(d=>{ d.disabled = dels.length < 2; });
       const lect = el.querySelector('.ec-lectura');
-      if(kgs.length) lect.innerHTML = ecLecturaHtml(kgs.map(i=>i.value));
-      else { const c = el.querySelector('.ec-carga'); lect.innerHTML = ecLecturaHtml([c ? c.value : '']); }
+      if(lect) lect.innerHTML = ecLecturaHtml([...el.querySelectorAll('.ec-kg')].map(i=>i.value));
     };
-    el.querySelectorAll('input').forEach(inp=>inp.addEventListener('input', refresca));
+    el.addEventListener('input', refresca);
+    el.addEventListener('click', ev=>{
+      const t = ev.target;
+      const lado = t.closest && t.closest('[data-ecl]');
+      if(lado){ const on = !lado.classList.contains('on'); lado.parentNode.querySelectorAll('[data-ecl]').forEach(b=>b.classList.remove('on')); if(on) lado.classList.add('on'); return; }
+      if(t.closest && t.closest('[data-ecdel]')){ const filas = el.querySelectorAll('[data-ecfila]'); if(filas.length > 1){ t.closest('[data-ecfila]').remove(); refresca(); } return; }
+      if(t.closest && t.closest('[data-ecadd]')){
+        const cont = el.querySelector('.ec-series'), filas = cont.querySelectorAll('[data-ecfila]'), ult = filas[filas.length-1];
+        if(filas.length >= 20){ toast('Como mucho 20 series por ejercicio', true); return; }
+        const base = ult ? { kg:ult.querySelector('.ec-kg').value, reps:ult.querySelector('.ec-reps').value, rpe:'', rir:'', lado:'', hecha:true } : { kg:'', reps:'', rpe:'', rir:'', lado:'', hecha:true };
+        cont.insertAdjacentHTML('beforeend', ecFilaHtml(base, filas.length, cont.dataset.uni === '1'));
+        refresca(); const nueva = cont.querySelector('[data-ecfila]:last-child .ec-kg'); if(nueva) nueva.focus();
+      }
+    });
+    refresca();
   });
   document.querySelectorAll('[data-editcargas]').forEach(b=>b.addEventListener('click', ()=>{
     state.editCargas = parseInt(b.dataset.editcargas, 10); state.diarioAbierto = state.editCargas; renderKeepScroll();
@@ -10740,28 +11434,55 @@ function bindEditorCargas(athleteId){
     const raw = await safeGet('journal-'+athleteId, true);
     const entries = raw ? JSON.parse(raw) : [];
     const e = entries[idx]; if(!e) return;
+    // 1) Leer y validar todo antes de tocar nada
     let problema = null;
+    const lecturas = [];
     ed.querySelectorAll('.ec-ej').forEach(el=>{
-      const x = e.exercises[parseInt(el.dataset.ecej, 10)]; if(!x || problema) return;
-      const kgs = [...el.querySelectorAll('.ec-kg')];
-      if(kgs.length){
-        if(kgs.some(i=>i.value.trim() && !parseCargas(i.value).length)){ problema = x.name; return; }
-        kgs.forEach(inp=>{ const si = parseInt(inp.dataset.si, 10); const n = parseCargas(inp.value); if(x.setsData[si]) x.setsData[si].kg = n.length ? String(n[0]) : inp.value.trim(); });
-        const ks = x.setsData.map(s=>s.kg).filter(v=>v !== '' && v != null);
-        if(ks.length) x.loadApplied = ks.join(', ');
-        x.patronCarga = patronCarga(x.setsData);
-      } else {
-        const t = (el.querySelector('.ec-carga').value || '').trim();
-        const nums = parseCargas(t);
-        if(t && /\d/.test(t) && !nums.length){ problema = x.name; return; }
-        x.loadApplied = nums.length ? nums.join(', ') : t;
+      const x = (e.exercises || [])[parseInt(el.dataset.ecej, 10)]; if(!x || problema || x.omitido) return;
+      const filas = [...el.querySelectorAll('[data-ecfila]')].map(f=>({
+        kg:f.querySelector('.ec-kg').value.trim(), reps:f.querySelector('.ec-reps').value.trim(),
+        rpe:f.querySelector('.ec-rpe').value.trim(), rir:f.querySelector('.ec-rir').value.trim(),
+        lado:(f.querySelector('[data-ecl].on') || {dataset:{}}).dataset.ecl || '', hecha:f.querySelector('.ec-hecha').checked }));
+      for(const [n, f] of filas.entries()){
+        if(f.kg && !parseCargas(f.kg).length){ problema = `Revisa las cargas de «${x.name}»: no se entienden como kilos`; break; }
+        if(f.reps && !/^\d{1,3}$/.test(f.reps)){ problema = `Revisa las repeticiones de «${x.name}» (serie ${n+1}): solo un número entero`; break; }
+        const rp = ecNum(f.rpe), ri = ecNum(f.rir);
+        if(f.rpe && (rp === null || rp < 1 || rp > 10)){ problema = `Revisa el RPE de «${x.name}» (serie ${n+1}): va de 1 a 10`; break; }
+        if(f.rir && (ri === null || ri > 10)){ problema = `Revisa el RIR de «${x.name}» (serie ${n+1}): va de 0 a 10`; break; }
       }
+      lecturas.push({ x, filas, nota:(el.querySelector('.ec-nota') || {}).value });
     });
-    if(problema){ toast(`Revisa las cargas de «${problema}»: no se entienden como kilos`, true); return; }
-    e.cargasEditadas = { por: state.role === 'atleta' ? 'atleta' : 'entrenador', fecha: todayISO() };
+    if(problema){ toast(problema, true); return; }
+    // 2) Aplicar
+    let rpeCambio = false;
+    lecturas.forEach(({ x, filas, nota })=>{
+      const datos = filas.map(f=>({ kg:f.kg ? String(parseCargas(f.kg)[0]) : '', reps:f.reps, rpe:f.rpe.replace(',', '.'), rir:f.rir.replace(',', '.'), lado:f.lado }));
+      const hayDatos = datos.some(d=>d.kg || d.reps || d.rpe || d.rir || d.lado);
+      if(hayDatos || (Array.isArray(x.setsData) && x.setsData.length)) x.setsData = datos;
+      x.setsDone = filas.map(f=>f.hecha);
+      x.done = filas.some(f=>f.hecha);
+      const ks = datos.map(d=>d.kg).filter(Boolean);
+      if(ks.length) x.loadApplied = ks.join(', ');            // si no hay ninguna, se respeta lo que hubiera
+      const rps = datos.map(d=>ecNum(d.rpe)).filter(v=>v !== null), rirs = datos.map(d=>ecNum(d.rir)).filter(v=>v !== null);
+      const media = a=>Math.round((a.reduce((s, v)=>s + v, 0)/a.length)*10)/10;
+      if(rps.length){ const m = media(rps); if(m !== x.rpeApplied) rpeCambio = true; x.rpeApplied = m; x.rpeTexto = rps.join(','); }
+      if(rirs.length){ x.rirApplied = media(rirs); x.rirTexto = rirs.join(','); }
+      if(x.setsData) x.patronCarga = patronCarga(x.setsData);
+      if(x.seriesDone !== undefined && /^\d*$/.test(String(x.seriesDone))) x.seriesDone = String(filas.filter(f=>f.hecha).length);
+      if(nota !== undefined) x.noteApplied = String(nota).trim();
+    });
+    const hIn = (ed.querySelector('.ec-hora-in') || {}).value || '';
+    if(horaValida(hIn)) e.hora = hIn; else delete e.hora;
+    // Si cambió el RPE de algún ejercicio, la carga de la sesión (sRPE) se recalcula
+    if(rpeCambio){
+      const rs = (e.exercises || []).filter(x=>!x.omitido && typeof x.rpeApplied === 'number' && x.rpeApplied > 0).map(x=>x.rpeApplied);
+      if(rs.length){ e.avgExerciseRPE = Math.round((rs.reduce((a, v)=>a + v, 0)/rs.length)*10)/10; e.fatigueScore = +(e.avgExerciseRPE * ((e.durationSeconds || 0)/60)).toFixed(1); e.cargaDesdeRPEGeneral = false; }
+    }
+    if(lecturas.length) e.cargasEditadas = { por: state.role === 'atleta' ? 'atleta' : 'entrenador', fecha: todayISO() };
+    entries.sort(cmpSesiones);
     const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
-    toast(ok ? 'Cargas guardadas · Progreso recalculado' : 'No se pudo guardar', !ok);
-    state.editCargas = null; renderKeepScroll();
+    toast(ok ? (lecturas.length ? 'Series guardadas · Progreso recalculado' : 'Hora guardada') : 'No se pudo guardar', !ok);
+    state.editCargas = null; state.diarioAbierto = entries.indexOf(e); renderKeepScroll();
   }));
 }
 
@@ -10979,7 +11700,7 @@ function tplMetricasEjercicio(entries){
       ${rpes.length?`<div class="kpi"><b>${(rpes.reduce((a,b)=>a+b,0)/rpes.length).toFixed(1)}</b><span>RPE medio</span></div>`:''}
     </div>
     ${variacion?`<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">${variacion}</p>`:''}
-    ${datos.some(d=>d.ilegible)?`<div class="rd-zona rd-ambar" style="margin-bottom:12px;"><div><b>${datos.filter(d=>d.ilegible).length} sesión${datos.filter(d=>d.ilegible).length===1?'':'es'} con una carga que no se entiende</b><span>Suele ser una progresión de pesos pegada en una sola cifra (30405060). Pulsa Editar en esa sesión y escribe los kilos de cada serie: 30 40 50 60.</span></div></div>`:''}`;
+    ${datos.some(d=>d.ilegible)?`<div class="rd-zona rd-ambar" style="margin-bottom:12px;"><div><b>${datos.filter(d=>d.ilegible).length} ${datos.filter(d=>d.ilegible).length===1?'sesión':'sesiones'} con una carga que no se entiende</b><span>Suele ser una progresión de pesos pegada en una sola cifra (30405060). Pulsa Editar en esa sesión y escribe los kilos de cada serie: 30 40 50 60.</span></div></div>`:''}`;
 
   if(cargas.length >= 2){
     html += `<div class="metrica"><span>Carga movida</span>${miniGrafica(datos,'carga','var(--accent)')}</div>`;
@@ -11384,7 +12105,8 @@ function habitoCumplido(def, dia){
 }
 // Gráfica de regularidad: la línea se corta los días sin registrar, para que
 // los huecos se vean como lo que son y no como un cero.
-function tplTendenciaHabitos(todos, log){
+function tplTendenciaHabitos(todos, log, opts){
+  opts = opts || {};
   const N = 21;
   const dias = ultimosDias(N);
   const total = todos.length || 1;
@@ -11432,13 +12154,19 @@ function tplTendenciaHabitos(todos, log){
   });
   svg += `<text x="${padL}" y="${h-8}" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--muted)">${dias[0].slice(8)}/${dias[0].slice(5,7)}</text>`;
   svg += `<text x="${w-padR}" y="${h-8}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--muted)">hoy</text>`;
+  // Día que se está registrando (si cae dentro de la ventana): un aro alrededor del punto.
+  const im = opts.marca ? dias.indexOf(opts.marca) : -1;
+  if(im >= 0){
+    svg += `<line x1="${x(im).toFixed(1)}" y1="${padT}" x2="${x(im).toFixed(1)}" y2="${padT+innerH}" stroke="var(--accent)" stroke-width="1" opacity="0.35"/>`;
+    if(puntos[im] !== null) svg += `<circle cx="${x(im).toFixed(1)}" cy="${y(puntos[im]).toFixed(1)}" r="6" fill="none" stroke="var(--accent)" stroke-width="1.6"/>`;
+  }
   svg += `</svg>`;
 
   const conDatos = puntos.filter(v=>v!==null).length;
   // Si no hay ni un solo día registrado, la gráfica saldría vacía y parecería
   // que está rota. Mejor explicar qué falta.
   if(!conDatos){
-    return `<div class="card"><h2>Regularidad</h2>
+    return `<div class="${opts.plano ? 'hab-plano' : 'card'}"><h2>Regularidad</h2>
       <div class="empty">Aún no has registrado ningún día. En cuanto marques tus hábitos un par de días, aquí verás tu gráfica de constancia de las últimas 3 semanas.</div></div>`;
   }
   const huecos = N - conDatos;
@@ -11447,7 +12175,7 @@ function tplTendenciaHabitos(todos, log){
   let racha = 0;
   for(let i=puntos.length-1;i>=0;i--){ if(puntos[i]===null) break; racha++; }
 
-  let html = `<div class="card"><h2>Regularidad</h2>
+  let html = `<div class="${opts.plano ? 'hab-plano' : 'card'}"><h2>Regularidad</h2>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Hábitos cumplidos cada día, últimos 21 días. La línea se corta los días que no registraste.</p>
     ${svg}
     <div class="kpi-row" style="margin-top:14px;">
@@ -11456,6 +12184,7 @@ function tplTendenciaHabitos(todos, log){
       <div class="kpi"><b>${huecos}</b><span>Días sin registrar</span></div>
     </div>`;
 
+  if(opts.sinDetalle) return html + `</div>`;
   // Detalle de hasta 3 hábitos elegidos
   const sel = Array.isArray(state.habitosSel) ? state.habitosSel.filter(id=>todos.some(h=>h.id===id)) : [];
   html += `<div class="block-title">Seguimiento detallado</div>
@@ -11497,7 +12226,8 @@ async function tplHabitos(athleteId){
       <h2 style="margin:0;">Check diario</h2>
       <button class="btn ghost small" id="closeHabitsBtn">← Calendario</button>
     </div>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">${new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'})}</p>`;
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">${new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'})}</p>
+    ${todos.length ? `<div class="hab-anoche"><p>Lo más cómodo es marcarlos por la noche, en el <b>mismo registro de antes de dormir</b>: pestaña Hábitos. Se guardan en el mismo sitio, así que da igual dónde los marques.</p><button class="btn small" id="habANocheBtn">Abrir el registro de antes de dormir</button></div>` : ''}`;
 
   if(!todos.length){
     html += `<div class="empty">Aún no hay hábitos que seguir. Añade los tuyos abajo o espera a que tu entrenador te asigne alguno.</div>`;
@@ -11800,7 +12530,7 @@ async function sincronizaCompeticiones(athleteId, origen){
 const ATLETA_TABS = [{k:'plan',l:'Plan'},{k:'seguimiento',l:'Seguimiento'},{k:'evaluacion',l:'Evaluación'},{k:'perfil',l:'Perfil'}];
 const ATLETA_SECCIONES = {
   plan:[{k:'semana',l:'Semana'},{k:'periodizacion',l:'Periodización y competiciones'}],
-  seguimiento:[{k:'progreso',l:'Progreso'},{k:'cruces',l:'Cruces'},{k:'sueno',l:'Sueño'},{k:'resumen',l:'Resumen PDF'},{k:'diario',l:'Diario'},{k:'cuestionarios',l:'Cuestionarios'},{k:'habitos',l:'Hábitos'},{k:'snack',l:'Snack de movimiento'}],
+  seguimiento:[{k:'progreso',l:'Progreso'},{k:'cruces',l:'Cruces'},{k:'sueno',l:'Sueño'},{k:'estudio',l:'Estudio'},{k:'resumen',l:'Resumen PDF'},{k:'diario',l:'Diario'},{k:'cuestionarios',l:'Cuestionarios'},{k:'habitos',l:'Hábitos'},{k:'snack',l:'Snack de movimiento'}],
   evaluacion:[{k:'tests',l:'Tests'},{k:'gym',l:'Gym'},{k:'fotos',l:'Fotos'}]
 };
 // Los nombres de las 11 pestañas antiguas siguen valiendo para saltar a un sitio.
@@ -11823,6 +12553,7 @@ async function resumenSeccion(athleteId, k){
     return l.length ? `${l.length} respuestas · última ${fechaCortaISO(l[l.length-1].date || l[l.length-1].weekOf)}` : 'sin respuestas';
   }
   if(k === 'sueno'){ const hoy = todayISO(), s = resumenSueno(await getSuenoLog(athleteId), sumaDiasISO(hoy, -13), hoy); return s.noches ? `${nFmt(s.horas, 1)} h · descanso ${nFmt(s.calidad, 1)}/5 · ${s.noches} noches` : 'sin registros'; }
+  if(k === 'estudio'){ const hoy = todayISO(), r = resumenEstudio(await getEstLog(athleteId), sumaDiasISO(hoy, -13), hoy); return r.ses ? `${r.ses} sesiones · ${estHM(r.min)} en 14 días` : 'sin sesiones'; }
   if(k === 'snack'){ const r = snackRacha(await getSnackLog(athleteId)); return r.total ? `racha ${r.actual} · ${r.total} hechos` : 'sin Snacks'; }
   if(k === 'periodizacion'){
     const plan = await getPlan(athleteId), comps = await getCompeticiones(athleteId);
@@ -11861,6 +12592,7 @@ if(state.compEditId) return await tplCompeticiones(athleteId, true);
   if(k === 'cruces') return await tplCruces(athleteId);
   if(k === 'resumen') return await tplResumenPdf(athleteId);
   if(k === 'sueno') return await tplSuenoCoach(athleteId);
+  if(k === 'estudio') return await tplEstudioCoach(athleteId);
   if(k === 'diario') return await tplDiarioLectura(athleteId, true);
   if(k === 'cuestionarios') return await tplQuestConfigAndRead(athleteId);
   if(k === 'habitos') return await tplHabitosCoach(athleteId);
@@ -14528,139 +15260,164 @@ html += `<div class="draft-banner"><span>${sameAsPublished ? 'El borrador coinci
   DAYS.forEach(d=>{ html += cuerpoDia(d, draft, athleteId, esTenisOMixto); });
   return html;
 }
+// Lo que pasó ese mismo día en el resto de la app, para leer la sesión en contexto.
+async function contextoSesion(athleteId, fecha){
+  const out = [];
+  try{ const t = totalReadiness((await getReadiness(athleteId))[fecha]); if(t !== null && t !== undefined) out.push(['Readiness previa', `${t}/20`]); }catch(_){}
+  try{ const r = (await getSuenoLog(athleteId)).dias[fecha]; if(r){ const d = sueDerivado(r); if(d.horas !== null) out.push(['Sueño de la noche anterior', `${nFmtS(d.horas, 1)} h${d.calidad !== null ? ' · descanso '+nFmtS(d.calidad, 1)+'/5' : ''}`]); } }catch(_){}
+  try{ const cfg = await getHabitDefs(athleteId), defs = cfg.coach.concat(cfg.athlete), dia = (await getHabitLog(athleteId))[fecha];
+    if(defs.length && dia && Object.keys(dia).length) out.push(['Hábitos ese día', `${defs.filter(h=>habitoCumplido(h, dia) === true).length} de ${defs.length} cumplidos`]); }catch(_){}
+  try{ if(snackHecho(await getSnackLog(athleteId), fecha)) out.push(['Snack de movimiento', 'hecho']); }catch(_){}
+  try{ const r = resumenEstudio(await getEstLog(athleteId), fecha, fecha); if(r.ses) out.push(['Estudio', `${estHM(r.min)} · ${r.ses} ${r.ses === 1 ? 'sesión' : 'sesiones'}`]); }catch(_){}
+  return out;
+}
+function sesionOrigen(e){ return e.esPista ? 'Pista' : (e.registroManual ? 'Registrada a mano' : 'En vivo con cronómetro'); }
+function sesionHoraFin(e){
+  if(!horaValida(e.hora) || !e.durationSeconds) return '';
+  const [h, m] = e.hora.split(':').map(Number), t = (h*60 + m + Math.round(e.durationSeconds/60)) % 1440;
+  return String(Math.floor(t/60)).padStart(2,'0') + ':' + String(t % 60).padStart(2,'0');
+}
+// Texto de RPE/RIR: lo que se escribió y, si es una lista o un rango, la media.
+function esfTxt(texto, media){
+  if(texto && String(texto).trim() && String(texto).trim() !== String(media)) return `${escapeHtml(texto)} <span class="esf-media">(media ${nFmtS(media, 1)})</span>`;
+  return (media !== null && media !== undefined) ? String(media).replace('.', ',') : '—';
+}
+function tplEjercicioDetalle(x){
+  const esRun = x.tipo === 'running';
+  const nPlan = x.seriesPlanned || 0, sd = Array.isArray(x.setsDone) ? x.setsDone : [], nHechas = sd.filter(Boolean).length;
+  const csH = esRun ? [] : cargasEjercicio(x);
+  const difiere = !esRun && x.loadPlanned && x.loadApplied && x.loadPlanned !== x.loadApplied;
+  let estado = '';
+  if(x.omitido) estado = `<span class="det-chip omit">Omitido</span>`;
+  else if(nPlan > 0 || sd.length) estado = `<span class="det-chip">${nHechas}/${Math.max(nPlan, sd.length)} series</span>`;
+  let h = `<div class="det-ex${x.omitido ? ' omit' : ''}"><div class="det-ex-cab"><b>${escapeHtml(x.name || '—')}</b>${estado}</div>`;
+  if(x.omitido){
+    h += `<p class="det-linea">No lo hizo${x.motivo ? ' · motivo: <b>'+escapeHtml(x.motivo)+'</b>' : ''}.</p>`;
+    if(x.noteApplied) h += `<p class="det-nota">💬 ${escapeHtml(x.noteApplied)}</p>`;
+    return h + `</div>`;
+  }
+  const deSeries = k=>{ const v = (Array.isArray(x.setsData) ? x.setsData : []).map(q=>ecNum(q[k])).filter(n=>n !== null); return v.length ? { t:v.join(', ').replace(/\./g, ','), m:Math.round(v.reduce((a, n)=>a + n, 0)/v.length*10)/10 } : null; };
+  const rpeS = deSeries('rpe'), rirS = deSeries('rir');
+  const esfS = (sr, texto, media)=>sr ? (sr.t.includes(',') && sr.t.includes(' ') ? `${sr.t} <span class="esf-media">(media ${nFmtS(sr.m, 1)})</span>` : sr.t) : esfTxt(texto, media);
+  const prev = esRun ? escapeHtml(x.runPlan || '—') : `${nPlan ? nPlan+' × ' : ''}${escapeHtml(x.repsPlanned || '—')}${x.loadPlanned ? ' · '+escapeHtml(x.loadPlanned) : ''}`;
+  const hecho = esRun ? escapeHtml(x.runHecho || '—') : (csH.length ? cargasTxt(csH)+' kg' : escapeHtml(x.loadApplied || '—'));
+  h += `<div class="det-pares">
+    <span>Previsto</span><b>${prev}</b>
+    <span>Hecho</span><b class="${difiere ? 'col-dif' : ''}">${hecho}</b>
+    ${esRun ? '' : `<span>RPE</span><b>${esfS(rpeS, x.rpeTexto, x.rpeApplied)}</b><span>RIR</span><b>${esfS(rirS, x.rirTexto, x.rirApplied)}</b>`}
+  </div>`;
+  if(Array.isArray(x.setsData) && x.setsData.length){
+    const uni = x.setsData.some(s=>s.lado);
+    h += `<table class="det-sets"><thead><tr><th>Serie</th>${uni ? '<th>Lado</th>' : ''}<th>kg</th><th>Reps</th><th>RPE</th><th>RIR</th><th></th></tr></thead><tbody>${x.setsData.map((s, si)=>{
+      const hecha = sd.length ? !!sd[si] : true;
+      return `<tr class="${hecha ? '' : 'no-hecha'}"><td>S${si+1}</td>${uni ? `<td>${s.lado === 'izq' ? 'Izq' : (s.lado === 'der' ? 'Der' : '—')}</td>` : ''}<td>${s.kg ? escapeHtml(String(s.kg).replace('.', ',')) : '—'}</td><td>${s.reps ? escapeHtml(s.reps) : '—'}</td><td>${s.rpe ? escapeHtml(String(s.rpe).replace('.', ',')) : '—'}</td><td>${s.rir ? escapeHtml(String(s.rir).replace('.', ',')) : '—'}</td><td class="det-ok">${hecha ? '✓' : '✕'}</td></tr>`;
+    }).join('')}</tbody></table>`;
+  } else if(nPlan > 0){
+    h += `<div class="series-resumen" style="margin-top:6px;">${Array.from({ length:nPlan }, (_, si)=>`<span class="serie-chip ${sd[si] ? 'hecha' : ''}">S${si+1}</span>`).join('')}</div>`;
+  }
+  if(Array.isArray(x.minis) && x.minis.length){
+    h += `<ul class="det-minis">${x.minis.map(m=>`<li><b>${escapeHtml(m.name)}</b> · ${escapeHtml(m.series || '—')} × ${escapeHtml(m.reps || '—')}${m.hecho ? ' · hecho: '+escapeHtml(m.hecho) : ''}</li>`).join('')}</ul>`;
+  }
+  if(x.patronCarga) h += `<span class="sd-patron sd-patron-${x.patronCarga.tipo}" style="display:inline-block;margin-top:6px;">${escapeHtml(x.patronCarga.texto)}</span>`;
+  if(x.noteApplied) h += `<p class="det-nota">💬 ${escapeHtml(x.noteApplied)}</p>`;
+  return h + `</div>`;
+}
+async function tplSesionDetalle(athleteId, e, idx, esCoach){
+  const editando = state.editEntry === idx, editorSeries = state.editCargas === idx;
+  const conEj = (e.exercises || []).some(x=>x.tipo !== 'running');
+  const fin = sesionHoraFin(e);
+  let html = `<div class="sesion-det" data-sesiondet="${idx}">
+    <div class="det-cab" data-diario="${idx}" role="button" title="Cerrar">
+      <span>▾ ${(()=>{ const f = new Date(String(e.date)+'T12:00:00'); return isNaN(f) ? escapeHtml(e.date) : f.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'short', year:'numeric' }); })()}${horaValida(e.hora) ? ` · ${e.hora}` : ''}${e.turno ? ` · ${escapeHtml(e.turno)}` : ''}${e.tipoSesion ? ` · ${escapeHtml(e.tipoSesion)}` : ''}</span>
+      <span class="pill" style="background:${rpeColor(e.overallRPE)};color:#FFFFFF;">RPE ${e.overallRPE}</span></div>
+    <div class="det-tags"><span class="det-tag">${sesionOrigen(e)}</span>${e.day ? `<span class="det-tag">Rutina del ${escapeHtml(e.day)}</span>` : ''}${e.cargasEditadas ? `<span class="det-tag">Corregida por ${e.cargasEditadas.por === 'atleta' ? 'el atleta' : 'el entrenador'} el ${e.cargasEditadas.fecha}</span>` : ''}</div>`;
+  const kp = [];
+  kp.push(['Hora', horaValida(e.hora) ? e.hora + (fin ? '–' + fin : '') : 'sin anotar']);
+  kp.push(['Duración', `${Math.round((e.durationSeconds || 0)/60)} min`]);
+  kp.push(['Carga (sRPE)', String(e.fatigueScore || 0).replace('.', ',')]);
+  kp.push(['RPE sesión', e.overallRPE || '—']);
+  if(e.avgExerciseRPE > 0) kp.push(['RPE medio ejercicios', nFmtS(e.avgExerciseRPE, 1)]);
+  [['fatiga','Fatiga'],['calidad','Calidad'],['hidratacion','Hidratación'],['satisfaccion','Satisfacción'],['descanso','Descanso entre series'],['molestias','Cuerpo (ciclo)'],['rendsesion','Rendimiento (ciclo)']].forEach(([k, l])=>{ if(e[k]) kp.push([l, e[k]+'/5']); });
+  html += `<div class="det-kpis">${kp.map(([l, v])=>`<div><b>${escapeHtml(String(v))}</b><span>${l}</span></div>`).join('')}</div>`;
+  if(e.cargaDesdeRPEGeneral) html += `<p class="det-pie">La carga sale del RPE general porque no hay RPE por ejercicio.</p>`;
+  if(e.notes) html += `<p class="det-notas">“${escapeHtml(e.notes)}”</p>`;
+  const ctx = await contextoSesion(athleteId, e.date);
+  if(ctx.length) html += `<div class="det-ctx"><span class="det-ctx-tit">Ese día</span>${ctx.map(([l, v])=>`<span><i>${l}</i> ${escapeHtml(v)}</span>`).join('')}</div>`;
+  if(editorSeries) html += tplEditorCargas(e, idx);
+  else {
+    if(e.exercises && e.exercises.length){
+      const omit = e.exercises.filter(x=>x.omitido).length;
+      html += `<div class="block-title">Ejercicios · ${e.exercises.length - omit} hechos${omit ? ` · ${omit} omitido${omit === 1 ? '' : 's'}` : ''}</div>`;
+      e.exercises.forEach(x=>{ html += tplEjercicioDetalle(x); });
+    }
+    if(e.drills && e.drills.length){
+      html += `<div class="block-title">Drills</div><div class="diario-detalle"><table class="tabla-comp"><thead><tr><th>Drill</th><th>Intentos</th><th>Acierto</th><th>Tiempo</th><th>Sens.</th></tr></thead><tbody>`;
+      e.drills.forEach(x=>{
+        html += `<tr><td>${escapeHtml(x.name || '—')}</td><td>${(x.acertados !== null && x.intentos) ? `${x.acertados}/${x.intentos}` : '—'}</td>
+          <td class="${x.aciertoPct >= 70 ? 'col-bien' : ''}">${x.aciertoPct !== null && x.aciertoPct !== undefined ? x.aciertoPct+'%' : '—'}</td><td>${x.tiempo ? x.tiempo+' min' : '—'}</td><td>${x.sensacion || '—'}</td></tr>`;
+        if(x.nota) html += `<tr class="fila-nota"><td colspan="5">💬 ${escapeHtml(x.nota)}</td></tr>`;
+      });
+      html += `</tbody></table></div>`;
+    }
+    if(!(e.exercises && e.exercises.length) && !(e.drills && e.drills.length))
+      html += `<p class="det-vacio">Esta sesión se guardó solo con la valoración general: no tiene ejercicios ni drills anotados.</p>`;
+  }
+  if(editando){
+    html += `<div class="block-title">Corregir datos generales</div><div class="ex-grid" style="margin-top:6px;">
+      <div><label class="field-label">Fecha</label><input type="date" class="ed-date" value="${e.date}"></div>
+      <div><label class="field-label">Hora</label><input type="time" class="ed-hora" value="${horaValida(e.hora) ? e.hora : ''}"></div>
+      <div><label class="field-label">Día de rutina</label><select class="ed-day">${DAYS.map(x=>`<option value="${x}" ${x===e.day?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}</select></div>
+      <div><label class="field-label">Duración (min)</label><input type="number" class="ed-min" value="${Math.round((e.durationSeconds||0)/60)}"></div>
+      <div><label class="field-label">RPE general</label><input type="number" class="ed-rpe" min="1" max="10" value="${e.overallRPE||''}"></div>
+      <div><label class="field-label">Fatiga (1-5)</label><input type="number" class="ed-fat" min="1" max="5" value="${e.fatiga||''}"></div>
+      <div><label class="field-label">Calidad (1-5)</label><input type="number" class="ed-cal" min="1" max="5" value="${e.calidad||''}"></div>
+      <div><label class="field-label">Hidratación (1-5)</label><input type="number" class="ed-hid" min="1" max="5" value="${e.hidratacion||''}"></div>
+      <div class="full"><label class="field-label">Satisfacción (1-5)</label><input type="number" class="ed-sat" min="1" max="5" value="${e.satisfaccion||''}"></div>
+      <div class="full"><label class="field-label">Notas</label><textarea class="ed-notes" style="min-height:44px;">${escapeHtml(e.notes||'')}</textarea></div>
+    </div>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:6px;">Al guardar se recalcula la carga (sRPE) con la duración y el RPE.</p>
+    <div class="row" style="margin-top:8px;">
+      <button class="btn small" data-saveentry="${idx}">Guardar cambios</button>
+      <button class="btn ghost small" data-cancelentry="1">Cancelar</button>
+    </div>`;
+  } else {
+    html += `<div class="row det-acc">
+      ${editorSeries ? '' : `<button class="btn ghost small" data-editcargas="${idx}">✏️ ${conEj ? 'Editar series y hora' : 'Poner la hora'}</button>`}
+      ${esCoach ? `<button class="btn ghost small" data-editentry="${idx}">Corregir datos generales</button><button class="btn ghost small" data-delentry="${idx}">Eliminar</button>` : ''}
+      <button class="btn ghost small" data-cerrardiario="1">Cerrar</button>
+    </div>`;
+  }
+  return html + `</div>`;
+}
 async function tplDiarioLectura(athleteId, esCoach){
   if(esCoach === undefined) esCoach = true; // compatibilidad con la única llamada previa (vista del entrenador)
   const raw = await safeGet('journal-'+athleteId, true);
-  const entries = raw ? JSON.parse(raw) : [];
+  let entries = []; try{ entries = raw ? JSON.parse(raw) : []; }catch(_){ entries = []; }
   let html = `<div class="card"><h2>Diario de entrenamiento</h2>`;
-  if(!entries.length) html += `<div class="empty">Sin sesiones registradas todavía.</div>`;
-  else {
-    // Cuadrícula: una casilla por sesión, igual que los cuadros de arriba de Seguimiento. Al tocar una se abre su detalle debajo.
-    const tope = state.diarioTodo ? entries.length : 24;
-    const stat = (etq, v)=>v ? `<em>${etq} <b>${v}</b></em>` : '';
-    html += `<div class="diario-grid">` + entries.slice().reverse().slice(0, tope).map((e, revIdx)=>{
-      const idx = entries.length - 1 - revIdx;
-      const f = new Date(String(e.date)+'T00:00:00');
-      const dia = isNaN(f) ? String(e.day||'') : DAY_INDEX[f.getDay()];
-      return `<button type="button" class="res-chip diario-tile ${state.diarioAbierto===idx||state.editEntry===idx?'on':''}" data-diario="${idx}">
-        <span>${escapeHtml(dia)} · ${fechaCortaISO(e.date)}${e.turno?` · ${escapeHtml(e.turno)}`:''}</span>
-        <b>${escapeHtml(e.tipoSesion || (e.drills && e.drills.length ? 'Pista' : 'Sesión'))}</b>
-        <small>${fmtTime(e.durationSeconds||0)} · carga ${e.fatigueScore||0}</small>
-        <small class="dt-stats">${stat('Fat', e.fatiga)}${stat('Cal', e.calidad)}${stat('Hid', e.hidratacion)}${stat('Sat', e.satisfaccion)}</small>
-        <i class="dt-rpe" style="background:${rpeColor(e.overallRPE)};">RPE ${e.overallRPE}</i>
-      </button>`;
-    }).join('') + `</div>`;
-    if(entries.length > tope) html += `<button class="btn ghost small" id="diarioTodoBtn" style="margin-bottom:12px;">Ver las ${entries.length} sesiones</button>`;
-    if(state.diarioAbierto == null && state.editEntry == null) html += `<p class="snack-nota" style="margin-top:0;">Toca una sesión para ver el detalle ejercicio a ejercicio.</p>`;
-  }
-  entries.slice().reverse().forEach((e, revIdx)=>{
-    const idx = entries.length - 1 - revIdx;   // índice real en el array
-    const editando = state.editEntry === idx;
-    const abierto = state.diarioAbierto === idx;
-    if(!abierto && !editando) return;
-    const tieneDetalle = (e.exercises && e.exercises.length) || (e.drills && e.drills.length);
-    html += `<div class="entry"><div class="entry-top diario-cab" data-diario="${idx}" style="cursor:pointer;">
-        <span>${abierto?'▾':'▸'} ${e.date} · ${e.day}${e.turno?` · ${escapeHtml(e.turno)}`:''}${e.tipoSesion?` · ${escapeHtml(e.tipoSesion)}`:''}</span>
-        <span class="pill" style="background:${rpeColor(e.overallRPE)};color:#FFFFFF;">RPE ${e.overallRPE}</span></div>
-      <div style="font-size:12.5px;color:var(--muted);margin-top:6px;">Duración ${fmtTime(e.durationSeconds)} · carga ${e.fatigueScore}
-        ${e.fatiga?` · fatiga ${e.fatiga}/5`:''}${e.calidad?` · calidad ${e.calidad}/5`:''}${e.hidratacion?` · hidratación ${e.hidratacion}/5`:''}${e.satisfaccion?` · satisfacción ${e.satisfaccion}/5`:''}</div>
-      ${e.notes?`<div style="font-size:12px;color:var(--muted);margin-top:4px;font-style:italic;">"${escapeHtml(e.notes)}"</div>`:''}`;
-    if(abierto && tieneDetalle){
-      html += `<div class="diario-detalle">`;
-      if(e.exercises && e.exercises.length && state.editCargas !== idx){
-        html += `<table class="tabla-comp"><thead><tr><th>Ejercicio</th><th>Previsto</th><th>Hecho</th><th>RPE</th><th>RIR</th></tr></thead><tbody>`;
-        e.exercises.forEach(x=>{
-          // Reps × kg como bloque mínimo siempre visible, sin tener que
-          // desplegar el detalle por serie: es justo lo que hacía falta ver
-          // de un vistazo ("RPE • reps × kg movidos").
-          const conReps = (kg)=> x.repsPlanned ? `${escapeHtml(x.repsPlanned)} × ${escapeHtml(kg)}` : escapeHtml(kg);
-          const esRun = x.tipo === 'running';
-          const prev = esRun ? escapeHtml(x.runPlan || '—') : conReps(x.loadPlanned || '—');
-          const csH = esRun ? [] : cargasEjercicio(x);
-          const hecho = x.omitido ? `<i>Omitido${x.motivo ? ': '+escapeHtml(x.motivo) : ''}</i>` : esRun ? escapeHtml(x.runHecho || '—') : conReps(csH.length ? cargasTxt(csH)+' kg' : (x.loadApplied || '—'));
-          const difiere = !esRun && x.loadPlanned && x.loadApplied && x.loadPlanned !== x.loadApplied;
-          // Si anotó varias series o un rango ("8-9", "7,8,9") mostramos lo que
-          // escribió y la media debajo: el detalle dice más que el promedio.
-          const esf = (texto, media)=>{
-            if(texto && String(texto).trim() && String(texto).trim() !== String(media)){
-              return `${escapeHtml(texto)}<br><span class="esf-media">media ${media}</span>`;
-            }
-            return (media!==null && media!==undefined) ? media : '—';
-          };
-          html += `<tr>
-            <td>${escapeHtml(x.name||'—')}</td>
-            <td class="col-prev">${prev}</td>
-            <td class="${difiere?'col-dif':''}">${hecho}</td>
-            <td>${esf(x.rpeTexto, x.rpeApplied)}</td>
-            <td>${esf(x.rirTexto, x.rirApplied)}</td>
-          </tr>`;
-          // Series previstas vs. hechas, con las completadas tachadas — el
-          // mismo lenguaje visual que el chequeo en vivo durante la sesión,
-          // pero aquí en modo lectura.
-          if(x.seriesPlanned > 0){
-            const chips = Array.from({length:x.seriesPlanned}, (_,si)=>{
-              const hecha = !!(x.setsDone && x.setsDone[si]);
-              return `<span class="serie-chip ${hecha?'hecha':''}">S${si+1}</span>`;
-            }).join('');
-            const nHechas = (x.setsDone||[]).filter(Boolean).length;
-            html += `<tr class="fila-nota"><td colspan="5"><span class="series-resumen">${chips}<span class="series-cont">${nHechas}/${x.seriesPlanned} series</span></span></td></tr>`;
-          }
-          if(Array.isArray(x.setsData) && x.setsData.length){
-            const filas = x.setsData.map((sd,si)=>`S${si+1}: ${sd.kg?`${escapeHtml(sd.kg)}kg`:'—'} × ${sd.reps||'—'}${sd.rpe?` · RPE ${escapeHtml(sd.rpe)}`:''}${sd.rir?` · RIR ${escapeHtml(sd.rir)}`:''}`).join('  ·  ');
-            html += `<tr class="fila-nota"><td colspan="5">📋 ${filas}</td></tr>`;
-          }
-          if(x.patronCarga){
-            html += `<tr class="fila-nota"><td colspan="5"><span class="sd-patron sd-patron-${x.patronCarga.tipo}" style="display:inline-block;">${escapeHtml(x.patronCarga.texto)}</span></td></tr>`;
-          }
-          if(x.noteApplied) html += `<tr class="fila-nota"><td colspan="5">💬 ${escapeHtml(x.noteApplied)}</td></tr>`;
-        });
-        html += `</tbody></table>`;
-      }
-      if(state.editCargas === idx) html += tplEditorCargas(e, idx);
-      else if((e.exercises||[]).some(x=>x.tipo !== 'running')) html += `<div class="row" style="margin-top:8px;align-items:center;gap:10px;"><button class="btn ghost small" data-editcargas="${idx}">✏️ Editar cargas</button>${e.cargasEditadas?`<span class="ec-etq">Cargas corregidas por ${e.cargasEditadas.por==='atleta'?'el atleta':'el entrenador'} el ${e.cargasEditadas.fecha}</span>`:''}</div>`;
-      if(e.drills && e.drills.length){
-        html += `<table class="tabla-comp"><thead><tr><th>Drill</th><th>Intentos</th><th>Acierto</th><th>Sens.</th></tr></thead><tbody>`;
-        e.drills.forEach(x=>{
-          html += `<tr>
-            <td>${escapeHtml(x.name||'—')}</td>
-            <td>${(x.acertados!==null&&x.intentos)?`${x.acertados}/${x.intentos}`:'—'}</td>
-            <td class="${x.aciertoPct>=70?'col-bien':''}">${x.aciertoPct!==null&&x.aciertoPct!==undefined?x.aciertoPct+'%':'—'}</td>
-            <td>${x.sensacion||'—'}</td>
-          </tr>`;
-          if(x.nota) html += `<tr class="fila-nota"><td colspan="4">💬 ${escapeHtml(x.nota)}</td></tr>`;
-        });
-        html += `</tbody></table>`;
-      }
-      html += `</div>`;
-    }
-    html += `${e.notes?`<div style="font-size:12.5px;color:var(--muted);margin-top:6px;">"${escapeHtml(e.notes)}"</div>`:''}`;
-    if(editando){
-      html += `<div class="ex-grid" style="margin-top:10px;">
-        <div><label class="field-label">Fecha</label><input type="date" class="ed-date" value="${e.date}"></div>
-        <div><label class="field-label">Día de rutina</label><select class="ed-day">${DAYS.map(x=>`<option value="${x}" ${x===e.day?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}</select></div>
-        <div><label class="field-label">Duración (min)</label><input type="number" class="ed-min" value="${Math.round((e.durationSeconds||0)/60)}"></div>
-        <div><label class="field-label">RPE general</label><input type="number" class="ed-rpe" min="1" max="10" value="${e.overallRPE||''}"></div>
-        <div><label class="field-label">Fatiga (1-5)</label><input type="number" class="ed-fat" min="1" max="5" value="${e.fatiga||''}"></div>
-        <div><label class="field-label">Calidad (1-5)</label><input type="number" class="ed-cal" min="1" max="5" value="${e.calidad||''}"></div>
-        <div><label class="field-label">Hidratación (1-5)</label><input type="number" class="ed-hid" min="1" max="5" value="${e.hidratacion||''}"></div>
-        <div class="full"><label class="field-label">Satisfacción (1-5)</label><input type="number" class="ed-sat" min="1" max="5" value="${e.satisfaccion||''}"></div>
-        <div class="full"><label class="field-label">Notas</label><textarea class="ed-notes" style="min-height:44px;">${escapeHtml(e.notes||'')}</textarea></div>
-      </div>
-      <p style="font-size:11.5px;color:var(--muted);margin-top:6px;">Al guardar se recalcula la carga (sRPE) con la duración y el RPE.</p>
-      <div class="row" style="margin-top:8px;">
-        <button class="btn small" data-saveentry="${idx}">Guardar cambios</button>
-        <button class="btn ghost small" data-cancelentry="1">Cancelar</button>
-      </div>`;
-    } else if(esCoach){
-      html += `<div class="row" style="margin-top:8px;">
-        <button class="btn ghost small" data-editentry="${idx}">Corregir</button>
-        <button class="btn ghost small" data-delentry="${idx}">Eliminar</button>
-      </div>`;
-    }
-    html += `</div>`;
-  });
-  html += `</div>`;
-  return html;
+  if(!entries.length) return html + `<div class="empty">Sin sesiones registradas todavía.</div></div>`;
+  // La sesión abierta va arriba del todo: con muchas casillas, abrirla debajo
+  // dejaba el detalle fuera de la pantalla y parecía que no se abría.
+  const abiertas = [];
+  [state.editEntry, state.editCargas, state.diarioAbierto].forEach(v=>{ if(v != null && entries[v] && !abiertas.includes(v)) abiertas.push(v); });
+  for(const idx of abiertas) html += await tplSesionDetalle(athleteId, entries[idx], idx, esCoach);
+  if(abiertas.length) html += `<div class="block-title" style="margin-top:4px;">Todas las sesiones</div>`;
+  const tope = state.diarioTodo ? entries.length : 24;
+  const stat = (etq, v)=>v ? `<em>${etq} <b>${v}</b></em>` : '';
+  html += `<div class="diario-grid">` + entries.slice().reverse().slice(0, tope).map((e, revIdx)=>{
+    const idx = entries.length - 1 - revIdx;
+    const f = new Date(String(e.date)+'T00:00:00');
+    const dia = isNaN(f) ? String(e.day||'') : DAY_INDEX[f.getDay()];
+    return `<button type="button" class="res-chip diario-tile ${abiertas.includes(idx)?'on':''}" data-diario="${idx}">
+      <span>${escapeHtml(dia)} · ${fechaCortaISO(e.date)}${horaValida(e.hora)?` · ${e.hora}`:''}${e.turno?` · ${escapeHtml(e.turno)}`:''}</span>
+      <b>${escapeHtml(e.tipoSesion || (e.drills && e.drills.length ? 'Pista' : 'Sesión'))}</b>
+      <small>${fmtTime(e.durationSeconds||0)} · carga ${e.fatigueScore||0}</small>
+      <small class="dt-stats">${stat('Fat', e.fatiga)}${stat('Cal', e.calidad)}${stat('Hid', e.hidratacion)}${stat('Sat', e.satisfaccion)}</small>
+      <i class="dt-rpe" style="background:${rpeColor(e.overallRPE)};">RPE ${e.overallRPE}</i>
+    </button>`;
+  }).join('') + `</div>`;
+  if(entries.length > tope) html += `<button class="btn ghost small" id="diarioTodoBtn" style="margin-bottom:12px;">Ver las ${entries.length} sesiones</button>`;
+  if(!abiertas.length) html += `<p class="snack-nota" style="margin-top:0;">Toca una sesión para ver todo el detalle: serie a serie, valoración y lo que pasó ese día.</p>`;
+  return html + `</div>`;
 }
 // ---------- Evolución de cada pregunta del cuestionario semanal ----------
 function fechaCortaISO(iso){ const m = String(iso||'').match(/^\d{4}-(\d{2})-(\d{2})/); return m ? `${m[2]}/${m[1]}` : String(iso||''); }
@@ -18763,10 +19520,11 @@ async function bindDynamicEvents(){
         hidratacion: null, satisfaccion: null,
         notes: card.querySelector('#drNotes').value.trim()
       };
+      { const hm = (card.querySelector('#drHora')||{}).value || ''; if(horaValida(hm)) registro.hora = hm; }
       const raw = await safeGet('journal-'+athleteId, true);
       const entries = raw ? JSON.parse(raw) : [];
       entries.push(registro);
-      entries.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+      entries.sort(cmpSesiones);
       const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
       if(!ok){ toast('No se pudo guardar', true); return; }
       toast(`Sesión de pista guardada · ${registros.length} drill${registros.length===1?'':'s'}`);
@@ -19083,6 +19841,11 @@ async function bindDynamicEvents(){
   if(openHab) openHab.addEventListener('click', ()=>{ state.calShowHabits = true; renderScrollTop(); });
   const closeHab = document.getElementById('closeHabitsBtn');
   if(closeHab) closeHab.addEventListener('click', ()=>{ state.calShowHabits = false; renderScrollTop(); });
+  const habANoche = document.getElementById('habANocheBtn');
+  if(habANoche) habANoche.addEventListener('click', async ()=>{
+    await suenoAbre(athleteId, 'noche', todayISO());
+    const t = document.querySelector('[data-stab="hab"]'); if(t) t.click();
+  });
 
   document.querySelectorAll('[data-habitsel]').forEach(b=>b.addEventListener('click', ()=>{
     const id = b.dataset.habitsel;
@@ -19173,8 +19936,14 @@ async function bindDynamicEvents(){
 
   document.querySelectorAll('[data-diario]').forEach(b=>b.addEventListener('click', ()=>{
     const idx = parseInt(b.dataset.diario,10);
-    state.diarioAbierto = (state.diarioAbierto === idx) ? null : idx;
-    renderKeepScroll();
+    const cierra = state.diarioAbierto === idx;
+    state.diarioAbierto = cierra ? null : idx;
+    state.editCargas = null; state.editEntry = null;
+    if(cierra || !document.getElementById('tabContent')){ renderKeepScroll(); return; }
+    renderTabContent().then(()=>{ const det = document.querySelector('.sesion-det'); if(det && det.scrollIntoView) det.scrollIntoView({ behavior:'smooth', block:'start' }); });
+  }));
+  document.querySelectorAll('[data-cerrardiario]').forEach(b=>b.addEventListener('click', ()=>{
+    state.diarioAbierto = null; state.editCargas = null; state.editEntry = null; renderKeepScroll();
   }));
 
   bindEditorCargas(athleteId);
@@ -19187,7 +19956,7 @@ async function bindDynamicEvents(){
   }));
   // --- Corregir y eliminar sesiones del diario ---
   document.querySelectorAll('[data-editentry]').forEach(b=>b.addEventListener('click', ()=>{
-    state.editEntry = parseInt(b.dataset.editentry,10); renderKeepScroll();
+    state.editEntry = parseInt(b.dataset.editentry,10); state.editCargas = null; renderKeepScroll();
   }));
   document.querySelectorAll('[data-cancelentry]').forEach(b=>b.addEventListener('click', ()=>{
     state.editEntry = null; renderKeepScroll();
@@ -19202,11 +19971,11 @@ async function bindDynamicEvents(){
     entries.splice(idx,1);
     const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
     toast(ok?'Sesión eliminada':'No se pudo eliminar', !ok);
-    state.editEntry = null; renderKeepScroll();
+    state.editEntry = null; state.editCargas = null; state.diarioAbierto = null; renderKeepScroll();
   }));
   document.querySelectorAll('[data-saveentry]').forEach(b=>b.addEventListener('click', async ()=>{
     const idx = parseInt(b.dataset.saveentry,10);
-    const card = b.closest('.entry');
+    const card = b.closest('.sesion-det') || b.closest('.entry');
     const raw = await safeGet('journal-'+athleteId, true);
     const entries = raw ? JSON.parse(raw) : [];
     const e = entries[idx];
@@ -19229,13 +19998,15 @@ async function bindDynamicEvents(){
     e.hidratacion = num('.ed-hid',1,5,e.hidratacion);
     e.satisfaccion = num('.ed-sat',1,5,e.satisfaccion);
     e.notes = card.querySelector('.ed-notes').value.trim();
+    const edHora = card.querySelector('.ed-hora');
+    if(edHora){ if(horaValida(edHora.value)) e.hora = edHora.value; else delete e.hora; }
     // La carga se recalcula: si no había RPE por ejercicio, manda el general.
     const base = (e.avgExerciseRPE && e.avgExerciseRPE > 0) ? e.avgExerciseRPE : rpe;
     e.fatigueScore = +(base * mins).toFixed(1);
-    entries.sort((x,y)=>String(x.date).localeCompare(String(y.date)));
+    entries.sort(cmpSesiones);
     const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
     toast(ok?'Sesión corregida':'No se pudo guardar', !ok);
-    state.editEntry = null; renderKeepScroll();
+    state.editEntry = null; state.diarioAbierto = entries.indexOf(e); renderKeepScroll();
   }));
 
   // --- Editar nombre y PIN del atleta ---
@@ -19275,7 +20046,7 @@ async function bindDynamicEvents(){
     const aviso = `¿Eliminar a ${at.name}?\n\nSe borrarán su ficha, rutinas, historial, diario, cuestionarios, periodización y tareas asociadas.\n\nEsta acción no se puede deshacer. Exporta una copia antes si quieres conservarlo.`;
     if(!confirm(aviso)) return;
     try{
-      for(const p of ['intake','profile','routine','routine-draft','routine-history','journal','quest','quest-config','call','plan','tutorial','session-activa','habits','habits-config','ciclo','ciclo-dia','ciclo-diario','saltos','readiness','bateria','tests-historial']){
+      for(const p of ['intake','profile','routine','routine-draft','routine-history','journal','quest','quest-config','call','plan','tutorial','session-activa','habits','habits-config','ciclo','ciclo-dia','ciclo-diario','saltos','readiness','bateria','tests-historial','sueno','sueno-preguntas','snack','estudio','estudio-cfg','resumen-notas']){
         await safeSet(p+'-'+id, '', true);
       }
       const tareas = await getTasks();
@@ -19419,19 +20190,19 @@ async function bindDynamicEvents(){
     const f = mnDate.value;
     if(!f) return;
     const dia = DAY_INDEX[new Date(f+'T00:00:00').getDay()];
-    state.manual = { date:f, min: parseInt((document.getElementById('mnMin')||{}).value,10) || 60 };
+    state.manual = { date:f, min: parseInt((document.getElementById('mnMin')||{}).value,10) || 60, hora:(document.getElementById('mnHora')||{}).value || '' };
     state.sessionDay = dia;
     renderKeepScroll();
   });
   const mnDay = document.getElementById('mnDay');
   if(mnDay) mnDay.addEventListener('change', ()=>{
     state.manual = { date:(document.getElementById('mnDate')||{}).value || todayISO(),
-                     min: parseInt((document.getElementById('mnMin')||{}).value,10) || 60 };
+                     min: parseInt((document.getElementById('mnMin')||{}).value,10) || 60, hora:(document.getElementById('mnHora')||{}).value || '' };
     state.sessionDay = mnDay.value;
     renderKeepScroll();
   });
   document.querySelectorAll('[data-mnturno]').forEach(b=>b.addEventListener('click', ()=>{
-    state.manual = { date:(document.getElementById('mnDate')||{}).value || todayISO(), min: parseInt((document.getElementById('mnMin')||{}).value,10) || 60 };
+    state.manual = { date:(document.getElementById('mnDate')||{}).value || todayISO(), min: parseInt((document.getElementById('mnMin')||{}).value,10) || 60, hora:(document.getElementById('mnHora')||{}).value || '' };
     state.sessionTurno = b.dataset.mnturno; renderKeepScroll();
   }));
   document.querySelectorAll('[data-mnomitir]').forEach(b=>b.addEventListener('click', ()=>{
@@ -19501,10 +20272,11 @@ async function bindDynamicEvents(){
         tipoSesion: tipoDeEseDia,
         registroManual: true
       };
+      { const hm = (card.querySelector('#mnHora')||{}).value || ''; if(horaValida(hm)) registro.hora = hm; }
       const raw = await safeGet('journal-'+athleteId, true);
       const entries = raw ? JSON.parse(raw) : [];
       entries.push(registro);
-      entries.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+      entries.sort(cmpSesiones);
       const ok = await safeSet('journal-'+athleteId, JSON.stringify(entries), true);
       if(!ok){ toast('No se pudo guardar', true); return; }
       if(card.dataset.ciclo === '1') await guardaCicloEntreno(athleteId, fecha, { molestias: molestiasM, rendsesion: rendM });
