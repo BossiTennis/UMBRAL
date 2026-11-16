@@ -913,7 +913,16 @@
   .ec-ok{color:var(--accent);}
   .ec-mal{color:var(--danger);}
   .ec-etq{font-size:11px;color:var(--muted);}
+  .nav-dot{position:absolute;top:6px;left:calc(50% + 8px);width:8px;height:8px;border-radius:50%;background:var(--danger);box-shadow:0 0 0 2px var(--panel);}
+  #bottomNav button{position:relative;}
+  .agenda-cab{margin:2px 2px 14px;}
+  .agenda-cab h2{font-family:'Fraunces',serif;font-size:22px;margin:0;}
+  .agenda-cab p{font-size:12.5px;color:var(--muted);margin-top:2px;text-transform:capitalize;}
   .hab-anoche{background:var(--gold-dim);border-radius:9px;padding:11px 12px;margin-bottom:14px;}
+  .hab-lista-pie{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-top:2px;}
+  .hab-ed{border:1px solid var(--gold);border-radius:10px;padding:10px 12px;}
+  .sue-habitos{margin:18px 0 14px;padding-top:14px;border-top:1px solid var(--border);}
+  .sue-hab-cab{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
   .hab-anoche p{font-size:12.5px;line-height:1.55;margin-bottom:8px;}
   .ec-hora{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--border);}
   .ec-hora .field-label{width:100%;margin:0;}
@@ -2827,14 +2836,14 @@ function render(){
 const TUTORIAL_STEPS = [
   { ic:()=>icPerson(), title:'Bienvenido a Umbral',
     body:'Aquí verás tu plan de entrenamiento, registrarás cada sesión y podrás seguir tu progreso. Son 5 pantallas: te las enseño en un minuto.' },
-  { ic:()=>icClipboard(), title:'Rutina',
+  { ic:()=>icClipboard(), title:'Semana',
     body:'Tu plan de la semana, día a día. Arriba verás en qué semana del bloque estás, con la intensidad y el volumen que tu entrenador ha programado. Toca un día para desplegar sus ejercicios: calentamiento, parte principal y vuelta a la calma, con series, repeticiones, carga y RPE objetivo.' },
   { ic:()=>icDumbbell(), title:'Sesión',
     body:'Cuando vayas a entrenar, elige el día y pulsa Iniciar sesión: se abre a pantalla completa con un cronómetro. Ve marcando cada serie según la completes, tacha los ejercicios terminados y anota el RPE que has aplicado. Si un ejercicio lleva temporizador (Tabata, EMOM, AMRAP o descanso por series), te aparecerá un botón para lanzarlo ya configurado.' },
   { ic:()=>icDumbbell(), title:'Al terminar la sesión',
     body:'Pulsa «Sesión completada» y rellena el diario: esfuerzo percibido, fatiga, calidad, hidratación y satisfacción, más las notas que quieras. Con eso se calcula tu carga de entrenamiento, que es lo que permite ajustar el plan sin que te pases ni te quedes corto. Es la parte más importante: sin diario, tu entrenador va a ciegas.' },
-  { ic:()=>icCalendar(), title:'Calendario',
-    body:'Ahí tienes tu próxima videollamada de revisión, con opción de añadirla al calendario de tu móvil. También el cuestionario semanal: son unas pocas preguntas sobre cómo ha ido la semana, y se responde los sábados. Sirve para orientar la llamada y ajustar la carga.' },
+  { ic:()=>icCalendar(), title:'Agenda',
+    body:'Todo lo del día a día: las tareas que te mande tu entrenador, el registro de antes de dormir y de al levantarte (ahí marcas también tus hábitos), el Snack de movimiento, el cuestionario semanal de los sábados, el calendario y tu próxima videollamada. En Sesión tienes además el temporizador de Estudio.' },
   { ic:()=>icChartUp(), title:'Progreso',
     body:'La carga de cada sesión, tu media de esfuerzo y la tendencia de bienestar. También el ACWR, que compara lo que has entrenado esta semana con tu media del último mes: si sube demasiado rápido, hay más riesgo de lesión.' },
   { ic:()=>icPhone(), title:'Tenla siempre a mano',
@@ -2986,14 +2995,19 @@ function renderNav(){
   const nav = document.getElementById('bottomNav');
   if(state.role==='atleta'){
     if(!state.athleteAsId){ nav.innerHTML=''; return; }
+    // Lo principal primero (plan, sesión del día, progreso). Los extras del día
+    // a día (tareas del entrenador, registro de sueño, hábitos, Snack,
+    // calendario) van juntos en Agenda.
     const items = [
-      {key:'rutina', ic:icClipboard(), label:'Rutina'},
+      {key:'rutina', ic:icClipboard(), label:'Semana'},
       {key:'diario', ic:icDumbbell(), label:'Sesión'},
-      {key:'calendario', ic:icCalendar(), label:'Calendario'},
       {key:'progreso', ic:icChartUp(), label:'Progreso'},
+      {key:'calendario', ic:icCalendar(), label:'Agenda'},
       {key:'perfil', ic:icPerson(), label:'Perfil'}
     ];
-    nav.innerHTML = items.map(it=>`<button data-navtab="${it.key}" class="${state.tab===it.key?'active':''}">${it.ic}${it.label}</button>`).join('');
+    nav.innerHTML = items.map(it=>`<button data-navtab="${it.key}" class="${state.tab===it.key?'active':''}">${it.ic}${it.label}${it.key==='calendario'?'<i class="nav-dot" id="navAgendaDot" hidden></i>':''}</button>`).join('');
+    // Punto en Agenda si el entrenador ha mandado tareas sin hacer
+    getTareas(state.athleteAsId).then(t=>{ const d = document.getElementById('navAgendaDot'); if(d) d.hidden = !(t||[]).some(x=>!x.hecho); }).catch(()=>{});
   } else {
     // Resumen, Tareas y Calendario van juntos en "Agenda": los tres responden
     // a la misma pregunta ("¿qué tengo pendiente?") y separados obligaban a
@@ -3007,7 +3021,7 @@ function renderNav(){
     ];
     nav.innerHTML = items.map(it=>`<button data-navtab="${it.key}" class="${state.tab===it.key?'active':''}">${it.ic}${it.label}</button>`).join('');
   }
-  nav.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ state.tab=b.dataset.navtab; stopSession(); renderScrollTop(); }));
+  nav.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ state.tab=b.dataset.navtab; if(state.role==='atleta' && state.tab==='calendario'){ state.calShowHabits=false; state.calShowQuest=false; state.habEdit=null; } stopSession(); renderScrollTop(); }));
 }
 
 // ================= COACH SHELL =================
@@ -3268,7 +3282,14 @@ async function renderTabContent(){
     else {
       const athleteId = el.dataset.athlete;
       if(state.tab==='rutina') html = await tplRutinaAtleta(athleteId);
-      else if(state.tab==='diario') html = await tplSesionEntry(athleteId);
+      else if(state.tab==='diario'){
+        const ss = state.sesionSub || 'entreno';
+        html = `<div class="sub-tabs">
+          <button data-sesionsub="entreno" class="${ss==='entreno'?'active':''}">Entrenamiento</button>
+          <button data-sesionsub="estudio" class="${ss==='estudio'?'active':''}">Estudio</button>
+        </div>`;
+        html += ss === 'estudio' ? await tplEstudioCard(athleteId) : await tplSesionEntry(athleteId);
+      }
       else if(state.tab==='calendario') html = await tplCalendarioAtleta(athleteId);
       else if(state.tab==='progreso'){
         const sub = state.progresoSub || 'progreso';
@@ -5114,7 +5135,7 @@ function estObservaciones(log, sueLog, hasta){
 async function tplEstudioCoach(athleteId){
   const log = await getEstLog(athleteId), cfg = await getEstCfg(athleteId), sg = await getSuenoLog(athleteId), hoy = todayISO(), d14 = sumaDiasISO(hoy, -13), R = resumenEstudio(log, d14, hoy, sumaDiasISO(hoy, -27), sumaDiasISO(hoy, -14)), p = estParams(cfg);
   let html = `<div class="card"><h2>Estudio y foco</h2><p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;">Sesiones de estudio de la atleta con sus Snacks en los descansos. Ritmo elegido: <b>${escapeHtml(p.nombre)}</b> (${p.foco} + ${p.desc} min × ${p.bloques}) · música: ${cfg.musica === 'ninguna' ? 'ninguna' : escapeHtml(EST_MUSICA[cfg.musica].nombre)}${cfg.playlist ? ' · playlist propia' : ''}.</p>`;
-  if(!R.ses && !R.antes.ses) return html + `<div class="empty">Todavía no hay sesiones. Las inicia desde Rutina, en la tarjeta «Estudio».</div></div>`;
+  if(!R.ses && !R.antes.ses) return html + `<div class="empty">Todavía no hay sesiones. Las inicia desde Sesión → Estudio.</div></div>`;
   const dl = (x, y, dd)=>(x !== null && y !== null && x !== undefined && y !== undefined) ? ` <small style="color:var(--muted);">${x - y >= 0 ? '+' : '−'}${nFmt(Math.abs(x - y), dd)}</small>` : '';
   const chip = (t, v, e)=>`<div class="res-chip"><span>${t}</span><b>${v}${e || ''}</b></div>`;
   html += `<div class="res-fila">${chip('Sesiones', R.ses, dl(R.ses, R.antes.ses, 0))}${chip('Foco', estHM(R.min), dl(R.min, R.antes.min, 0).replace(/(\d)<\/small>/, '$1 min</small>'))}${chip('Concentración', R.conc !== null ? nFmt(R.conc, 1) + '/5' : '—', dl(R.conc, R.antes.conc, 1))}${chip('Snacks en descansos', R.sn)}</div>`;
@@ -6237,12 +6258,9 @@ async function suenoAbre(athleteId, modo, diaSel){
   }
   let cuerpoFinal = cuerpo;
   if(modo === 'noche'){
-    cuerpoFinal = `<div class="sue-tabs" role="tablist"><button class="on" data-stab="reg" role="tab">Registro</button><button data-stab="hab" role="tab">Hábitos <span class="sue-badge" id="sueHabBadge"></span></button></div>
-      <div data-spane="reg">${cuerpo}</div>
-      <div data-spane="hab" hidden>
-        <p class="snack-nota" style="margin:0 0 12px;">Hábitos de <b>${escapeHtml(sueDiaTxt(dia, hoy))}</b>. Lo que marques aquí es lo mismo que el check diario, y la gráfica se actualiza al momento.</p>
-        ${hTodos.length ? hTodos.map(h=>sueHabFila(h, (hlog[dia] || {})[h.id])).join('') : '<div class="empty">Aún no hay hábitos que seguir. Añádelos en Calendario → Check diario, o espera a que tu entrenador te asigne alguno.</div>'}
-        <div id="sueHabChart"></div>
+    // Los hábitos se marcan aquí, en el mismo registro: la página Hábitos es para editarlos y ver la constancia.
+    cuerpoFinal = cuerpo + `<div class="sue-habitos"><div class="sue-hab-cab"><span class="snack-eyebrow">Hábitos de ${escapeHtml(dia === hoy ? 'hoy' : sueDiaTxt(dia, hoy))}</span><span class="sue-badge" id="sueHabBadge"></span></div>
+        ${hTodos.length ? hTodos.map(h=>sueHabFila(h, (hlog[dia] || {})[h.id])).join('') : '<p class="snack-nota" style="margin:4px 0 0;">Aún no hay hábitos que seguir. Créalos en Agenda → Hábitos, o espera a que tu entrenador te asigne alguno.</p>'}
       </div>`;
   }
   o.innerHTML = `<div class="snack-in"><div class="snack-bar"><button class="btn ghost small" id="sueCerrar">Cerrar</button></div>
@@ -6260,16 +6278,11 @@ async function suenoAbre(athleteId, modo, diaSel){
   // Hábitos de la noche: copia de trabajo en memoria; se guarda con el botón de abajo.
   const setHab = (hid, v)=>{ if(!hlog[dia]) hlog[dia] = {}; if(v === null || v === undefined || v === '' || (typeof v === 'number' && isNaN(v))) delete hlog[dia][hid]; else hlog[dia][hid] = v; if(!Object.keys(hlog[dia]).length) delete hlog[dia]; pintaHab(); };
   const pintaHab = ()=>{
-    const ch = o.querySelector('#sueHabChart'), bd = o.querySelector('#sueHabBadge'); if(!ch) return;
+    const bd = o.querySelector('#sueHabBadge'); if(!bd) return;
     const dv = hlog[dia] || {}, n = hTodos.filter(h=>habitoCumplido(h, dv) !== null).length;
-    if(bd) bd.textContent = hTodos.length ? `${n}/${hTodos.length}` : '';
-    ch.innerHTML = hTodos.length ? tplTendenciaHabitos(hTodos, hlog, { plano:true, sinDetalle:true, marca:dia }) : '';
+    bd.textContent = hTodos.length ? `${n}/${hTodos.length} marcados` : '';
   };
   if(modo === 'noche'){
-    o.querySelectorAll('[data-stab]').forEach(b=>b.addEventListener('click', ()=>{
-      o.querySelectorAll('[data-stab]').forEach(x=>x.classList.toggle('on', x === b));
-      o.querySelectorAll('[data-spane]').forEach(p=>{ p.hidden = p.dataset.spane !== b.dataset.stab; });
-    }));
     o.querySelectorAll('[data-sh][data-shtype="check"]').forEach(b=>b.addEventListener('click', ()=>{
       const ya = b.classList.contains('on'), fila = b.closest('.habit-row'); fila.querySelectorAll('[data-shtype="check"]').forEach(x=>x.classList.remove('on'));
       if(!ya) b.classList.add('on'); setHab(b.dataset.sh, ya ? null : b.dataset.shval === 'si');
@@ -6407,7 +6420,7 @@ async function tplSuenoDescanso(athleteId){
   const a = resumenSueno(log, sumaDiasISO(hoy, -13), hoy), b = resumenSueno(log, sumaDiasISO(hoy, -27), sumaDiasISO(hoy, -14));
   let jr = []; try{ jr = JSON.parse(await safeGet('journal-'+athleteId, true) || '[]') || []; }catch(e){}
   let html = `<div class="card"><h2>Sueño y descanso</h2><p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;">Registro de la atleta antes de dormir y al despertar. Últimas dos semanas frente a las dos anteriores.</p>`;
-  if(!a.noches && !a.nNoche && !b.noches) return html + `<div class="empty">Todavía no hay registros de sueño. Los rellena desde Rutina, en la tarjeta «Registro de sueño».</div></div>`;
+  if(!a.noches && !a.nNoche && !b.noches) return html + `<div class="empty">Todavía no hay registros de sueño. Los rellena desde Agenda, en la tarjeta «Registro de sueño».</div></div>`;
   const dl = (x, y, d)=>(x !== null && y !== null) ? ` <small style="color:var(--muted);">${x - y >= 0 ? '+' : '−'}${nFmt(Math.abs(x - y), d)}</small>` : '';
   const chip = (t, v, extra)=>`<div class="res-chip"><span>${t}</span><b>${v}${extra || ''}</b></div>`;
   html += `<div class="res-fila">${chip('Horas', a.horas !== null ? nFmt(a.horas, 1) + ' h' : '—', dl(a.horas, b.horas, 1))}${chip('Descanso', a.calidad !== null ? nFmt(a.calidad, 1) + '/5' : '—', dl(a.calidad, b.calidad, 1))}${chip('Energía', a.energia !== null ? nFmt(a.energia, 1) + '/5' : '—', dl(a.energia, b.energia, 1))}${chip('Regularidad', a.regul !== null ? '±' + Math.round(a.regul) + ' min' : '—')}</div>
@@ -8603,11 +8616,12 @@ async function tplRutinaAtleta(athleteId){
   if(!welcomeCompleto(wp, atWp) || state.wpRelectura) html += tplWelcomePack(wp, false, atWp);
   // Tareas sueltas que el entrenador manda cuando quiere: van justo después
   // del Welcome Pack, con el mismo lenguaje visual.
-  const tareasAt = await getTareas(athleteId);
-  html += tplTareasBanner(tareasAt);
-  if(!state.wpRelectura) html += await tplSnackCard(athleteId);
-  if(!state.wpRelectura) html += await tplSuenoCard(athleteId);
-  if(!state.wpRelectura) html += await tplEstudioCard(athleteId);
+  // Tareas del entrenador, Snack, registro de sueño y hábitos viven en Agenda;
+  // el Estudio, en Sesión. Aquí solo queda lo principal: el plan.
+  if(!state.wpRelectura){
+    const pend = (await getTareas(athleteId)).filter(t=>!t.hecho).length;
+    if(pend) html += `<button class="task-banner" data-iratab="calendario" style="margin-bottom:14px;"><span class="task-ic">${icClipboard()}</span><span class="task-txt"><b>${pend === 1 ? 'Tienes 1 tarea' : 'Tienes '+pend+' tareas'} de tu entrenador</b><span>Está${pend === 1 ? '' : 'n'} en Agenda</span></span><span class="task-arrow">›</span></button>`;
+  }
   if(state.modoDemo){
     html += `<div class="card demo-intro">
       <span class="demo-tag">Modo demostración</span>
@@ -11047,11 +11061,41 @@ async function tplCalendarioAtleta(athleteId){
     return await tplHabitos(athleteId);
   }
 
+  // ---- Agenda: primero lo del día a día ----
+  let html = `<div class="agenda-cab"><h2>Agenda</h2><p>${new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'})}</p></div>`;
+  html += tplTareasBanner(await getTareas(athleteId));
+  html += await tplSuenoCard(athleteId);
+  // Estado del check diario para el banner
+  const habCfg = await getHabitDefs(athleteId);
+  const habLog = await getHabitLog(athleteId);
+  const totalHabitos = habCfg.coach.length + habCfg.athlete.length;
+  const hoyHecho = !!(habLog[todayISO()] && Object.keys(habLog[todayISO()]).length);
+
+  html += `<div class="card"><h2>Hábitos y cuestionario</h2>
+    <button class="task-banner ${hoyHecho?'done':''}" id="openHabitsBtn">
+      <span class="task-ic">${icPerson()}</span>
+      <span class="task-txt">
+        <b>Hábitos</b>
+        <span>${totalHabitos ? (hoyHecho ? 'Marcados hoy · editar y ver tu constancia' : totalHabitos+' hábito'+(totalHabitos===1?'':'s')+' · se marcan en el registro de antes de dormir') : 'Crea tus hábitos del día a día'}</span>
+      </span>
+      <span class="task-arrow">${hoyHecho?'✓':'›'}</span>
+    </button>
+    <button class="task-banner ${existing?'done':''}" id="openQuestBtn" style="margin-top:10px;">
+      <span class="task-ic">${icClipboard()}</span>
+      <span class="task-txt">
+        <b>Cuestionario semanal</b>
+        <span>${existing ? 'Respondido el '+(existing.date||wk)+' · toca para revisarlo' : 'Pendiente · sábado '+saturdayOfWeek()}</span>
+      </span>
+      <span class="task-arrow">${existing?'✓':'›'}</span>
+    </button>
+  </div>`;
+
+  html += await tplSnackCard(athleteId);
   const jRaw = await safeGet('journal-'+athleteId, true);
   const journal = jRaw ? JSON.parse(jRaw) : [];
   const planCal = await getPlan(athleteId);
   const compsCal = await getCompeticiones(athleteId);
-  let html = `<div class="card" id="calCard"><h2>Calendario</h2>${monthGridHtml(call.nextDate, journal, state.calOffset||0, planCal, compsCal)}</div>`;
+  html += `<div class="card" id="calCard"><h2>Calendario</h2>${monthGridHtml(call.nextDate, journal, state.calOffset||0, planCal, compsCal)}</div>`;
 
   // Videollamada
   html += `<div class="card"><h2>Videollamada de revisión</h2>`;
@@ -11070,32 +11114,6 @@ async function tplCalendarioAtleta(athleteId){
     html += `<div class="cal-banner muted">Tu entrenador aún no ha programado la próxima revisión.</div>`;
   }
   html += `</div>`;
-
-  // Estado del check diario para el banner
-  const habCfg = await getHabitDefs(athleteId);
-  const habLog = await getHabitLog(athleteId);
-  const totalHabitos = habCfg.coach.length + habCfg.athlete.length;
-  const hoyHecho = !!(habLog[todayISO()] && Object.keys(habLog[todayISO()]).length);
-
-  // El check diario va primero: es lo que toca a diario, frente al semanal.
-  html += `<div class="card"><h2>Tareas</h2>
-    <button class="task-banner ${hoyHecho?'done':''}" id="openHabitsBtn">
-      <span class="task-ic">${icPerson()}</span>
-      <span class="task-txt">
-        <b>Check diario</b>
-        <span>${totalHabitos ? (hoyHecho ? 'Registrado hoy · toca para revisarlo' : 'Pendiente hoy · '+totalHabitos+' hábito'+(totalHabitos===1?'':'s')) : 'Añade tus hábitos del día a día'}</span>
-      </span>
-      <span class="task-arrow">${hoyHecho?'✓':'›'}</span>
-    </button>
-    <button class="task-banner ${existing?'done':''}" id="openQuestBtn" style="margin-top:10px;">
-      <span class="task-ic">${icClipboard()}</span>
-      <span class="task-txt">
-        <b>Cuestionario semanal</b>
-        <span>${existing ? 'Respondido el '+(existing.date||wk)+' · toca para revisarlo' : 'Pendiente · sábado '+saturdayOfWeek()}</span>
-      </span>
-      <span class="task-arrow">${existing?'✓':'›'}</span>
-    </button>
-  </div>`;
 
   const histRaw = await safeGet('routine-history-'+athleteId, true);
   const hist = normalizaHistorial(histRaw ? JSON.parse(histRaw) : []);
@@ -12217,44 +12235,34 @@ function tplTendenciaHabitos(todos, log, opts){
 async function tplHabitos(athleteId){
   const cfg = await getHabitDefs(athleteId);
   const log = await getHabitLog(athleteId);
-  const hoy = todayISO();
-  const deHoy = log[hoy] || {};
   const todos = [...cfg.coach.map(h=>({...h, fijo:true})), ...cfg.athlete.map(h=>({...h, fijo:false}))];
-
+  const editando = state.habEdit || null;
   let html = `<div class="card">
     <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:4px;">
-      <h2 style="margin:0;">Check diario</h2>
+      <h2 style="margin:0;">Hábitos</h2>
       <button class="btn ghost small" id="closeHabitsBtn">← Calendario</button>
     </div>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">${new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'})}</p>
-    ${todos.length ? `<div class="hab-anoche"><p>Lo más cómodo es marcarlos por la noche, en el <b>mismo registro de antes de dormir</b>: pestaña Hábitos. Se guardan en el mismo sitio, así que da igual dónde los marques.</p><button class="btn small" id="habANocheBtn">Abrir el registro de antes de dormir</button></div>` : ''}`;
-
-  if(!todos.length){
-    html += `<div class="empty">Aún no hay hábitos que seguir. Añade los tuyos abajo o espera a que tu entrenador te asigne alguno.</div>`;
-  }
+    <div class="hab-anoche"><p>Cada día se marcan en el <b>registro de antes de dormir</b>, junto al resto de preguntas. Aquí los creas, los editas y ves tu constancia.</p>
+      ${todos.length ? `<button class="btn small" id="habANocheBtn">Marcar los de hoy</button>` : ''}</div>`;
+  if(!todos.length) html += `<div class="empty">Aún no hay hábitos que seguir. Añade los tuyos abajo o espera a que tu entrenador te asigne alguno.</div>`;
   todos.forEach(h=>{
-    const v = deHoy[h.id];
-    html += `<div class="habit-row">
-      <div class="habit-head">
-        <b>${escapeHtml(h.name)}</b>
-        ${h.fijo?'<span class="habit-tag">de tu entrenador</span>':''}
+    const tipo = HABIT_TYPES[h.type] || h.type;
+    if(!h.fijo && editando === h.id){
+      html += `<div class="habit-row hab-ed" data-habedrow="${h.id}">
+        <div class="ex-grid">
+          <div class="full"><label class="field-label">Nombre</label><input type="text" class="hab-ed-nombre" value="${escapeHtml(h.name)}" maxlength="60" style="width:100%;"></div>
+          <div class="full"><label class="field-label">Unidad (opcional)</label><input type="text" class="hab-ed-unidad" value="${escapeHtml(h.unit||'')}" maxlength="16" placeholder="h, pasos, g" style="width:100%;"></div>
+        </div>
+        <p class="snack-nota" style="margin:6px 0 0;">El tipo (${escapeHtml(tipo)}) no se cambia para no mezclar el historial.</p>
+        <div class="row" style="gap:8px;margin-top:8px;"><button class="btn small" data-habguardar="${h.id}">Guardar</button><button class="btn ghost small" data-habcancel="1">Cancelar</button><button class="btn ghost small" data-delhabit="${h.id}" style="margin-left:auto;">Quitar</button></div>
       </div>`;
-    if(h.type === 'check'){
-      const si = (v===true||v==='true');
-      const no = (v===false||v==='false');
-      html += `<div class="row" style="gap:8px;">
-        <button class="habit-check ${si?'on':''}" data-habit="${h.id}" data-type="check" data-val="si">✓ Sí</button>
-        <button class="habit-check no ${no?'on':''}" data-habit="${h.id}" data-type="check" data-val="no">✕ No</button>
-      </div>`;
-    } else if(h.type === 'scale'){
-      html += `<div class="scale" data-habitscale="${h.id}">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${String(v)===String(n)?'sel':''}">${n}</button>`).join('')}</div>`;
-    } else {
-      html += `<div class="row"><input type="number" class="habit-num" data-habit="${h.id}" value="${v!==undefined?v:''}" placeholder="0" style="width:110px;">${h.unit?`<span style="font-size:12.5px;color:var(--muted);">${escapeHtml(h.unit)}</span>`:''}</div>`;
+      return;
     }
-    if(!h.fijo) html += `<button class="btn ghost small" data-delhabit="${h.id}" style="margin-top:8px;">Quitar</button>`;
-    html += `</div>`;
+    html += `<div class="habit-row hab-lista">
+      <div class="habit-head"><b>${escapeHtml(h.name)}</b>${h.fijo?'<span class="habit-tag">de tu entrenador</span>':''}</div>
+      <div class="hab-lista-pie"><span>${escapeHtml(tipo)}${h.unit ? ' · '+escapeHtml(h.unit) : ''}</span>${h.fijo ? '' : `<button class="btn ghost small" data-habeditar="${h.id}">Editar</button>`}</div>
+    </div>`;
   });
-
   html += `<div class="block-title">Añadir un hábito propio</div>
     <div class="ex-grid">
       <div class="full"><label class="field-label">Nombre</label><input type="text" id="newHabitName" placeholder="Ej. Estiramientos, Magnesio…" list="habitSuggestions" style="width:100%;"></div>
@@ -12263,16 +12271,10 @@ async function tplHabitos(athleteId){
     </div>
     <button class="btn ghost" id="addHabitBtn" style="margin-top:10px;">+ Añadir</button>
   </div>`;
-
-  // Estadística de constancia
   if(!todos.length){
     html += `<div class="card"><h2>Regularidad</h2>
       <div class="empty">Cuando tengas hábitos que seguir, aquí aparecerá tu gráfica de constancia. Añade los tuyos arriba o espera a que tu entrenador te asigne alguno.</div></div>`;
-  }
-  if(todos.length){
-    const dias = ultimosDias(7);
-    html += tplTendenciaHabitos(todos, log);
-  }
+  } else html += tplTendenciaHabitos(todos, log);
   return html;
 }
 
@@ -15624,7 +15626,7 @@ async function tplPerfilCoachBodyBase(athleteId){
 async function tplTareasCoach(athleteId){
   const tareas = await getTareas(athleteId);
   let html = `<div class="card"><h2>Tareas para este atleta</h2>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Le aparece como banner en su Rutina hasta que la marque como hecha.</p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Le aparece arriba en su Agenda (y un aviso en Semana) hasta que la marque como hecha.</p>
     <div class="block-title">Guías nutricionales listas para mandar</div>
     ${Object.entries(PLANTILLAS_GUIA).map(([key,g])=>`<button class="btn ghost small" data-plantillaguia="${key}" style="margin-bottom:8px;margin-right:8px;">📄 ${escapeHtml(g.titulo)}</button>`).join('')}
     <p style="font-size:11px;color:var(--muted);margin-bottom:14px;">Rellena el título y el cuerpo; puedes editarlo antes de enviar.</p>
@@ -19029,6 +19031,8 @@ async function bindDynamicEvents(){
     state.agendaSub = b.dataset.agendasub;
     renderScrollTop();
   }));
+  document.querySelectorAll('[data-sesionsub]').forEach(b=>b.addEventListener('click', ()=>{ state.sesionSub = b.dataset.sesionsub; renderScrollTop(); }));
+  document.querySelectorAll('[data-iratab]').forEach(b=>b.addEventListener('click', ()=>{ state.tab = b.dataset.iratab; renderNav(); renderScrollTop(); }));
   document.querySelectorAll('[data-progresosub]').forEach(b=>b.addEventListener('click', ()=>{
     state.progresoSub = b.dataset.progresosub;
     renderTabScrollTop();
@@ -19840,12 +19844,24 @@ async function bindDynamicEvents(){
   const openHab = document.getElementById('openHabitsBtn');
   if(openHab) openHab.addEventListener('click', ()=>{ state.calShowHabits = true; renderScrollTop(); });
   const closeHab = document.getElementById('closeHabitsBtn');
-  if(closeHab) closeHab.addEventListener('click', ()=>{ state.calShowHabits = false; renderScrollTop(); });
+  if(closeHab) closeHab.addEventListener('click', ()=>{ state.calShowHabits = false; state.habEdit = null; renderScrollTop(); });
   const habANoche = document.getElementById('habANocheBtn');
   if(habANoche) habANoche.addEventListener('click', async ()=>{
-    await suenoAbre(athleteId, 'noche', todayISO());
-    const t = document.querySelector('[data-stab="hab"]'); if(t) t.click();
+    await suenoAbre(athleteId, 'noche');
+    const sec = document.querySelector('#suenoOverlay .sue-habitos'); if(sec && sec.scrollIntoView) sec.scrollIntoView({ behavior:'smooth', block:'start' });
   });
+  document.querySelectorAll('[data-habeditar]').forEach(b=>b.addEventListener('click', ()=>{ state.habEdit = b.dataset.habeditar; renderKeepScroll(); }));
+  document.querySelectorAll('[data-habcancel]').forEach(b=>b.addEventListener('click', ()=>{ state.habEdit = null; renderKeepScroll(); }));
+  document.querySelectorAll('[data-habguardar]').forEach(b=>b.addEventListener('click', async ()=>{
+    const fila = b.closest('[data-habedrow]'), nombre = fila.querySelector('.hab-ed-nombre').value.trim();
+    if(!nombre){ toast('Ponle un nombre al hábito', true); return; }
+    if(esMenor(state.athletes.find(a=>a.id===athleteId)) && temaBloqueadoMenor(nombre)){ toast('Eso mejor coméntaselo a tu entrenador antes de añadirlo', true); return; }
+    const cfg = await getHabitDefs(athleteId), h = cfg.athlete.find(x=>x.id === b.dataset.habguardar); if(!h) return;
+    h.name = nombre; h.unit = fila.querySelector('.hab-ed-unidad').value.trim();
+    const ok = await saveHabitDefs(athleteId, cfg);
+    toast(ok ? 'Hábito actualizado' : 'No se pudo guardar', !ok);
+    state.habEdit = null; renderKeepScroll();
+  }));
 
   document.querySelectorAll('[data-habitsel]').forEach(b=>b.addEventListener('click', ()=>{
     const id = b.dataset.habitsel;
