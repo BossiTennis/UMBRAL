@@ -922,6 +922,16 @@
   .hab-lista-pie{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-top:2px;}
   .hab-ed{border:1px solid var(--gold);border-radius:10px;padding:10px 12px;}
   .sue-habitos{margin:18px 0 14px;padding-top:14px;border-top:1px solid var(--border);}
+  .sue-ciclo{margin:18px 0 14px;padding-top:14px;border-top:1px solid var(--border);}
+  .sue-cic button{font-family:inherit;font-weight:500;font-size:12.5px;}
+  .sue-cic-tip{font-size:12.5px;line-height:1.55;background:var(--gold-dim);border-radius:8px;padding:9px 11px;margin:0 0 12px;}
+  .spq-ep-tit{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:10px 0 2px;}
+  .spq-ep li{font-size:12.5px;}
+  .nom-ov{position:fixed;inset:0;z-index:300;background:rgba(10,14,22,.55);display:flex;align-items:center;justify-content:center;padding:16px;}
+  .nom-caja{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;max-width:420px;width:100%;box-shadow:0 18px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:8px;}
+  .nom-caja h3{font-family:'Fraunces',serif;font-size:18px;margin:0;}
+  .nom-caja p{font-size:13px;line-height:1.55;margin:0 0 4px;}
+  .nom-caja .btn{width:100%;white-space:normal;text-align:center;}
   .sue-hab-cab{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
   .hab-anoche p{font-size:12.5px;line-height:1.55;margin-bottom:8px;}
   .ec-hora{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--border);}
@@ -1794,7 +1804,8 @@ const PLANES = {
     incluye:[
       'Cuestionario de seguimiento semanal',
       'Ajustes de tu entrenamiento cada 15 días',
-      '8 tests básicos y retest cada 8 semanas',
+      '8 tests básicos, que se repiten cuando tu entrenador lo vea conveniente',
+      'Seguimiento de hábitos, sueño, descanso, fatiga y síntomas del ciclo menstrual, y su relación con el entrenamiento',
       'Entre 3 y 5 vídeos a la semana, con respuesta en fin de semana',
       'Videollamada de arranque',
       'Orientación nutricional general ligada al ciclo',
@@ -1813,11 +1824,12 @@ const PLANES = {
     incluye:[
       'Cuestionario de seguimiento semanal',
       'Ajustes de tu entrenamiento cada semana',
-      'Batería completa de tests (más de 15) y retest cada 8 semanas',
+      'Batería completa de tests (más de 15), que se repiten cuando tu entrenador lo vea conveniente',
+      'Seguimiento de hábitos, sueño, descanso, fatiga y síntomas del ciclo menstrual, y su relación con el entrenamiento',
       'Entre 5 y 8 vídeos a la semana, con respuesta en 24 h',
-      'Videollamada de arranque y una al mes',
-      'Informe de evolución cada 6 semanas, comentado en videollamada',
-      'Preparación de competición',
+      'Videollamada de arranque',
+      'Informe de evolución mensual o semanal, si lo pides',
+      'Preparación de competición, si la quieres',
       'Orientación nutricional individualizada ligada al ciclo',
       'WhatsApp: respuesta en 24-48 h laborables'
     ]
@@ -5302,12 +5314,12 @@ async function saveResumenNota(athleteId, key, campo, valor){
   return safeSet('resumen-notas-'+athleteId, JSON.stringify(o), true);
 }
 // ---- Lo que el entrenador edita antes de descargar: secciones, listas de texto y ejercicios ocultos ----
-const RES_SECCIONES = [['constancia', 'Constancia'], ['sueno', 'Sueño y descanso'], ['entreno', 'Entrenamiento y progreso'], ['habitos', 'Hábitos'], ['estudio', 'Estudio y foco'], ['extras', 'Seguimiento personalizado'], ['balance', 'Balance y lectura']];
+const RES_SECCIONES = [['constancia', 'Constancia'], ['sueno', 'Sueño y descanso'], ['entreno', 'Entrenamiento y progreso'], ['habitos', 'Hábitos'], ['estudio', 'Estudio y foco'], ['dolor', 'Dolor'], ['extras', 'Seguimiento personalizado'], ['balance', 'Balance y lectura']];
 function resEdLimpia(r){
   r = (r && typeof r === 'object' && !Array.isArray(r)) ? r : {};
   const lis = a=>Array.isArray(a) ? a.map(x=>String(x == null ? '' : x).slice(0, 220)).slice(0, 12) : null, sec = {};
   RES_SECCIONES.forEach(z=>{ if(r.sec && r.sec[z[0]] === false) sec[z[0]] = false; });
-  return { sec, dest:lis(r.dest), lec:lis(r.lec), exo:lis(r.exo), crecOff:Array.isArray(r.crecOff) ? r.crecOff.map(x=>String(x).slice(0, 80)).slice(0, 20) : [] };
+  return { sec, dest:lis(r.dest), lec:lis(r.lec), exo:lis(r.exo), dob:lis(r.dob), crecOff:Array.isArray(r.crecOff) ? r.crecOff.map(x=>String(x).slice(0, 80)).slice(0, 20) : [] };
 }
 function resSecOn(D, k){ return !(D.ed && D.ed.sec && D.ed.sec[k] === false); }
 function resCrecVis(D){ const off = (D.ed && D.ed.crecOff) || []; return D.crec.filter(c=>!off.includes(c.nombre)); }
@@ -5350,12 +5362,17 @@ async function datosResumen(athleteId, tipo, ref, hoy){
   const semanaPlan = (tipo === 'sem' && inicio && per.hasta >= inicio) ? Math.floor(Math.max(0, resDiff(inicio, per.desde))/7) + 1 : null;
   const key = tipo + '-' + (tipo === 'mes' ? per.desde.slice(0,7) : per.desde), notas = (await getResumenNotas(athleteId))[key] || {};
   const pq = await getPreguntasSueno(athleteId), limite = per.hasta < hoy ? per.hasta : hoy;
-  const extras = resumenExtras(sg, pq.items, per.desde, per.hasta, prev.desde, prev.hasta);
-  const extrasObs = extrasObservaciones(sg, pq.items, per.desde, per.hasta, prev.desde, prev.hasta, tipo === 'mes' ? 'el mes anterior' : 'la semana anterior', limite);
+  // El dolor tiene sección propia; el resto de preguntas propias van en «Seguimiento personalizado».
+  const pqDolor = pq.items.filter(q=>q.grupo === 'dolor'), pqOtras = pq.items.filter(q=>q.grupo !== 'dolor'), antTxt = tipo === 'mes' ? 'el mes anterior' : 'la semana anterior';
+  const extras = resumenExtras(sg, pqOtras, per.desde, per.hasta, prev.desde, prev.hasta);
+  const extrasObs = extrasObservaciones(sg, pqOtras, per.desde, per.hasta, prev.desde, prev.hasta, antTxt, limite);
+  let diarioR = null; try{ diarioR = await getDiarioRegla(athleteId); }catch(e){}
+  const dolor = resumenDolor(sg, pqDolor, diarioR, per.desde, per.hasta, prev.desde, prev.hasta);
+  const dolorObs = extrasObservaciones(sg, pqDolor, per.desde, per.hasta, prev.desde, prev.hasta, antTxt, limite);
   const habitos = resumenHabitos(d.defs, d.log, per.desde, per.hasta, prev.desde, prev.hasta, limite);
   const elog = await getEstLog(athleteId), estudio = resumenEstudio(elog, per.desde, per.hasta, prev.desde, prev.hasta), obsEstudio = estObservaciones(elog, sg, limite);
   return { id:athleteId, nombre:at.name || '', tipo, per, prev, ahora, antes, habitos, estudio, obsEstudio, sn:{ dias, racha:rac, hechos:dias.filter(x=>x.hecho).length, cheats:dias.filter(x=>x.cheat).length, posibles:dias.filter(x=>!x.futuro).length },
-    sesiones, crec:ejerciciosCrecimiento(d.journal, per.desde, per.hasta, 5), cargaRel, bloques, sueno, suenoAntes, suenoBloques, suenoDias, obsSueno, semanaPlan, key, nota:notas.nota || '', foco:notas.foco || '', extras, extrasObs, ed:resEdLimpia(notas.edit), escala:escalaDe(at), generado:hoy };
+    sesiones, crec:ejerciciosCrecimiento(d.journal, per.desde, per.hasta, 5), cargaRel, bloques, sueno, suenoAntes, suenoBloques, suenoDias, obsSueno, semanaPlan, key, nota:notas.nota || '', foco:notas.foco || '', extras, extrasObs, dolor, dolorObs, ed:resEdLimpia(notas.edit), escala:escalaDe(at), generado:hoy };
 }
 // ---- Lectura automática (descriptiva, sin diagnosticar) ----
 function resDelta(a, b){ return (typeof a === 'number' && typeof b === 'number') ? b - a : null; }
@@ -5400,6 +5417,11 @@ function textoResumen(D){
   if(resSecOn(D, 'habitos') && D.habitos && D.habitos.items.length && D.habitos.diasReg > 0){ const H = D.habitos; L.push(`• Hábitos: ${H.diasReg} de ${H.diasPosibles} días con registro${H.media !== null ? ` · media de ${nFmt(H.media, 1)} de ${H.n} cumplidos al día` : ''}.`); }
   if(resSecOn(D, 'estudio') && D.estudio && D.estudio.ses > 0) L.push(`• Estudio: ${D.estudio.ses} ${D.estudio.ses === 1 ? 'sesión' : 'sesiones'} · ${estHM(D.estudio.min)} de foco${D.estudio.conc !== null ? ` · concentración ${nFmt(D.estudio.conc, 1)}/5` : ''}${D.estudio.sn ? ` · ${D.estudio.sn} Snack${D.estudio.sn === 1 ? '' : 's'} en descansos` : ''}.`);
   const crV = resCrecVis(D);
+  if(resSecOn(D, 'dolor') && D.dolor){
+    D.dolor.items.forEach(r=>{ if(r.q.tipo !== 'eva') return; const ep = r.episodios || [];
+      L.push(`• ${r.q.corto}: ${nFmt(r.media, 1)}/10 de media (máx. ${nFmt(r.max, 0)}) · ${r.diasDolor} de ${r.n} días con dolor${ep.length ? '. ' + episodioTxt(ep[ep.length-1], D.per.desde) : ''}.`); });
+    if(D.dolor.ciclo && D.dolor.ciclo.conDolor) L.push(`• Dolor de regla: ${D.dolor.ciclo.conDolor} de ${D.dolor.ciclo.n} días anotados, máximo «${DIARIO_DOLOR[D.dolor.ciclo.max].toLowerCase()}».`);
+  }
   if(resSecOn(D, 'extras')) D.extras.slice(0, 4).forEach(r=>{ const q = r.q; if(q.tipo === 'eva' || q.tipo === 'esc') L.push(`• ${q.corto}: ${nFmt(r.media, 1)}/${q.tipo === 'eva' ? 10 : 5} de media${r.max !== null ? ` (máx. ${nFmt(r.max, 0)})` : ''}.`);
     else if(q.tipo === 'opc' || q.tipo === 'sino'){ const top = sueOpciones(q).map(o=>[o, r.dist[o[0]]]).sort((a, b)=>b[1] - a[1])[0]; if(top && top[1] > 0) L.push(`• ${q.corto}: «${top[0][1]}» en ${top[1]} de ${r.n} días.`); } });
   if(crV.length){ L.push('', mes ? '*Donde más has crecido*' : '*Mejora destacada*'); crV.slice(0, mes ? 5 : 1).forEach(c=>L.push(`• ${c.nombre}: ${resSerieTxt(c.ini)} → ${resSerieTxt(c.fin)}`)); }
@@ -5825,6 +5847,28 @@ async function resDibuja(D){
     y += 8;
   }
 
+  // ===== Dolor: evolución día a día y, por episodio, cuándo apareció y desapareció =====
+  if(D.dolor && (D.dolor.items.length || D.dolor.ciclo) && on('dolor')){
+    asegura(150); y = resSec(P, nn(), 'Dolor', y);
+    D.dolor.items.forEach(r=>{
+      const eps = r.episodios || [], lineas = [];
+      if(r.q.tipo === 'eva'){
+        if(mes) lineas.push(`${r.diasDolor} de ${r.n} días registrados con dolor · ${eps.length} ${eps.length === 1 ? 'episodio' : 'episodios'}.`);
+        if(eps.length) eps.slice(-(mes ? 5 : 3)).forEach(ep=>lineas.push(episodioTxt(ep, D.per.desde) + '.'));
+        else lineas.push(r.diasDolor ? '' : 'Sin dolor en los días registrados.');
+      }
+      asegura(74 + lineas.length*13); y = resFilaExtra(P, y, r, D) + (lineas.filter(Boolean).length ? 17 : 6);
+      lineas.filter(Boolean).forEach(t=>{ asegura(16); P.circulo(44, y - 2.5, 1.7, RES_COL.mal); y = P.parr(t, 54, y, RES_W - 100, 11, { f:'sans', s:8.2 }) + 2; });
+      y += lineas.length ? 8 : 2;
+    });
+    if(D.dolor.ciclo){
+      const c = D.dolor.ciclo; asegura(30);
+      y = P.parr(`Dolor de regla (diario que comparte): ${c.conDolor} de ${c.n} ${c.n === 1 ? 'día anotado' : 'días anotados'} con dolor${c.conDolor ? `, máximo «${DIARIO_DOLOR[c.max].toLowerCase()}»` : ''}${c.fuerte ? ` · ${c.fuerte} ${c.fuerte === 1 ? 'día' : 'días'} fuerte o más` : ''} · ${c.sangrado} ${c.sangrado === 1 ? 'día' : 'días'} con sangrado.`, 40, y + 4, RES_W - 80, 11.5, { f:'sans', s:8.4 }) + 8;
+    }
+    resListaDe(D, 'dob', D.dolorObs || []).slice(0, 4).forEach(t=>{ asegura(30); P.circulo(44, y - 2.5, 1.8, RES_COL.oroClaro); y = P.parr(t, 54, y, RES_W - 100, 11.5, { f:'sans', s:8.4 }) + 4; });
+    P.txt('Datos de registro, no un diagnóstico. Si un dolor persiste o empeora, conviene valorarlo en consulta.', 40, y + 6, { f:'sans', s:6.8, c:RES_COL.suave }); y += 22;
+  }
+
   // ===== Seguimiento personalizado (preguntas propias del entrenador) =====
   if(D.extras.length && on('extras')){
     asegura(120); y = resSec(P, nn(), 'Seguimiento personalizado', y);
@@ -5942,8 +5986,8 @@ function resEditorAbre(D){
   const viejo = document.getElementById('resEditor'); if(viejo) viejo.remove();
   const ov = document.createElement('div'); ov.id = 'resEditor'; ov.className = 'snack-ov res-ed-ov'; document.body.appendChild(ov);
   const mes = D.tipo === 'mes', ed = D.ed, hayExtras = D.extras.length > 0;
-  const tit = { dest:'Lo destacado (etiquetas de la franja superior)', lec:mes ? 'Lectura del mes' : 'En resumen', exo:'Observaciones del seguimiento personalizado' };
-  const auto = { dest:()=>resDestacados(D), lec:()=>resLectura(D), exo:()=>D.extrasObs };
+  const tit = { dest:'Lo destacado (etiquetas de la franja superior)', lec:mes ? 'Lectura del mes' : 'En resumen', exo:'Observaciones del seguimiento personalizado', dob:'Observaciones del dolor' };
+  const auto = { dest:()=>resDestacados(D), lec:()=>resLectura(D), exo:()=>D.extrasObs, dob:()=>D.dolorObs || [] };
   const lista = k=>{
     const custom = Array.isArray(ed[k]), arr = custom ? ed[k] : auto[k]();
     return `<div class="ed-lista" data-edlista="${k}"><div class="ed-tit"><b>${tit[k]}</b><span class="ed-tag" ${custom ? '' : 'hidden'}>editado</span></div>
@@ -5951,7 +5995,7 @@ function resEditorAbre(D){
       <div class="row" style="gap:8px;flex-wrap:wrap;"><button class="btn ghost small" data-edadd="${k}">+ Añadir línea</button><button class="btn ghost small" data-edauto="${k}">Restaurar el texto automático</button></div></div>`;
   };
   const grupo = (titulo, cuerpo, abierto)=>`<details class="ed-grupo" ${abierto ? 'open' : ''}><summary>${titulo}</summary>${cuerpo}</details>`;
-  const secs = RES_SECCIONES.filter(z=>(z[0] !== 'extras' || hayExtras) && (z[0] !== 'habitos' || (D.habitos && D.habitos.items.length > 0)) && (z[0] !== 'estudio' || (D.estudio && D.estudio.ses > 0))).map(z=>`<label class="chk"><input type="checkbox" data-edsec="${z[0]}" ${resSecOn(D, z[0]) ? 'checked' : ''}> ${z[1]}</label>`).join('');
+  const secs = RES_SECCIONES.filter(z=>(z[0] !== 'extras' || hayExtras) && (z[0] !== 'dolor' || (D.dolor && (D.dolor.items.length || D.dolor.ciclo))) && (z[0] !== 'habitos' || (D.habitos && D.habitos.items.length > 0)) && (z[0] !== 'estudio' || (D.estudio && D.estudio.ses > 0))).map(z=>`<label class="chk"><input type="checkbox" data-edsec="${z[0]}" ${resSecOn(D, z[0]) ? 'checked' : ''}> ${z[1]}</label>`).join('');
   const crec = D.crec.length ? grupo('Ejercicios destacados', D.crec.map((c, i)=>`<label class="chk"><input type="checkbox" data-edcrec="${i}" ${(ed.crecOff || []).includes(c.nombre) ? '' : 'checked'}> ${escapeHtml(c.nombre)} <small>+${nFmt(c.cambio, 0)} %</small></label>`).join(''), false) : '';
   const puedeCompartir = resPuedeCompartir();
   ov.innerHTML = `<div class="snack-in res-ed"><div class="snack-bar"><button class="btn ghost small" id="edCerrar">Cerrar</button><span class="snack-eyebrow">${escapeHtml(D.per.etiqueta)}</span></div>
@@ -5962,7 +6006,7 @@ function resEditorAbre(D){
       <div class="res-ed-form">
         ${grupo('Secciones del PDF', `<div class="ed-secs">${secs}</div>`, true)}
         ${grupo('Mensaje de tu entrenador', `<textarea id="edNota" maxlength="700" rows="4" style="width:100%;" placeholder="Una o dos frases para ${escapeHtml(String(D.nombre).split(' ')[0] || 'ella')}…">${escapeHtml(D.nota)}</textarea>${mes ? `<label class="field-label" style="margin-top:8px;">Foco del próximo mes</label><textarea id="edFoco" maxlength="400" rows="3" style="width:100%;">${escapeHtml(D.foco)}</textarea>` : ''}`, true)}
-        ${grupo('Textos automáticos', lista('dest') + lista('lec') + (hayExtras ? lista('exo') : ''), false)}
+        ${grupo('Textos automáticos', lista('dest') + lista('lec') + (D.dolor && D.dolor.items.length ? lista('dob') : '') + (hayExtras ? lista('exo') : ''), false)}
         ${crec}
       </div>
       <div class="res-ed-prev"><div id="edPrev"><p class="snack-nota">Preparando la vista previa…</p></div></div>
@@ -6145,6 +6189,46 @@ function resumenExtra(log, q, desde, hasta, pd, ph){
   else if(q.tipo === 'opc' || q.tipo === 'sino'){ r.dist = {}; sueOpciones(q).forEach(o=>{ r.dist[o[0]] = 0; }); vs.forEach(v=>{ r.dist[v]++; }); }
   return r;
 }
+// ---- Dolor: escalas EVA del registro (grupo «dolor») y diario de regla ----
+// Un episodio empieza el primer día con dolor (EVA > 0) y termina el primer día
+// registrado sin dolor. Si pasan más de 7 días sin registros, se cierra «sin datos».
+function episodiosDolor(serie){
+  const eps = []; let cur = null, prevF = null;
+  (serie || []).forEach(({ fecha, v })=>{
+    if(cur && prevF && diasEntre(prevF, fecha) > 7){ cur.sinDatos = true; cur = null; }
+    if(v > 0){
+      if(!cur){ cur = { inicio:fecha, max:v, fMax:fecha, fin:null, ultimo:v, fUltimo:fecha, sinDatos:false }; eps.push(cur); }
+      else if(v > cur.max){ cur.max = v; cur.fMax = fecha; }
+      cur.ultimo = v; cur.fUltimo = fecha;
+    } else if(cur){ cur.fin = fecha; cur = null; }
+    prevF = fecha;
+  });
+  return eps;
+}
+function episodioTxt(ep, desde){
+  let t = ep.inicio < desde ? `Venía de antes (desde el ${fechaCortaISO(ep.inicio)})` : `Apareció el ${fechaCortaISO(ep.inicio)}`;
+  t += ` · máximo ${ep.max}/10${ep.fMax !== ep.inicio ? ' el ' + fechaCortaISO(ep.fMax) : ''}`;
+  if(ep.fin) t += ` · desapareció el ${fechaCortaISO(ep.fin)} (${diasEntre(ep.inicio, ep.fin)} ${diasEntre(ep.inicio, ep.fin) === 1 ? 'día' : 'días'})`;
+  else if(ep.sinDatos) t += ` · sin registros después del ${fechaCortaISO(ep.fUltimo)}`;
+  else t += ` · sigue (último: ${ep.ultimo}/10 el ${fechaCortaISO(ep.fUltimo)})`;
+  return t;
+}
+function resumenDolor(sg, preguntas, diario, desde, hasta, pd, ph){
+  const items = (preguntas || []).filter(q=>q.grupo === 'dolor').map(q=>{
+    const r = resumenExtra(sg, q, desde, hasta, pd, ph);
+    if(q.tipo === 'eva'){
+      r.episodios = episodiosDolor(sueSerieExtra(sg, q, sumaDiasISO(desde, -60), hasta)).filter(ep=>ep.inicio <= hasta && (ep.fin ? ep.fin >= desde : ep.fUltimo >= desde));
+      r.diasDolor = r.serie.filter(x=>x.v > 0).length;
+    }
+    return r;
+  }).filter(r=>r.n > 0);
+  let ciclo = null;
+  if(diario && diario.compartir){
+    const fs = Object.keys(diario.dias || {}).filter(f=>f >= desde && f <= hasta);
+    if(fs.length){ const dl = fs.map(f=>diario.dias[f].dolor || 0); ciclo = { n:fs.length, conDolor:dl.filter(v=>v > 0).length, max:Math.max(...dl), fuerte:dl.filter(v=>v >= 3).length, sangrado:fs.filter(f=>(diario.dias[f].flujo || 0) >= 1).length }; }
+  }
+  return { items, ciclo };
+}
 // Preguntas con alguna respuesta en el periodo (o activas, si se piden todas).
 function resumenExtras(log, preguntas, desde, hasta, pd, ph, todas){
   return (preguntas || []).map(q=>resumenExtra(log, q, desde, hasta, pd, ph)).filter(r=>r.n > 0 || (todas && r.q.activa));
@@ -6222,6 +6306,7 @@ async function suenoAbre(athleteId, modo, diaSel){
   const o = suenoOverlay(), horaAhora = sueAhoraHM(ahora), pq = (await getPreguntasSueno(athleteId)).items.filter(q=>q.activa && q.cuando === modo), pex = (prev.extra && typeof prev.extra === 'object') ? prev.extra : {};
   let hdefs = { coach:[], athlete:[] }, hlog = {};
   if(modo === 'noche'){ hdefs = await getHabitDefs(athleteId); try{ hlog = JSON.parse(JSON.stringify(await getHabitLog(athleteId))); }catch(e){ hlog = {}; } }
+  let cic = null; if(modo === 'noche'){ try{ cic = await cicloNocheDatos(athleteId, dia); }catch(e){ cic = null; } }
   const hTodos = [...hdefs.coach.map(h=>({ ...h, fijo:true })), ...hdefs.athlete.map(h=>({ ...h, fijo:false }))], hOrig = JSON.stringify(hlog[dia] || {});
   const esc = (id, etq, bajo, alto, v)=>`<div class="q-item"><p>${etq}</p><div class="scale" data-sueq="${id}" data-tipo="n">${[1,2,3,4,5].map(n=>`<button data-val="${n}" class="${v === n ? 'sel' : ''}">${n}</button>`).join('')}</div><div class="scale-labels"><span>1 · ${bajo}</span><span>5 · ${alto}</span></div></div>`;
   const chips = (id, etq, opts, v, tipo)=>`<div class="q-item"><p>${etq}</p><div class="scale" data-sueq="${id}" data-tipo="${tipo || 's'}">${opts.map(([val, txt])=>`<button data-val="${val}" class="${String(v) === String(val) ? 'sel' : ''}">${txt}</button>`).join('')}</div></div>`;
@@ -6262,6 +6347,15 @@ async function suenoAbre(athleteId, modo, diaSel){
     cuerpoFinal = cuerpo + `<div class="sue-habitos"><div class="sue-hab-cab"><span class="snack-eyebrow">Hábitos de ${escapeHtml(dia === hoy ? 'hoy' : sueDiaTxt(dia, hoy))}</span><span class="sue-badge" id="sueHabBadge"></span></div>
         ${hTodos.length ? hTodos.map(h=>sueHabFila(h, (hlog[dia] || {})[h.id])).join('') : '<p class="snack-nota" style="margin:4px 0 0;">Aún no hay hábitos que seguir. Créalos en Agenda → Hábitos, o espera a que tu entrenador te asigne alguno.</p>'}
       </div>`;
+    if(cic){
+      const e0 = cic.e || {}, chipsC = (k, arr)=>`<div class="scale sue-cic" data-scic="${k}">${arr.map((l, i)=>`<button type="button" data-val="${i}" class="${cic.e && (e0[k] || 0) === i ? 'sel' : ''}">${l}</button>`).join('')}</div>`;
+      cuerpoFinal += `<div class="sue-ciclo"><div class="sue-hab-cab"><span class="snack-eyebrow">Tu ciclo · ${escapeHtml(dia === hoy ? 'hoy' : sueDiaTxt(dia, hoy))}</span>${cic.fase ? `<span class="sue-badge">${escapeHtml(cic.fase)}</span>` : ''}</div>
+        ${cic.tip ? `<p class="sue-cic-tip"><b>Para esta fase:</b> ${escapeHtml(cic.tip)} <button type="button" class="snack-info-link" data-sueguia="1">Ver tu guía</button></p>` : ''}
+        <div class="q-item"><p>Sangrado</p>${chipsC('flujo', DIARIO_FLUJO)}</div>
+        <div class="q-item"><p>Dolor de regla</p>${chipsC('dolor', DIARIO_DOLOR)}</div>
+        <div class="q-item"><p>Cómo te has sentido <span class="q-ayuda">Opcional. Puedes marcar varios.</span></p><div class="gal-secs">${DIARIO_SINTOMAS.map(sx=>`<button type="button" class="gs-chip ${(e0.sintomas || []).includes(sx.id) ? 'on' : ''}" data-scsint="${sx.id}">${sx.l}</button>`).join('')}</div></div>
+        <p class="snack-nota" style="margin:2px 0 0;">Va a tu diario de regla y se cruza con tu fase. ${cic.diario.compartir ? 'Lo compartes con tu entrenador.' : 'Solo lo ves tú, salvo que lo compartas desde Perfil → Ciclo.'}</p></div>`;
+    }
   }
   o.innerHTML = `<div class="snack-in"><div class="snack-bar"><button class="btn ghost small" id="sueCerrar">Cerrar</button></div>
     <h2 class="snack-h">${modo === 'noche' ? 'Antes de dormir' : '¿Cómo has dormido?'}</h2>
@@ -6293,18 +6387,33 @@ async function suenoAbre(athleteId, modo, diaSel){
     })));
     o.querySelectorAll('.sh-num').forEach(i=>{ const f = ()=>{ const t = i.value.trim(); setHab(i.dataset.sh, t === '' ? null : parseFloat(t)); }; i.addEventListener('input', f); i.addEventListener('change', f); });
     pintaHab();
+    o.querySelectorAll('[data-scic]').forEach(sc=>sc.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ const ya = b.classList.contains('sel'); sc.querySelectorAll('button').forEach(x=>x.classList.remove('sel')); if(!ya) b.classList.add('sel'); })));
+    o.querySelectorAll('[data-scsint]').forEach(b=>b.addEventListener('click', ()=>b.classList.toggle('on')));
+    o.querySelectorAll('[data-sueguia]').forEach(b=>b.addEventListener('click', ()=>{ suenoCierra(); state.tab = 'perfil'; state.verCiclo = true; renderNav(); renderScrollTop(); }));
   }
+  // Lo que se va a guardar en el diario de regla (null = nada que guardar)
+  const cicLee = ()=>{
+    if(!cic) return { cambio:false };
+    const sel = k=>{ const b = o.querySelector(`[data-scic="${k}"] button.sel`); return b ? parseInt(b.dataset.val, 10) : null; };
+    const fl = sel('flujo'), dl = sel('dolor'), sx = [...o.querySelectorAll('[data-scsint].on')].map(b=>b.dataset.scsint).filter(id=>DIARIO_SINTOMAS.some(z=>z.id === id));
+    const prev = cic.e, notaPrev = prev ? (prev.nota || '') : '';
+    let nuevo = null;
+    if(fl !== null || dl !== null || sx.length) nuevo = { flujo:fl !== null ? fl : 0, dolor:dl !== null ? dl : 0, sintomas:sx, nota:notaPrev };
+    else if(notaPrev) nuevo = { flujo:0, dolor:0, sintomas:[], nota:notaPrev };
+    const norm = x=>x ? JSON.stringify({ flujo:x.flujo || 0, dolor:x.dolor || 0, sintomas:x.sintomas || [], nota:x.nota || '' }) : 'null';
+    return { cambio:norm(nuevo) !== norm(prev), nuevo };
+  };
   o.querySelector('#sueGuardar').addEventListener('click', async ()=>{
     const nuevo = { ts:Date.now() };
     const extra = Object.assign({}, pex);
     pq.forEach(q=>{ let v; if(q.tipo === 'texto'){ const i = o.querySelector(`[data-suex="x_${q.id}"]`); v = i && i.value.trim() ? i.value.trim().slice(0, 200) : null; } else v = val('x_' + q.id); if(v === null) delete extra[q.id]; else extra[q.id] = v; });
     if(Object.keys(extra).length) nuevo.extra = extra;
     let guardaReg = true;
-    const habCambio = modo === 'noche' && JSON.stringify(hlog[dia] || {}) !== hOrig;
+    const habCambio = modo === 'noche' && JSON.stringify(hlog[dia] || {}) !== hOrig, cicL = cicLee();
     if(modo === 'noche'){
       ['desc', 'cama'].forEach(k=>{ const v = tm(k); if(v) nuevo[k] = v; });
       ['cafe', 'cena'].forEach(k=>{ const v = val(k); if(v) nuevo[k] = v; }); const mt = val('mente'); if(mt !== null) nuevo.mente = mt;
-      if(Object.keys(nuevo).length < 2){ if(!habCambio){ toast('Responde al menos una pregunta', true); return; } guardaReg = false; }
+      if(Object.keys(nuevo).length < 2){ if(!habCambio && !cicL.cambio){ toast('Responde al menos una pregunta', true); return; } guardaReg = false; }
     } else {
       const horas = val('horas'), calidad = val('calidad'), energia = val('energia');
       if(horas === null || calidad === null || energia === null){ toast('Responde horas dormidas, calidad y energía', true); return; }
@@ -6315,6 +6424,28 @@ async function suenoAbre(athleteId, modo, diaSel){
     if(habCambio){
       // Se relee el registro de hábitos y solo se sustituye ese día, por si se marcó algo desde otro sitio.
       const hl = await getHabitLog(athleteId); if(hlog[dia] && Object.keys(hlog[dia]).length) hl[dia] = hlog[dia]; else delete hl[dia]; await saveHabitLog(athleteId, hl);
+    }
+    let sugRegla = null;
+    if(cicL.cambio){
+      const dr = await getDiarioRegla(athleteId);
+      if(cicL.nuevo) dr.dias[dia] = cicL.nuevo; else delete dr.dias[dia];
+      await saveDiarioRegla(athleteId, dr);
+      if(cicL.nuevo && cicL.nuevo.flujo >= 2){ try{ sugRegla = diarioInicioSugerido(await getCiclo(athleteId), dr.dias); }catch(e){} }
+    }
+    // Si ha marcado sangrado y esa regla aún no está en su ciclo, se le propone registrarla.
+    if(sugRegla){
+      const si = await new Promise(res=>{
+        o.innerHTML = `<div class="snack-in"><h2 class="snack-h" style="text-align:center;">Guardado</h2>
+          <div class="snack-preg"><p style="font-size:15px;line-height:1.6;margin:0 0 8px;"><b>¿Te bajó la regla el ${escapeHtml(fechaCortaISO(sugRegla))}?</b></p>
+          <p class="snack-nota" style="margin:0 0 14px;">Has marcado sangrado y todavía no está en tu ciclo. Si es el primer día de una regla (no un manchado), regístralo: tus fases se recalculan con ese dato.</p>
+          <button class="btn" id="sueReglaSi" style="width:100%;">Sí, registrar el inicio de regla</button><button class="btn ghost" id="sueReglaNo" style="width:100%;margin-top:8px;">No, o ahora no</button></div></div>`;
+        o.querySelector('#sueReglaSi').addEventListener('click', ()=>res(true)); o.querySelector('#sueReglaNo').addEventListener('click', ()=>res(false));
+      });
+      if(si){
+        let r = await registrarInicioRegla(athleteId, sugRegla);
+        if(!r.ok && r.motivo === 'corto' && confirm(`Entre esa fecha y otra regla registrada solo hay ${r.dias} días, menos que un ciclo habitual. ¿Es de verdad una regla nueva y no un manchado?`)) r = await registrarInicioRegla(athleteId, sugRegla, { forzar:true });
+        toast(r.ok ? 'Inicio de regla registrado: tus fases se han recalculado' : 'No se pudo registrar el inicio de regla', !r.ok);
+      }
     }
     const snackPend = modo === 'noche' && dia === hoy && !snackHecho(await getSnackLog(athleteId), hoy);
     if(snackPend){
@@ -6368,6 +6499,10 @@ async function tplSuenoPreguntas(athleteId){
           return `<rect x="${i*24 + 4}" y="${64 - alto}" width="16" height="${alto}" rx="3" fill="${v === undefined ? 'var(--border)' : (q.tipo === 'eva' ? sueColorEva(v, 10) : 'var(--accent)')}" ${v === undefined ? 'opacity=".5"' : ''}/>${v !== undefined ? `<text x="${i*24 + 12}" y="${60 - alto}" font-size="8" text-anchor="middle" fill="currentColor">${nFmt(v, 0)}</text>` : ''}<text x="${i*24 + 12}" y="78" font-size="7.5" text-anchor="middle" fill="var(--muted)">${+f.slice(8)}</text>`; }).join('');
         html += `<div class="res-fila" style="margin-top:8px;"><div class="res-chip"><span>Media</span><b>${nFmt(r.media, 1)}/${tope}${dl !== null && Math.abs(dl) >= 0.1 ? ` <small style="color:var(--muted);">${dl > 0 ? '+' : '−'}${nFmt(Math.abs(dl), 1)}</small>` : ''}</b></div><div class="res-chip"><span>Máximo · último</span><b>${nFmt(r.max, 0)} · ${nFmt(r.ultimo, 0)}</b></div></div>
           <svg viewBox="0 0 340 84" style="width:100%;color:var(--ink);" role="img" aria-label="${escapeHtml(q.corto)} por día">${barras}</svg>`;
+        if(q.grupo === 'dolor' && q.tipo === 'eva'){
+          const eps = episodiosDolor(sueSerieExtra(log, q, sumaDiasISO(hoy, -89), hoy));
+          html += eps.length ? `<p class="spq-ep-tit">Episodios · últimos 3 meses</p><ul class="snack-obs spq-ep">${eps.slice(-4).reverse().map(ep=>`<li>${escapeHtml(episodioTxt(ep, sumaDiasISO(hoy, -89)))}</li>`).join('')}</ul>` : `<p class="snack-nota" style="margin:4px 0 0;">Sin dolor en los últimos 3 meses.</p>`;
+        }
       } else if(q.tipo === 'opc' || q.tipo === 'sino'){
         html += `<p style="margin:6px 0 0;font-size:13px;line-height:1.7;">${sueOpciones(q).map(o=>`${escapeHtml(o[1])} <b>${r.dist[o[0]]}</b>`).join(' · ')}</p>`;
       } else {
@@ -10875,6 +11010,101 @@ function bindTimerModalEvents(){
   }
 }
 
+// ---------- NOMBRES PARECIDOS ----------
+// «Hipertrofia», «HIPERTROFIA» o «hipertrofía» son lo mismo: se agrupan siempre.
+// Y si se escribe algo parecido a un nombre ya usado («Press de banca» / «Press banca»,
+// «Sentadillas» / «Sentadilla»), se pregunta si es lo mismo o un concepto nuevo.
+const NOM_VACIAS = new Set(['de','del','la','el','los','las','con','en','a','al','y','e']);
+function nomClave(s){ return nutriNorm(s).replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+function nomClaveSuelta(s){ return nomClave(s).split(' ').filter(w=>w && !NOM_VACIAS.has(w)).map(w=>w.length > 4 && /[^s]s$/.test(w) ? w.slice(0, -1) : w).join(' '); }
+function nomDistancia(a, b){
+  if(a === b) return 0; if(Math.abs(a.length - b.length) > 3) return 9;
+  let prev = Array.from({ length:b.length + 1 }, (_, j)=>j);
+  for(let i = 1; i <= a.length; i++){
+    const cur = [i];
+    for(let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j-1] + 1, prev[j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[b.length];
+}
+// Forma más usada de cada nombre (agrupando mayúsculas, tildes y espacios).
+function nomFormas(lista){
+  const m = new Map();
+  (lista || []).forEach(n=>{ const t = String(n || '').trim(), k = nomClave(t); if(!k) return; const r = m.get(k) || {}; r[t] = (r[t] || 0) + 1; m.set(k, r); });
+  const out = new Map(); m.forEach((r, k)=>out.set(k, Object.keys(r).sort((a, b)=>r[b] - r[a])[0])); return out;
+}
+function nomCanon(lista){ const f = nomFormas(lista); return t=>f.get(nomClave(t)) || t; }
+function nomParecidos(valor, lista){
+  const k = nomClave(valor), ks = nomClaveSuelta(valor); if(!k) return { igual:null, parecidos:[] };
+  const formas = nomFormas(lista), igual = formas.get(k) || null, par = [];
+  formas.forEach((forma, c)=>{
+    if(c === k) return;
+    const cs = nomClaveSuelta(forma), tope = Math.max(ks.length, cs.length), d = nomDistancia(ks, cs);
+    if(cs === ks || (tope >= 5 && d <= (tope >= 10 ? 2 : 1))) par.push({ forma, d });
+  });
+  return { igual, parecidos:par.sort((a, b)=>a.d - b.d).slice(0, 3).map(x=>x.forma) };
+}
+async function getVocab(){
+  let o = {}; try{ o = JSON.parse(await safeGet('vocab-nombres', true) || '{}') || {}; }catch(e){ o = {}; }
+  ['tipo','ejercicio','seccion'].forEach(k=>{ if(!Array.isArray(o[k])) o[k] = []; });
+  if(!o.distintos || typeof o.distintos !== 'object') o.distintos = {};
+  return o;
+}
+const NOM_TXT = { tipo:['un título de sesión', 'estos títulos de sesión'], ejercicio:['un ejercicio', 'estos ejercicios'], seccion:['un bloque', 'estos bloques'] };
+function nomPregunta(kind, valor, ops){
+  return new Promise(res=>{
+    const ov = document.createElement('div'); ov.className = 'nom-ov';
+    ov.innerHTML = `<div class="nom-caja" role="dialog" aria-modal="true" aria-labelledby="nomTit"><h3 id="nomTit">¿Es lo mismo?</h3>
+      <p>Has escrito <b>«${escapeHtml(valor)}»</b>. Se parece a ${ops.length > 1 ? NOM_TXT[kind][1] : NOM_TXT[kind][0]} que ya usas:</p>
+      ${ops.map((op, i)=>`<button type="button" class="btn ${i ? 'ghost' : ''}" data-nomusa="${i}">Es lo mismo: usar «${escapeHtml(op)}»</button>`).join('')}
+      <button type="button" class="btn ghost" data-nomnuevo="1">Es distinto: guardar «${escapeHtml(valor)}» como nuevo</button>
+      <p class="snack-nota" style="margin:10px 0 0;">Si es lo mismo, se suma a lo anterior en el progreso, el calendario y los resúmenes.</p></div>`;
+    document.body.appendChild(ov);
+    const fin = v=>{ ov.remove(); res(v); };
+    ov.querySelectorAll('[data-nomusa]').forEach(b=>b.addEventListener('click', ()=>fin(ops[parseInt(b.dataset.nomusa, 10)])));
+    ov.querySelector('[data-nomnuevo]').addEventListener('click', ()=>fin(valor));
+    const pri = ov.querySelector('button'); if(pri) pri.focus();
+  });
+}
+// Devuelve el nombre con el que hay que guardar lo escrito.
+async function nomConfirma(kind, valor, conocidos){
+  const v = String(valor || '').trim(); if(!v) return v;
+  const voc = await getVocab(), antes = JSON.stringify(voc);
+  const r = nomParecidos(v, (conocidos || []).concat(voc[kind]));
+  let final = v;
+  if(r.igual){
+    final = r.igual;
+    if(final !== v) toast(`Guardado como «${final}», igual que las veces anteriores`);
+  } else if(r.parecidos.length){
+    const k = nomClave(v), dist = new Set(voc.distintos[kind] || []), par = op=>[k, nomClave(op)].sort().join('|');
+    const ops = r.parecidos.filter(op=>!dist.has(par(op)));
+    if(ops.length){
+      final = await nomPregunta(kind, v, ops);
+      if(final === v){ ops.forEach(op=>dist.add(par(op))); voc.distintos[kind] = [...dist].slice(-300); }
+    }
+  }
+  if(!voc[kind].some(x=>nomClave(x) === nomClave(final))) voc[kind] = voc[kind].concat(final).slice(-600);
+  if(JSON.stringify(voc) !== antes) await safeSet('vocab-nombres', JSON.stringify(voc), true);
+  return final;
+}
+// Nombres que ya usa este atleta (plan de la semana y diario) y la galería.
+async function nomConocidos(kind, athleteId, excluye){
+  const out = [];
+  try{
+    const draft = await getRoutine(athleteId, true, state.planWeek);
+    DAYS.forEach(d=>{
+      if(kind === 'tipo'){ if(d !== excluye && draft.days[d].tipo) out.push(draft.days[d].tipo); return; }
+      BLOCKS.forEach(b=>(draft.days[d][b.key] || []).forEach(x=>{ if(x.id === excluye) return; if(kind === 'ejercicio' && x.name) out.push(x.name); if(kind === 'seccion' && x.section) out.push(x.section); }));
+    });
+  }catch(e){}
+  try{
+    const raw = await safeGet('journal-'+athleteId, true), j = raw ? JSON.parse(raw) : [];
+    j.forEach(e=>{ if(kind === 'tipo' && e.tipoSesion) out.push(e.tipoSesion); (e.exercises || []).forEach(x=>{ if(kind === 'ejercicio' && x.name) out.push(x.name); if(kind === 'seccion' && x.section) out.push(x.section); }); });
+  }catch(e){}
+  if(kind === 'ejercicio'){ try{ (await getExLib()).forEach(x=>{ if(x && x.name) out.push(x.name); }); }catch(e){} }
+  return out;
+}
+
 // ---------- CALENDARIO (atleta) ----------
 // Etiqueta corta del tipo de sesión, sacada de las secciones de sus ejercicios.
 function tipoDeSesion(entry){
@@ -10892,10 +11122,12 @@ function tipoDeSesion(entry){
   return 'Sesión';
 }
 function abreviaTipo(t){
+  t = String(t || '');
   const map = {'Fuerza':'FZA','Fuerza submáxima':'FZA','Hipertrofia':'HT','Potencia':'POT',
     'Pliometría':'PLIO','Resistencia':'RES','Movilidad':'MOV','Activación':'ACT','Core':'CORE',
     'Técnica':'TEC','Recuperación':'REC','Específico Hyrox':'HYROX','Sesión':'✓'};
   if(map[t]) return map[t];
+  const k = Object.keys(map).find(x=>nomClave(x) === nomClave(t)); if(k) return map[k];
   return t.slice(0,4).toUpperCase();
 }
 // ---------- COMPETICIONES ----------
@@ -10978,7 +11210,8 @@ function monthGridHtml(callDateStr, journal, offset, plan, competiciones){
   const sesiones = Object.values(porDia);
   if(sesiones.length){
     const cuenta = {};
-    sesiones.forEach(e=>{ const t = tipoDeSesion(e); cuenta[t] = (cuenta[t]||0)+1; });
+    const canonT = nomCanon(sesiones.map(tipoDeSesion));
+    sesiones.forEach(e=>{ const t = canonT(tipoDeSesion(e)); cuenta[t] = (cuenta[t]||0)+1; });
     const cargaTotal = sesiones.reduce((a,e)=>a+(e.fatigueScore||0),0);
     const minutos = Math.round(sesiones.reduce((a,e)=>a+(e.durationSeconds||0),0)/60);
     html += `<div class="cal-summary">
@@ -11867,17 +12100,21 @@ async function tplProgreso(athleteId){
   // Un número como "2837 de carga" no le dice nada a nadie. Lo traducimos a
   // comparaciones que sí se entienden: cuánto has entrenado frente a la semana
   // pasada y si esa subida es asumible.
-  const sesiones7 = entries.filter(e=>(now-new Date(e.date))/86400000<=7).length;
-  const minutos7 = Math.round(entries.filter(e=>(now-new Date(e.date))/86400000<=7)
-    .reduce((a,e)=>a+(e.durationSeconds||0),0)/60);
-  const sumPrev = entries.filter(e=>{ const d=(now-new Date(e.date))/86400000; return d>7 && d<=14; })
-    .reduce((a,e)=>a+(e.fatigueScore||0),0);
+  // Semana natural, de lunes a domingo (antes eran los últimos 7 días: un martes
+  // podía decir «5 sesiones esta semana» contando las del fin de semana anterior).
+  // Se compara con la semana pasada hasta el mismo día, para que sea justo.
+  const hoyISO = todayISO(), deEstaSemana = entries.filter(e=>e.date >= semanaActual && e.date <= sumaDiasISO(semanaActual, 6));
+  const sesiones7 = deEstaSemana.length;
+  const minutos7 = Math.round(deEstaSemana.reduce((a,e)=>a+(e.durationSeconds||0),0)/60);
+  const lunesPrev = sumaDiasISO(semanaActual, -7), mismoDiaPrev = sumaDiasISO(hoyISO < sumaDiasISO(semanaActual, 6) ? hoyISO : sumaDiasISO(semanaActual, 6), -7);
+  const sumPrev = entries.filter(e=>e.date >= lunesPrev && e.date <= mismoDiaPrev).reduce((a,e)=>a+(e.fatigueScore||0),0);
+  const aEstasAlturas = mismoDiaPrev < sumaDiasISO(lunesPrev, 6) ? ' a estas alturas' : '';
   let compara = '', flechaCls = 'igual', flecha = '=';
   if(sumPrev > 0){
     const pct = Math.round(((sum7 - sumPrev)/sumPrev)*100);
-    if(pct > 8){ flecha='↑'; flechaCls='sube'; compara = `Has entrenado un <b>${pct}% más</b> que la semana pasada.`; }
-    else if(pct < -8){ flecha='↓'; flechaCls='baja'; compara = `Has entrenado un <b>${Math.abs(pct)}% menos</b> que la semana pasada.`; }
-    else { compara = `Has entrenado <b>prácticamente lo mismo</b> que la semana pasada.`; }
+    if(pct > 8){ flecha='↑'; flechaCls='sube'; compara = `Has entrenado un <b>${pct}% más</b> que la semana pasada${aEstasAlturas}.`; }
+    else if(pct < -8){ flecha='↓'; flechaCls='baja'; compara = `Has entrenado un <b>${Math.abs(pct)}% menos</b> que la semana pasada${aEstasAlturas}.`; }
+    else { compara = `Has entrenado <b>prácticamente lo mismo</b> que la semana pasada${aEstasAlturas}.`; }
   } else {
     compara = 'Todavía no hay semana anterior con la que comparar.';
   }
@@ -11898,7 +12135,7 @@ async function tplProgreso(athleteId){
     <div class="rc-cabecera">
       <span class="rc-flecha ${flechaCls}">${flecha}</span>
       <div>
-        <b>Esta semana: ${sesiones7} ${sesiones7===1?'sesión':'sesiones'} · ${minutos7} min</b>
+        <b>Esta semana (lunes a domingo): ${sesiones7} ${sesiones7===1?'sesión':'sesiones'} · ${minutos7} min</b>
         <span>${compara}</span>
       </div>
     </div>
@@ -11929,9 +12166,9 @@ async function tplProgreso(athleteId){
   const desde = new Date(); desde.setDate(desde.getDate()-28);
   const ult28 = entries.filter(e=>new Date(e.date+'T00:00:00') >= desde);
   if(ult28.length){
-    const cuenta = {}, cargaPorTipo = {};
+    const cuenta = {}, cargaPorTipo = {}, canonT = nomCanon(entries.map(tipoDeSesion));
     ult28.forEach(e=>{
-      const t = tipoDeSesion(e);
+      const t = canonT(tipoDeSesion(e));
       cuenta[t] = (cuenta[t]||0)+1;
       cargaPorTipo[t] = (cargaPorTipo[t]||0) + (e.fatigueScore||0);
     });
@@ -13122,7 +13359,7 @@ async function tplDiarioRegla(athleteId){
   const sug = diarioInicioSugerido(ciclo, diario.dias);
   const chips = (arr, attr, sel)=>arr.map((l,i)=>`<button type="button" class="gs-chip ${sel===i?'on':''}" ${attr}="${i}">${l}</button>`).join('');
   let h = `<div class="card" id="diarioRegla"><h2>Diario de regla</h2>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Una nota rápida al día: cómo es el sangrado, el dolor y cómo te sientes. Es opcional y <b>solo para ti</b>: tú decides si lo compartes con tu entrenador. El ciclo funciona igual aunque no lo uses.</p>`;
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.6;">Una nota rápida al día: cómo es el sangrado, el dolor y cómo te sientes. Lo más cómodo es contestarlo cada noche en el <b>registro de antes de dormir</b> (Agenda): se guarda aquí mismo. Es opcional y <b>solo para ti</b>: tú decides si lo compartes con tu entrenador.</p>`;
   if(sug) h += `<div class="rd-zona rd-ambar" style="margin:10px 0;"><div><b>¿Empezó tu regla el ${fechaCortaISO(sug)}?</b><span>Lo anotaste con sangrado y todavía no está en tu ciclo.</span><button type="button" class="btn small" data-drinicio="${sug}" style="margin-top:8px;">Registrar como inicio de regla</button></div></div>`;
   h += `<div class="row" style="align-items:center;gap:8px;margin:12px 0 4px;"><button type="button" class="btn ghost small" data-drdia="-1">‹</button><input type="date" id="drFecha" value="${f}" max="${hoy}" style="flex:1;min-width:0;"><button type="button" class="btn ghost small" data-drdia="1" ${f >= hoy ? 'disabled' : ''}>›</button></div>
     ${fase ? `<div class="dr-fase">${escapeHtml(fase)}</div>` : ''}
@@ -13134,6 +13371,7 @@ async function tplDiarioRegla(athleteId){
     <div class="row" style="gap:8px;margin-top:10px;"><button type="button" class="btn" id="drGuardar">${tiene ? 'Actualizar' : 'Guardar'} el ${fechaCortaISO(f)}</button>${tiene ? '<button type="button" class="btn ghost" id="drBorrar">Borrar</button>' : ''}</div>
     <label class="row" style="gap:8px;margin-top:14px;font-size:12.5px;align-items:flex-start;"><input type="checkbox" id="drCompartir" ${diario.compartir?'checked':''} style="margin-top:2px;"><span>Compartir mi diario con mi entrenador<br><span style="font-size:11px;color:var(--muted);">Desactivado: solo lo ves tú. Puedes cambiarlo cuando quieras.</span></span></label>`;
   h += diarioResumenHtml(diarioResumen(diario.dias, hoy));
+  h += diarioPorFaseHtml(diarioPorFase(ciclo, diario.dias, hoy));
   const fechas = Object.keys(diario.dias).filter(x=>x <= hoy).sort().reverse().slice(0,14);
   if(fechas.length) h += `<div class="block-title">Últimos días</div>` + fechas.map(x=>diarioFilaHtml(ciclo, x, diario.dias[x], true)).join('');
   return h + `</div>`;
@@ -13145,6 +13383,7 @@ async function tplDiarioReglaCoach(athleteId){
   const fechas = Object.keys(diario.dias).filter(x=>x <= hoy).sort().reverse().slice(0,14);
   return `<div class="card"><h2>Diario de regla <span style="font-size:11px;font-weight:400;color:var(--muted);">(lo comparte ella)</span></h2>
     ${diarioResumenHtml(diarioResumen(diario.dias, hoy)) || '<div class="empty">Todavía no ha anotado nada.</div>'}
+    ${diarioPorFaseHtml(diarioPorFase(ciclo, diario.dias, hoy))}
     ${fechas.map(x=>diarioFilaHtml(ciclo, x, diario.dias[x], false)).join('')}</div>`;
 }
 function bindDiarioRegla(athleteId, registrar){
@@ -13186,6 +13425,48 @@ function bindDiarioRegla(athleteId, registrar){
     toast(ok ? (comp.checked ? 'Tu entrenador ya puede ver tu diario' : 'Tu diario vuelve a ser solo tuyo') : 'No se pudo guardar', !ok);
   });
   caja.querySelectorAll('[data-drinicio]').forEach(b=>b.addEventListener('click', ()=>registrar(b.dataset.drinicio)));
+}
+
+// ---- El ciclo en el registro de antes de dormir ----
+// Tres preguntas (sangrado, dolor de regla y cómo se ha sentido) que se guardan en el
+// mismo diario de regla de Perfil → Ciclo: así se cruzan con su fase, su guía
+// nutricional, la sugerencia de inicio de regla y el resumen por fases.
+function primeraFrase(t){
+  const p = String(t || '').split('\n\n')[0].replace(/\*\*|__|[#>*]/g, '').trim();
+  const m = p.match(/^.{20,220}?[.!?](\s|$)/);
+  return (m ? m[0] : p.slice(0, 200)).trim();
+}
+async function cicloNocheDatos(athleteId, dia){
+  if(!athleteId) return null;
+  if(esMenor(state.athletes.find(a=>a.id === athleteId))) return null;
+  const raw = await safeGet('intake-'+athleteId, true); let genero = '';
+  try{ genero = raw ? (JSON.parse(raw).genero || '') : ''; }catch(e){}
+  if(genero !== 'Mujer') return null;
+  const ciclo = await getCiclo(athleteId);
+  if(consentCicloDe(ciclo) !== 'si') return null;
+  const diario = await getDiarioRegla(athleteId), info = faseCiclo(ciclo, dia);
+  let fase = '', tip = '';
+  if(info && info.fase && !info.sinFase && !info.sinCicloNatural){
+    fase = `${FASES_CICLO[info.fase].label} · día ${info.diaCiclo}`;
+    try{ tip = primeraFrase(textoEducativo(await getTextosEducativos(), 'ciclo_'+info.fase+'_nutricion').cuerpo); }catch(e){}
+  }
+  return { ciclo, diario, e:diario.dias[dia] || null, fase, tip };
+}
+// El diario cruzado con la fase: qué días, cuánto dolor y qué síntoma pesa más en cada una.
+function diarioPorFase(ciclo, dias, hoy){
+  const desde = sumaDiasISO(hoy, -120), g = {};
+  Object.keys(dias).filter(f=>ISO_RE.test(f) && f >= desde && f <= hoy).forEach(f=>{
+    const info = faseCiclo(ciclo, f); if(!info || !info.fase || info.sinFase || info.sinCicloNatural) return;
+    const x = g[info.fase] = g[info.fase] || { n:0, dolor:0, sint:{} }, e = dias[f];
+    x.n++; x.dolor += (e.dolor || 0); (e.sintomas || []).forEach(sx=>{ x.sint[sx] = (x.sint[sx] || 0) + 1; });
+  });
+  return Object.keys(FASES_CICLO).filter(k=>g[k]).map(k=>({ fase:k, n:g[k].n, dolorMedio:g[k].dolor/g[k].n, top:Object.keys(g[k].sint).sort((a, b)=>g[k].sint[b] - g[k].sint[a])[0] || null }));
+}
+function diarioPorFaseHtml(filas){
+  if(filas.filter(f=>f.n >= 3).length < 2) return '';
+  return `<div class="block-title">Por fase del ciclo · últimos 4 meses</div>
+    <table class="tabla-comp"><thead><tr><th>Fase</th><th>Días</th><th>Dolor medio</th><th>Lo más frecuente</th></tr></thead><tbody>${filas.map(f=>`<tr><td>${FASES_CICLO[f.fase].label}</td><td>${f.n}</td><td>${nFmtS(f.dolorMedio, 1)}/4</td><td>${f.top ? escapeHtml(sintomaLabel(f.top)) : '—'}</td></tr>`).join('')}</tbody></table>
+    <p class="snack-nota" style="margin-top:6px;">Dolor de 0 (sin dolor) a 4 (muy fuerte). Con pocos días por fase, es orientativo.</p>`;
 }
 
 // ---------- MIS RECETAS ----------
@@ -17048,6 +17329,15 @@ function bindExerciseCard(card, athleteId){
       f.addEventListener('input', ()=>{ clearTimeout(debounce); debounce = setTimeout(commit, 600); });
       f.addEventListener('change', ()=>{ clearTimeout(debounce); commit(); });
     });
+    // Nombre del ejercicio y bloque: si se parece a uno que ya se usa, se pregunta.
+    [['.ex-name','ejercicio'],['.ex-section','seccion']].forEach(([sel, kind])=>{
+      const inp = card.querySelector(sel); if(!inp || inp.dataset.nomBound) return; inp.dataset.nomBound = '1';
+      inp.addEventListener('change', async ()=>{
+        const escrito = inp.value.trim(); if(!escrito) return;
+        const v = await nomConfirma(kind, escrito, await nomConocidos(kind, state.selectedId, card.dataset.exid));
+        if(v !== escrito){ inp.value = v; clearTimeout(debounce); commit(); }
+      });
+    });
 
     // Esta tarjeta se insertó directamente en el DOM (sin redibujar la
     // pantalla), así que sus botones de acción no pasaron por
@@ -18279,7 +18569,23 @@ async function bindDynamicEvents(){
     BLOCKS.forEach(b=>{
       copia[b.key] = (dias[b.key]||[]).map(ex=>{ const c = { ...ex, id: uid(), timer: {...exTimer(ex)} }; delete c.analisis; return c; });
     });
+    // El día se copia entero: también su título, si es gym o pista y sus drills.
+    if(dias && dias.tipo) copia.tipo = dias.tipo;
+    if(dias && dias.lugar) copia.lugar = dias.lugar;
+    if(dias && Array.isArray(dias.drills) && dias.drills.length) copia.drills = dias.drills.map(x=>({ ...x, id: uid() }));
     return copia;
+  };
+  // Al añadir (no sustituir), el título solo se pone si el día de destino no tenía.
+  const copiaMetaDia = (dest, clon, modo)=>{
+    if(modo === 'append'){
+      if(!dest.tipo && clon.tipo) dest.tipo = clon.tipo;
+      if(clon.drills) dest.drills = (Array.isArray(dest.drills) ? dest.drills : []).concat(clon.drills);
+      if(!dest.lugar && clon.lugar) dest.lugar = clon.lugar;
+    } else {
+      if(clon.tipo) dest.tipo = clon.tipo; else delete dest.tipo;
+      if(clon.lugar) dest.lugar = clon.lugar;
+      if(clon.drills) dest.drills = clon.drills; else if(Array.isArray(dest.drills)) dest.drills = [];
+    }
   };
   const totalDe = (dias)=> BLOCKS.reduce((a,b)=>a+((dias&&dias[b.key])?dias[b.key].length:0),0);
 
@@ -18301,6 +18607,7 @@ async function bindDynamicEvents(){
       draft.days[destino] = clon;
     } else {
       BLOCKS.forEach(b=>{ draft.days[destino][b.key] = (draft.days[destino][b.key]||[]).concat(clon[b.key]); });
+      copiaMetaDia(draft.days[destino], clon, 'append');
     }
     draft.updatedAt = new Date().toISOString();
     const ok = await saveRoutine(athleteId, true, draft);
@@ -19412,7 +19719,12 @@ async function bindDynamicEvents(){
       actualizaContadorDia(dia);
     };
     inp.addEventListener('input', ()=>{ clearTimeout(deb); deb=setTimeout(guardar, 700); });
-    inp.addEventListener('change', ()=>{ clearTimeout(deb); guardar(); });
+    inp.addEventListener('change', async ()=>{
+      clearTimeout(deb);
+      const v = await nomConfirma('tipo', inp.value, await nomConocidos('tipo', athleteId, inp.dataset.dia));
+      if(v !== inp.value.trim()) inp.value = v;
+      guardar();
+    });
   });
 
   document.querySelectorAll('[data-fromlib]').forEach(b=>b.addEventListener('click', ()=>{
@@ -19654,6 +19966,7 @@ async function bindDynamicEvents(){
           ? destino.days[diaDestino][b.key].concat(clon[b.key])
           : clon[b.key];
       });
+      copiaMetaDia(destino.days[diaDestino], clon, modo);
       const ok = await saveRoutine(athleteId, true, destino, semanaDestino);
       toast(ok ? `${total} ejercicios copiados al ${diaDestino} de la semana del ${fmtShortDate(ini)}` : 'No se pudo copiar', !ok);
     }catch(e){ toast('Error al copiar: '+e.message, true); }
@@ -19682,6 +19995,7 @@ async function bindDynamicEvents(){
           ? draftDestino.days[destinoDia][b.key].concat(clon[b.key])
           : clon[b.key];
       });
+      copiaMetaDia(draftDestino.days[destinoDia], clon, modo);
       draftDestino.updatedAt = new Date().toISOString();
       const ok = await saveRoutine(destinoAtleta, true, draftDestino);
       toast(ok ? `${total} ejercicios copiados a ${nombreDest} (${destinoDia})` : 'No se pudo copiar', !ok);
